@@ -152,6 +152,156 @@ The final chapter briefly describes the aftermath. Bruno's family searches for h
 </script>
 
 ---
+## **Part 1: advanced Multiple Choice**
+<style>
+  #advanced-mc-quiz-container {
+    background: #3a3f4b; border: 1px solid #555; border-radius: 8px;
+    padding: 25px; margin: 1.5em 0; color: #eee;
+  }
+  .advanced-mc-quiz-question-block {
+    margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #555;
+  }
+  .advanced-mc-quiz-question-block:last-of-type { border-bottom: none; margin-bottom: 10px; }
+  .advanced-mc-quiz-question-text { font-weight: bold; margin-bottom: 15px; line-height: 1.5; }
+  .advanced-mc-quiz-options label {
+    display: flex; align-items: flex-start; text-align: left; margin: 8px 0; padding: 10px;
+    border-radius: 5px; border: 2px solid transparent; cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  .advanced-mc-quiz-options label:hover { background-color: #555; }
+  .advanced-mc-quiz-options label input[type="radio"] { margin-right: 12px; flex-shrink: 0; margin-top: 3px; }
+  #advanced-mc-quiz-submit-btn {
+    width: 100%; margin-top: 15px; padding: 12px 20px; border: none;
+    background-color: #00adb5; color: #fff; font-size: 1.1em;
+    font-weight: bold; border-radius: 5px; cursor: pointer;
+  }
+  #advanced-mc-quiz-final-congrats {
+    text-align: center; font-size: 1.2em; font-weight: bold; color: #77d685;
+    padding: 15px; margin-top: 20px; border-radius: 5px; background-color: #2d3c2e;
+  }
+  /* Feedback Styles */
+  .correct-answer-amc { background-color: #28a745 !important; border-color: #208a38 !important; color: white; }
+  .incorrect-answer-amc { border-color: #dc3545 !important; }
+  .quiz-submitted-amc .advanced-mc-quiz-options label { pointer-events: none; }
+  .quiz-submitted-amc .advanced-mc-quiz-options input:disabled + span { color: #ccc; }
+</style>
+
+<div id="advanced-mc-quiz-container"></div>
+
+<script>
+  const advancedMcQuizData = [
+    {
+      question: "1. Gretel's replacement of her dolls with maps of Europe on her wall best represents:",
+      answers: {
+        a: "Her attempt to impress Lieutenant Kotler by appearing more mature.",
+        b: "A newfound and genuine interest in world geography and current events.",
+        c: "The exchange of childhood innocence for a cold, adopted nationalistic ideology.",
+        d: "Her desire to track her father's military progress and feel closer to him."
+      },
+      correct: "c"
+    },
+    {
+      question: "2. The character of Pavel, the former doctor who now peels vegetables and serves the family, primarily serves to illustrate:",
+      answers: {
+        a: "The inherent kindness that can exist even in the most horrible of places.",
+        b: "The systematic degradation and dehumanization of a people, stripping them of their former identities.",
+        c: "The cowardice of Bruno's parents, who know his story but do nothing to help him.",
+        d: "The practical skills that were necessary for prisoners to make themselves useful and survive."
+      },
+      correct: "b"
+    },
+    {
+      question: "3. The novel's devastating final scene, where both boys die together in the gas chamber, serves primarily to:",
+      answers: {
+        a: "Punish Bruno's father by having his own son suffer the fate he inflicted upon others.",
+        b: "Demonstrate that friendship, however pure, is ultimately powerless against systemic brutality.",
+        c: "Serve as a shocking plot twist intended to horrify the reader at the very end.",
+        d: "Erase the artificial distinctions of uniform and background, emphasizing their shared, equal humanity in the face of death."
+      },
+      correct: "d"
+    },
+    {
+      question: "4. How does the novel ultimately portray Bruno's innocence?",
+      answers: {
+        a: "As a powerful moral force that allows him to see the truth that adults cannot.",
+        b: "As a form of willful ignorance, representing the German people's refusal to see what was happening.",
+        c: "As a temporary, fragile state that tragically fails to protect him from a world devoid of it.",
+        d: "As a flaw that prevents him from truly understanding and helping Shmuel in a meaningful way."
+      },
+      correct: "c"
+    },
+    {
+      question: "5. By subtitling the book \"A Fable,\" author John Boyne is most likely signaling to the reader that:",
+      answers: {
+        a: "The story should be read for its universal moral message rather than as a historically precise document.",
+        b: "The events depicted are entirely imaginary and have no basis in the real events of the Holocaust.",
+        c: "The narrative is simple and intended only for young children who cannot handle the historical facts.",
+        d: "The story will contain magical or supernatural elements common to the fable genre."
+      },
+      correct: "a"
+    },
+    {
+      question: "6. What is the most significant function of Lieutenant Kotler's character within the narrative?",
+      answers: {
+        a: "To serve as a romantic interest for Gretel and a source of conflict for Mother.",
+        b: "To represent the ambition of young soldiers hoping to rise in the ranks of the Nazi party.",
+        c: "To act as a foil to Father, showcasing a more personal, casual, and immediate form of cruelty.",
+        d: "To reveal the hidden secrets of the camp's operations through his conversations."
+      },
+      correct: "c"
+    }
+  ];
+
+  const advancedMcQuizContainer = document.getElementById('advanced-mc-quiz-container');
+  let advancedMcQuizHTML = '';
+
+  advancedMcQuizData.forEach((item, index) => {
+    advancedMcQuizHTML += `<div class="advanced-mc-quiz-question-block"><div class="advanced-mc-quiz-question-text">${item.question}</div><div class="advanced-mc-quiz-options">`;
+    for (const key in item.answers) {
+      advancedMcQuizHTML += `<label><input type="radio" name="amc_question${index}" value="${key}"><span>${item.answers[key]}</span></label>`;
+    }
+    advancedMcQuizHTML += `</div></div>`;
+  });
+  advancedMcQuizHTML += `<button id="advanced-mc-quiz-submit-btn">Check Answers</button>`;
+  advancedMcQuizContainer.innerHTML = advancedMcQuizHTML;
+
+  document.getElementById('advanced-mc-quiz-submit-btn').addEventListener('click', function() {
+    let correctCount = 0;
+    advancedMcQuizData.forEach((item, index) => {
+      const options = document.querySelectorAll(`input[name="amc_question${index}"]`);
+      let isAnsweredCorrectly = false;
+      
+      options.forEach(option => { if(option.disabled) { isAnsweredCorrectly = true; } });
+
+      if(isAnsweredCorrectly) {
+        correctCount++;
+        return;
+      }
+
+      const selected = document.querySelector(`input[name="amc_question${index}"]:checked`);
+      if (selected) {
+        options.forEach(opt => opt.parentElement.classList.remove('incorrect-answer-amc'));
+        
+        if (selected.value === item.correct) {
+          selected.parentElement.classList.add('correct-answer-amc');
+          options.forEach(opt => opt.disabled = true);
+          correctCount++;
+        } else {
+          selected.parentElement.classList.add('incorrect-answer-amc');
+        }
+      }
+    });
+
+    if (correctCount === advancedMcQuizData.length) {
+      this.style.display = 'none';
+      const finalMessage = document.createElement('div');
+      finalMessage.id = 'advanced-mc-quiz-final-congrats';
+      finalMessage.innerHTML = 'Congratulations! You answered all questions correctly! 🎉';
+      advancedMcQuizContainer.appendChild(finalMessage);
+    }
+  });
+</script>
+---
 
 ## **Part 2: True or False**
 
@@ -419,14 +569,111 @@ The final chapter briefly describes the aftermath. Bruno's family searches for h
 ## **Part 4: Short Answer Questions**
 
 *Write a sentence or two to answer each question.*
+<style>
+  #subjective-quiz-container {
+    background: #3a3f4b;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 1.5em 0;
+    color: #eee;
+  }
+  .subjective-question-block {
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #555;
+  }
+  .subjective-question-block:last-of-type {
+    border-bottom: none;
+    margin-bottom: 10px;
+  }
+  .subjective-question-text {
+    font-weight: bold;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .subjective-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    background-color: #2c303a;
+    border: 1px solid #555;
+    border-radius: 5px;
+    color: #eee;
+    font-size: 1em;
+    resize: vertical;
+  }
+  .subjective-check-btn {
+    margin-top: 10px;
+    padding: 8px 15px;
+    border: none;
+    background-color: #00adb5;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .subjective-model-answer {
+    display: none; /* Initially hidden */
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #2c303a;
+    border-left: 3px solid #00adb5;
+    border-radius: 5px;
+  }
+  .subjective-model-answer strong {
+    color: #00adb5;
+  }
+</style>
 
-1.  What does Bruno think the people in the camp are wearing? What does this tell you about him?
-    ________________________________________________________________
-    ________________________________________________________________
+<div id="subjective-quiz-container">
+  </div>
 
-2.  Why is Bruno's mother unhappy living at "Out-With"?
-    ________________________________________________________________
-    ________________________________________________________________
+<script>
+  // Subjective questions and your model answers
+  const subjectiveQuizData = [
+    {
+      question: "1. What does Bruno think the people in the camp are wearing? What does this tell you about him?",
+      modelAnswer: "He thinks they are wearing \"striped pyjamas.\" This shows that he is very innocent and naive, as he cannot understand that it is a prison uniform."
+    },
+    {
+      question: "2. Why is Bruno’s mother unhappy living at “Out-With”?",
+      modelAnswer: "She is lonely and becomes horrified by what is happening at the camp (the smoke from the chimneys, the cruelty). She knows it is not a good place to raise her children."
+    }
+  ];
+
+  const subjectiveContainer = document.getElementById('subjective-quiz-container');
+  let subjectiveHTML = '';
+
+  // Generate HTML based on the data
+  subjectiveQuizData.forEach((item, index) => {
+    subjectiveHTML += `
+      <div class="subjective-question-block">
+        <div class="subjective-question-text">${item.question}</div>
+        <textarea class="subjective-textarea" placeholder="Write your answer here..."></textarea>
+        <button class="subjective-check-btn" onclick="showModelAnswer(${index})">Check Model Answer</button>
+        <div class="subjective-model-answer" id="model-answer-${index}">
+          <strong>Answer:</strong>
+          <p>${item.modelAnswer}</p>
+        </div>
+      </div>
+    `;
+  });
+
+  subjectiveContainer.innerHTML = subjectiveHTML;
+
+  // Function to show the model answer when the button is clicked
+  function showModelAnswer(index) {
+    const modelAnswerDiv = document.getElementById(`model-answer-${index}`);
+    // Toggle visibility
+    if (modelAnswerDiv.style.display === 'block') {
+      modelAnswerDiv.style.display = 'none';
+    } else {
+      modelAnswerDiv.style.display = 'block';
+    }
+  }
+</script>
+---
 
 
 # Essay topics
