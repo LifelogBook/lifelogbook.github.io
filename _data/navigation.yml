@@ -17,11 +17,7 @@ docs:
       - title: "tag"
         url: /tags/
   - title: "Main Chapter 2"
-    children:
-      - title: "Category"
-        url: /categories/
-      - title: "tag"
-        url: /tags/
+
 
 counts:
   - title: "Category"
