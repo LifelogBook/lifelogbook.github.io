@@ -882,21 +882,21 @@ The final chapter briefly describes the aftermath. Bruno's family searches for h
   }
 </script>
 
-# test test
+# Comment(permanently)
 <div id="essaybook-form">
   <div>
-    <label for="name-input">이름:</label>
+    <label for="name-input">Name:</label>
     <input type="text" id="name-input" placeholder="이름을 입력하세요">
   </div>
   <div>
-    <label for="message-input">메시지:</label>
+    <label for="message-input">comment:</label>
     <textarea id="message-input" placeholder="메시지를 남겨주세요"></textarea>
   </div>
-  <button id="submit-button">남기기</button>
+  <button id="submit-button">Store</button>
 </div>
 
 <div id="essaybook-messages">
-  <h3>방명록</h3>
+  <h3>Comment</h3>
   <ul id="message-list"></ul>
 </div>
 
