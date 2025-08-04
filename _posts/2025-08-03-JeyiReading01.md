@@ -692,6 +692,7 @@ The final chapter briefly describes the aftermath. Bruno's family searches for h
     font-weight: bold;
     color: #00adb5;
     margin-bottom: 10px;
+    margin-top: 0; /* heading 의 margin삭제 */
   }
   .essay-topic-prompt {
     font-size: 1.1em;
