@@ -2,7 +2,7 @@
 layout: single # 메뉴유지,  post(메뉴사라지고 포스트만 나옴)
 # classes: wide # right pannel 이 상단으로 올라감.
 title:  "[Book] The Boy in the Striped Pyjamas"
-categories: JYPreading
+categories: JYP_reading
 tags: [jyp,reading]
 toc: true. #right pannel
 toc_sticky: true
@@ -700,6 +700,43 @@ The final chapter briefly describes the aftermath. Bruno's family searches for h
     padding-left: 15px;
     border-left: 3px solid #555;
   }
+  .essay-user-textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 10px;
+    background-color: #2c303a;
+    border: 1px solid #555;
+    border-radius: 5px;
+    color: #eee;
+    font-size: 1em;
+    resize: vertical;
+    margin-bottom: 15px;
+  }
+  .essay-button-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+  .essay-save-btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #5cb85c;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .essay-save-btn:hover {
+    background-color: #4cae4c;
+  }
+  .essay-save-feedback {
+    font-weight: bold;
+    color: #5cb85c;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
   .essay-toggle-btn {
     padding: 10px 20px;
     border: none;
@@ -728,13 +765,18 @@ The final chapter briefly describes the aftermath. Bruno's family searches for h
   }
 </style>
 
-<!-- 주제 1 -->
 <div class="essay-topic-container">
   <h3 class="essay-topic-title">The Fable of Innocence</h3>
   <div class="essay-topic-prompt">The novel is subtitled "A Fable." Discuss how John Boyne uses Bruno's profound innocence to explore the horrors of the Holocaust. How does seeing events through a child's eyes change the reader's perspective?</div>
-  <button class="essay-toggle-btn" onclick="toggleEssayAnswer(1, this)">모범 답안 보기</button>
+  <textarea id="essay-input-1" class="essay-user-textarea" placeholder="여기에 당신의 생각을 작성해 보세요..."></textarea>
+  <div class="essay-button-group">
+    <button class="essay-save-btn" onclick="saveEssay(1)">Save draft</button>
+    <button class="essay-toggle-btn" onclick="toggleEssayAnswer(1, this)">모범 답안 보기</button>
+    <span id="save-feedback-1" class="essay-save-feedback">저장 완료! ✅</span>
+  </div>
   <div class="essay-model-answer" id="essay-answer-1">
     <h4>에세이 주제 1: 순수함이라는 우화 (The Fable of Innocence)</h4>
+    <p><strong>주제:</strong> 이 소설의 부제는 "우화(A Fable)"입니다. 존 보인은 브루노의 깊은 순수함을 통해 홀로코스트의 공포를 어떻게 탐구하는지 논하시오. 아이의 눈을 통해 사건을 보는 것이 독자의 관점을 어떻게 바꾸는지 설명하시오.</p>
     <p><strong>모범 답안:</strong><br>
     존 보인의 소설 《줄무늬 파자마를 입은 소년》은 단순한 역사 소설이 아닌, "우화"라는 부제를 통해 그 본질을 드러낸다. 작가는 주인공 브루노의 순수한 시선을 서사의 중심 렌즈로 사용하여, 독자가 홀로코스트의 참상을 역사적 사실의 나열이 아닌 한 아이의 이해할 수 없는 눈을 통해 마주하게 만든다. 이 순수함이라는 장치는 홀로코스트의 비극을 더욱 날카롭고 부조리하게 느끼게 하는 핵심적인 역할을 한다.</p>
     <p>브루노의 순수함은 그의 언어에서 가장 명확하게 드러난다. 그는 '아우슈비츠(Auschwitz)'를 '아웃위드(Out-With)'로, '총통(Führer)'을 '퓨리(Fury)'로 잘못 발음한다. 이러한 언어적 오해는 역사적으로 무거운 의미를 지닌 단어들을 그 무게로부터 벗겨내고, 본질적으로 그것들이 얼마나 기이하고 비논리적인 개념인지를 드러낸다. 독자는 이미 그 단어들의 의미를 알지만, 브루노의 시선을 통해 마치 처음 접하는 것처럼 그 부조리함을 생생하게 느끼게 된다. 이는 역사적 사실에 무뎌진 감각을 일깨우고 비극의 본질을 다시금 생각하게 만든다.</p>
@@ -743,13 +785,18 @@ The final chapter briefly describes the aftermath. Bruno's family searches for h
   </div>
 </div>
 
-<!-- 주제 2 -->
 <div class="essay-topic-container">
   <h3 class="essay-topic-title">Friendship Across Barriers</h3>
   <div class="essay-topic-prompt">Analyze the friendship between Bruno and Shmuel. What makes their bond so powerful, and how does it challenge the hatred and prejudice that surrounds them? Discuss the significance of the fence, both as a physical and a symbolic barrier.</div>
-  <button class="essay-toggle-btn" onclick="toggleEssayAnswer(2, this)">모범 답안 보기</button>
+  <textarea id="essay-input-2" class="essay-user-textarea" placeholder="여기에 당신의 생각을 작성해 보세요..."></textarea>
+  <div class="essay-button-group">
+    <button class="essay-save-btn" onclick="saveEssay(2)">Save draft</button>
+    <button class="essay-toggle-btn" onclick="toggleEssayAnswer(2, this)">모범 답안 보기</button>
+    <span id="save-feedback-2" class="essay-save-feedback">저장 완료! ✅</span>
+  </div>
   <div class="essay-model-answer" id="essay-answer-2">
     <h4>에세이 주제 2: 장벽을 넘어선 우정 (Friendship Across Barriers)</h4>
+    <p><strong>주제:</strong> 브루노와 슈무엘의 우정을 분석하시오. 무엇이 그들의 유대를 그토록 강력하게 만들며, 그 관계는 주변의 증오와 편견에 어떻게 도전하는가? 물리적, 상징적 장벽으로서의 울타리의 중요성에 대해 논하시오.</p>
     <p><strong>모범 답안:</strong><br>
     《줄무늬 파자마를 입은 소년》에서 브루노와 슈무엘의 우정은 이야기의 감정적 심장부 역할을 한다. 그들의 유대는 이데올로기가 만들어낸 인위적이고 증오에 찬 장벽을 넘어선, 인간 본연의 연결에 대한 강력한 증거이며, 소설의 중심 상징인 '울타리'는 이러한 분열을 극명하게 보여준다.</p>
     <p>두 소년의 우정은 가장 단순하고 순수한 공통점에서 시작된다. 바로 같은 나이, 같은 생일, 그리고 외로움이라는 감정이다. 이들의 관계는 인종, 혈통, 종교와 같은 어른들의 세계가 강요하는 조건이 아닌, 아이들의 눈높이에서 맺어진다. 이는 우정이 혈통과 이념에 기반해야 한다는 나치즘의 광기에 정면으로 도전한다. 그들의 유대는 증오가 학습된 사회적 구성물인 반면, 인간적 연결을 향한 갈망은 본능적임을 보여준다.</p>
@@ -759,13 +806,18 @@ The final chapter briefly describes the aftermath. Bruno's family searches for h
   </div>
 </div>
 
-<!-- 주제 3 -->
 <div class="essay-topic-container">
   <h3 class="essay-topic-title">Blindness and Complicity</h3>
   <div class="essay-topic-prompt">Explore the theme of "turning a blind eye." Compare Bruno's naive blindness to the willful blindness of other characters, such as his mother or even his father. Who is more responsible for the tragedy, and why?</div>
-  <button class="essay-toggle-btn" onclick="toggleEssayAnswer(3, this)">모범 답안 보기</button>
+  <textarea id="essay-input-3" class="essay-user-textarea" placeholder="여기에 당신의 생각을 작성해 보세요..."></textarea>
+  <div class="essay-button-group">
+    <button class="essay-save-btn" onclick="saveEssay(3)">Save draft</button>
+    <button class="essay-toggle-btn" onclick="toggleEssayAnswer(3, this)">모범 답안 보기</button>
+    <span id="save-feedback-3" class="essay-save-feedback">저장 완료! ✅</span>
+  </div>
   <div class="essay-model-answer" id="essay-answer-3">
     <h4>에세이 주제 3: 외면과 암묵적 동의 (Blindness and Complicity)</h4>
+    <p><strong>주제:</strong> '외면'이라는 주제를 탐구하시오. 브루노의 순진한 무지와 그의 어머니나 아버지 같은 다른 인물들의 의도적인 외면을 비교하시오. 비극에 대한 책임은 누구에게 더 크며, 그 이유는 무엇인가?</p>
     <p><strong>모범 답안:</strong><br>
     《줄무늬 파자마를 입은 소년》은 브루노의 순진무구한 무지에서부터 부모님의 의도적인 외면에 이르기까지, 다양한 층위의 '외면'을 탐구한다. 소설은 순수함이 비극적일 수는 있으나, 진실을 볼 수 있었음에도 보지 않기로 선택한 이들의 암묵적 동의가 홀로코스트와 같은 참사에 더 큰 도덕적 책임을 져야 한다고 주장한다.</p>
     <p>브루노의 외면은 전적으로 순수함에서 비롯된다. 그는 자신의 나이와 보호받는 환경의 산물로서, 눈앞의 공포를 문자 그대로 이해하지 못한다. 그의 무지는 도덕적 비난의 대상이 아니라, 다른 인물들의 외면을 판단하는 기준선 역할을 한다. 그는 진실을 알지 못했기에 책임이 없다.</p>
@@ -775,13 +827,18 @@ The final chapter briefly describes the aftermath. Bruno's family searches for h
   </div>
 </div>
 
-<!-- 주제 4 -->
 <div class="essay-topic-container">
   <h3 class="essay-topic-title">Humanity vs. Dehumanization</h3>
   <div class="essay-topic-prompt">Contrast the moments of simple humanity (like Bruno sharing food) with the systematic dehumanization of the camp. How does the novel argue that titles, uniforms, and ideology can strip people of their humanity?</div>
-  <button class="essay-toggle-btn" onclick="toggleEssayAnswer(4, this)">모범 답안 보기</button>
+  <textarea id="essay-input-4" class="essay-user-textarea" placeholder="여기에 당신의 생각을 작성해 보세요..."></textarea>
+  <div class="essay-button-group">
+    <button class="essay-save-btn" onclick="saveEssay(4)">Save draft</button>
+    <button class="essay-toggle-btn" onclick="toggleEssayAnswer(4, this)">모범 답안 보기</button>
+    <span id="save-feedback-4" class="essay-save-feedback">저장 완료! ✅</span>
+  </div>
   <div class="essay-model-answer" id="essay-answer-4">
     <h4>에세이 주제 4: 인간성과 비인간화 (Humanity vs. Dehumanization)</h4>
+    <p><strong>주제:</strong> 소박한 인간성이 드러나는 순간들(브루노가 음식을 나눠주는 것 등)과 수용소의 체계적인 비인간화를 대조하시오. 소설은 직위, 제복, 이데올로기가 어떻게 인간에게서 인간성을 박탈할 수 있다고 주장하는가?</p>
     <p><strong>모범 답안:</strong><br>
     존 보인의 소설은 사소하지만 끈질긴 인간성의 발현과 압도적인 힘으로 개인을 짓누르는 체계적인 비인간화 사이의 극명한 대립을 그린다. 소설은 제복, 직위, 이데올로기라는 장치가 한 정권의 눈에 개인의 정체성과 가치를 박탈할 수는 있지만, 인간 본연의 연결과 공감 능력까지 완전히 소멸시킬 수는 없다고 주장한다.</p>
     <p>비인간화의 메커니즘은 소설 전반에 걸쳐 체계적으로 묘사된다. 수용소의 유대인들은 이름 대신 번호로 불리고, 개성을 말살하는 똑같은 '줄무늬 파자마'를 입도록 강요받으며, 굶주림 속에서 인간 이하의 존재로 취급된다. 의사였던 파벨이 채소 껍질을 벗기는 하인으로 전락한 모습은 이러한 과정의 상징이다. 코틀러 중위가 파벨과 슈무엘에게 가하는 무심한 폭력은 그들을 인격체가 아닌 소유물로 여기는 비인간화의 극치를 보여준다. 이러한 시스템은 가해자들이 죄책감 없이 잔혹 행위를 저지를 수 있도록 고안된 것이다.</p>
@@ -791,11 +848,30 @@ The final chapter briefly describes the aftermath. Bruno's family searches for h
   </div>
 </div>
 
-<!-- 모든 에세이 주제를 제어하는 단 하나의 JavaScript 블록 -->
 <script>
+  // 페이지 로드 시 저장된 글 불러오기
+  document.addEventListener('DOMContentLoaded', function() {
+    for (let i = 1; i <= 4; i++) {
+      const savedText = localStorage.getItem(`user_essay_${i}`);
+      if (savedText) {
+        document.getElementById(`essay-input-${i}`).value = savedText;
+      }
+    }
+  });
+
+  // '내 글 저장하기' 기능
+  function saveEssay(id) {
+    const textToSave = document.getElementById(`essay-input-${id}`).value;
+    localStorage.setItem(`user_essay_${id}`, textToSave);
+    
+    const feedback = document.getElementById(`save-feedback-${id}`);
+    feedback.style.opacity = 1;
+    setTimeout(() => { feedback.style.opacity = 0; }, 2000); // 2초 후 메시지 사라짐
+  }
+
+  // '모범 답안 보기' 토글 기능
   function toggleEssayAnswer(id, buttonElement) {
     const answerDiv = document.getElementById(`essay-answer-${id}`);
-    
     if (answerDiv.style.display === 'block') {
       answerDiv.style.display = 'none';
       buttonElement.textContent = '모범 답안 보기';
@@ -804,4 +880,73 @@ The final chapter briefly describes the aftermath. Bruno's family searches for h
       buttonElement.textContent = '모범 답안 숨기기';
     }
   }
+</script>
+
+# test test
+<div id="essaybook-form">
+  <div>
+    <label for="name-input">이름:</label>
+    <input type="text" id="name-input" placeholder="이름을 입력하세요">
+  </div>
+  <div>
+    <label for="message-input">메시지:</label>
+    <textarea id="message-input" placeholder="메시지를 남겨주세요"></textarea>
+  </div>
+  <button id="submit-button">남기기</button>
+</div>
+
+<div id="essaybook-messages">
+  <h3>방명록</h3>
+  <ul id="message-list"></ul>
+</div>
+
+<script>
+  // 이 이벤트 리스너는 웹페이지의 모든 HTML이 로드된 후에 안의 코드를 실행합니다.
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // 폼 요소와 메시지 리스트 가져오기
+    const nameInput = document.getElementById('name-input');
+    const messageInput = document.getElementById('message-input');
+    const messageList = document.getElementById('message-list');
+    const submitButton = document.getElementById('submit-button');
+    
+    // 이 시점에서는 window.db 와 다른 함수들이 모두 준비된 상태입니다.
+    const essaybookColRef = window.collection(window.db, 'essaybook');
+
+    // **데이터 저장하기 (v9 문법)**
+    submitButton.addEventListener('click', function() {
+      const name = nameInput.value;
+      const message = messageInput.value;
+
+      if (name && message) {
+        window.addDoc(essaybookColRef, {
+          name: name,
+          message: message,
+          timestamp: window.serverTimestamp()
+        })
+        .then(() => {
+          console.log("메시지 저장 성공!");
+          nameInput.value = '';
+          messageInput.value = '';
+        })
+        .catch((error) => {
+          console.error("메시지 저장 실패: ", error);
+        });
+      }
+    });
+
+    // **데이터 실시간으로 읽어오기 (v9 문법)**
+    const q = window.query(essaybookColRef, window.orderBy('timestamp', 'desc'));
+
+    window.onSnapshot(q, (snapshot) => {
+      messageList.innerHTML = ''; // 리스트 초기화
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
+        messageList.appendChild(li);
+      });
+    });
+
+  });
 </script>

@@ -8,6 +8,37 @@
     {% include head.html %}
     {% include head/custom.html %}
   </head>
+  
+<script type="module">
+  // Firebase SDK에서 필요한 함수들을 가져옵니다.
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+  // 당신의 웹 앱 Firebase 설정 정보
+  const firebaseConfig = {
+    apiKey: "AIzaSyC68wgc6qTkyGPfhnYhEUeYjVBflmfZO3o",
+    authDomain: "life-logbook-blog.firebaseapp.com",
+    projectId: "life-logbook-blog",
+    storageBucket: "life-logbook-blog.appspot.com",
+    messagingSenderId: "510862512320",
+    appId: "1:510862512320:web:3441b2e012f280e4d61d25",
+    measurementId: "G-XNZ8J0J919"
+  };
+
+  // Firebase 앱 초기화
+  const app = initializeApp(firebaseConfig);
+  // Firestore 데이터베이스 인스턴스 가져오기
+  const db = getFirestore(app);
+
+  // 다른 스크립트에서도 db와 함수들을 사용할 수 있도록 전역 변수로 만들어줍니다.
+  window.db = db;
+  window.collection = collection;
+  window.addDoc = addDoc;
+  window.query = query;
+  window.orderBy = orderBy;
+  window.onSnapshot = onSnapshot;
+  window.serverTimestamp = serverTimestamp;
+</script>
 
   <body class="layout--{{ page.layout | default: layout.layout }}{% if page.classes or layout.classes %}{{ page.classes | default: layout.classes | join: ' ' | prepend: ' ' }}{% endif %}" dir="{% if site.rtl %}rtl{% else %}ltr{% endif %}">
     {% include_cached skip-links.html %}
