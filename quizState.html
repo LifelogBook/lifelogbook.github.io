@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>미국 수도 맞히기 퀴즈</title>
+    <title>U.S. State Capitals Quiz</title>
     <style>
         body { font-family: 'Arial', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f4f4f4; text-align: center; }
         .container { max-width: 500px; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); background-color: white; }
@@ -20,12 +20,12 @@
 <body>
 
 <div class="container">
-    <h1>미국 수도 맞히기 퀴즈!</h1>
-    <p>아래 주(State)의 수도를 맞춰보세요.</p>
+    <h1>U.S. State Capitals Quiz!</h1>
+    <p>Guess the capitals of the states below.</p>
     <h2 id="question-area"></h2>
-    <input type="text" id="answer-input" placeholder="답을 입력하세요">
+    <input type="text" id="answer-input" placeholder="input Answer">
     <br>
-    <button id="submit-button">제출하기</button>
+    <button id="submit-button">Submit</button>
     <p id="result-area"></p>
 </div>
 
@@ -63,9 +63,9 @@
         const userAnswer = answerInput.value.trim();
         const correctAnswer = stateCapitals[currentQuestionState];
         if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-            resultArea.innerHTML = `<span class="correct">정답입니다!</span>`;
+            resultArea.innerHTML = `<span class="correct">Correct!</span>`;
         } else {
-            resultArea.innerHTML = `<span class="incorrect">틀렸어요. 정답은 ${correctAnswer} 입니다.</span>`;
+            resultArea.innerHTML = `<span class="incorrect">Incorrect. The answer is ${correctAnswer} 입니다.</span>`;
         }
         setTimeout(newQuestion, 2000);
     }
