@@ -1,35 +1,83 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>U.S. State Capitals Quiz</title>
+    <title>U.S. Capitals Quiz!</title>
     <style>
-        body { font-family: 'Arial', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f4f4f4; text-align: center; }
-        .container { max-width: 500px; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); background-color: white; }
-        h1 { color: #333; }
-        #question-area { font-size: 2em; margin-bottom: 20px; font-weight: bold; color: #007bff; }
-        #answer-input { width: 80%; padding: 10px; font-size: 1.1em; border: 2px solid #ddd; border-radius: 5px; margin-bottom: 10px; }
-        #submit-button { padding: 10px 25px; font-size: 1.1em; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; }
-        #submit-button:hover { background-color: #218838; }
-        #result-area { margin-top: 20px; font-size: 1.2em; min-height: 30px; }
-        .correct { color: #28a745; font-weight: bold; }
-        .incorrect { color: #dc3545; font-weight: bold; }
+        /* CSS는 여기에 직접 넣거나 quiz.css 파일로 분리할 수 있습니다. */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #instruction {
+            margin-bottom: 20px;
+        }
+        #question-area {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        #answer-input {
+            padding: 10px;
+            font-size: 1.2em;
+            width: 80%;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        #submit-button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #submit-button:hover {
+            background-color: #0056b3;
+        }
+        #result-area {
+            margin-top: 20px;
+            font-size: 1.2em;
+            min-height: 40px;
+        }
+        .correct {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .incorrect {
+            color: #dc3545;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>U.S. State Capitals Quiz!</h1>
-    <p>Guess the capitals of the states below.</p>
+    <h1>U.S. Capitals Quiz!</h1>
+    <p id="instruction">Type the capital city for the state shown below.</p>
     <h2 id="question-area"></h2>
-    <input type="text" id="answer-input" placeholder="input Answer">
+    <input type="text" id="answer-input" placeholder="Enter your answer here">
     <br>
     <button id="submit-button">Submit</button>
     <p id="result-area"></p>
 </div>
 
 <script>
+    // 미국 주와 수도 데이터를 저장하는 객체입니다.
     const stateCapitals = {
         'Alabama': 'Montgomery', 'Alaska': 'Juneau', 'Arizona': 'Phoenix', 'Arkansas': 'Little Rock', 'California': 'Sacramento', 'Colorado': 'Denver',
         'Connecticut': 'Hartford', 'Delaware': 'Dover', 'Florida': 'Tallahassee', 'Georgia': 'Atlanta', 'Hawaii': 'Honolulu', 'Idaho': 'Boise',
@@ -42,40 +90,91 @@
         'Wisconsin': 'Madison', 'Wyoming': 'Cheyenne'
     };
 
-    const states = Object.keys(stateCapitals);
-    let currentQuestionState;
+    let shuffledStates = []; // 무작위로 섞인 주 이름을 저장할 배열
+    let currentQuestionIndex = 0; // 현재 문제 인덱스
+    let score = 0; // 점수
+    const totalQuestions = 50; // 모든 주를 포함하도록 총 문제 수를 50개로 고정합니다.
 
+    // HTML 요소들을 가져옵니다.
     const questionArea = document.getElementById('question-area');
     const answerInput = document.getElementById('answer-input');
     const submitButton = document.getElementById('submit-button');
     const resultArea = document.getElementById('result-area');
+    const instruction = document.getElementById('instruction');
 
-    function newQuestion() {
-        const randomIndex = Math.floor(Math.random() * states.length);
-        currentQuestionState = states[randomIndex];
-        questionArea.textContent = currentQuestionState;
-        answerInput.value = '';
-        resultArea.textContent = '';
-        answerInput.focus();
+    // 배열을 무작위로 섞는 함수 (Fisher-Yates 알고리즘)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
     }
 
+    // 퀴즈를 시작하는 함수
+    function startQuiz() {
+        shuffledStates = Object.keys(stateCapitals);
+        shuffleArray(shuffledStates);
+        currentQuestionIndex = 0;
+        score = 0;
+        loadQuestion();
+    }
+
+    // 다음 문제를 로드하는 함수
+    function loadQuestion() {
+        if (currentQuestionIndex >= totalQuestions) {
+            endQuiz();
+            return;
+        }
+
+        // 현재 문제 진행 상황을 표시합니다.
+        instruction.textContent = `Question ${currentQuestionIndex + 1}/${totalQuestions} | Score: ${score}`;
+        
+        const currentQuestionState = shuffledStates[currentQuestionIndex];
+        questionArea.textContent = currentQuestionState;
+        answerInput.value = ''; // 입력창을 비웁니다.
+        resultArea.innerHTML = ''; // 결과 메시지를 지웁니다.
+        answerInput.focus(); // 입력창에 자동으로 커서를 둡니다.
+    }
+
+    // 제출 버튼을 눌렀을 때 실행되는 함수
     function checkAnswer() {
-        const userAnswer = answerInput.value.trim();
-        const correctAnswer = stateCapitals[currentQuestionState];
+        const userAnswer = answerInput.value.trim(); // 사용자가 입력한 답을 가져옵니다.
+        const correctAnswer = stateCapitals[shuffledStates[currentQuestionIndex]];
+
+        // 대소문자 구분 없이 비교하기 위해 소문자로 변환합니다.
         if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
             resultArea.innerHTML = `<span class="correct">Correct!</span>`;
+            score++;
         } else {
-            resultArea.innerHTML = `<span class="incorrect">Incorrect. The answer is ${correctAnswer} 입니다.</span>`;
+            resultArea.innerHTML = `<span class="incorrect">Incorrect. The correct answer is ${correctAnswer}.</span>`;
         }
-        setTimeout(newQuestion, 2000);
+
+        // 잠시 후 다음 문제로 넘어갑니다.
+        currentQuestionIndex++;
+        setTimeout(loadQuestion, 2000); // 2초 후에 새로운 문제 시작
     }
 
+    // 제출 버튼에 클릭 이벤트를 추가합니다.
     submitButton.addEventListener('click', checkAnswer);
+
+    // Enter 키를 눌렀을 때도 제출되도록 이벤트를 추가합니다.
     answerInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') checkAnswer();
+        if (event.key === 'Enter') {
+            checkAnswer();
+        }
     });
 
-    newQuestion();
+    // 퀴즈 종료 화면을 보여주는 함수
+    function endQuiz() {
+        document.querySelector('.container').innerHTML = `
+            <h2>Quiz finished!</h2>
+            <p>You got ${score} out of ${totalQuestions} questions correct. Great job!</p>
+            <button onclick="startQuiz()">Play Again</button>
+        `;
+    }
+
+    // 페이지 로드 시 퀴즈 시작
+    window.onload = startQuiz;
 </script>
 
 </body>
