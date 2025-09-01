@@ -27,8 +27,8 @@ search: true #false
 <br>
 
 # multiple-choice question
-<br>
+<!-- <br>
 
 <iframe src="/quizState-dialogue.html" width="100%" height="600" frameborder="0" style="border:1px solid #ddd;"></iframe>
 
-<br>
+<br> -->
