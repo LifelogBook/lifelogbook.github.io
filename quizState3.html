@@ -144,7 +144,8 @@
     }
 
     function startQuiz() {
-        // 퀴즈 UI를 초기 상태로 복원합니다.
+        console.log('Quiz is starting...');
+        
         quizContainer.innerHTML = `
             <h1>U.S. Map Quiz!</h1>
             <p id="instruction">Type the name and capital city of the highlighted state.</p>
@@ -163,10 +164,7 @@
             </div>
         `;
 
-        // 새로 생성된 요소들을 다시 할당합니다.
         const newMapContainer = document.getElementById('map-container');
-
-        // SVG 파일을 불러옵니다.
         fetch('us_map.svg')
             .then(response => {
                 if (!response.ok) {
@@ -187,7 +185,6 @@
                 newMapContainer.innerHTML = '<p style="color: red;">Failed to load map. Please check the `us_map.svg` file path.</p>';
             });
 
-        // 이벤트 리스너를 다시 연결합니다.
         document.getElementById('submit-button').addEventListener('click', checkAnswer);
         document.getElementById('state-input').addEventListener('keydown', handleKeyDown);
         document.getElementById('capital-input').addEventListener('keydown', handleKeyDown);
