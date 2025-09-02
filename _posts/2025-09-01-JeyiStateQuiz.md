@@ -17,12 +17,19 @@ search: true #false
 #   - /coding/first-posting # old coding to code category
 ---
 
-미국 주(State)의 수도(Capital City)를 맞추기
+State and Capital City questions
 
-# short-answer question
+# short-answer question Capital city
 <br>
 
 <iframe src="/quizState.html" width="100%" height="600" frameborder="0" style="border:1px solid #ddd;"></iframe>
+
+<br>
+
+# short-answer question State
+<br>
+
+<iframe src="/quizState2.html" width="100%" height="600" frameborder="0" style="border:1px solid #ddd;"></iframe>
 
 <br>
 
@@ -31,4 +38,10 @@ search: true #false
 
 <iframe src="/quizState-dialogue.html" width="100%" height="600" frameborder="0" style="border:1px solid #ddd;"></iframe>
 
+<br>
+
+# question with Map
+<br>
+
+<iframe src="/quizState3.html" width="100%" height="700" frameborder="0" style="border:1px solid #ddd;"></iframe>
 <br>
