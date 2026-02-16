@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study - Plug Power's Hydrogen Gamble on AI</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #333; }
+
+.layout {
+  display: flex;
+  height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.left-panel {
+  width: 340px;
+  flex-shrink: 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+h1 { font-size: 1.1rem; text-align: center; padding: 4px 0 12px; color: #555; }
+
+.media-wrap {
+  background: #000; border-radius: 10px; overflow: hidden;
+  width: 100%; margin-bottom: 12px;
+}
+video, audio { width: 100%; display: block; }
+
+.controls { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; justify-content: center; }
+.controls button, .controls select {
+  padding: 5px 12px; border: 1px solid #ddd; border-radius: 20px;
+  background: #fff; cursor: pointer; font-size: 0.8rem; color: #555;
+  transition: all 0.2s;
+}
+.controls button:hover { background: #e8e8e8; }
+.controls button.active { background: #4a90d9; color: #fff; border-color: #4a90d9; }
+.controls select { appearance: none; padding-right: 10px; }
+
+.right-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 16px 24px 8px;
+  border-left: 1px solid #e0e0e0;
+}
+
+.sentences { display: flex; flex-direction: column; gap: 4px; }
+.sentence {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; background: #fff; border-radius: 10px;
+  border: 2px solid transparent; cursor: pointer;
+  transition: all 0.2s;
+}
+.sentence:hover { background: #f0f4ff; }
+.sentence.playing { border-color: #4a90d9; background: #eef3ff; }
+.sentence .play-btn {
+  width: 30px; height: 30px; border-radius: 50%; border: none;
+  background: #4a90d9; color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; flex-shrink: 0;
+  transition: background 0.2s;
+}
+.sentence .play-btn:hover { background: #3a7bc8; }
+.sentence .play-btn.looping { background: #e8793a; }
+.sentence .time { font-size: 0.75rem; color: #999; min-width: 80px; flex-shrink: 0; }
+.sentence .text { flex: 1; font-size: 0.9rem; line-height: 1.5; }
+.sentence .text.hidden-text { color: transparent; background: #e0e0e0; border-radius: 4px; user-select: none; }
+.sentence .text.hidden-text::selection { color: transparent; background: transparent; }
+
+@media (max-width: 700px) {
+  .layout { flex-direction: column; }
+  .left-panel { width: 100%; padding: 10px; }
+  .media-wrap { max-width: 300px; }
+  .right-panel { border-left: none; border-top: 1px solid #e0e0e0; padding: 10px; }
+  .sentence { padding: 8px 10px; gap: 8px; }
+  .sentence .time { display: none; }
+  .sentence .text { font-size: 0.85rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <div class="left-panel">
+    <h1>Plug Power's Hydrogen Gamble on AI</h1>
+    <div class="media-wrap">
+      <audio id="player" controls preload="metadata" style="width:100%">
+        <source src="/assets/audio/plug-power-s-hydrogen-gamble-on-ai.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+    <div class="controls">
+      <button id="playAllBtn" onclick="togglePlayAll()">&#9654; 전체 재생</button>
+      <button id="hideTextBtn" onclick="toggleHideText()">&#128065; 문장 숨기기</button>
+      <select id="speedSelect" onchange="changeSpeed(this.value)">
+        <option value="0.5">0.5x</option>
+        <option value="0.75">0.75x</option>
+        <option value="1" selected>1x</option>
+        <option value="1.25">1.25x</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="sentences" id="sentenceList"></div>
+  </div>
+</div>
+
+<script>
+const segments = [
+  { start: 0.0, end: 5.0, text: "Welcome back to The Deep Dive. It is Sunday, February 15th, 2026." },
+  { start: 5.0, end: 6.1, text: "Good to be here." },
+  { start: 6.1, end: 8.5, text: "You know, if you\'ve been scrolling through your newsfeed this morning," },
+  { start: 8.5, end: 13.4, text: "you\'re probably seeing the usual headlines. Maybe something about the latest GPT model" },
+  { start: 13.4, end: 18.4, text: "or a new neural interface or another opinion piece on which creative jobs are getting" },
+  { start: 18.4, end: 23.3, text: "automated away this week. Exactly. We are obsessed with the software, right? We\'re obsessed with" },
+  { start: 23.3, end: 27.8, text: "the intelligence. But today we\'re going to do something a little different. We\'re going to ignore" },
+  { start: 27.8, end: 31.5, text: "the chat bots. We are going to ignore the code. Because none of that matters." },
+  { start: 31.5, end: 36.0, text: "Literally none of it. If you can\'t turn it on. That is the reality check. The entire" },
+  { start: 36.0, end: 40.6, text: "industry is waking up to right now. It\'s a huge, huge problem. It really is. We\'re talking about" },
+  { start: 40.6, end: 46.4, text: "the invisible crisis that is grabbing the tech world by the throat. We\'re talking about the physical" },
+  { start: 46.4, end: 51.8, text: "grid. And more specifically, we\'re doing a deep dive into a company that has been a battleground" },
+  { start: 51.8, end: 57.8, text: "stock for what, over a decade now, at least a company that was once the darling of the retail" },
+  { start: 57.8, end: 63.9, text: "investor, then the villain of the short seller. And now, well, now they might just be the only" },
+  { start: 63.9, end: 69.7, text: "thing keeping the AI revolution from hitting a brick wall. We are talking about plug power." },
+  { start: 69.7, end: 75.1, text: "It\'s such a fascinating setup, isn\'t it? You have this irresistible force, which is AI demand," },
+  { start: 75.8, end: 80.5, text: "meeting the immovable object of the electrical grid. And stuck right in the middle." },
+  { start: 80.5, end: 85.6, text: "Stuck right in the middle, trying to pivot from, you know, forklifts to AI factories is plug" },
+  { start: 85.6, end: 90.4, text: "power forklifts to AI factories. I mean, it sounds like a marketing slogan. But as we dug into" },
+  { start: 90.4, end: 95.6, text: "these sources, the financial reports from late 2025, the Goldman Sachs analysis, the legal" },
+  { start: 95.6, end: 100.8, text: "filings regarding the Department of Energy, it turns out that is actually the strategy. It\'s not" },
+  { start: 100.8, end: 104.6, text: "just a slogan. It\'s the whole business plan. But before we get to the company itself," },
+  { start: 104.6, end: 110.1, text: "let\'s just set the scene. Why are we talking about an energy crisis in February of 2026?" },
+  { start: 110.2, end: 115.2, text: "What happened? What happened is the math simply stopped adding up. If you look back at the" },
+  { start: 115.2, end: 122.6, text: "projections from say 2023 or 2024, nobody, not the utilities, not the regulators, and honestly," },
+  { start: 122.6, end: 127.9, text: "not even the tech companies themselves fully anticipated the sheer density of power required" },
+  { start: 127.9, end: 132.6, text: "for generative AI at scale. The demand just went vertical completely vertical. We have a statistic" },
+  { start: 132.6, end: 137.4, text: "here from a recent Goldman Sachs report that really frames this entire episode. They estimate" },
+  { start: 137.4, end: 143.3, text: "that AI is driving 165 percent increase in data center power demand by the end of this decade." },
+  { start: 143.3, end: 148.5, text: "165 percent. That\'s a staggering number. It\'s hard to even wrap your head around that." },
+  { start: 148.5, end: 152.2, text: "It is. And to put that into perspective for you, we are talking about plugging in a few more" },
+  { start: 152.2, end: 156.9, text: "laptops. We are talking about adding the energy consumption of a country the size of Germany" },
+  { start: 156.9, end: 164.2, text: "to the world\'s energy grid, almost exclusively to power server racks. And the problem is," },
+  { start: 164.7, end: 170.1, text: "the physical wires that transformers the substations, it just was not built for a shock of this magnitude." },
+  { start: 170.1, end: 176.3, text: "I think most people visualize the grid as this infinite pool of electricity. You flip a switch," },
+  { start: 176.3, end: 183.6, text: "the light comes on, it\'s magic. But for a hyperscaler, an Amazon, a Microsoft, a Google," },
+  { start: 185.4, end: 189.8, text: "it doesn\'t work that way anymore, does it? Not at all. Not even close. We\'re seeing a phenomenon" },
+  { start: 189.8, end: 196.0, text: "that the industry now calls time to power. Time to power. This has become the single most critical" },
+  { start: 196.0, end: 201.0, text: "metric in the tech industry. Forget time to market for your software. It\'s all about time to power" },
+  { start: 201.0, end: 206.0, text: "for your hardware. If you go to Northern Virginia today, which is the internet capital of the world." },
+  { start: 206.0, end: 211.0, text: "The data center alley. Exactly. Or if you fly over to Dublin or Frankfurt and you tell the local" },
+  { start: 211.0, end: 216.1, text: "utility, hey, I want to build a data center and I need 500 megawatts, they will laugh at you." },
+  { start: 216.1, end: 220.6, text: "Literally, they will figuratively and perhaps literally laugh. They will tell you to get in line." },
+  { start: 220.6, end: 227.1, text: "And that line in many of these major hubs is now seven to 10 years long. Seven to 10 years." },
+  { start: 227.1, end: 233.3, text: "In the tech world, that\'s, that\'s an eternity. That is two or three full generations of AI models." },
+  { start: 233.3, end: 238.6, text: "Easily. So if you have to wait until 2033 to train your next model because you\'re waiting for" },
+  { start: 238.6, end: 244.5, text: "a substation to be built, you\'re already dead. Your company is obsolete. Precisely. And that panic," },
+  { start: 244.5, end: 248.8, text: "that sheer desperation is what creates the market opportunity we\'re talking about today." },
+  { start: 248.8, end: 253.8, text: "Because if the utility company cannot give you power, you have to find another way. You have to go" },
+  { start: 253.8, end: 257.5, text: "behind the meter. Behind the meter. Exactly. I keep seeing this term in all the documents." },
+  { start: 257.5, end: 262.6, text: "Behind the meter, it sounds a bit clandestine, you know, like a speak easy for electricity." },
+  { start: 262.6, end: 266.5, text: "It\'s just utility speak for generating your own electricity on your own property." },
+  { start: 266.5, end: 271.0, text: "Yeah. You bypass the public grid entirely. So you\'re off grid. You\'re essentially creating your own" },
+  { start: 271.0, end: 277.4, text: "private utility. And this is where the opening for plug power exists. For 20 years, people" },
+  { start: 277.4, end: 283.3, text: "knew them as the forklift guys. They put hydrogen fuel cells in forklifts for Walmart and Amazon." },
+  { start: 283.8, end: 289.7, text: "But now the whole thesis is that they can take that same technology, scale it up massively" },
+  { start: 289.7, end: 296.2, text: "and become the on site power plant for the AI data center. It is a massive, massive pivot." },
+  { start: 296.2, end: 300.5, text: "But before we get into the specifics of plugs technology, I want to just drill down a bit more" },
+  { start: 300.5, end: 305.5, text: "on this grid failure. Is it really just that we aren\'t building enough power plants or is it" },
+  { start: 305.5, end: 311.4, text: "something more structure? It\'s the wires. It\'s all about the transmission. Yeah. Let\'s look at the" },
+  { start: 311.4, end: 316.2, text: "Dublin Ireland case study from our notes because it is a perfect example of what is happening globally." },
+  { start: 316.2, end: 323.4, text: "Okay. Dublin is a massive hub for European data. But our sources indicate that data centers there" },
+  { start: 324.0, end: 329.7, text: "were already consuming nearly 20% of all meter electricity in the entire metro area." },
+  { start: 329.7, end: 335.0, text: "20% just for servers. That seems unsustainable for a city that also is, you know, people living" },
+  { start: 335.0, end: 338.7, text: "in it who need to turn their lights on. And under the plans that were on the table at the time," },
+  { start: 338.7, end: 344.9, text: "that number was projected to rise to 90%. 90%. 90%. 90%. That\'s not possible. Which is, you\'re right," },
+  { start: 344.9, end: 349.3, text: "it\'s physically impossible. You would melt the transmission lines. You would destabilize the" },
+  { start: 349.3, end: 354.6, text: "voltage for hospitals and for schools. So the regulators did the only thing they could do. They" },
+  { start: 354.6, end: 360.8, text: "effectively put a moratorium in place. They just said stop. Stop. You literally cannot plug a" },
+  { start: 360.8, end: 366.4, text: "new server farm into the Dublin grid right now. The utility says no. And this is happening in northern" },
+  { start: 366.4, end: 372.9, text: "Virginia too. The grid is physically and regularly capped full stop. So if I\'m a hyperscaler and I" },
+  { start: 372.9, end: 378.7, text: "have billions of dollars in Nvidia chips sitting in a warehouse somewhere, I am desperate. I have" },
+  { start: 378.7, end: 383.8, text: "the Ferrari of computing, but I\'ve got no gas, which brings us right back to the opportunity. That" },
+  { start: 383.8, end: 391.0, text: "same Goldman Sachs report estimates that between 6% and 15% of all incremental data center power" },
+  { start: 391.0, end: 397.0, text: "demand through 2030 is going to be met by fuel cells. 6 to 15%. What does that translate to and" },
+  { start: 397.0, end: 402.0, text: "like raw power? That\'s a eight to 20 gigawatt opportunity. Can we contextualize 20 gigawatts for a" },
+  { start: 402.0, end: 407.4, text: "second? Sure. Think of it this way. A standard nuclear reactor is roughly one gigawatt. So we are" },
+  { start: 407.4, end: 412.2, text: "talking about building the equivalent of eight to 20 nuclear reactors worth of distributed fuel" },
+  { start: 412.7, end: 417.7, text: "in just the next four years. That is the prize. That is why Wall Street is still watching plug power" },
+  { start: 417.7, end: 422.9, text: "despite the, well, the roller coaster stock price. Absolutely. But let\'s get technical for a second." },
+  { start: 422.9, end: 427.8, text: "I want to understand the magic box. I know what a diesel generator is. It\'s a loud engine," },
+  { start: 427.8, end: 435.0, text: "it smokes, it smells. I know what a battery is. What exactly is a hydrogen fuel cell? How does it" },
+  { start: 435.0, end: 440.6, text: "make electricity without burning anything? It\'s actually quite beautiful chemistry when you get down" },
+  { start: 440.6, end: 445.5, text: "to it. The simplest way to think about it is like a battery that never runs out of charge as long" },
+  { start: 445.5, end: 451.4, text: "as you keep feeding it fuel. But unlike a diesel generator, there is zero combustion. You aren\'t" },
+  { start: 451.4, end: 457.3, text: "exploding fuel to move a piston. There\'s no fire. So no fire, very little noise, no smoke. Exactly." },
+  { start: 457.3, end: 462.9, text: "It\'s an electrochemical reaction. You take hydrogen H2. You introduce it to oxygen O2 from the air." },
+  { start: 462.9, end: 467.6, text: "You force them through a special membrane. Now the hydrogen wants to bond with the oxygen to" },
+  { start: 467.6, end: 472.9, text: "become water. That\'s just the natural reaction. But the membrane forces the electrons to take a" },
+  { start: 472.9, end: 477.2, text: "little detour. And that detour is the electricity. That detour is the electrical current. That\'s your" },
+  { start: 477.2, end: 483.4, text: "power. So the inputs are just hydrogen and regular air and the output. The output is electricity," },
+  { start: 483.4, end: 489.5, text: "pure water and some heat. That\'s it. Nothing else. Okay. So it\'s clean. That\'s a huge selling point." },
+  { start: 489.5, end: 493.2, text: "But as I was reading through the competitive landscape, it seems like not all fuel cells are" },
+  { start: 493.2, end: 498.9, text: "created equal. We have these two main tribes here. There\'s the PEM tribe and there\'s the SOFC" },
+  { start: 498.9, end: 503.5, text: "tribe. Yes. I\'ll need to distinguish these because it really explains why plug power is" },
+  { start: 503.5, end: 508.2, text: "winning some contracts and frankly losing others. This is probably the most important technical" },
+  { start: 508.2, end: 513.9, text: "distinction for anyone following this sector. It\'s critical. Plug power specialty is PEM. That" },
+  { start: 513.9, end: 519.4, text: "stands for proton exchange membrane. PEM. And the best way to think about PEM is to imagine a" },
+  { start: 519.4, end: 525.4, text: "sprinter. It runs at a relatively low temperature, maybe 80 degrees Celsius. Because it\'s cool," },
+  { start: 525.4, end: 531.2, text: "it can start up in minutes. It is incredibly agile. It can ramp power up and down almost instantly." },
+  { start: 531.2, end: 535.1, text: "Which seems really important for computers, right? Because computing loads aren\'t these flat" },
+  { start: 535.1, end: 541.6, text: "steady lines. Exactly. AI training workloads are incredibly spiky. When a neural network is training," },
+  { start: 541.6, end: 548.0, text: "the power demand just spikes through the roof. When it\'s idle, it drops to almost nothing. A PEM" },
+  { start: 548.1, end: 553.0, text: "fuel cell can follow that curve perfectly. It\'s great for what\'s called following the load." },
+  { start: 553.0, end: 559.5, text: "Okay. So plug is the sprinter agile, quick to react. Who\'s the other guy? The other technology is" },
+  { start: 559.5, end: 565.0, text: "SOFC. That\'s solid oxide fuel cell. SOFC. This is the technology used by plug\'s main rival," },
+  { start: 565.0, end: 572.2, text: "bloom energy. And if PEM is the sprinter, SOFC is the marathon runner. It runs hot. Extremely hot," },
+  { start: 572.2, end: 576.7, text: "like 800 degrees Celsius. Wow. Okay. Because it\'s so hot, you can\'t just turn it off and on" },
+  { start: 576.7, end: 581.7, text: "whatever you want. If you turn it off, it takes hours or even days to cool down and then heat" },
+  { start: 581.7, end: 586.3, text: "back up again without cracking the ceramic plates inside. So bloom\'s tech is designed to turn on and" },
+  { start: 586.3, end: 592.8, text: "just stay on. Correct. It is base load power. It\'s incredibly efficient if all you want is a flat," },
+  { start: 592.8, end: 599.7, text: "continuous line of electricity, 247. But it is not agile at all. So in this data center war," },
+  { start: 599.7, end: 604.3, text: "you have this really interesting dynamic. Do you want the sprinter, which is plugged that can handle" },
+  { start: 604.3, end: 609.3, text: "the spikes? Or do you want the marathon runner bloom that gives you steady, efficient power?" },
+  { start: 609.3, end: 613.8, text: "And historically, plug used the sprinter tech for forklifts. And I know people, they roll the" },
+  { start: 613.8, end: 617.6, text: "rise at the forklift thing. They say, oh, it\'s just a warehouse company. But there\'s a real logic" },
+  { start: 617.6, end: 623.1, text: "there, isn\'t there? There\'s a massive logic to it. Think about a forklift for a second. It stops," },
+  { start: 623.1, end: 629.4, text: "it starts, it looks a really heavy load, then it sits idle. It has a completely chaotic power profile." },
+  { start: 629.4, end: 635.1, text: "It\'s the definition of a spiky low. It is exactly what PEM technology is designed for. And the" },
+  { start: 635.1, end: 641.2, text: "key is plug is deployed over 72,000 of these systems in the real world. They\'ve fueled them" },
+  { start: 641.2, end: 647.3, text: "millions and millions of times. So while the forklift company label isn\'t sexy, it provided them" },
+  { start: 647.3, end: 652.7, text: "with a mountain of real world data on how these stacks perform under constant stress. They are" },
+  { start: 652.7, end: 657.1, text: "guessing about reliability. So they have the reliability data. They\'ve proven it works at a small" },
+  { start: 657.1, end: 661.7, text: "scale. But now they\'re trying to scale that up from what a five kilowatt forklift to a 50" },
+  { start: 661.7, end: 666.5, text: "megawatt data center. That is a massive job. A huge leap. And this brings us to the deal that really" },
+  { start: 666.5, end: 670.6, text: "changed the narrative. Because for a long time, plug was just burning cash promising this hydrogen" },
+  { start: 670.6, end: 677.3, text: "future that always felt very far away. But then in November of 2025, they dropped a bombshell." },
+  { start: 677.3, end: 681.8, text: "Yes, the asset monetization deal. This was very clever move. Here\'s where it gets really interesting" },
+  { start: 681.8, end: 688.2, text: "for me. They signed a letter of intent in L.O.I. with a major U.S. data center developer. They" },
+  { start: 688.2, end: 693.3, text: "didn\'t name them, which of course led to a ton of speculation. But the deal wasn\'t just about" },
+  { start: 693.3, end: 698.3, text: "selling hardware, which is what I expected. Plug was selling something called electricity rights." },
+  { start: 699.0, end: 705.4, text: "What is that? This was a fascinating strategic play. Years and years ago, plug power" },
+  { start: 706.2, end: 712.4, text: "and its grand vision secured rights to draw power from the grid and use infrastructure in places" },
+  { start: 712.4, end: 718.1, text: "like New York State. The original intent was to use that grid power to build their own hydrogen" },
+  { start: 718.1, end: 722.6, text: "plants. Okay, that makes sense. But as the years went by and the grid by more and more congested," },
+  { start: 722.6, end: 727.4, text: "those rights themselves became incredibly valuable assets. It\'s like buying a plot of land in" },
+  { start: 727.4, end: 732.8, text: "Manhattan in the 1800s and then realizing in 2026 that it\'s worth a fortune just because you have" },
+  { start: 732.8, end: 738.0, text: "the space. That\'s the perfect analogy. The grid is full. You cannot get a connection. But plug" },
+  { start: 738.0, end: 741.7, text: "had connections. They had these rights sitting on their books. So they essentially turned around and" },
+  { start: 741.7, end: 746.9, text: "sold access to those power rights to a data center developer who was absolutely desperate for grid" },
+  { start: 746.9, end: 753.5, text: "capacity. And how much was that worth? That deal is expected to generate over $275 million in" },
+  { start: 753.5, end: 759.2, text: "liquidity for plug. That is a huge injection of cash for a company that, let\'s be honest," },
+  { start: 759.2, end: 765.5, text: "really, really needs cash. That\'s really needs it. But beyond just the money, this deal essentially" },
+  { start: 765.5, end: 770.3, text: "gets their foot in the door with the hyperscalers in a whole new way. It does. It positions them not" },
+  { start: 770.3, end: 776.4, text: "just as a vendor of metal boxes but as a strategic partner in infrastructure. It\'s a much deeper" },
+  { start: 776.4, end: 781.4, text: "relationship. And we absolutely have to talk about the Amazon and Microsoft connections here" },
+  { start: 781.4, end: 785.9, text: "because that\'s where the speculation is running wild. Right. Because Amazon invested $3 billion" },
+  { start: 786.0, end: 791.8, text: "in a new data center campus down in Mississippi and the rumor mill just went wild. It did. There\'s" },
+  { start: 791.8, end: 797.0, text: "intense debate in the analysts community and online about whether plug will be the one to power" },
+  { start: 797.0, end: 802.0, text: "that facility. I saw a reddit thread in our sources. It was on or plug power stock where users were" },
+  { start: 802.0, end: 807.0, text: "just going back and forth on this. One side says, look, plug already powers Amazon\'s forklifts. They" },
+  { start: 807.0, end: 811.5, text: "have a green hydrogens supply contract with them. It\'s a done deal. And the other side is saying," },
+  { start: 811.5, end: 816.7, text: "well, hold on, data centers are not forklifts. And the skeptics have a very valid point when it comes" },
+  { start: 816.7, end: 823.1, text: "to logistics. A warehouse might use a few hundred kilograms of hydrogen a day, a massive AI" },
+  { start: 823.1, end: 830.1, text: "data center. It needs something on the order of 20,000 kilograms a day. 20,000 kilograms every single" },
+  { start: 830.1, end: 835.1, text: "every single day. That is a logistical nightmare if you are trucking it in. You would have a constant" },
+  { start: 835.1, end: 840.4, text: "2047 convoy of tanker trucks arriving at the data center gates. Yeah. This is why the hydrogen" },
+  { start: 840.4, end: 845.4, text: "highway concept is so difficult to execute. Natural gas comes in a pipeline. Hydrogen right now" },
+  { start: 845.4, end: 850.9, text: "mostly comes on wheels. It\'s huge hurdle. But Microsoft did validate the tech for this application," },
+  { start: 850.9, end: 855.1, text: "right? They ran a big test. They did it. And this was a major milestone for the industry." },
+  { start: 855.7, end: 861.5, text: "Microsoft successfully tested a three megawatt hydrogen backup system using PM technology." },
+  { start: 861.5, end: 865.8, text: "Very similar to plugs. And they proved it can hit five nines reliability." },
+  { start: 865.8, end: 873.2, text: "Five nines. 99.99% uptime. The gold standard for data centers. So the tech works. The question," },
+  { start: 873.2, end: 879.4, text: "the billion dollar question, is the fuel supply chain? Can you get enough hydrogen there reliably" },
+  { start: 879.4, end: 884.6, text: "and cheaply? Which brings us to project quantum leap. I love the name. It sounds like they\'re time" },
+  { start: 884.6, end: 889.2, text: "traveling. I know. But in reality, it was about stopping the financial bleeding. It was a survival" },
+  { start: 889.2, end: 894.6, text: "strategy, plain and simple. They launched it in early 2025. You have to remember for years," },
+  { start: 894.6, end: 899.0, text: "plug power operated with a growth at all costs mindset. They were expanding everywhere," },
+  { start: 899.0, end: 904.5, text: "building factories, hiring people, burning cash like crazy to capture market share. A very 2021" },
+  { start: 904.5, end: 909.5, text: "strategy. A very 2021 strategy that ran headfirst into the high interest rate world of 2024" },
+  { start: 909.5, end: 915.1, text: "and 2025. Capital got expensive and investors lost their patience. So quantum leap was basically" },
+  { start: 915.1, end: 920.6, text: "stop spending money. We don\'t have essentially the headline goal was to cut annualized costs by" },
+  { start: 920.6, end: 926.8, text: "about 200 million dollars. They slashed headcount by over 15%. They consolidated facilities." },
+  { start: 926.8, end: 931.8, text: "But the most interesting part of it to me was the deployment of what they internally called SWAT" },
+  { start: 931.8, end: 937.4, text: "teams. SWAT teams like they\'re kicking down door kicking down inefficiencies. They sent these" },
+  { start: 937.4, end: 943.2, text: "small specialized teams into their different business units, electrolyzers, fuel," },
+  { start: 943.8, end: 950.4, text: "material handling with a mandate to fix specific costly problems. For example, the hydrogen" },
+  { start: 950.4, end: 955.4, text: "fuel team. Their mandate was simple. Stop buying expensive hydrogen from other people and start" },
+  { start: 955.4, end: 960.1, text: "making it ourselves now. Right. Because for years, they were buying hydrogen from industrial gas" },
+  { start: 960.1, end: 966.1, text: "companies. And it was just it was pricey. It was wildly expensive and incredibly volatile." },
+  { start: 966.1, end: 970.2, text: "Plug was in this crazy position where they were essentially selling hydrogen to their own customers" },
+  { start: 970.2, end: 974.7, text: "at a loss just to keep the contracts alive and keep the forklifts running. That is a terrible" },
+  { start: 974.7, end: 979.3, text: "business model long term. The worst. You can\'t do that forever. So they built their own plants." },
+  { start: 979.3, end: 985.4, text: "They did. This is the whole vertical integration strategy coming to life. By late 2025," },
+  { start: 985.4, end: 990.9, text: "they finally had a real production network up and running. They have a plant in Woodbine, Georgia" },
+  { start: 990.9, end: 996.1, text: "that\'s producing 15 tons of green hydrogen per day. And the sources say that plant hit a" },
+  { start: 996.2, end: 1003.2, text: "production record in August of 2025, right? It did. 324 tons in a single month. And maybe more" },
+  { start: 1003.2, end: 1010.2, text: "importantly, 97% uptime. That\'s a critical proof point. It proves they aren\'t just a lab experiment." },
+  { start: 1010.2, end: 1015.2, text: "They can actually run a complex industrial chemical plant reliably. And they have others too." },
+  { start: 1015.2, end: 1020.2, text: "They do. They have another 10 ton per day plant in Charleston, Tennessee and a liquid hydrogen" },
+  { start: 1020.2, end: 1025.7, text: "facility in St. Gabriel, Louisiana that\'s making 15 tons per day. So what\'s the payoff? How much" },
+  { start: 1025.8, end: 1030.2, text: "cheaper is it to make it yourself? The internal cost of that hydrogen is about one third of what they" },
+  { start: 1030.2, end: 1034.7, text: "were paying on the open market from third party suppliers. One third. One third. That is the only" },
+  { start: 1034.7, end: 1039.0, text: "path to positive margins for this company. Yeah. If they can make the fuel cheap, the whole" },
+  { start: 1039.0, end: 1043.6, text: "ecosystem, the whole vision finally starts to make financial sense. Okay. So they\'re cutting costs." },
+  { start: 1043.6, end: 1049.1, text: "They\'re making their own fuel and they\'re pivoting hard into data centers. But they are not the" },
+  { start: 1049.1, end: 1054.2, text: "only ones doing this. We absolutely have to talk about the Goliath in the room. Blue energy." },
+  { start: 1054.2, end: 1060.2, text: "Blue energy. Blue is the formidable opponent here. No question. And currently, if we\'re just" },
+  { start: 1060.2, end: 1066.0, text: "looking at the scorecard for prime power, and by that, I mean the main 2047 power source for a" },
+  { start: 1066.0, end: 1072.0, text: "data center, bloom is winning. The numbers are just huge. I was looking at the announcements." },
+  { start: 1072.0, end: 1076.9, text: "Bloom announced a $5 billion partnership with Brookfield Asset Management. Five billion." },
+  { start: 1076.9, end: 1082.6, text: "And then another $2.65 billion deal with AEP, the utility company. These are massive," },
+  { start: 1082.6, end: 1086.6, text: "bankable concrete numbers. And the reason Bloom is winning right now goes back to our Sprinter" },
+  { start: 1086.6, end: 1092.0, text: "Versus Marathon runner analogy. Yeah. But also critically, the fuel source. Bloom\'s SOC" },
+  { start: 1092.0, end: 1096.7, text: "technology runs on natural gas. And natural gas is everywhere. We have pipelines for it running" },
+  { start: 1096.7, end: 1101.9, text: "under every city. It is cheap. It is incredibly reliable. Bloom can go to a desperate data center" },
+  { start: 1101.9, end: 1108.2, text: "customer and say we can get you power in 90 days. 90 days versus seven to 10 years waiting for the grid." },
+  { start: 1108.2, end: 1114.0, text: "Exactly. That is their killer sales pitch. That is why they are winning. Speed. If you\'re an" },
+  { start: 1114.0, end: 1118.2, text: "executive trying to train a new AI model, you don\'t really care about the chemistry you care about" },
+  { start: 1118.2, end: 1123.7, text: "the timeline. Bloom offers speed today. But wait a minute. Natural gas is a fossil fuel." },
+  { start: 1123.7, end: 1129.7, text: "Microsoft and Google and Amazon, they all have these extremely public net zero by 2030 goals." },
+  { start: 1130.9, end: 1135.5, text: "Doesn\'t burning natural gas on site just ruin that whole narrative. This is the green dilemma." },
+  { start: 1135.5, end: 1141.8, text: "This is the core tension in the entire market. Yes, Bloom runs on gas today. It emits carbon." },
+  { start: 1141.8, end: 1147.7, text: "Now it emits less carbon than a coal plant, but it is not zero. Plugged power is pure green." },
+  { start: 1147.7, end: 1152.6, text: "Their hydrogen fuel cells produce only water. So the hyperscalers are caught in this bind." },
+  { start: 1152.6, end: 1156.5, text: "A huge bind. Do they choose the dirty-ish option that works right now, which is Bloom," },
+  { start: 1156.5, end: 1161.1, text: "or do they choose the perfectly clean option that is logistically much harder, which is plugged?" },
+  { start: 1161.2, end: 1165.3, text: "And it seems like for now they\'re choosing speed. Bloom wins the sprint to get power" },
+  { start: 1165.3, end: 1168.1, text: "ironically, even though they have the marathon runner technology." },
+  { start: 1168.1, end: 1173.0, text: "That is a great way to put it. That\'s exactly right. Bloom is positioning themselves as the bridge." },
+  { start: 1173.6, end: 1178.2, text: "They argue that their boxes can eventually run on green hydrogen when the wipes are ready." },
+  { start: 1178.9, end: 1185.0, text: "But today, right now, they run on gas. Plug is making a much bigger bet. They\'re betting that" },
+  { start: 1185.0, end: 1189.8, text: "the environmental pressure from shareholders and customers will force these companies to skip the" },
+  { start: 1189.8, end: 1194.7, text: "gas phase entirely and go straight to pure hydrogen. So while Bloom is out there" },
+  { start: 1194.7, end: 1199.9, text: "assigning these massive billion dollar deals, Plug is trying to fix its own bank account." },
+  { start: 1199.9, end: 1204.3, text: "Because the financial section of our deep dive is, well, it\'s a bit of a roller coaster." },
+  { start: 1204.3, end: 1208.7, text: "It is a white knuckle ride. I mean, let\'s just look at the numbers from the third quarter of 2025." },
+  { start: 1208.7, end: 1214.9, text: "Plug posted a net loss of $363.5 million in one quarter in one single quarter." },
+  { start: 1215.0, end: 1219.3, text: "Ouch. That is a lot of red ink. It is. However, you have to look at the trend line." },
+  { start: 1219.8, end: 1224.0, text: "Their cash burn, the amount of cash they were actually spending dropped 53% from the previous" },
+  { start: 1224.0, end: 1227.8, text: "quarter. So quantum leap is working. The cost cuts are absolutely working. They\'re bleeding less." },
+  { start: 1228.6, end: 1233.0, text: "But they were still running dangerously low on cash. And then there was all the drama with the" },
+  { start: 1233.0, end: 1238.6, text: "department of energy loan. I remember the headlines. There was this $1.66 billion loan guarantee." },
+  { start: 1238.6, end: 1242.8, text: "It sounded like it was a done deal. Like the cavalry was coming. It was a conditional commitment from" },
+  { start: 1242.8, end: 1249.4, text: "the DOE. But in November of 2025, Plug put out a press release saying they were suspending" },
+  { start: 1249.4, end: 1255.2, text: "activities regarding that loan. Suspending activities sounds like very careful corporate speak for" },
+  { start: 1255.2, end: 1260.2, text: "We broke up. It was spun as a strategic choice. Plug\'s management claimed they found better" },
+  { start: 1260.2, end: 1266.4, text: "private capital like that $275 million electricity rights deal. And they\'d signed a new gas supply" },
+  { start: 1266.4, end: 1271.4, text: "deal that made the DOE loan less necessary. They argued the DOE loan came with too many strings" },
+  { start: 1271.4, end: 1276.5, text: "attached. It was just moving too slowly. But the market did not take it well. No, the market hated it." },
+  { start: 1276.5, end: 1280.3, text: "The stock dropped significantly. And then the class action lawsuits were filed." },
+  { start: 1280.3, end: 1284.9, text: "Of course. Investors alleged that Plug\'s management had misled them about how close they really" },
+  { start: 1284.9, end: 1290.6, text: "were to getting that money. And we have to consider the political context here. By late 2025," },
+  { start: 1290.6, end: 1295.8, text: "we are deep into the second Trump administration. Right. This is post the 2024 election." },
+  { start: 1295.8, end: 1301.1, text: "And the whole political landscape for federal green energy loans had changed dramatically." },
+  { start: 1301.1, end: 1305.4, text: "There was a lot of uncertainty about whether these DOE loans which were initiated under the" },
+  { start: 1305.4, end: 1311.5, text: "previous administration would even be honored or finalized. So Plug likely saw the writing on the" },
+  { start: 1311.5, end: 1316.2, text: "wall and decided to pivot to private capital rather than waiting for a government check that might" },
+  { start: 1316.2, end: 1320.8, text: "never actually come. So they had to go out and raise money the hard way. They sold stock options." },
+  { start: 1320.8, end: 1325.8, text: "They issued convertible notes. They did. They raised about $370 million through warrants" },
+  { start: 1325.9, end: 1332.1, text: "and another $375 million via convertible notes. It was expensive money, but it allowed them to pay" },
+  { start: 1332.1, end: 1337.2, text: "off some very high interest debt at bottom time. But the leash is very, very short. They need to become" },
+  { start: 1337.2, end: 1342.2, text: "profitable and they need to do it fast. And speaking of politics and deadlines, we have to talk about" },
+  { start: 1342.2, end: 1347.7, text: "this piece of legislation called the one big beautiful bill act. The OBA. It\'s not really what they" },
+  { start: 1347.7, end: 1354.3, text: "called it. That sounds like a parody. It is signed into law on July 4, 2025. It was a major modification" },
+  { start: 1354.3, end: 1358.7, text: "of the old inflation reduction act. And it fundamentally changed the rules of the game for the" },
+  { start: 1358.7, end: 1365.0, text: "entire green energy sector in the US. How so? What did it do? Introduced a really aggressive concept" },
+  { start: 1365.0, end: 1371.6, text: "called use it or lose it. The tax credits for producing green hydrogen, the very lucrative 45v" },
+  { start: 1371.6, end: 1377.6, text: "credits, were set to expire completely for any project that started construction after December 31," },
+  { start: 1377.6, end: 1384.2, text: "2027. Wait, 2027? As in next year, that is an incredibly soon. It\'s a cliff. It created a massive" },
+  { start: 1384.4, end: 1389.4, text: "investor cliff. It basically sent a signal to the entire market. If you were ever going to build hydrogen" },
+  { start: 1389.4, end: 1393.4, text: "plants and get these tax credits, you have to do it right now. So it forced everyone who is sitting" },
+  { start: 1393.4, end: 1398.0, text: "on the fence to make a decision. Exactly. It created a huge rush to get shovels in the ground." },
+  { start: 1398.0, end: 1403.6, text: "But it also came with a very big catch. The OBA included extremely strict foreign entity of" },
+  { start: 1403.6, end: 1410.2, text: "concern, rules, FE OEC. We\'ve heard this term in the chip industry. Basically, it means no China." },
+  { start: 1410.2, end: 1415.7, text: "Correct. To get any of these valuable tax credits, you cannot use Chinese components" },
+  { start: 1415.7, end: 1421.1, text: "in your electrolyzers or your fuel cells. The supply chain has to be clean of certain foreign" },
+  { start: 1421.1, end: 1426.3, text: "influence. And this is where plug actually has a huge advantage, right? A massive advantage." },
+  { start: 1426.3, end: 1431.9, text: "This is their moat. Plug has a gigafactory in Rochester, New York. They manufacture their own stacks," },
+  { start: 1431.9, end: 1436.2, text: "their own membranes. They aren\'t just assembling parts that they bought from overseas." },
+  { start: 1436.2, end: 1440.2, text: "They\'re building the core technology in America. So they\'re compliant from day one." },
+  { start: 1440.2, end: 1444.1, text: "They\'re already compliant. So while some of their competitors might be scrambling to resource" },
+  { start: 1444.1, end: 1449.4, text: "their entire supply chain to find non-Chinese parts to qualify for these credits, plug can just" },
+  { start: 1449.4, end: 1455.3, text: "keep building. This regulatory moat is one of their biggest and maybe most underrated assets." },
+  { start: 1455.3, end: 1459.4, text: "So the government basically said, build it now and build it American. And plug is one of the few" },
+  { start: 1459.4, end: 1464.3, text: "players who can stand up and say, we are already doing that. That is the bullish case in a nutshell." },
+  { start: 1465.3, end: 1470.5, text: "The bearish case is that 2027 is right around the corner. And building massive industrial" },
+  { start: 1470.5, end: 1475.8, text: "infrastructure is really, really hard. And the person leading this charge is a new captain." },
+  { start: 1475.8, end: 1481.4, text: "Because Andy March, he was the CEO for decades. I mean, he was the face of plug power forever." },
+  { start: 1481.4, end: 1485.7, text: "He\'s out. It really is the end of an era. Andy March was the visionary. He was the one who dreamed" },
+  { start: 1485.7, end: 1491.5, text: "up this whole hydrogen ecosystem who took them from just forklifts to this grand vision. But" },
+  { start: 1491.5, end: 1496.2, text: "investors were demanding execution. They were tired of the vision. They wanted profitability." },
+  { start: 1496.2, end: 1501.5, text: "Enter Jose Luis Crespo. He takes over in March of 2026. So next month, he was the chief revenue" },
+  { start: 1501.5, end: 1507.8, text: "officer. And the vive shift is palpable. If March was the why, Crespo is the how from visionary" },
+  { start: 1507.8, end: 1513.1, text: "to operator. Exactly. His reputation is all about execution and sales. His job isn\'t to dream up new" },
+  { start: 1513.1, end: 1518.6, text: "markets. It\'s to take the supposed $8 billion sales funnel that the company claims to have and" },
+  { start: 1518.6, end: 1523.8, text: "turn it into actual real cash in the bank. And it\'s not just a US story for him either. We see" },
+  { start: 1523.8, end: 1528.8, text: "this massive deal they announced in Uzbekistan. That is a fascinating development. And it shows the" },
+  { start: 1528.8, end: 1533.8, text: "global scale they\'re aiming for. It\'s a two gigawatt electrolyzer deal with a company called" },
+  { start: 1533.8, end: 1539.5, text: "Allied Biofuels. Two gigawatts. I mean, that is just gigantic. It\'s a monster deal. It\'s an" },
+  { start: 1539.5, end: 1544.8, text: "industrial scale project. They\'re planning to use all that hydrogen to make sustainable aviation" },
+  { start: 1545.0, end: 1550.4, text: "fuel or CF. So green jet fuel. Exactly. And the significance of this deal is that it proves" },
+  { start: 1551.0, end: 1556.1, text: "plugs technology can scale way beyond what anyone thought. We\'re not talking about powering a" },
+  { start: 1556.1, end: 1561.0, text: "forklift or even a data center backup generator. We are talking about industrial scale chemical" },
+  { start: 1561.0, end: 1566.9, text: "synthesis. If they can pull off the Uzbekistan project, it validates their electrolyzer technology" },
+  { start: 1566.9, end: 1573.4, text: "for the entire world. So we have a new CEO, a new cost cutting strategy, a new and very urgent" },
+  { start: 1573.4, end: 1578.1, text: "political landscape. What is the roadmap? When does this company actually plan to make money?" },
+  { start: 1578.1, end: 1583.0, text: "The milestones are very clearly set. And you can be sure Wall Street is watching them like a hawk." },
+  { start: 1583.0, end: 1588.4, text: "The target for the second half of 2026. So later this year is to be EBITDA\'s positive." },
+  { start: 1588.4, end: 1594.6, text: "Which is earnings before interest taxes depreciation, amortization and stock based compensation." },
+  { start: 1594.6, end: 1599.0, text: "Basically, a measure of core operating profitability. Right. It asks the question," },
+  { start: 1599.6, end: 1604.4, text: "are the core operations of selling fuel cells and hydrogen making money before all the other" },
+  { start: 1604.4, end: 1611.0, text: "financial stuff? Then the goal for 2027 is to be operating in compositive. And the Holy Grail," },
+  { start: 1611.0, end: 1618.8, text: "the big one is 2028. Full bottom line gap profitability. 2028. So we are still two full years away" },
+  { start: 1618.8, end: 1623.0, text: "from true profit assuming everything goes right. Which is why those liquidity raises we discussed" },
+  { start: 1623.0, end: 1627.8, text: "earlier were so absolutely critical. They need enough runway to land the plane safely in 2028." },
+  { start: 1627.8, end: 1632.9, text: "Okay, let\'s try to synthesize all of this. We started with the premise that AI is eating the grid." },
+  { start: 1632.9, end: 1639.2, text: "We have a crisis. A crisis of time to power the seven to ten year wait. Right. And into that crisis" },
+  { start: 1639.2, end: 1645.4, text: "steps plug power pivoting from a forklift company to an AI factory energy provider." },
+  { start: 1645.4, end: 1651.0, text: "They have the right tech for the job, the PEM fuel cells that can sprint and handle the spiky AI" },
+  { start: 1651.0, end: 1655.1, text: "loads. They finally have their own fuel source. They finally have the fuel with the hydrogen network" },
+  { start: 1655.1, end: 1659.7, text: "in Georgia and Tennessee coming online. But they have competition, serious competition." },
+  { start: 1659.7, end: 1664.7, text: "Lume energy is winning the short game with natural gas. There\'s no denying it. They are the" },
+  { start: 1664.7, end: 1671.8, text: "pragmatists choice today. And plug is the idealists choice. Or maybe the purests choice. Plug is the" },
+  { start: 1671.8, end: 1678.2, text: "purests choice. But the grid crisis is so severe that the market might force the idealists to" },
+  { start: 1678.2, end: 1683.0, text: "become pragmatists. The data centers might get to a point where they don\'t care what the fuel is" },
+  { start: 1683.0, end: 1687.7, text: "as long as the lights turn on tomorrow. So plug\'s entire challenge is to prove that hydrogen can be" },
+  { start: 1687.7, end: 1693.1, text: "delivered as reliably and as cheaply as natural gas. And do it now. Yes. The logistics of that" },
+  { start: 1693.1, end: 1698.0, text: "hydrogen highway seem to be the hardest puzzle piece left to solve. I mean, it is one thing to build" },
+  { start: 1698.0, end: 1703.7, text: "a beautiful fuel cell. It\'s a whole other thing to keep it fed with 20,000 kilograms of gas a day" },
+  { start: 1703.7, end: 1708.3, text: "every day without fail. That\'s why the onsite generation part of their business using their" },
+  { start: 1708.3, end: 1713.1, text: "electrolyzers to make hydrogen right there at the data center is likely the real long-term winner." },
+  { start: 1713.1, end: 1717.4, text: "But that requires even more power to run the electrolyzers. It\'s a very circular problem." },
+  { start: 1717.4, end: 1722.6, text: "It\'s a tough nut to crack. It is. But if they solve it. If they solve it, they become one of the" },
+  { start: 1722.6, end: 1728.1, text: "most important energy and technology infrastructure companies in the world. The upside is enormous." },
+  { start: 1728.6, end: 1735.4, text: "So here is my final thought for you, the listener, to mullover. We know AI is coming. We know it needs" },
+  { start: 1735.4, end: 1740.6, text: "an almost unimaginable amount of power. We\'re really standing at a fork in the road. We can take" },
+  { start: 1740.6, end: 1746.6, text: "the easy path, the natural gas pass, the bloom energy path, basically burning fossil fuels to power" },
+  { start: 1746.6, end: 1752.6, text: "our chatbots. It\'s fast. It\'s cheap. It works today. Or we can try to build this hydrogen highway." },
+  { start: 1752.6, end: 1757.3, text: "It is hard. It is expensive. It requires a whole new network of trucks and new pipes and massive" },
+  { start: 1757.3, end: 1762.4, text: "electrolyzers. But it\'s clean. And I\'ll add one final layer to that. Consider the power dynamics" },
+  { start: 1762.4, end: 1767.0, text: "pun very much intended. If the public utility grid really takes 10 years to catch up," },
+  { start: 1767.0, end: 1771.3, text: "then the companies that control off-grid power companies like plug and bloom, they aren\'t" },
+  { start: 1771.3, end: 1776.2, text: "just energy vendors anymore. They become the gatekeepers to the entire digital economy. If you" },
+  { start: 1776.2, end: 1780.2, text: "want to compute, if you want to run the next generation of AI, you have to go through them." },
+  { start: 1780.2, end: 1785.2, text: "They hold the keys to the future of computing itself. That is a wild thought. The utility" },
+  { start: 1785.2, end: 1790.9, text: "company of the future isn\'t some regulated monopoly. It\'s a tech company selling hydrogen boxes" },
+  { start: 1790.9, end: 1795.8, text: "out of a factory in Rochester. It is a brave new world. It certainly is. We will be watching" },
+  { start: 1795.8, end: 1800.9, text: "very closely to see if Jose Luis Crespo can steer this ship to profitability in 2028." },
+  { start: 1800.9, end: 1806.8, text: "Thanks for diving deep with us today. Thank you. It was a pleasure." }
+];
+
+const player = document.getElementById('player');
+const sentenceList = document.getElementById('sentenceList');
+let loopingIndex = -1;
+let playAllMode = false;
+let textHidden = false;
+let currentPlayingIndex = -1;
+let checkTimer = null;
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+function render() {
+  sentenceList.innerHTML = '';
+  segments.forEach((seg, i) => {
+    const div = document.createElement('div');
+    div.className = 'sentence';
+    div.dataset.index = i;
+    div.innerHTML = `
+      <button class="play-btn" title="재생">&#9654;</button>
+      <span class="time">${formatTime(seg.start)} - ${formatTime(seg.end)}</span>
+      <span class="text">${seg.text}</span>
+    `;
+    div.querySelector('.play-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSentence(i);
+    });
+    div.addEventListener('click', () => playSentence(i));
+    sentenceList.appendChild(div);
+  });
+}
+
+function playSentence(index) {
+  if (currentPlayingIndex === index && !player.paused) {
+    player.pause();
+    currentPlayingIndex = -1;
+    loopingIndex = -1;
+    stopCheck();
+    updateUI();
+    return;
+  }
+  loopingIndex = -1;
+  playAllMode = false;
+  document.getElementById('playAllBtn').classList.remove('active');
+
+  const seg = segments[index];
+  currentPlayingIndex = index;
+  updateUI();
+
+  const doPlay = () => {
+    player.currentTime = seg.start;
+    player.play().then(() => {
+      startCheck();
+    }).catch(err => {
+      console.error('Play failed:', err);
+    });
+  };
+
+  if (player.readyState >= 1) {
+    doPlay();
+  } else {
+    player.addEventListener('loadedmetadata', doPlay, { once: true });
+    player.load();
+  }
+}
+
+function findCurrentSegment(time) {
+  for (let i = 0; i < segments.length; i++) {
+    if (time >= segments[i].start && time < segments[i].end) return i;
+  }
+  return -1;
+}
+
+function startCheck() {
+  stopCheck();
+  checkTimer = setInterval(() => {
+    const time = player.currentTime;
+    const idx = currentPlayingIndex;
+
+    const activeIdx = findCurrentSegment(time);
+    if (activeIdx !== currentPlayingIndex && activeIdx >= 0) {
+      if (!playAllMode && loopingIndex < 0) {
+        currentPlayingIndex = activeIdx;
+        updateUI();
+      }
+    }
+
+    if (idx < 0 || idx >= segments.length) return;
+    const seg = segments[idx];
+
+    if (time >= seg.end - 0.05) {
+      if (loopingIndex === idx) {
+        player.currentTime = seg.start;
+        player.play();
+      } else if (playAllMode && idx < segments.length - 1) {
+        currentPlayingIndex = idx + 1;
+        player.currentTime = segments[idx + 1].start;
+        player.play();
+        updateUI();
+      } else {
+        player.pause();
+        currentPlayingIndex = -1;
+        stopCheck();
+        updateUI();
+      }
+    }
+  }, 50);
+}
+
+player.addEventListener('play', () => {
+  if (checkTimer === null) startCheck();
+});
+player.addEventListener('pause', () => {});
+player.addEventListener('seeked', () => {
+  const idx = findCurrentSegment(player.currentTime);
+  if (idx >= 0) {
+    currentPlayingIndex = idx;
+    updateUI();
+  }
+});
+
+function stopCheck() {
+  if (checkTimer) { clearInterval(checkTimer); checkTimer = null; }
+}
+
+function updateUI() {
+  document.querySelectorAll('.sentence').forEach((el, i) => {
+    el.classList.toggle('playing', i === currentPlayingIndex);
+    const btn = el.querySelector('.play-btn');
+    btn.classList.toggle('looping', i === loopingIndex);
+    if (textHidden) {
+      el.querySelector('.text').classList.add('hidden-text');
+    } else {
+      el.querySelector('.text').classList.remove('hidden-text');
+    }
+  });
+  if (currentPlayingIndex >= 0) {
+    const el = document.querySelectorAll('.sentence')[currentPlayingIndex];
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function togglePlayAll() {
+  playAllMode = !playAllMode;
+  document.getElementById('playAllBtn').classList.toggle('active', playAllMode);
+  if (playAllMode) {
+    loopingIndex = -1;
+    currentPlayingIndex = 0;
+    player.currentTime = segments[0].start;
+    player.play().then(() => startCheck()).catch(err => console.error(err));
+    updateUI();
+  } else {
+    player.pause();
+    currentPlayingIndex = -1;
+    stopCheck();
+    updateUI();
+  }
+}
+
+function toggleHideText() {
+  textHidden = !textHidden;
+  const btn = document.getElementById('hideTextBtn');
+  btn.classList.toggle('active', textHidden);
+  btn.innerHTML = textHidden ? '&#128065; 문장 보이기' : '&#128065; 문장 숨기기';
+  updateUI();
+}
+
+function changeSpeed(val) {
+  player.playbackRate = parseFloat(val);
+}
+
+sentenceList.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  const sentenceEl = e.target.closest('.sentence');
+  if (!sentenceEl) return;
+  const idx = parseInt(sentenceEl.dataset.index);
+  if (loopingIndex === idx) {
+    loopingIndex = -1;
+  } else {
+    loopingIndex = idx;
+    currentPlayingIndex = idx;
+    player.currentTime = segments[idx].start;
+    player.play();
+    startCheck();
+  }
+  updateUI();
+});
+
+render();
+</script>
+</body>
+</html>

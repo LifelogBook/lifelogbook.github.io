@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study - AI Energy Collides with Climate Goals</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #333; }
+
+.layout {
+  display: flex;
+  height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.left-panel {
+  width: 340px;
+  flex-shrink: 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+h1 { font-size: 1.1rem; text-align: center; padding: 4px 0 12px; color: #555; }
+
+.media-wrap {
+  background: #000; border-radius: 10px; overflow: hidden;
+  width: 100%; margin-bottom: 12px;
+}
+video, audio { width: 100%; display: block; }
+
+.controls { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; justify-content: center; }
+.controls button, .controls select {
+  padding: 5px 12px; border: 1px solid #ddd; border-radius: 20px;
+  background: #fff; cursor: pointer; font-size: 0.8rem; color: #555;
+  transition: all 0.2s;
+}
+.controls button:hover { background: #e8e8e8; }
+.controls button.active { background: #4a90d9; color: #fff; border-color: #4a90d9; }
+.controls select { appearance: none; padding-right: 10px; }
+
+.right-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 16px 24px 8px;
+  border-left: 1px solid #e0e0e0;
+}
+
+.sentences { display: flex; flex-direction: column; gap: 4px; }
+.sentence {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; background: #fff; border-radius: 10px;
+  border: 2px solid transparent; cursor: pointer;
+  transition: all 0.2s;
+}
+.sentence:hover { background: #f0f4ff; }
+.sentence.playing { border-color: #4a90d9; background: #eef3ff; }
+.sentence .play-btn {
+  width: 30px; height: 30px; border-radius: 50%; border: none;
+  background: #4a90d9; color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; flex-shrink: 0;
+  transition: background 0.2s;
+}
+.sentence .play-btn:hover { background: #3a7bc8; }
+.sentence .play-btn.looping { background: #e8793a; }
+.sentence .time { font-size: 0.75rem; color: #999; min-width: 80px; flex-shrink: 0; }
+.sentence .text { flex: 1; font-size: 0.9rem; line-height: 1.5; }
+.sentence .text.hidden-text { color: transparent; background: #e0e0e0; border-radius: 4px; user-select: none; }
+.sentence .text.hidden-text::selection { color: transparent; background: transparent; }
+
+@media (max-width: 700px) {
+  .layout { flex-direction: column; }
+  .left-panel { width: 100%; padding: 10px; }
+  .media-wrap { max-width: 300px; }
+  .right-panel { border-left: none; border-top: 1px solid #e0e0e0; padding: 10px; }
+  .sentence { padding: 8px 10px; gap: 8px; }
+  .sentence .time { display: none; }
+  .sentence .text { font-size: 0.85rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <div class="left-panel">
+    <h1>AI Energy Collides with Climate Goals</h1>
+    <div class="media-wrap">
+      <audio id="player" controls preload="metadata" style="width:100%">
+        <source src="/assets/audio/ai-energy-collides-with-climate-goals.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+    <div class="controls">
+      <button id="playAllBtn" onclick="togglePlayAll()">&#9654; 전체 재생</button>
+      <button id="hideTextBtn" onclick="toggleHideText()">&#128065; 문장 숨기기</button>
+      <select id="speedSelect" onchange="changeSpeed(this.value)">
+        <option value="0.5">0.5x</option>
+        <option value="0.75">0.75x</option>
+        <option value="1" selected>1x</option>
+        <option value="1.25">1.25x</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="sentences" id="sentenceList"></div>
+  </div>
+</div>
+
+<script>
+const segments = [
+  { start: 0.0, end: 2.3, text: "Welcome to The Deep Dive." },
+  { start: 2.3, end: 5.0, text: "Today we are jumping straight into the source material," },
+  { start: 5.0, end: 6.5, text: "and we\'re looking at, well," },
+  { start: 6.5, end: 10.1, text: "a connection between three massive global forces." },
+  { start: 10.1, end: 12.4, text: "That\'s right, we\'re talking about the huge shifts" },
+  { start: 12.4, end: 16.6, text: "in the energy system, the incredible speed of AI adoption," },
+  { start: 16.6, end: 19.4, text: "and how corporate strategy is being forced to evolve" },
+  { start: 19.4, end: 20.4, text: "because of it." },
+  { start: 20.4, end: 23.0, text: "Right, it feels like these are three separate worlds," },
+  { start: 23.0, end: 23.9, text: "but they\'re really not." },
+  { start: 23.9, end: 24.7, text: "Not at all." },
+  { start: 24.7, end: 26.8, text: "That\'s the whole mission for you today." },
+  { start: 26.8, end: 29.4, text: "We\'ve synthesized a huge stack of sources," },
+  { start: 29.4, end: 32.5, text: "and the core finding is pretty clear." },
+  { start: 32.5, end: 35.3, text: "The physical world, you know, geopolitics," },
+  { start: 35.3, end: 37.9, text: "energy security, basic affordability," },
+  { start: 37.9, end: 41.0, text: "is running head-on into the sheer velocity" },
+  { start: 41.0, end: 42.0, text: "of the digital world." },
+  { start: 42.0, end: 43.2, text: "The world of AI and software." },
+  { start: 43.2, end: 45.9, text: "Exactly, and pretty much every strategic decision" },
+  { start: 45.9, end: 47.0, text: "you have to make right now," },
+  { start: 47.0, end: 48.5, text: "sits right at that collision point." },
+  { start: 48.5, end: 49.5, text: "Okay, let\'s unpack this." },
+  { start: 49.5, end: 51.4, text: "We have to start with the foundation, which is energy." },
+  { start: 51.4, end: 53.2, text: "I mean, the challenges here really define" },
+  { start: 53.2, end: 55.1, text: "the playing field for every other industry." },
+  { start: 55.1, end: 57.2, text: "They do, the core problem everywhere" },
+  { start: 57.2, end: 59.2, text: "is balancing these competing priorities" },
+  { start: 59.2, end: 62.5, text: "and in energy, the sources call it the triple win challenge." },
+  { start: 62.5, end: 63.4, text: "The triple win." },
+  { start: 63.4, end: 64.7, text: "So that\'s affordability." },
+  { start: 64.7, end: 65.9, text: "Right, keeping costs down." },
+  { start: 65.9, end: 66.9, text: "Reliability and security." },
+  { start: 66.9, end: 68.8, text: "Keeping the lights on, basically." },
+  { start: 68.8, end: 71.2, text: "And emissions reduction for climate goals." },
+  { start: 71.2, end: 74.5, text: "But the thing is, you can\'t always have all three at once, can you?" },
+  { start: 74.5, end: 76.7, text: "No, in theory, you won all three." },
+  { start: 76.7, end: 80.4, text: "But in practice, especially when there\'s a shock to the system," },
+  { start: 80.4, end: 83.4, text: "you\'re constantly forced to sacrifice one or two" },
+  { start: 83.4, end: 84.8, text: "for the sake of just one." },
+  { start: 84.8, end: 87.0, text: "And it seems like right now," },
+  { start: 87.0, end: 89.8, text: "the data is showing that long-term emissions goals" },
+  { start: 89.8, end: 93.0, text: "are losing out to short-term security and affordability." },
+  { start: 93.0, end: 95.0, text: "Yeah, that\'s the reality check." },
+  { start: 95.0, end: 96.5, text: "It\'s actually pretty sobering." },
+  { start: 96.5, end: 99.0, text: "Despite all the talk and new commitments," },
+  { start: 99.0, end: 101.0, text: "decarbonization is falling behind." },
+  { start: 101.0, end: 102.1, text: "How far behind?" },
+  { start: 102.1, end: 105.4, text: "Well, global greenhouse gas emissions hit record highs last year." },
+  { start: 105.4, end: 109.8, text: "So that\'s widening the gap for that Paris 1.5 degree goal." },
+  { start: 109.8, end: 111.9, text: "The baseline scenario in the report," },
+  { start: 111.9, end: 114.8, text: "which just assumes we continue with existing momentum." },
+  { start: 114.8, end: 116.3, text: "So no major new policies." },
+  { start: 116.3, end: 117.5, text: "Just businesses usual." },
+  { start: 117.5, end: 118.2, text: "Exactly." },
+  { start: 118.2, end: 121.1, text: "That scenario now projects 2.3 degrees Celsius" },
+  { start: 121.1, end: 122.8, text: "of warming by 2,100." },
+  { start: 122.8, end: 124.2, text: "Wait, 2.3 degrees." },
+  { start: 124.2, end: 126.9, text: "And I saw in the sources that this estimate actually" },
+  { start: 126.9, end: 129.8, text: "went up by 0.1 degrees from last year\'s forecast." },
+  { start: 129.8, end: 130.3, text: "It did." },
+  { start: 130.3, end: 131.2, text: "So that\'s not just stalling." },
+  { start: 131.2, end: 132.9, text: "That\'s actively moving backwards." },
+  { start: 132.9, end: 133.4, text: "It is." },
+  { start: 133.4, end: 136.2, text: "It shows just how much pressure the system is under." },
+  { start: 136.2, end: 138.8, text: "So what does that tension look like when a country has" },
+  { start: 138.8, end: 140.1, text: "to make a real choice?" },
+  { start: 140.1, end: 144.1, text: "It looks like Japan\'s seventh strategic energy plan." },
+  { start: 144.1, end: 147.0, text: "For years, Japan was trying to reduce its dependence" },
+  { start: 147.0, end: 148.2, text: "on nuclear energy." },
+  { start: 148.2, end: 152.5, text: "But this new plan, it explicitly reverses course." },
+  { start: 152.5, end: 154.7, text: "And that\'s because they need reliable power now." },
+  { start: 154.7, end: 155.6, text: "It\'s a trade-off." },
+  { start: 155.6, end: 157.6, text: "After all the supply shocks and instability," },
+  { start: 157.6, end: 159.7, text: "the calculation just changed." },
+  { start: 159.7, end: 162.3, text: "Reliable, stable, dispatchable power" },
+  { start: 162.3, end: 164.4, text: "became the top priority, even if it" },
+  { start: 164.4, end: 167.3, text: "meant shelving those earlier climate strategies for a bit." },
+  { start: 167.3, end: 169.7, text: "And stability, at least for now," },
+  { start: 169.7, end: 172.4, text: "means relying on the fuels we know, which" },
+  { start: 172.4, end: 173.8, text: "brings us to fossil fuels." },
+  { start: 173.9, end: 174.8, text: "They\'re sticking around." },
+  { start: 174.8, end: 175.9, text: "They really are." },
+  { start: 175.9, end: 177.9, text: "The latest projection show them retaining" },
+  { start: 177.9, end: 181.2, text: "a surprisingly large share of the global mix, somewhere" },
+  { start: 181.2, end: 185.3, text: "between 41 and 55% of global energy consumption in 2050." },
+  { start: 185.3, end: 187.8, text: "That\'s a higher number than we saw in previous outlooks." },
+  { start: 187.8, end: 188.3, text: "It is." },
+  { start: 188.3, end: 189.7, text: "So why are those numbers ticking up?" },
+  { start: 189.7, end: 190.4, text: "What\'s going on?" },
+  { start: 190.4, end: 191.8, text: "Well, two big reasons." },
+  { start: 191.8, end: 194.8, text: "First, natural gas is displacing a lot of coal, which" },
+  { start: 194.8, end: 196.0, text: "is a good thing for emissions." },
+  { start: 196.0, end: 198.5, text: "But it means you\'re still using a fossil fuel." },
+  { start: 198.5, end: 201.2, text: "And second, the demand is shifting." },
+  { start: 201.2, end: 202.6, text: "Asia is going to account for something" },
+  { start: 202.6, end: 207.4, text: "like 75% of all new gas demand growth out to 2040." },
+  { start: 207.4, end: 209.4, text: "And that\'s driven by developing economies" },
+  { start: 209.4, end: 212.2, text: "trying to get off coal, which is the dirtiest fuel." },
+  { start: 212.2, end: 212.7, text: "Exactly." },
+  { start: 212.7, end: 215.7, text: "It\'s a huge positive step for local air quality." },
+  { start: 215.7, end: 218.1, text: "But it does mean locking in all that natural gas" },
+  { start: 218.1, end: 220.2, text: "infrastructure for decades to come." },
+  { start: 220.2, end: 222.2, text: "OK, so on the macro level, we\'ve" },
+  { start: 222.2, end: 224.6, text: "got geopolitics prioritizing security" },
+  { start: 224.6, end: 227.0, text: "and we\'ve got fossil fuels sticking around." },
+  { start: 227.0, end: 230.6, text: "All of this feeds into the fact that global primary energy" },
+  { start: 230.6, end: 234.8, text: "demand is still set to grow by about 10% by 2050." },
+  { start: 234.8, end: 236.2, text: "Where does that growth coming from?" },
+  { start: 236.2, end: 239.4, text: "The biggest structural driver is just rising living standards" },
+  { start: 239.4, end: 242.1, text: "in populace, low and middle income countries." },
+  { start: 242.1, end: 245.4, text: "We\'re talking about India, the ESEAN block, Africa." },
+  { start: 245.4, end: 247.4, text: "You have to remember the global imbalance." },
+  { start: 247.4, end: 249.6, text: "Right now, less than half the world\'s population" },
+  { start: 249.6, end: 252.6, text: "consumes over 80% of the energy that has to change." },
+  { start: 252.6, end: 255.7, text: "And India specifically seems to have this massive," },
+  { start: 255.7, end: 258.4, text: "outsized influence on all the global models." },
+  { start: 258.4, end: 261.7, text: "It\'s the most critical variable, for sure." },
+  { start: 261.7, end: 263.7, text: "The sources ran an analysis on this." },
+  { start: 263.7, end: 266.1, text: "And it\'s pretty startling." },
+  { start: 266.1, end: 271.5, text: "If India\'s 2050 GDP per capita were to match where China is now," },
+  { start: 271.5, end: 274.7, text: "global energy demand would be 16% higher than the current" },
+  { start: 274.7, end: 275.2, text: "estimate." },
+  { start: 275.2, end: 276.7, text: "16% higher." },
+  { start: 276.7, end: 279.2, text: "That\'s a huge margin of error for planners to deal with." },
+  { start: 279.2, end: 280.5, text: "It\'s massive." },
+  { start: 280.5, end: 282.6, text: "It just shows the sheer scale of energy" },
+  { start: 282.6, end: 284.5, text: "needed for basic human development." },
+  { start: 284.5, end: 286.2, text: "OK, now let\'s pivot." },
+  { start: 286.2, end: 288.0, text: "Because we have that fundamental growth" },
+  { start: 288.0, end: 289.0, text: "in the developing world." },
+  { start: 289.0, end: 292.0, text: "But then here\'s where it gets really interesting." },
+  { start: 292.0, end: 295.3, text: "In developed nations, a totally different kind of demand" },
+  { start: 295.3, end: 296.8, text: "is just exploding." },
+  { start: 296.8, end: 298.6, text: "The data center boom, this is the collision point" },
+  { start: 298.6, end: 299.6, text: "we were talking about." },
+  { start: 299.6, end: 302.2, text: "In North America, in the EU, data centers" },
+  { start: 302.2, end: 305.2, text: "are now the single largest driver of new electricity demand." },
+  { start: 305.2, end: 307.5, text: "It\'s like a parallel energy system is being built." },
+  { start: 307.5, end: 310.3, text: "Give us the hard numbers on that because they are pretty shocking." },
+  { start: 310.3, end: 311.6, text: "They\'re unprecedented." },
+  { start: 311.6, end: 315.8, text: "In the US, they\'re expecting nearly a 25% annual growth rate" },
+  { start: 315.8, end: 318.7, text: "in power demand from data centers until 23rd." },
+  { start: 318.7, end: 320.6, text: "Wait, a 25% annual growth rate?" },
+  { start: 320.6, end: 321.6, text: "Annual, yeah." },
+  { start: 321.6, end: 323.6, text: "That\'s not just optimizing the grid." },
+  { start: 323.6, end: 326.3, text: "That\'s building a whole new grid every few years" },
+  { start: 326.3, end: 328.0, text: "just to keep up with algorithms." },
+  { start: 328.0, end: 330.4, text: "And if that trend continues, data centers" },
+  { start: 330.4, end: 333.9, text: "could account for over 14% of total US power demand" },
+  { start: 333.9, end: 335.3, text: "by the end of this decade." },
+  { start: 335.3, end: 338.4, text: "Well, and this isn\'t flexible demand, is it?" },
+  { start: 338.4, end: 339.1, text: "Not at all." },
+  { start: 339.1, end: 342.0, text: "It\'s 2.064.7365." },
+  { start: 342.0, end: 344.0, text: "It needs maximum reliability." },
+  { start: 344.0, end: 345.3, text: "That\'s the security win." },
+  { start: 345.3, end: 347.8, text: "And maximum affordability, the cost win." },
+  { start: 347.8, end: 350.6, text: "So it forces this huge rapid power build out" },
+  { start: 350.6, end: 353.4, text: "that is often carbon intensive because speed and reliability" },
+  { start: 353.4, end: 354.9, text: "just went out over emissions." },
+  { start: 354.9, end: 356.5, text: "So there\'s the feedback loop." },
+  { start: 356.5, end: 359.1, text: "Energy instability creates a need for AI," },
+  { start: 359.1, end: 361.4, text: "but then the AI blows up energy demand." },
+  { start: 361.4, end: 363.9, text: "OK, let\'s shift to the technology driving this." },
+  { start: 363.9, end: 365.6, text: "AI uses everywhere now, right?" },
+  { start: 365.6, end: 369.4, text: "Something like 88% of organizations report regular use." },
+  { start: 369.4, end: 370.1, text: "That\'s right." },
+  { start: 370.1, end: 372.1, text: "But that\'s mostly basic machine learning." },
+  { start: 372.1, end: 374.8, text: "The real excitement, the thing driving this new demand" },
+  { start: 374.8, end: 376.2, text: "is AI agents." },
+  { start: 376.2, end: 377.8, text: "And an agent is different now." },
+  { start: 377.8, end: 381.6, text: "It\'s a system that can actually plan and execute complex tasks." },
+  { start: 381.6, end: 382.6, text: "It\'s not just assisting you." },
+  { start: 382.6, end: 384.1, text: "It\'s performing a job." },
+  { start: 384.1, end: 386.3, text: "And the sources show that 62% of companies" },
+  { start: 386.3, end: 387.4, text: "are experimenting with them." },
+  { start: 387.4, end: 389.9, text: "And 23% are already trying to scale them up." },
+  { start: 389.9, end: 392.4, text: "OK, 23% scaling is pretty significant." },
+  { start: 392.4, end: 394.8, text: "But I also saw that only about a third of companies" },
+  { start: 394.8, end: 397.9, text: "say they\'re scaling AI across their entire organization." },
+  { start: 397.9, end: 399.4, text: "So what\'s the gap?" },
+  { start: 399.4, end: 401.4, text: "What separates the ones who succeed" },
+  { start: 401.4, end: 403.1, text: "from the ones stuck in pilot mode?" },
+  { start: 403.1, end: 406.0, text: "It really comes down to their strategic ambition." },
+  { start: 406.0, end: 407.9, text: "We have to look at what the sources" },
+  { start: 407.9, end: 410.2, text: "call AI high performers." },
+  { start: 410.2, end: 412.4, text: "And those are the companies seeing a real impact" },
+  { start: 412.4, end: 413.1, text: "on the bottom line." },
+  { start: 413.1, end: 417.1, text: "A 5% or greater EBIT impact from AI, yeah." },
+  { start: 417.1, end: 419.6, text: "They aren\'t just trying to automate what they already do." },
+  { start: 419.6, end: 422.1, text: "They\'re fundamentally redesigning their business." },
+  { start: 422.1, end: 424.0, text: "So they\'re not just automating spreadsheets." },
+  { start: 424.0, end: 424.8, text: "Exactly." },
+  { start: 424.8, end: 427.2, text: "They are three times more likely to redesign" },
+  { start: 427.2, end: 430.2, text: "entire workflows around what AI can do." },
+  { start: 430.2, end: 431.7, text: "And here\'s the key stat." },
+  { start: 431.7, end: 434.3, text: "They are 3.6 times more likely to aim" },
+  { start: 434.3, end: 438.7, text: "for transformative change in a real innovation new growth," },
+  { start: 438.7, end: 440.9, text: "rather than just incremental efficiency." },
+  { start: 440.9, end: 442.8, text: "If you just see AI as a way to cut costs," },
+  { start: 442.8, end: 443.9, text: "you won\'t get very far." },
+  { start: 443.9, end: 444.8, text: "You won\'t scale." },
+  { start: 444.8, end: 446.7, text: "And that transformative mindset," },
+  { start: 446.7, end: 449.6, text: "that leads directly to creating new businesses, right?" },
+  { start: 449.6, end: 452.7, text: "That\'s where AI becomes this huge economic catalyst." },
+  { start: 452.7, end: 454.4, text: "It just speeds everything up." },
+  { start: 454.4, end: 456.5, text: "The most stunning data point is how" },
+  { start: 456.5, end: 458.8, text: "it\'s shrinking the cost even gets started." },
+  { start: 458.8, end: 460.0, text: "How much does it come down?" },
+  { start: 460.0, end: 460.7, text: "A lot." },
+  { start: 460.7, end: 462.8, text: "The average investment a new corporate venture" },
+  { start: 462.8, end: 466.7, text: "needs to break even has dropped from $125 million" },
+  { start: 466.7, end: 468.4, text: "to just $77 million." },
+  { start: 468.4, end: 470.5, text: "From $125 to $77?" },
+  { start: 470.5, end: 471.6, text: "In just a year." },
+  { start: 471.6, end: 474.8, text: "Yes, that\'s nearly 40% reduction in the capital you need" },
+  { start: 474.8, end: 476.2, text: "to get a new idea off the ground." },
+  { start: 476.2, end: 479.6, text: "That\'s a tectonic shift in how you do strategic planning." },
+  { start: 479.6, end: 482.1, text: "Less capital, and I\'m guessing faster to market." },
+  { start: 482.1, end: 483.1, text: "Absolutely." },
+  { start: 483.1, end: 484.6, text: "The average time for a new venture" },
+  { start: 484.6, end: 486.8, text: "to cross the $10 million annual revenue" },
+  { start: 486.8, end: 488.9, text: "mark is down to about 31 months." },
+  { start: 488.9, end: 490.1, text: "It used to be 38." },
+  { start: 490.1, end: 493.0, text: "So you can get to meaningful revenue faster with less money." },
+  { start: 493.0, end: 495.6, text: "So it\'s no surprise that the future of corporate venturing" },
+  { start: 495.6, end: 496.7, text: "is all about AI." },
+  { start: 496.7, end: 500.2, text: "56% of companies plan to build data, analytics," },
+  { start: 500.2, end: 503.3, text: "or AI-driven businesses in the next five years." },
+  { start: 503.3, end: 505.6, text: "It\'s completely redefining software." },
+  { start: 505.6, end: 507.8, text: "We\'re moving into what the source is called the AI plus" },
+  { start: 507.8, end: 508.6, text: "sauce era." },
+  { start: 508.6, end: 511.2, text: "Where the software goes from being a tool that helps you work." },
+  { start: 511.2, end: 514.0, text: "To a platform that actively does the work for you." },
+  { start: 514.0, end: 517.2, text: "But the business model is struggling to keep up." },
+  { start: 517.2, end: 519.3, text: "If the AI is doing the work," },
+  { start: 519.3, end: 522.5, text: "the old per user subscription doesn\'t really make sense." },
+  { start: 522.5, end: 523.0, text: "It doesn\'t." },
+  { start: 523.0, end: 524.9, text: "It has to shift to consumption." },
+  { start: 524.9, end: 527.4, text: "If the value is in the ticket that got resolved" },
+  { start: 527.4, end: 530.2, text: "or the task that got completed, the revenue model" },
+  { start: 530.2, end: 532.0, text: "has to align with that." },
+  { start: 532.0, end: 535.0, text: "But that introduces a couple of huge challenges." },
+  { start: 535.0, end: 536.5, text: "The first one being that customers" },
+  { start: 536.5, end: 538.5, text: "have no idea how to budget for it." },
+  { start: 538.5, end: 539.8, text: "Precisely." },
+  { start: 539.8, end: 541.5, text: "There\'s no price predictability." },
+  { start: 541.5, end: 543.4, text: "If a CFO can\'t forecast what they\'re" },
+  { start: 543.4, end: 545.9, text: "going to spend on these AI agents next quarter," },
+  { start: 545.9, end: 548.7, text: "they\'re just going to hit the pause button on a big deployment." },
+  { start: 548.7, end: 550.0, text: "And what\'s the second challenge?" },
+  { start: 550.0, end: 551.6, text: "The internal cost." },
+  { start: 551.6, end: 553.6, text: "Most companies completely under budget" },
+  { start: 553.6, end: 555.4, text: "for the change management required." },
+  { start: 555.4, end: 557.3, text: "There\'s a rule of thumb in the sources." },
+  { start: 557.3, end: 560.1, text: "For every $1 you spend on developing the model." },
+  { start: 560.1, end: 562.0, text: "The shiny new AI tech." },
+  { start: 562.0, end: 562.6, text: "Right." },
+  { start: 562.6, end: 565.1, text: "You should expect to spend $3 on change management." },
+  { start: 565.1, end: 567.1, text: "That\'s employee training, reinforcement," },
+  { start: 567.1, end: 569.8, text: "getting your organization ready to actually use it at scale." },
+  { start: 569.8, end: 571.7, text: "And most companies are just spending the $1" },
+  { start: 571.7, end: 573.4, text: "and wondering why nothing changes." },
+  { start: 573.4, end: 573.9, text: "Correct." },
+  { start: 573.9, end: 577.0, text: "They build the tech, but they neglect the transformation, which" },
+  { start: 577.0, end: 579.7, text: "is always the harder, more expensive part, which brings us" },
+  { start: 579.7, end: 581.6, text: "all the way back to the synthesis." },
+  { start: 581.6, end: 585.8, text: "We have this super fast high velocity digital world" },
+  { start: 585.8, end: 589.3, text: "creating massive volatile energy demand." },
+  { start: 589.3, end: 592.5, text: "And that whole system is now hitting a physical wall." },
+  { start: 592.5, end: 593.7, text: "The bottleneck." },
+  { start: 593.7, end: 595.1, text: "It\'s physical reality." },
+  { start: 595.1, end: 596.6, text: "The whole system is being constrained" },
+  { start: 596.6, end: 597.8, text: "by old infrastructure." },
+  { start: 597.8, end: 600.3, text: "The supply chains are actively slowing down" },
+  { start: 600.3, end: 601.8, text: "the energy transition we need." },
+  { start: 601.8, end: 603.1, text: "What kind of constraints are we talking about?" },
+  { start: 603.1, end: 603.9, text: "Super hardware." },
+  { start: 603.9, end: 605.7, text: "High voltage transformers have seen" },
+  { start: 605.7, end: 608.8, text: "two to threefold cost increases since 2020." },
+  { start: 608.8, end: 610.8, text: "Lead times are stretching out for years." },
+  { start: 610.8, end: 613.4, text: "You can\'t run the AI if you can\'t get the electricity" },
+  { start: 613.4, end: 614.3, text: "to the data center." },
+  { start: 614.3, end: 616.8, text: "So given all these pressures, security," },
+  { start: 616.8, end: 619.3, text: "affordability, the rising cost of building things," },
+  { start: 619.3, end: 621.4, text: "what\'s the final strategic conclusion here?" },
+  { start: 621.4, end: 623.3, text: "Where should the investment go?" },
+  { start: 623.3, end: 625.6, text: "The conclusion is pretty clear that the money should go" },
+  { start: 625.6, end: 627.8, text: "to the cheapest, easiest wins." },
+  { start: 627.8, end: 630.4, text: "The final few percentage points of decarbonizing the power" },
+  { start: 630.4, end: 632.9, text: "sector are incredibly expensive." },
+  { start: 632.9, end: 636.1, text: "Almost nine times higher per ton of CO2 abated" },
+  { start: 636.1, end: 637.5, text: "than the earlier cuts." },
+  { start: 637.5, end: 641.2, text: "So instead of chasing that last most expensive 5%" },
+  { start: 641.2, end: 642.9, text: "in the power sector, you should focus" },
+  { start: 642.9, end: 646.5, text: "that capital on sectors like transport or heavy industry" },
+  { start: 646.5, end: 648.8, text: "where you can get a much bigger bang for your buck" },
+  { start: 648.8, end: 650.6, text: "in terms of emissions reduction." },
+  { start: 650.6, end: 652.4, text: "That maximizes the global impact." },
+  { start: 652.4, end: 655.2, text: "That forces a serious revaluation." },
+  { start: 655.2, end: 659.0, text: "So we have AI agents demanding maximum reliability," },
+  { start: 659.0, end: 662.5, text: "the security win, and AI business models" },
+  { start: 662.5, end: 666.0, text: "driven by affordability, the cost win." },
+  { start: 666.0, end: 667.5, text: "The pressure is clearly building" },
+  { start: 667.5, end: 668.9, text: "on the emissions reduction goal." },
+  { start: 668.9, end: 669.8, text: "It is." },
+  { start: 669.8, end: 672.4, text: "The solution has to be about merging the energy supply" },
+  { start: 672.4, end: 674.2, text: "directly with that digital demand." },
+  { start: 674.2, end: 676.5, text: "And that\'s the challenge we want to leave you with." },
+  { start: 676.5, end: 677.9, text: "Our final provocative thought for you" },
+  { start: 677.9, end: 679.4, text: "to mull over is this." },
+  { start: 679.4, end: 682.1, text: "Given all these grid constraints and the absolute need" },
+  { start: 682.1, end: 685.9, text: "for reliability, which specific triple-win infrastructure" },
+  { start: 685.9, end: 689.2, text: "investments, things like captive nuclear or geothermal plants" },
+  { start: 689.2, end: 691.6, text: "that are wired directly to a data center campus," },
+  { start: 691.6, end: 694.6, text: "which of those represents the best path forward in your region" },
+  { start: 694.6, end: 696.8, text: "to balance all three of these competing needs?" },
+  { start: 696.8, end: 698.3, text: "Think about that connection." },
+  { start: 698.3, end: 701.5, text: "The digital future and the physical grid needed to power it." },
+  { start: 701.5, end: 702.5, text: "Thanks for diving deep with us." },
+  { start: 702.5, end: 704.4, text: "We\'ll see you next time." }
+];
+
+const player = document.getElementById('player');
+const sentenceList = document.getElementById('sentenceList');
+let loopingIndex = -1;
+let playAllMode = false;
+let textHidden = false;
+let currentPlayingIndex = -1;
+let checkTimer = null;
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+function render() {
+  sentenceList.innerHTML = '';
+  segments.forEach((seg, i) => {
+    const div = document.createElement('div');
+    div.className = 'sentence';
+    div.dataset.index = i;
+    div.innerHTML = `
+      <button class="play-btn" title="재생">&#9654;</button>
+      <span class="time">${formatTime(seg.start)} - ${formatTime(seg.end)}</span>
+      <span class="text">${seg.text}</span>
+    `;
+    div.querySelector('.play-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSentence(i);
+    });
+    div.addEventListener('click', () => playSentence(i));
+    sentenceList.appendChild(div);
+  });
+}
+
+function playSentence(index) {
+  if (currentPlayingIndex === index && !player.paused) {
+    player.pause();
+    currentPlayingIndex = -1;
+    loopingIndex = -1;
+    stopCheck();
+    updateUI();
+    return;
+  }
+  loopingIndex = -1;
+  playAllMode = false;
+  document.getElementById('playAllBtn').classList.remove('active');
+
+  const seg = segments[index];
+  currentPlayingIndex = index;
+  updateUI();
+
+  const doPlay = () => {
+    player.currentTime = seg.start;
+    player.play().then(() => {
+      startCheck();
+    }).catch(err => {
+      console.error('Play failed:', err);
+    });
+  };
+
+  if (player.readyState >= 1) {
+    doPlay();
+  } else {
+    player.addEventListener('loadedmetadata', doPlay, { once: true });
+    player.load();
+  }
+}
+
+function findCurrentSegment(time) {
+  for (let i = 0; i < segments.length; i++) {
+    if (time >= segments[i].start && time < segments[i].end) return i;
+  }
+  return -1;
+}
+
+function startCheck() {
+  stopCheck();
+  checkTimer = setInterval(() => {
+    const time = player.currentTime;
+    const idx = currentPlayingIndex;
+
+    const activeIdx = findCurrentSegment(time);
+    if (activeIdx !== currentPlayingIndex && activeIdx >= 0) {
+      if (!playAllMode && loopingIndex < 0) {
+        currentPlayingIndex = activeIdx;
+        updateUI();
+      }
+    }
+
+    if (idx < 0 || idx >= segments.length) return;
+    const seg = segments[idx];
+
+    if (time >= seg.end - 0.05) {
+      if (loopingIndex === idx) {
+        player.currentTime = seg.start;
+        player.play();
+      } else if (playAllMode && idx < segments.length - 1) {
+        currentPlayingIndex = idx + 1;
+        player.currentTime = segments[idx + 1].start;
+        player.play();
+        updateUI();
+      } else {
+        player.pause();
+        currentPlayingIndex = -1;
+        stopCheck();
+        updateUI();
+      }
+    }
+  }, 50);
+}
+
+player.addEventListener('play', () => {
+  if (checkTimer === null) startCheck();
+});
+player.addEventListener('pause', () => {});
+player.addEventListener('seeked', () => {
+  const idx = findCurrentSegment(player.currentTime);
+  if (idx >= 0) {
+    currentPlayingIndex = idx;
+    updateUI();
+  }
+});
+
+function stopCheck() {
+  if (checkTimer) { clearInterval(checkTimer); checkTimer = null; }
+}
+
+function updateUI() {
+  document.querySelectorAll('.sentence').forEach((el, i) => {
+    el.classList.toggle('playing', i === currentPlayingIndex);
+    const btn = el.querySelector('.play-btn');
+    btn.classList.toggle('looping', i === loopingIndex);
+    if (textHidden) {
+      el.querySelector('.text').classList.add('hidden-text');
+    } else {
+      el.querySelector('.text').classList.remove('hidden-text');
+    }
+  });
+  if (currentPlayingIndex >= 0) {
+    const el = document.querySelectorAll('.sentence')[currentPlayingIndex];
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function togglePlayAll() {
+  playAllMode = !playAllMode;
+  document.getElementById('playAllBtn').classList.toggle('active', playAllMode);
+  if (playAllMode) {
+    loopingIndex = -1;
+    currentPlayingIndex = 0;
+    player.currentTime = segments[0].start;
+    player.play().then(() => startCheck()).catch(err => console.error(err));
+    updateUI();
+  } else {
+    player.pause();
+    currentPlayingIndex = -1;
+    stopCheck();
+    updateUI();
+  }
+}
+
+function toggleHideText() {
+  textHidden = !textHidden;
+  const btn = document.getElementById('hideTextBtn');
+  btn.classList.toggle('active', textHidden);
+  btn.innerHTML = textHidden ? '&#128065; 문장 보이기' : '&#128065; 문장 숨기기';
+  updateUI();
+}
+
+function changeSpeed(val) {
+  player.playbackRate = parseFloat(val);
+}
+
+sentenceList.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  const sentenceEl = e.target.closest('.sentence');
+  if (!sentenceEl) return;
+  const idx = parseInt(sentenceEl.dataset.index);
+  if (loopingIndex === idx) {
+    loopingIndex = -1;
+  } else {
+    loopingIndex = idx;
+    currentPlayingIndex = idx;
+    player.currentTime = segments[idx].start;
+    player.play();
+    startCheck();
+  }
+  updateUI();
+});
+
+render();
+</script>
+</body>
+</html>

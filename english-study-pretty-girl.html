@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Study - 예쁘지만 인기 없는 여자 특징</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #333; }
+
+.layout {
+  display: flex;
+  height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.left-panel {
+  width: 340px;
+  flex-shrink: 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+h1 { font-size: 1.1rem; text-align: center; padding: 4px 0 12px; color: #555; }
+
+.video-wrap {
+  background: #000; border-radius: 10px; overflow: hidden;
+  width: 100%; margin-bottom: 12px;
+}
+video { width: 100%; display: block; }
+
+.controls { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; justify-content: center; }
+.controls button, .controls select {
+  padding: 5px 12px; border: 1px solid #ddd; border-radius: 20px;
+  background: #fff; cursor: pointer; font-size: 0.8rem; color: #555;
+  transition: all 0.2s;
+}
+.controls button:hover { background: #e8e8e8; }
+.controls button.active { background: #4a90d9; color: #fff; border-color: #4a90d9; }
+.controls select { appearance: none; padding-right: 10px; }
+
+.right-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 16px 24px 8px;
+  border-left: 1px solid #e0e0e0;
+}
+
+.sentences { display: flex; flex-direction: column; gap: 4px; }
+.sentence {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; background: #fff; border-radius: 10px;
+  border: 2px solid transparent; cursor: pointer;
+  transition: all 0.2s;
+}
+.sentence:hover { background: #f0f4ff; }
+.sentence.playing { border-color: #4a90d9; background: #eef3ff; }
+.sentence .play-btn {
+  width: 30px; height: 30px; border-radius: 50%; border: none;
+  background: #4a90d9; color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; flex-shrink: 0;
+  transition: background 0.2s;
+}
+.sentence .play-btn:hover { background: #3a7bc8; }
+.sentence .play-btn.looping { background: #e8793a; }
+.sentence .time { font-size: 0.75rem; color: #999; min-width: 80px; flex-shrink: 0; }
+.sentence .text { flex: 1; font-size: 0.9rem; line-height: 1.5; }
+.sentence .text.hidden-text { color: transparent; background: #e0e0e0; border-radius: 4px; user-select: none; }
+.sentence .text.hidden-text::selection { color: transparent; background: transparent; }
+
+@media (max-width: 700px) {
+  .layout { flex-direction: column; }
+  .left-panel { width: 100%; padding: 10px; }
+  .video-wrap { max-width: 300px; }
+  .right-panel { border-left: none; border-top: 1px solid #e0e0e0; padding: 10px; }
+  .sentence { padding: 8px 10px; gap: 8px; }
+  .sentence .time { display: none; }
+  .sentence .text { font-size: 0.85rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <div class="left-panel">
+    <h1>예쁘지만 인기 없는 여자 특징</h1>
+    <div class="video-wrap">
+      <video id="player" controls preload="metadata">
+        <source src="/assets/videos/pretty-girl-no-date.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="controls">
+      <button id="playAllBtn" onclick="togglePlayAll()">&#9654; 전체 재생</button>
+      <button id="hideTextBtn" onclick="toggleHideText()">&#128065; 문장 숨기기</button>
+      <select id="speedSelect" onchange="changeSpeed(this.value)">
+        <option value="0.5">0.5x</option>
+        <option value="0.75">0.75x</option>
+        <option value="1" selected>1x</option>
+        <option value="1.25">1.25x</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="sentences" id="sentenceList"></div>
+  </div>
+</div>
+
+<script>
+const segments = [
+  { start: 0.0, end: 1.5, text: "Hello, this is Tina Alpine." },
+  { start: 1.5, end: 4.4, text: "Hi, I'm calling because I'm feeling kind of down." },
+  { start: 4.4, end: 6.9, text: "No one wants to ask me out because of my looks." },
+  { start: 6.9, end: 8.6, text: "Guys at school are idiots." },
+  { start: 8.6, end: 10.9, text: "Anybody would be lucky to go to prom with you." },
+  { start: 10.9, end: 12.7, text: "Well, how about you?" },
+  { start: 12.7, end: 14.3, text: "Do you want to go to prom with me?" },
+  { start: 14.3, end: 15.3, text: "Uh..." },
+  { start: 15.3, end: 16.8, text: "Oh, no, I made it awkward." },
+  { start: 16.8, end: 18.2, text: "It was stupid to ask." },
+  { start: 18.2, end: 19.1, text: "Oh, no, no, no." },
+  { start: 19.1, end: 20.5, text: "I'd love to go to prom with you." },
+  { start: 20.5, end: 21.5, text: "Really?" },
+  { start: 21.5, end: 24.5, text: "My name is Oliver, and I live at 23 Woody Lane." },
+  { start: 24.5, end: 25.3, text: "Great." },
+  { start: 25.3, end: 27.2, text: "I'll pick you up tomorrow night at seven." },
+  { start: 27.2, end: 31.8, text: "You're ditching prom to go to prom with some lonely teen helpline chica loca?" },
+  { start: 31.8, end: 33.6, text: "I'm sorry, dude. It just happened." },
+  { start: 33.6, end: 36.1, text: "I want to go to prom, but I have to do the right thing." },
+  { start: 36.1, end: 37.7, text: "She hasn't even confirmed." },
+  { start: 37.7, end: 38.9, text: "She might be blowing you off." },
+  { start: 38.9, end: 39.9, text: "Why would she do that?" },
+  { start: 39.9, end: 43.6, text: "Because it's funny and cruel, and that's the world we live in." },
+  { start: 43.6, end: 44.8, text: "Are you my prom date?" },
+  { start: 44.8, end: 45.5, text: "Oliver?" },
+  { start: 45.5, end: 46.2, text: "You ready?" },
+  { start: 46.2, end: 46.7, text: "Yes." },
+  { start: 46.7, end: 48.4, text: "Just one quick question." },
+  { start: 48.4, end: 50.6, text: "You said no one asked you to prom because of your looks." },
+  { start: 50.6, end: 54.4, text: "Every guy at school either thought I had a date or was too intimidated to ask." },
+  { start: 54.4, end: 56.2, text: "Have fun at prom." },
+];
+
+const player = document.getElementById('player');
+const sentenceList = document.getElementById('sentenceList');
+const scrollArea = document.querySelector('.scroll-area');
+let loopingIndex = -1;
+let playAllMode = false;
+let textHidden = false;
+let currentPlayingIndex = -1;
+let checkTimer = null;
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+function render() {
+  sentenceList.innerHTML = '';
+  segments.forEach((seg, i) => {
+    const div = document.createElement('div');
+    div.className = 'sentence';
+    div.dataset.index = i;
+    div.innerHTML = `
+      <button class="play-btn" title="재생">&#9654;</button>
+      <span class="time">${formatTime(seg.start)} - ${formatTime(seg.end)}</span>
+      <span class="text">${seg.text}</span>
+    `;
+    div.querySelector('.play-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSentence(i);
+    });
+    div.addEventListener('click', () => playSentence(i));
+    sentenceList.appendChild(div);
+  });
+}
+
+function playSentence(index) {
+  if (currentPlayingIndex === index && !player.paused) {
+    player.pause();
+    currentPlayingIndex = -1;
+    loopingIndex = -1;
+    stopCheck();
+    updateUI();
+    return;
+  }
+  loopingIndex = -1;
+  playAllMode = false;
+  document.getElementById('playAllBtn').classList.remove('active');
+
+  const seg = segments[index];
+  currentPlayingIndex = index;
+  updateUI();
+
+  const doPlay = () => {
+    player.currentTime = seg.start;
+    player.play().then(() => {
+      startCheck();
+    }).catch(err => {
+      console.error('Play failed:', err);
+    });
+  };
+
+  if (player.readyState >= 1) {
+    doPlay();
+  } else {
+    player.addEventListener('loadedmetadata', doPlay, { once: true });
+    player.load();
+  }
+}
+
+function findCurrentSegment(time) {
+  for (let i = 0; i < segments.length; i++) {
+    if (time >= segments[i].start && time < segments[i].end) return i;
+  }
+  return -1;
+}
+
+function startCheck() {
+  stopCheck();
+  checkTimer = setInterval(() => {
+    const time = player.currentTime;
+    const idx = currentPlayingIndex;
+
+    // 실시간 하이라이트: 현재 재생 시간에 맞는 문장 추적
+    const activeIdx = findCurrentSegment(time);
+    if (activeIdx !== currentPlayingIndex && activeIdx >= 0) {
+      if (!playAllMode && loopingIndex < 0) {
+        // 사용자가 영상을 직접 조작하는 경우 현재 문장 추적
+        currentPlayingIndex = activeIdx;
+        updateUI();
+      }
+    }
+
+    if (idx < 0 || idx >= segments.length) return;
+    const seg = segments[idx];
+
+    if (time >= seg.end - 0.05) {
+      if (loopingIndex === idx) {
+        player.currentTime = seg.start;
+        player.play();
+      } else if (playAllMode && idx < segments.length - 1) {
+        currentPlayingIndex = idx + 1;
+        player.currentTime = segments[idx + 1].start;
+        player.play();
+        updateUI();
+      } else {
+        player.pause();
+        currentPlayingIndex = -1;
+        stopCheck();
+        updateUI();
+      }
+    }
+  }, 50);
+}
+
+// 사용자가 영상 컨트롤로 직접 재생할 때도 하이라이트 추적
+player.addEventListener('play', () => {
+  if (checkTimer === null) startCheck();
+});
+player.addEventListener('pause', () => {
+  if (!playAllMode && loopingIndex < 0) {
+    // 수동 일시정지 시 타이머 유지하되 상태만 업데이트
+  }
+});
+player.addEventListener('seeked', () => {
+  const idx = findCurrentSegment(player.currentTime);
+  if (idx >= 0) {
+    currentPlayingIndex = idx;
+    updateUI();
+  }
+});
+
+function stopCheck() {
+  if (checkTimer) { clearInterval(checkTimer); checkTimer = null; }
+}
+
+function updateUI() {
+  document.querySelectorAll('.sentence').forEach((el, i) => {
+    el.classList.toggle('playing', i === currentPlayingIndex);
+    const btn = el.querySelector('.play-btn');
+    btn.classList.toggle('looping', i === loopingIndex);
+    if (textHidden) {
+      el.querySelector('.text').classList.add('hidden-text');
+    } else {
+      el.querySelector('.text').classList.remove('hidden-text');
+    }
+  });
+  if (currentPlayingIndex >= 0) {
+    const el = document.querySelectorAll('.sentence')[currentPlayingIndex];
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function togglePlayAll() {
+  playAllMode = !playAllMode;
+  document.getElementById('playAllBtn').classList.toggle('active', playAllMode);
+  if (playAllMode) {
+    loopingIndex = -1;
+    currentPlayingIndex = 0;
+    player.currentTime = segments[0].start;
+    player.play().then(() => startCheck()).catch(err => console.error(err));
+    updateUI();
+  } else {
+    player.pause();
+    currentPlayingIndex = -1;
+    stopCheck();
+    updateUI();
+  }
+}
+
+function toggleHideText() {
+  textHidden = !textHidden;
+  const btn = document.getElementById('hideTextBtn');
+  btn.classList.toggle('active', textHidden);
+  btn.innerHTML = textHidden ? '&#128065; 문장 보이기' : '&#128065; 문장 숨기기';
+  updateUI();
+}
+
+function changeSpeed(val) {
+  player.playbackRate = parseFloat(val);
+}
+
+sentenceList.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  const sentenceEl = e.target.closest('.sentence');
+  if (!sentenceEl) return;
+  const idx = parseInt(sentenceEl.dataset.index);
+  if (loopingIndex === idx) {
+    loopingIndex = -1;
+  } else {
+    loopingIndex = idx;
+    currentPlayingIndex = idx;
+    player.currentTime = segments[idx].start;
+    player.play();
+    startCheck();
+  }
+  updateUI();
+});
+
+render();
+</script>
+</body>
+</html>
