@@ -2,7 +2,7 @@
 layout: single
 classes: wide
 title: "Plug Power's Hydrogen Gamble on AI"
-categories: English
+categories: Audio
 tags: [study, listening]
 toc: true
 toc_sticky: true

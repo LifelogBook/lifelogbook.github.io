@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "Capgemini Insurance Top Trends 2026 - Full Report Summary"
-categories: English
+categories: Report_Summary
 tags: [insurance, capgemini, english-study, fintech, AI, climate]
 toc: true
 toc_sticky: true

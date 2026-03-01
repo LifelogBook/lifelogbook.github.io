@@ -2,7 +2,7 @@
 layout: single
 classes: wide
 title: "AI Energy Collides with Climate Goals"
-categories: English
+categories: Report_Summary
 tags: [study, listening]
 toc: true
 toc_sticky: true

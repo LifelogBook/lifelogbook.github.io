@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "[Shorts] Pretty but Unpopular Girl"
-categories: English
+categories: Audio
 tags: [shorts]
 toc: false
 author_profile: false

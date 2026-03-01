@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "Top Tech Trends of 2025 - Capgemini Report Summary"
-categories: English
+categories: Report_Summary
 tags: [investment, AI, english-study, capgemini, technology-trends]
 toc: true
 toc_sticky: true

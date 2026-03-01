@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "Capgemini Top Tech Trends Report 2026 - Full Report Summary"
-categories: English
+categories: Report_Summary
 tags: [tech, capgemini, english-study, AI, cloud, sovereignty, agentic-AI]
 toc: true
 toc_sticky: true

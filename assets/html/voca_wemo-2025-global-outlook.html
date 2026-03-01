@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WEMO 2025 Global Outlook — 영어 표현 학습 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d1b2a;
+    --ink2: #1e3248;
+    --cream: #f4f8fc;
+    --warm: #e8f2f9;
+    --accent: #1565c0;
+    --accent2: #00897b;
+    --teal: #00acc1;
+    --blue: #1976d2;
+    --purple: #7b1fa2;
+    --gold: #f9a825;
+    --line: #cfe0f0;
+    --card-bg: #ffffff;
+    --shadow: 0 2px 16px rgba(13,27,42,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1a3a5c 60%, #0a5c6e 100%);
+    color: white;
+    padding: 48px 40px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(0,172,193,0.12);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 30%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(0,137,123,0.1);
+  }
+  .header-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #4dd0e1;
+    margin-bottom: 12px;
+    position: relative; z-index: 1;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.2;
+    position: relative; z-index: 1;
+    max-width: 680px;
+  }
+  header h1 em {
+    font-style: italic;
+    color: #80deea;
+  }
+  .header-sub {
+    margin-top: 14px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    position: relative; z-index: 1;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    background: white;
+    border-bottom: 1px solid var(--line);
+    padding: 16px 40px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .stat { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #666; }
+  .stat strong { color: var(--ink); font-weight: 600; font-size: 18px; }
+
+  /* ── FILTERS ── */
+  .filters {
+    padding: 24px 40px 0;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #999; margin-right: 4px; }
+  .filter-btn {
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--ink2);
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--ink); color: white; border-color: var(--ink); }
+  .filter-btn.cat-phrasal.active { background: var(--teal); border-color: var(--teal); }
+  .filter-btn.cat-idiom.active { background: var(--purple); border-color: var(--purple); }
+  .filter-btn.cat-collocation.active { background: var(--blue); border-color: var(--blue); }
+  .filter-btn.cat-advanced.active { background: var(--accent); border-color: var(--accent); }
+  .filter-btn.cat-business.active { background: var(--accent2); border-color: var(--accent2); }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+    padding: 24px 40px 60px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(13,27,42,0.12);
+  }
+  .card.flipped .card-front { display: none; }
+  .card.flipped .card-back { display: flex; }
+  .card.flipped { border-color: var(--gold); }
+
+  .card-top {
+    padding: 20px 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .tag-phrasal { background: #e0f7fa; color: var(--teal); }
+  .tag-idiom { background: #f3e5f5; color: var(--purple); }
+  .tag-collocation { background: #e3f2fd; color: var(--blue); }
+  .tag-advanced { background: #e3f2fd; color: var(--accent); }
+  .tag-business { background: #e0f2f1; color: #00695c; }
+
+  .difficulty {
+    display: flex; gap: 3px;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .dot.on { background: var(--gold); }
+
+  .card-front {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 20px 20px;
+  }
+
+  .entry-word {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .entry-word mark {
+    background: #bbdefb;
+    border-radius: 3px;
+    padding: 0 2px;
+    font-style: italic;
+  }
+
+  .entry-pron {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--line);
+    margin: 10px 0;
+  }
+
+  .entry-kor {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .entry-example {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+    background: var(--warm);
+    border-left: 3px solid var(--line);
+    padding: 8px 12px;
+    border-radius: 0 6px 6px 0;
+    margin-top: 8px;
+  }
+  .entry-example em {
+    color: var(--ink);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .flip-hint {
+    font-size: 11px;
+    color: #bbb;
+    text-align: right;
+    margin-top: 12px;
+  }
+
+  .card-back {
+    display: none;
+    flex-direction: column;
+    padding: 20px;
+    background: var(--ink);
+    color: white;
+    flex: 1;
+  }
+  .card-back .back-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: #80deea;
+    margin-bottom: 12px;
+  }
+
+  .nuance-box {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.88);
+  }
+  .nuance-box strong { color: #80deea; }
+
+  .compare-box {
+    background: rgba(0,172,193,0.18);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+  }
+  .compare-box strong { color: #80cbc4; }
+
+  .flip-hint-back {
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    text-align: right;
+    margin-top: 10px;
+  }
+
+  /* hidden */
+  .card.hidden { display: none; }
+
+  /* ── SECTION DIVIDERS ── */
+  .section-header {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0 4px;
+  }
+  .section-header span {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #aaa;
+    white-space: nowrap;
+  }
+  .section-header hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ── PROGRESS ── */
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--line);
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--teal));
+    transition: width 0.3s;
+    width: 0%;
+  }
+
+  @media (max-width: 600px) {
+    header, .stats-bar, .filters, .grid { padding-left: 20px; padding-right: 20px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
+
+<header>
+  <div class="header-label">WEMO 2025 Global Outlook · 어휘 학습</div>
+  <h1>에너지 전환 시대의 <em>영어 표현</em><br>핵심 35선</h1>
+  <div class="header-sub">카드를 클릭하면 뉘앙스 해설이 나옵니다 · Click cards to reveal nuance</div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat"><strong id="totalCount">35</strong> 표현</div>
+  <div class="stat"><strong id="learnedCount">0</strong> 학습완료</div>
+  <div class="stat"><strong id="remainCount">35</strong> 남은 표현</div>
+</div>
+
+<div class="filters">
+  <span class="filter-label">분류</span>
+  <button class="filter-btn active" onclick="filterCards('all')">전체</button>
+  <button class="filter-btn cat-phrasal" onclick="filterCards('phrasal')">Phrasal Verb</button>
+  <button class="filter-btn cat-idiom" onclick="filterCards('idiom')">Idiom / 비유</button>
+  <button class="filter-btn cat-collocation" onclick="filterCards('collocation')">Collocation</button>
+  <button class="filter-btn cat-advanced" onclick="filterCards('advanced')">고급 단어</button>
+  <button class="filter-btn cat-business" onclick="filterCards('business')">비즈니스 전용</button>
+</div>
+
+<div class="grid" id="cardGrid">
+
+<!-- ────────────────────────────────── PHRASAL VERBS ────────────────────────────────── -->
+
+<div class="section-header"><span>Phrasal Verbs</span><hr></div>
+
+<!-- 1 -->
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">scale <mark>back</mark></div>
+    <div class="entry-kor">축소하다, 규모를 줄이다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"BP…<em>scaled back</em> its commitments to low-carbon energy."<br>→ BP는 저탄소 에너지에 대한 약속을 축소했다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">scale back</div>
+    <div class="nuance-box">
+      <strong>핵심 뉘앙스:</strong> 완전히 중단하는 게 아니라 <strong>규모·범위·야망을 줄이는 것</strong>. 정치·경제 보도에서 자주 등장. "scale down"과 거의 동의어지만 "scale back"이 더 격식체.<br><br>
+      <strong>패턴:</strong> scale back + [투자/계획/목표/생산]<br>
+      scale back investments / scale back ambitions / scale back operations
+    </div>
+    <div class="compare-box"><strong>vs. cut back:</strong> cut back은 비용·지출 삭감에 초점. scale back은 규모·범위 축소에 초점.<br><strong>vs. pull back:</strong> pull back은 철수·후퇴 뉘앙스가 강함.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 2 -->
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">phase <mark>out</mark></div>
+    <div class="entry-kor">단계적으로 폐지하다, 점진적으로 없애다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"…a roadmap to <em>phase out</em> all Russian gas imports by end of 2027."<br>→ 2027년 말까지 러시아 가스 수입을 단계적으로 완전 폐지하는 로드맵</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">phase out</div>
+    <div class="nuance-box">
+      <strong>핵심 뉘앙스:</strong> 단번에 없애는 것이 아니라 <strong>일정 기간에 걸쳐 점진적으로 제거</strong>하는 것. 정책·에너지·기술 문맥에서 매우 자주 쓰임.<br><br>
+      <strong>파생:</strong> phase-out (n.) — "a coal phase-out by 2030"<br>
+      <strong>반대:</strong> phase in — 단계적으로 도입하다
+    </div>
+    <div class="compare-box"><strong>vs. eliminate:</strong> eliminate는 즉각적 제거 뉘앙스.<br><strong>vs. wind down:</strong> wind down은 서서히 활동을 줄여 문 닫는 것.<br><strong>phase out</strong>은 공식 정책·계획에서 가장 자주 사용.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 3 -->
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">fall <mark>short of</mark></div>
+    <div class="entry-kor">~에 미치지 못하다, 기대를 충족시키지 못하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Green hydrogen development…<em>fell short of</em> expectations."<br>→ 녹색 수소 개발이 기대에 미치지 못했다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">fall short of</div>
+    <div class="nuance-box">
+      <strong>핵심 뉘앙스:</strong> 목표·기준·기대치에 <strong>조금 못 미치는 것</strong>. 완전한 실패가 아니라 "아쉽게도 부족하다"는 뉘앙스가 강함.<br><br>
+      <strong>패턴:</strong> fall short of + [목표/기대/기준]<br>
+      fall short of the target / fall short of expectations / fall short of what is needed
+    </div>
+    <div class="compare-box"><strong>vs. fail to:</strong> fail to는 더 강한 실패 뉘앙스. fall short of는 "惜しい(아깝다)"에 가까움.<br><strong>vs. miss:</strong> miss the target처럼 쓸 수 있으나 fall short of가 더 격식체.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 4 -->
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">pull <mark>back from</mark></div>
+    <div class="entry-kor">~에서 손을 떼다, 철수하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"…companies…<em>pulling back from</em> their US ventures with financial losses."<br>→ 회사들이 재정 손실을 입으며 미국 사업에서 철수하고 있다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">pull back from</div>
+    <div class="nuance-box">
+      <strong>핵심 뉘앙스:</strong> 전진하다가 <strong>후퇴·철수</strong>하는 이미지. 군사·비즈니스·정치 문맥에서 쓰이며 "더 이상 관여하지 않겠다"는 결정을 내포.<br><br>
+      <strong>패턴:</strong> pull back from + [사업/공약/영역]<br>
+      pull back from commitments / pull back from the market
+    </div>
+    <div class="compare-box"><strong>vs. withdraw from:</strong> 더 공식적이고 완전한 탈퇴.<br><strong>vs. back away from:</strong> back away from은 서서히 거리를 두는 뉘앙스.<br><strong>pull back from</strong>은 전략적 후퇴 뉘앙스가 강함.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 5 -->
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">ramp <mark>up</mark></div>
+    <div class="entry-kor">급격히 늘리다, 가속화하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"…requiring rapid <em>ramp-up</em> of gas or coal plants to meet evening demand."<br>→ 저녁 수요를 충족하기 위해 가스·석탄 발전소를 급격히 가동해야 한다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">ramp up</div>
+    <div class="nuance-box">
+      <strong>핵심 뉘앙스:</strong> 경사로(ramp)처럼 <strong>빠르게 올라가는</strong> 이미지. 생산·투자·역량을 단기간에 크게 늘리는 것.<br><br>
+      <strong>파생:</strong> ramp-up (n.) — "a rapid ramp-up of manufacturing"<br>
+      <strong>패턴:</strong> ramp up + [생산/역량/투자/수출]
+    </div>
+    <div class="compare-box"><strong>vs. scale up:</strong> scale up은 장기적·구조적 확장. ramp up은 단기적·긴급한 증가 뉘앙스.<br><strong>vs. boost:</strong> boost는 일회성 증가. ramp up은 과정·추세를 강조.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 6 -->
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">roll <mark>back</mark></div>
+    <div class="entry-kor">되돌리다, 철폐하다, (규제·정책을) 취소하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"…<em>rolling back</em> climate and renewable energy initiatives from the previous administration."<br>→ 전임 행정부의 기후·재생에너지 정책을 철폐하고 있다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">roll back</div>
+    <div class="nuance-box">
+      <strong>핵심 뉘앙스:</strong> 이미 실행된 정책·규제·진전을 <strong>이전 상태로 되돌리는 것</strong>. 진보를 역행시킨다는 비판적 뉘앙스를 담기도 함.<br><br>
+      <strong>파생:</strong> rollback (n.) — "a rollback of environmental regulations"<br>
+      <strong>패턴:</strong> roll back + [규제/법안/정책/보조금]
+    </div>
+    <div class="compare-box"><strong>vs. repeal:</strong> repeal은 법률 공식 폐지. roll back은 좀 더 넓은 의미로 정책·약속·기준을 되돌리는 것.<br><strong>vs. reverse:</strong> reverse는 방향 전환 일반. roll back은 퇴보 뉘앙스가 강함.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────── IDIOM / 비유 ────────────────────────────────── -->
+
+<div class="section-header"><span>Idiom / 비유</span><hr></div>
+
+<!-- 7 -->
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom / 비유</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">tipping point</div>
+    <div class="entry-kor">전환점, 임계점 — 돌이킬 수 없는 변화가 시작되는 순간</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Has the energy transition reached a <em>tipping point</em>?"<br>→ 에너지 전환은 돌이킬 수 없는 임계점에 도달했는가?</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">tipping point</div>
+    <div class="nuance-box">
+      <strong>핵심 뉘앙스:</strong> Malcolm Gladwell의 책 제목으로 유명해진 표현. 물리학에서 "저울이 기울어지는 지점"에서 유래. <strong>작은 변화가 큰 연쇄 반응을 일으키는 임계 순간</strong>.<br><br>
+      기후과학에서도 핵심 개념: 북극 해빙 붕괴, 아마존 고사 등 회복 불가능한 시스템 변화의 임계점.
+    </div>
+    <div class="compare-box"><strong>vs. turning point:</strong> turning point는 단순한 전환점. tipping point는 <strong>돌이킬 수 없음(irreversibility)</strong> 뉘앙스가 핵심.<br><strong>vs. threshold:</strong> threshold는 더 기술적·중립적인 표현.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 8 -->
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom / 비유</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">chicken-and-egg problem</div>
+    <div class="entry-kor">닭이 먼저냐 달걀이 먼저냐 — 수요와 공급 중 어느 것이 먼저인지 알 수 없는 딜레마</div>
+    <div class="divider"></div>
+    <div class="entry-example">"…a classic <em>chicken-and-egg problem</em> between demand and production."<br>→ 수요와 생산 사이의 전형적인 닭이냐 달걀이냐 딜레마</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">chicken-and-egg problem</div>
+    <div class="nuance-box">
+      <strong>에너지 문맥:</strong> 수소 분야에서 전형적으로 나타남. <strong>"수요가 없으니 투자 안 한다"</strong> vs <strong>"공급 인프라가 없으니 수요가 안 생긴다"</strong> — 누가 먼저 움직여야 하는지 모르는 교착 상태.<br><br>
+      EV 충전 인프라, 탄소 포집 시장, 녹색 수소 등에 모두 적용 가능.
+    </div>
+    <div class="compare-box"><strong>vs. deadlock:</strong> deadlock은 완전한 교착. chicken-and-egg는 원인과 결과가 뒤엉킨 구조적 문제 강조.<br><strong>vs. catch-22:</strong> catch-22는 어떤 선택을 해도 막히는 역설. chicken-and-egg는 순환 의존 구조.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 9 -->
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom / 비유</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">duck curve</div>
+    <div class="entry-kor">오리 곡선 — 태양광 과잉 공급 시 전력망 수요 형태가 오리 모양이 되는 현상</div>
+    <div class="divider"></div>
+    <div class="entry-example">"…steep ramping requirements, as seen in California's '<em>duck curve</em>.'"<br>→ 캘리포니아의 '오리 곡선'에서 보이는 가파른 전력 증가 요구</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">duck curve</div>
+    <div class="nuance-box">
+      <strong>개념:</strong> 하루 중 태양광이 많이 발전하는 낮 시간대에 전력망의 <strong>'잔여 수요(net demand)'</strong>가 급감했다가 해 질 무렵 급증하는 패턴. 그 형태가 오리처럼 생겨서 duck curve라 불림.<br><br>
+      <strong>문제점:</strong> 저녁에 수 GW의 전력을 몇 분 안에 공급할 수 있는 발전소(주로 가스)가 필요 → 전력망 불안정.
+    </div>
+    <div class="compare-box"><strong>파생 개념:</strong> "coyote curve" — 더 극단적인 형태.<br>태양광 보급률이 높아질수록 duck curve가 더 가파르고(steeper) 관리하기 어려워짐.<br>해결책: 배터리 저장, 수요 반응(demand response), V2G 등.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 10 -->
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom / 비유</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">silver bullet</div>
+    <div class="entry-kor">만능 해결책 — 복잡한 문제를 단번에 해결하는 마법 같은 수단 (부재 강조)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"There are <em>no technical silver bullets</em> to meet 2030 goals."<br>→ 2030 목표를 달성할 기술적 만능 해결책은 없다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">silver bullet</div>
+    <div class="nuance-box">
+      <strong>어원:</strong> 늑대인간이나 악령을 죽이는 유일한 방법이 은탄환(silver bullet)이라는 전설에서 유래. → <strong>어떤 문제든 해결하는 단 하나의 완벽한 수단</strong>을 비유.<br><br>
+      에너지 문맥에서는 주로 <strong>부정문</strong>으로 쓰여 "복잡한 에너지 전환엔 한 가지 기술로는 해결 불가"를 강조.
+    </div>
+    <div class="compare-box"><strong>vs. magic bullet:</strong> 의학·약학 맥락에서 자주 쓰이며 특정 질병을 표적 치료하는 약물을 뜻함.<br><strong>vs. panacea:</strong> panacea /ˌpænəˈsiːə/ — 만병통치약. 더 격식체.<br>둘 다 주로 "no ~"와 함께 쓰여 단순 해결 불가를 강조.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 11 -->
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom / 비유</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">nuclear renaissance</div>
+    <div class="entry-kor">원전 르네상스 — 침체기를 지나 원자력이 다시 주목받는 부활 흐름</div>
+    <div class="divider"></div>
+    <div class="entry-example">"There is a renewed interest…This second goal became even more important…the <em>nuclear renaissance</em>."<br>→ 핵에너지에 대한 관심이 다시 커지며 원전 르네상스가 진행 중이다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">nuclear renaissance</div>
+    <div class="nuance-box">
+      <strong>배경:</strong> 2000년대 초 처음 사용된 표현. 후쿠시마(2011) 이후 잠시 퇴조했다가 2022년 러시아-우크라이나 전쟁으로 에너지 안보가 부각되며 다시 부상.<br><br>
+      <strong>2024-2025 르네상스 동인:</strong> ① EU 에너지 안보 ② AI 전력 수요 폭증 ③ 탄소중립 목표 ④ SMR 기술 발전 ⑤ COP28 원전 3배 확대 선언
+    </div>
+    <div class="compare-box"><strong>renaissance /rɪˈneɪsəns/:</strong> 문예부흥, 부활·재탄생. 어떤 분야의 부흥에도 붙일 수 있는 비유어.<br><strong>관련 표현:</strong> nuclear revival, nuclear comeback, new nuclear era</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 12 -->
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom / 비유</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">Not In My Backyard <span style="font-size:14px; color:#888;">(NIMBY)</span></div>
+    <div class="entry-kor">님비 — "내 뒷마당에는 안 된다" — 공익 시설에 반대하는 지역 이기주의</div>
+    <div class="divider"></div>
+    <div class="entry-example">"…'Not In My Backyard' syndrome fuels local resistance to renewable energy projects."<br>→ 님비 증후군이 재생에너지 프로젝트에 대한 지역 반발을 부채질한다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">NIMBY</div>
+    <div class="nuance-box">
+      <strong>에너지 문맥:</strong> 재생에너지 프로젝트의 최대 장벽 중 하나. 풍력 터빈, 고압 송전선, 원전, 배터리 저장소 등 <strong>필요하다는 것은 알지만 내 집 근처엔 싫다</strong>는 태도.<br><br>
+      독일 Südlink 송전선 지하화, 미국 Cardinal-Hickory Creek 선로 5년 지연 등이 대표적 NIMBY 사례.
+    </div>
+    <div class="compare-box"><strong>BANANA:</strong> Build Absolutely Nothing Anywhere Near Anything — NIMBY보다 더 극단적.<br><strong>YIMBY:</strong> Yes In My Backyard — NIMBY의 반대. 개발·건설을 환영하는 태도.<br><strong>파생:</strong> NIMBYism — 님비주의</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────── COLLOCATION ────────────────────────────────── -->
+
+<div class="section-header"><span>Collocation</span><hr></div>
+
+<!-- 13 -->
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">levelized cost of electricity <span style="font-size:13px; color:#999;">(LCOE)</span></div>
+    <div class="entry-kor">균등화 발전비용 — 발전소의 전 생애주기 비용을 총 발전량으로 나눈 단위 비용($/MWh)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Solar PV fixed-axis system <em>LCOE</em> was $66/MWh globally."<br>→ 태양광 고정축 시스템의 균등화 발전비용은 전 세계 평균 MWh당 66달러</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">LCOE</div>
+    <div class="nuance-box">
+      <strong>계산법:</strong> (건설비 + 운영비 + 연료비) ÷ 총 발전량 (MWh)<br><br>
+      <strong>한계:</strong> LCOE는 단순 발전 비용만 반영. 간헐성(intermittency)으로 인한 <strong>System LCOE</strong> — 백업 발전, 저장, 그리드 보강 등 추가 비용은 포함 안 됨. 태양광·풍력의 실제 비용은 LCOE보다 높을 수 있음.
+    </div>
+    <div class="compare-box"><strong>System LCOE:</strong> LCOE + 계통 연계 비용 (firming cost). 재생에너지 침투율이 높아질수록 System LCOE 상승.<br><strong>LCOH:</strong> Levelized Cost of Hydrogen — 수소 버전</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 14 -->
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">grid balancing</div>
+    <div class="entry-kor">전력망 균형 조정 — 실시간으로 전력 공급과 수요를 맞추는 과정</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>Grid balancing</em>, which is the process of matching electricity supply with demand in real time, is becoming increasingly difficult."<br>→ 전력망 균형 조정은 갈수록 어려워지고 있다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">grid balancing</div>
+    <div class="nuance-box">
+      <strong>핵심 개념:</strong> 전력망은 항상 <strong>발전량 = 소비량</strong>을 유지해야 함. 불균형 시 주파수(frequency) 변동이 발생해 정전 위험.<br><br>
+      <strong>관련 표현:</strong><br>
+      • frequency regulation — 주파수 조정<br>
+      • ancillary services — 보조 서비스 (주파수 유지, 전압 조정 등)<br>
+      • spinning reserve — 회전 예비력 (즉각 투입 가능한 대기 발전 용량)
+    </div>
+    <div class="compare-box"><strong>grid stability:</strong> 안정적 전압·주파수 유지 상태.<br><strong>grid resilience:</strong> 외란(disruption)에서 빠르게 회복하는 능력.<br><strong>grid flexibility:</strong> 변동하는 공급·수요에 적응하는 능력.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 15 -->
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">intermittent renewables</div>
+    <div class="entry-kor">간헐적 재생에너지 — 날씨·시간에 따라 출력이 불규칙한 태양광·풍력</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Grid operators face numerous challenges, including integrating a growing share of <em>intermittent renewable energy</em>."<br>→ 전력망 운영자들은 간헐적 재생에너지의 비중 증가를 통합하는 도전에 직면해 있다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">intermittent renewables</div>
+    <div class="nuance-box">
+      <strong>핵심 특성:</strong> 태양광은 밤에, 풍력은 무풍 시에 발전 불가 → <strong>예측 가능하되 통제 불가(predictable but not controllable)</strong>한 특성.<br><br>
+      <strong>관련 표현:</strong><br>
+      • variable renewable energy (VRE) — 더 중립적인 기술 용어<br>
+      • non-dispatchable — 수급 조절이 안 되는<br>
+      • capacity factor — 설비 이용률 (태양광 ~20%, 풍력 ~34%)
+    </div>
+    <div class="compare-box"><strong>vs. baseload:</strong> 24시간 안정적으로 공급되는 원전·석탄·수력 등.<br><strong>vs. dispatchable:</strong> 필요할 때 켜고 끌 수 있는 발전원 (가스터빈, 배터리 등).<br>간헐성 문제 해결이 에너지 전환의 핵심 과제.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 16 -->
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">demand response</div>
+    <div class="entry-kor">수요 반응 — 가격 신호나 유인책에 반응해 소비자가 전력 사용을 조절하는 것</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>Demand response</em> programs incentivize consumers to reduce or shift electricity usage during peak demand or grid stress."<br>→ 수요 반응 프로그램은 소비자들이 피크 시간대에 전력 사용을 줄이거나 이동하도록 유도한다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">demand response (DR)</div>
+    <div class="nuance-box">
+      <strong>도구:</strong><br>
+      • TOU (Time-of-Use) tariffs — 시간대별 요금제<br>
+      • Direct load control — 유틸리티가 원격으로 에어컨 등 조절<br>
+      • Smart meters — 실시간 사용량 데이터 제공<br>
+      • ADR (Automated Demand Response) — IoT 자동화<br><br>
+      프랑스의 "Energy Sobriety Plan" — RTE의 Ecowatt 앱으로 6% 전력 절감 달성.
+    </div>
+    <div class="compare-box"><strong>vs. energy efficiency:</strong> efficiency는 영구적 소비 감소. demand response는 일시적·탄력적 조정.<br><strong>demand flexibility:</strong> 더 광범위한 개념 — 수요를 시간적으로 이동하는 모든 방법 포함.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 17 -->
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">merit order</div>
+    <div class="entry-kor">경제급전 순서 — 한계비용이 낮은 발전원부터 순서대로 전력을 공급하는 규제 원칙</div>
+    <div class="divider"></div>
+    <div class="entry-example">"The <em>merit order</em>…dispatch generation sources to meet demand based on their marginal costs."<br>→ 경제급전 순서는 한계비용 기준으로 발전원을 순서대로 가동한다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">merit order</div>
+    <div class="nuance-box">
+      <strong>작동 방식:</strong> 한계비용 0에 가까운 태양광·풍력이 먼저 급전 → 가스, 석탄이 나중에 → 가장 비싼 피크 발전기(peaker)가 마지막.<br><br>
+      <strong>merit-order effect:</strong> 재생에너지가 많이 공급될수록 전력 도매가격이 낮아지는 효과 → 동시에 그리드 불안정 위험도 증가.
+    </div>
+    <div class="compare-box"><strong>문제점:</strong> 재생에너지 비중이 높아지면 전통 발전소가 수익성 악화 → 백업 용량 유지 어려움 → 피크 시 정전 위험. WEMO는 merit order 재검토 필요성 제기.<br><strong>dispatch:</strong> 수요에 맞춰 발전을 지시하는 행위.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 18 -->
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">stranded assets</div>
+    <div class="entry-kor">좌초자산 — 에너지 전환·정책 변화로 인해 수명 종료 전에 경제적 가치를 잃은 자산</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Electrolyzer manufacturers have built out large production capacities… there is a large manufacturing overcapacity… undermining the industry's profitability." (→ 잠재적 좌초자산 우려)</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">stranded assets</div>
+    <div class="nuance-box">
+      <strong>핵심 개념:</strong> 화석연료 발전소, 가스 파이프라인 등 탄소중립 전환 과정에서 <strong>장부가치보다 훨씬 일찍 폐기</strong>되는 자산. 금융기관의 기후 리스크 평가에서 핵심 지표.<br><br>
+      WEMO 문맥: 수요 미충족으로 전해조(electrolyzer) 제조 과잉 설비 = 잠재적 좌초자산.
+    </div>
+    <div class="compare-box"><strong>관련 표현:</strong><br>
+      • write-down / write-off — 자산 가치 상각<br>
+      • carbon bubble — 화석연료 자산 거품 붕괴 시나리오<br>
+      • shovel-ready project vs. stranded project</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 19 -->
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">supply chain</div>
+    <div class="entry-kor">공급망 — 원자재 채굴부터 최종 제품 소비자 전달까지의 전체 과정</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Control over energy resources and critical raw materials has fuelled these conflicts, which…have disrupted their <em>supply chains</em>."<br>→ 에너지 자원과 핵심 원자재를 둘러싼 갈등이 공급망을 교란했다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">supply chain</div>
+    <div class="nuance-box">
+      <strong>에너지 전환의 공급망 리스크:</strong><br>
+      • 중국이 배터리 셀 80%, 코발트 76%, 희토류 90% 생산 지배<br>
+      • 리튬·니켈·흑연 등 핵심 광물의 특정 국가 의존도 높음<br>
+      • 지정학적 갈등 → 공급망 단절 위험<br><br>
+      <strong>EU 대응:</strong> Critical Raw Materials Act, EU Battery Regulation
+    </div>
+    <div class="compare-box"><strong>supply chain disruption:</strong> 공급망 차질 — 팬데믹·전쟁 등으로 공급 단절.<br><strong>supply chain resilience:</strong> 충격 흡수·복원 능력.<br><strong>reshoring / nearshoring:</strong> 자국 또는 인근 국가로 생산 이전 (공급망 재편).</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────── 고급 단어 ────────────────────────────────── -->
+
+<div class="section-header"><span>고급 단어</span><hr></div>
+
+<!-- 20 -->
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">decarbonize</div>
+    <div class="entry-pron">/diːˈkɑːbənaɪz/</div>
+    <div class="entry-kor">탈탄소화하다 — 에너지원이나 산업에서 CO₂ 배출을 제거하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Green hydrogen can serve as a clean energy carrier for <em>decarbonizing</em> sectors where direct electrification is challenging."</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">decarbonize</div>
+    <div class="nuance-box">
+      <strong>어원:</strong> de- (제거) + carbon + -ize → 탄소를 제거하다<br><br>
+      <strong>파생어:</strong><br>
+      • decarbonization (n.) — 탈탄소화<br>
+      • deep decarbonization — 심층 탈탄소화 (거의 제로 배출)<br>
+      • hard-to-decarbonize sectors — 탈탄소화가 어려운 부문 (철강, 항공, 해운, 시멘트 등)
+    </div>
+    <div class="compare-box"><strong>vs. net zero:</strong> decarbonize는 배출 자체를 없애는 것. net zero는 배출과 흡수를 상쇄해 순 배출 제로 달성.<br><strong>vs. carbon neutral:</strong> 넓은 의미에서 유사하나 carbon neutral은 상쇄(offset)를 포함.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 21 -->
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">curtailment</div>
+    <div class="entry-pron">/kɜːˈteɪlmənt/</div>
+    <div class="entry-kor">출력 제한, 발전 감축 — 재생에너지 과잉 시 발전을 강제로 줄이는 조치</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Solar <em>curtailment</em> increased by 97%…amounting to 3.5% of total renewable electricity generation."<br>→ 태양광 출력 제한이 97% 증가해 전체 재생전력의 3.5%에 달했다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">curtailment</div>
+    <div class="nuance-box">
+      <strong>발생 원인:</strong><br>
+      1. 전력 공급 > 수요 (특히 맑은 날 낮 시간)<br>
+      2. 송전망 혼잡 — 발전지에서 수요지로 전기를 보낼 수 없을 때<br>
+      3. 전압·주파수 안정화 필요<br><br>
+      캘리포니아 2024: 1,180시간의 마이너스 가격, 2.2백만 MWh 낭비.
+    </div>
+    <div class="compare-box"><strong>어원:</strong> curtail (단축하다, 삭감하다) → curtailment.<br><strong>vs. dispatch:</strong> dispatch는 발전 명령. curtailment는 발전 중단/감소 명령.<br><strong>negative pricing:</strong> 전력 과잉 시 발전사가 돈을 내고라도 전기를 팔려는 상황.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 22 -->
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">electrolysis</div>
+    <div class="entry-pron">/ɪˌlekˈtrɒlɪsɪs/</div>
+    <div class="entry-kor">전기분해 — 전기 에너지를 이용해 화학 반응을 일으키는 과정 (수소 생산의 핵심)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Green hydrogen is…produced through <em>electrolysis</em> of water, powered by renewable energy sources."<br>→ 녹색 수소는 재생에너지로 전기분해를 통해 생산된다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">electrolysis</div>
+    <div class="nuance-box">
+      <strong>원리:</strong> 물(H₂O)에 전기를 흘려 수소(H₂)와 산소(O₂)로 분리.<br><br>
+      <strong>전해조(electrolyzer) 유형:</strong><br>
+      • PEM (Proton Exchange Membrane) — 반응 빠름, 비용 높음<br>
+      • AWE (Alkaline Water Electrolysis) — 검증된 기술, TRL 9<br>
+      • SOEC (Solid Oxide Electrolyzer) — 고온 고효율, 내구성 이슈
+    </div>
+    <div class="compare-box"><strong>파생어:</strong><br>
+      • electrolyzer /ɪˈlektrəlaɪzər/ — 전해조<br>
+      • electrolyte — 전해질<br>
+      • electrochemical — 전기화학의<br><strong>발음 주의:</strong> e-lec-TROL-y-sis (강세 3번째 음절)</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 23 -->
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">inertia</div>
+    <div class="entry-pron">/ɪˈnɜːʃə/</div>
+    <div class="entry-kor">관성 (에너지) — 대형 터빈의 회전 운동에서 발생하는 안정적 주파수 유지 능력</div>
+    <div class="divider"></div>
+    <div class="entry-example">"…grids with <em>low inertia</em> due to increasing renewable energy integration and closure of conventional plants."<br>→ 재생에너지 통합과 기존 발전소 폐쇄로 인해 관성이 낮아진 전력망</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">inertia (전력 시스템)</div>
+    <div class="nuance-box">
+      <strong>물리적 의미:</strong> 석탄·가스·원전 터빈은 거대한 회전 질량 → 주파수 변동 시 에너지를 즉각 방출해 안정화.<br><br>
+      <strong>재생에너지 문제:</strong> 태양광·풍력 인버터는 회전 질량이 없음 → 관성 없음 → 주파수 변동에 취약 → 정전 위험.<br><br>
+      <strong>해결책:</strong> Grid-forming inverters, VSM(Virtual Synchronous Machine), BESS
+    </div>
+    <div class="compare-box"><strong>일반 의미:</strong> inertia = 관성, 타성 (변화에 저항하는 성질). "organizational inertia" = 조직의 변화 저항.<br><strong>문화적:</strong> "inertia" is why habits are hard to break — 습관이 바뀌기 어려운 이유.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 24 -->
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">proliferation</div>
+    <div class="entry-pron">/prəˌlɪfəˈreɪʃən/</div>
+    <div class="entry-kor">확산, 급증 (특히 핵무기·위험 물질이 통제 없이 퍼지는 것)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"…more difficult to strictly control nuclear material to prevent <em>proliferation</em> and leakages to the weapons industry."<br>→ 핵 확산 및 무기 산업으로의 유출을 막기가 더 어려워진다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">proliferation</div>
+    <div class="nuance-box">
+      <strong>핵 문맥:</strong> nuclear proliferation — 핵무기가 비보유국으로 확산되는 것. NPT(핵비확산조약)의 핵심 과제.<br><br>
+      <strong>SMR 우려:</strong> 소형 원자로를 여러 곳에 분산 배치하면 핵물질 통제가 어려워짐 → proliferation risk 증가.<br><br>
+      <strong>일반 사용:</strong> "the proliferation of data centers" — 데이터센터의 급격한 확산 (부정적 뉘앙스 없이도 쓰임)
+    </div>
+    <div class="compare-box"><strong>어원:</strong> 라틴어 proles (자손) + ferre (낳다) → 빠르게 번식·증가<br><strong>동사:</strong> proliferate /prəˈlɪfəreɪt/ — 급증하다, 증식하다<br><strong>형용사:</strong> prolific — 다산의, 다작의 (작가·발명가 등에도 쓰임)</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 25 -->
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">decoupling</div>
+    <div class="entry-pron">/diːˈkʌplɪŋ/</div>
+    <div class="entry-kor">탈동조화 — 연동되던 두 변수가 분리되어 독립적으로 움직이는 현상</div>
+    <div class="divider"></div>
+    <div class="entry-example">"From 2014 to 2023, a relative <em>decoupling</em> has been observed globally, where GDP growth has outpaced energy demand growth."<br>→ GDP 성장이 에너지 수요 증가를 앞서며 상대적 탈동조화가 관찰됐다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">decoupling</div>
+    <div class="nuance-box">
+      <strong>에너지 경제 맥락:</strong><br>
+      • <strong>Relative decoupling:</strong> GDP 성장 > 에너지 수요 증가 (에너지 집약도 하락)<br>
+      • <strong>Absolute decoupling:</strong> GDP 성장 + 에너지 수요 감소 (이상적 목표)<br><br>
+      중국·인도는 여전히 강한 동조화(coupling). EU·미국은 상대적 탈동조화 진행 중.
+    </div>
+    <div class="compare-box"><strong>기술 맥락:</strong> decoupling = 시스템 분리. 독립적으로 작동하도록 연결을 끊는 것.<br><strong>동사:</strong> decouple — "to decouple economic growth from emissions"<br><strong>반의어:</strong> coupling — 동조화, 연동</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 26 -->
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">geopolitical</div>
+    <div class="entry-pron">/ˌdʒiːəʊpəˈlɪtɪkl/</div>
+    <div class="entry-kor">지정학적 — 지리적 위치와 정치·경제 권력의 관계에 관한</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>Geopolitical</em> tensions escalated, driven by the Russia-Ukraine war and Middle East conflicts."<br>→ 러시아-우크라이나 전쟁과 중동 분쟁으로 지정학적 긴장이 고조됐다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">geopolitical</div>
+    <div class="nuance-box">
+      <strong>파생어:</strong><br>
+      • geopolitics (n.) — 지정학<br>
+      • geopolitical risk — 지정학적 리스크<br>
+      • geopolitical fragmentation — 지정학적 분절화<br><br>
+      에너지 문맥에서 자주 쓰이는 조합: geopolitical tensions, geopolitical rivalry, geopolitical instability
+    </div>
+    <div class="compare-box"><strong>어원:</strong> geo- (지구) + politics → 지구의 지리적 조건이 정치에 미치는 영향.<br><strong>관련 개념:</strong> energy sovereignty — 에너지 주권 (외국 의존 없이 자국 에너지 통제).<br>WEMO에서 geopolitics는 에너지 전환을 가로막는 핵심 변수로 다뤄짐.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 27 -->
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">electrification</div>
+    <div class="entry-pron">/ɪˌlektrɪfɪˈkeɪʃən/</div>
+    <div class="entry-kor">전기화 — 기존에 화석연료를 쓰던 부문을 전기 기반으로 전환하는 것</div>
+    <div class="divider"></div>
+    <div class="entry-example">"This surge was driven by <em>electrification</em> in buildings, transport, and industry."<br>→ 이 급증은 건물·교통·산업의 전기화에 의해 주도됐다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">electrification</div>
+    <div class="nuance-box">
+      <strong>탈탄소화의 핵심 수단:</strong> 화석연료 직접 연소 → 전기 사용으로 전환<br><br>
+      <strong>주요 전기화 영역:</strong><br>
+      • 교통: EV (전기차), 전기버스·기차<br>
+      • 냉난방: 히트펌프<br>
+      • 산업: 전기 용광로, 전기 보일러<br>
+      • 요리: 인덕션 조리기기
+    </div>
+    <div class="compare-box"><strong>직접 전기화가 어려운 부문:</strong> 항공, 해운, 철강, 시멘트, 장거리 화물 → 이런 분야에서 수소(H₂)가 대안.<br><strong>동사:</strong> electrify — "electrify the transport sector"</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 28 -->
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">cascading</div>
+    <div class="entry-pron">/kæsˈkeɪdɪŋ/</div>
+    <div class="entry-kor">연쇄적인, 폭포처럼 퍼지는 — 한 곳의 실패가 연속적으로 다른 곳을 붕괴시키는</div>
+    <div class="divider"></div>
+    <div class="entry-example">"The blackout began with frequency oscillations…culminating in a <em>cascading</em> failure triggered by a transformer trip."<br>→ 정전은 주파수 진동으로 시작해 변압기 트립으로 연쇄 붕괴로 이어졌다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">cascading failure</div>
+    <div class="nuance-box">
+      <strong>전력망 맥락:</strong> 한 발전소나 송전선 고장이 인접 설비에 과부하를 주고 → 그 설비도 고장 → 연쇄 정전. 2025년 4월 이베리아 반도 대정전의 원인.<br><br>
+      <strong>cascade /kæsˈkeɪd/:</strong> 폭포, 연쇄 → 폭포처럼 아래로 줄줄이 쏟아지는 이미지.
+    </div>
+    <div class="compare-box"><strong>관련 표현:</strong><br>
+      • cascading disconnections — 연쇄 차단<br>
+      • cascade effect — 연쇄 효과<br>
+      • domino effect — 유사한 개념이나 더 일상적 표현<br>
+      • chain reaction — 과학적 뉘앙스 강함</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 29 -->
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">dispatchable</div>
+    <div class="entry-pron">/dɪˈspætʃəbl/</div>
+    <div class="entry-kor">수급 조절 가능한 — 필요할 때 즉시 켜고 끌 수 있는 발전원의 특성</div>
+    <div class="divider"></div>
+    <div class="entry-example">"…the need for schedulable generation to ensure grid reliability…emphasizing the need for <em>dispatchable</em> generation."<br>→ 전력망 신뢰성 보장을 위해 수급 조절 가능한 발전이 필요하다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">dispatchable</div>
+    <div class="nuance-box">
+      <strong>핵심 특성:</strong> 전력 수요에 맞춰 출력을 빠르게 조정할 수 있음. 원전·수력·가스·배터리가 여기 해당.<br><br>
+      <strong>왜 중요한가:</strong> 태양광·풍력 비중이 높아질수록 dispatchable한 백업 전원이 더 필요. 그러나 재생에너지 우선 급전(merit order)으로 가스·원전 수익성 악화 → 투자 부족 → 역설적 그리드 불안정.
+    </div>
+    <div class="compare-box"><strong>dispatchable vs. non-dispatchable:</strong><br>
+      • Dispatchable: 원전, 수력(저수지), 가스, 배터리<br>
+      • Non-dispatchable: 태양광, 풍력, 조류 (run-of-river 수력)<br><strong>dispatch (v.):</strong> 발전 명령을 내리다</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────── 비즈니스 전용 ────────────────────────────────── -->
+
+<div class="section-header"><span>비즈니스 전용</span><hr></div>
+
+<!-- 30 -->
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스 전용</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">ESG</div>
+    <div class="entry-kor">Environmental, Social, Governance — 환경·사회·지배구조 기준의 투자 및 경영 평가 체계</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Political changes in the US are negatively impacting <em>ESG</em> outlooks…proxy advisory firms…have also scrapped their <em>ESG</em> requirements."<br>→ 미국 정치 변화로 ESG 전망이 타격을 받고 있다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">ESG</div>
+    <div class="nuance-box">
+      <strong>구성요소:</strong><br>
+      • E (Environmental): 탄소 배출, 에너지 효율, 수자원, 생태계<br>
+      • S (Social): 노동권, 공급망 인권, 지역사회 영향<br>
+      • G (Governance): 이사회 구성, 반부패, 투명성<br><br>
+      <strong>현재 흐름:</strong> Trump 행정부 이후 JP모건 등 6개 대형 은행이 Net-Zero Banking Alliance 탈퇴 → ESG 역풍(ESG backlash)
+    </div>
+    <div class="compare-box"><strong>vs. SRI (Socially Responsible Investing):</strong> ESG의 전신. ESG는 더 정량적·체계적.<br><strong>vs. Impact Investing:</strong> 긍정적 사회·환경 효과를 명시적 목표로 하는 투자.<br><strong>greenwashing:</strong> ESG를 위장한 허위 친환경 마케팅.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 31 -->
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스 전용</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">IRA</div>
+    <div class="entry-kor">Inflation Reduction Act — 2022년 바이든 행정부가 통과시킨 미국 역사상 최대 기후·에너지 투자 법안 ($3,690억)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"President Trump…paused funding from the '<em>Inflation Reduction Act</em>'…The One Big Beautiful Bill Act…significantly modifies clean energy tax incentives enacted under the <em>IRA</em>."</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">IRA (Inflation Reduction Act)</div>
+    <div class="nuance-box">
+      <strong>주요 내용 (2022):</strong><br>
+      • 태양광·풍력·EV·배터리·수소에 세액공제 및 보조금<br>
+      • 국내 생산 요건 (domestic content requirement)<br>
+      • 약 $3,690억 기후·에너지 지출<br><br>
+      <strong>2025 트럼프 정책:</strong> OBBBA(One Big Beautiful Bill Act)로 핵심 IRA 세액공제 철폐/축소 → $15bn+ 재생에너지 자금 삭감.
+    </div>
+    <div class="compare-box"><strong>EU 대응:</strong> EU Green Deal (그린딜) — 유사한 맥락의 유럽 기후 정책 패키지.<br><strong>관련 법안:</strong> IIJA (Infrastructure Investment and Jobs Act) — 인프라 투자 법안 (IRA와 함께 바이든의 기후 3법).<br>IRA 폐지는 미국 재생에너지 투자에 대규모 타격 예상.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 32 -->
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스 전용</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">TRL</div>
+    <div class="entry-kor">Technology Readiness Level — 기술 성숙도 수준 (1~9단계, 9가 상업화 완료)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>TRL</em> varies from stage 1 'Exploratory research…laboratory' to stage 9 'Wide-scale commercial deployment.'"<br>→ TRL은 1단계 탐색 연구부터 9단계 대규모 상업화까지</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">TRL (Technology Readiness Level)</div>
+    <div class="nuance-box">
+      <strong>WEMO 보고서 기술 TRL 현황:</strong><br>
+      • Alkaline Water Electrolyzers: <strong>TRL 9</strong> (상업화)<br>
+      • PEM Electrolyzers: TRL 7<br>
+      • Li-ion Solid-state batteries: TRL 4-6<br>
+      • Perovskite Solar Cells: TRL 4<br>
+      • Hydrogen Storage (Solid): TRL 3<br>
+      • Nuclear Fusion: TRL 2-3
+    </div>
+    <div class="compare-box"><strong>원래 출처:</strong> NASA가 1970년대에 개발한 개념. 이후 EU·미국 DOE 등 정부 R&D 평가 기준으로 채택.<br><strong>관련 표현:</strong> valley of death — TRL 4-6 구간 (기초연구 → 상업화 전환의 자금 조달 gap).</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 33 -->
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스 전용</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">BESS</div>
+    <div class="entry-kor">Battery Energy Storage System — 대규모 배터리 에너지 저장 시스템 (전력망 안정화용)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Growth of stationary battery systems falls short of energy transition needs…<em>BESS</em> expansion in Europe is forecasted to reach 400 GWh by 2030."<br>→ BESS 확장이 필요 수준에 못 미치고 있다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">BESS</div>
+    <div class="nuance-box">
+      <strong>역할:</strong> 재생에너지 과잉 시 저장 → 수요 피크 시 방전 → 그리드 균형 조정.<br><br>
+      <strong>2024 현황:</strong><br>
+      • 전 세계 정치 배터리 설치 +60% → 170 GWh<br>
+      • 미국 유틸리티: +10.4 GW 신규 추가<br>
+      • 유럽: 22 GWh 신규 (독일·이탈리아·영국이 2/3)<br><br>
+      <strong>과제:</strong> 유럽 LCOS $200~350/MWh, 가스 백업 $100~150/MWh → 수익성 부족
+    </div>
+    <div class="compare-box"><strong>vs. pumped hydro:</strong> 전통적 대용량 저장이나 지리적 제약 큼. BESS는 유연하나 비용 높음.<br><strong>LCOS:</strong> Levelized Cost of Storage — 저장 균등화 비용.<br><strong>4-hour battery:</strong> 4시간 방전 가능한 배터리가 현재 시장 표준.</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 34 -->
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스 전용</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">V2G</div>
+    <div class="entry-kor">Vehicle-to-Grid — 전기차 배터리를 전력망의 분산 저장 자원으로 활용하는 기술</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>Vehicle-to-Grid (V2G)</em> technology enhances grid stability by enabling EVs to act as mobile energy storage units, supplying stored power back to the grid during peak demand."<br>→ V2G는 EV를 이동식 저장 장치로 활용해 그리드를 안정화한다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">V2G (Vehicle-to-Grid)</div>
+    <div class="nuance-box">
+      <strong>작동 원리:</strong> EV 배터리에 저장된 전기를 필요 시 전력망에 역전송.<br><br>
+      <strong>실증 사례:</strong><br>
+      • 덴마크: 닛산 리프 V2G 파일럿 → 차당 연간 1,860€ 수익<br>
+      • 프랑스: 르노, 2024년 말 V2G 서비스 출시<br>
+      • 영국: Octopus Energy + BYD (2025년 7월)<br><br>
+      <strong>과제:</strong> 대부분 EV가 아직 V2G 미지원, 양방향 충전기 인프라 부족
+    </div>
+    <div class="compare-box"><strong>관련 기술:</strong><br>
+      • G2V (Grid-to-Vehicle) — 일반 충전 (한 방향)<br>
+      • V2H (Vehicle-to-Home) — EV → 가정 전력 공급<br>
+      • V2B (Vehicle-to-Building) — EV → 건물 전력 공급<br>
+      • smart charging — 피크 시간 외 충전 유도</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+<!-- 35 -->
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스 전용</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">FID</div>
+    <div class="entry-kor">Final Investment Decision — 최종 투자 결정 — 프로젝트를 실제로 건설·집행하기로 하는 공식 확정</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Only 7% of announced capacity reached <em>FID</em>, with challenges such as technical difficulties, high production costs and lack of demand."<br>→ 발표된 수소 용량의 7%만이 최종 투자 결정에 도달했다</div>
+    <div class="flip-hint">뒤집어서 뉘앙스 확인 ↓</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">FID (Final Investment Decision)</div>
+    <div class="nuance-box">
+      <strong>프로젝트 개발 단계:</strong><br>
+      Concept → Feasibility Study → Front-End Engineering Design (FEED) → <strong>FID</strong> → Construction → Operation<br><br>
+      <strong>중요성:</strong> FID 이후에는 수십억 달러가 집행됨 → 돌이키기 매우 어려움. FID 전 단계 취소는 상대적으로 비용이 적음.
+    </div>
+    <div class="compare-box"><strong>관련 표현:</strong><br>
+      • FID-ready — FID를 내릴 준비가 된<br>
+      • pre-FID — FID 이전 개발 단계<br>
+      • FEED (Front-End Engineering Design) — FID 직전 상세 설계 단계<br><strong>WEMO 맥락:</strong> Sizewell C (UK) FID 2025.7.22 / France EPR2 FID 예정 2026</div>
+    <div class="flip-hint-back">↑ 다시 앞면으로</div>
+  </div>
+</div>
+
+</div><!-- /grid -->
+
+<script>
+  let learnedSet = new Set();
+  const total = 35;
+
+  function flipCard(card) {
+    card.classList.toggle('flipped');
+    const word = card.querySelector('.entry-word')?.textContent?.trim()?.slice(0, 30) || '';
+    if (card.classList.contains('flipped')) {
+      learnedSet.add(word);
+    } else {
+      learnedSet.delete(word);
+    }
+    updateStats();
+  }
+
+  function updateStats() {
+    const learned = learnedSet.size;
+    const visibleTotal = document.querySelectorAll('.card:not(.hidden)').length;
+    document.getElementById('learnedCount').textContent = learned;
+    document.getElementById('remainCount').textContent = Math.max(0, total - learned);
+    document.getElementById('totalCount').textContent = total;
+    document.getElementById('progressBar').style.width = (learned / total * 100) + '%';
+  }
+
+  function filterCards(cat) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    const btn = cat === 'all'
+      ? document.querySelector('.filter-btn:first-of-type')
+      : document.querySelector('.filter-btn.cat-' + cat);
+    if (btn) btn.classList.add('active');
+
+    document.querySelectorAll('.card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    document.querySelectorAll('.section-header').forEach(h => {
+      if (cat === 'all') { h.style.display = ''; return; }
+      const next = h.nextElementSibling;
+      let hasVisible = false;
+      let el = h.nextElementSibling;
+      while (el && !el.classList.contains('section-header')) {
+        if (el.classList.contains('card') && !el.classList.contains('hidden')) hasVisible = true;
+        el = el.nextElementSibling;
+      }
+      h.style.display = hasVisible ? '' : 'none';
+    });
+  }
+</script>
+
+</body>
+</html>

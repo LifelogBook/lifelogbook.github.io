@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capgemini Top Tech Trends 2026 — 영어 표현 학습 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --ink2: #2d2d44;
+    --cream: #faf8f4;
+    --warm: #f0ede6;
+    --accent: #c0392b;
+    --accent2: #e67e22;
+    --teal: #16a085;
+    --blue: #2471a3;
+    --purple: #7d3c98;
+    --gold: #d4a017;
+    --line: #ddd9d0;
+    --card-bg: #ffffff;
+    --shadow: 0 2px 16px rgba(26,26,46,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    color: white;
+    padding: 48px 40px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(192,57,43,0.15);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 30%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(22,160,133,0.1);
+  }
+  .header-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    position: relative; z-index: 1;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.2;
+    position: relative; z-index: 1;
+    max-width: 680px;
+  }
+  header h1 em {
+    font-style: italic;
+    color: #f0c040;
+  }
+  .header-sub {
+    margin-top: 14px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    position: relative; z-index: 1;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    background: white;
+    border-bottom: 1px solid var(--line);
+    padding: 16px 40px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .stat { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #666; }
+  .stat strong { color: var(--ink); font-weight: 600; font-size: 18px; }
+
+  /* ── FILTERS ── */
+  .filters {
+    padding: 24px 40px 0;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #999; margin-right: 4px; }
+  .filter-btn {
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--ink2);
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--ink); color: white; border-color: var(--ink); }
+  .filter-btn.cat-phrasal.active { background: var(--teal); border-color: var(--teal); }
+  .filter-btn.cat-idiom.active { background: var(--purple); border-color: var(--purple); }
+  .filter-btn.cat-collocation.active { background: var(--blue); border-color: var(--blue); }
+  .filter-btn.cat-advanced.active { background: var(--accent); border-color: var(--accent); }
+  .filter-btn.cat-business.active { background: var(--accent2); border-color: var(--accent2); }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+    padding: 24px 40px 60px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(26,26,46,0.12);
+  }
+  .card.flipped .card-front { display: none; }
+  .card.flipped .card-back { display: flex; }
+  .card.flipped { border-color: var(--gold); }
+
+  .card-top {
+    padding: 20px 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .tag-phrasal { background: #e8f8f5; color: var(--teal); }
+  .tag-idiom { background: #f5eef8; color: var(--purple); }
+  .tag-collocation { background: #eaf4fb; color: var(--blue); }
+  .tag-advanced { background: #fdedec; color: var(--accent); }
+  .tag-business { background: #fef9e7; color: #b7770d; }
+
+  .difficulty {
+    display: flex; gap: 3px;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .dot.on { background: var(--accent2); }
+
+  .card-front {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 20px 20px;
+  }
+
+  .entry-word {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .entry-word mark {
+    background: #fff3cd;
+    border-radius: 3px;
+    padding: 0 2px;
+    font-style: italic;
+  }
+
+  .entry-pron {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--line);
+    margin: 10px 0;
+  }
+
+  .entry-kor {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .entry-example {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+    background: var(--warm);
+    border-left: 3px solid var(--line);
+    padding: 8px 12px;
+    border-radius: 0 6px 6px 0;
+    margin-top: 8px;
+  }
+  .entry-example em {
+    color: var(--ink);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .flip-hint {
+    font-size: 11px;
+    color: #bbb;
+    text-align: right;
+    margin-top: 12px;
+  }
+
+  .card-back {
+    display: none;
+    flex-direction: column;
+    padding: 20px;
+    background: var(--ink);
+    color: white;
+    flex: 1;
+  }
+  .card-back .back-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: #f0c040;
+    margin-bottom: 12px;
+  }
+
+  .nuance-box {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.88);
+  }
+  .nuance-box strong { color: #f0c040; }
+
+  .compare-box {
+    background: rgba(192,57,43,0.2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+  }
+  .compare-box strong { color: #ff9f9f; }
+
+  .flip-hint-back {
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    text-align: right;
+    margin-top: 10px;
+  }
+
+  /* hidden */
+  .card.hidden { display: none; }
+
+  /* ── SECTION DIVIDERS ── */
+  .section-header {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0 4px;
+  }
+  .section-header span {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #aaa;
+    white-space: nowrap;
+  }
+  .section-header hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ── PROGRESS ── */
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--line);
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.3s;
+    width: 0%;
+  }
+
+  @media (max-width: 600px) {
+    header, .stats-bar, .filters, .grid { padding-left: 20px; padding-right: 20px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
+
+<header>
+  <div class="header-label">Capgemini Top Tech Trends 2026 · 어휘 학습</div>
+  <h1>원어민처럼 읽는 <em>비즈니스 영어</em><br>표현 완전 정복</h1>
+  <div class="header-sub">카드를 클릭하면 뉘앙스 해설이 나옵니다 · Click cards to reveal nuance</div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat"><strong id="totalCount">35</strong> 표현</div>
+  <div class="stat"><strong id="learnedCount">0</strong> 학습완료</div>
+  <div class="stat"><strong id="remainCount">35</strong> 남은 표현</div>
+</div>
+
+<div class="filters">
+  <span class="filter-label">분류</span>
+  <button class="filter-btn active" onclick="filterCards('all')">전체</button>
+  <button class="filter-btn cat-phrasal" onclick="filterCards('phrasal')">Phrasal Verb</button>
+  <button class="filter-btn cat-idiom" onclick="filterCards('idiom')">Idiom / 비유</button>
+  <button class="filter-btn cat-collocation" onclick="filterCards('collocation')">Collocation</button>
+  <button class="filter-btn cat-advanced" onclick="filterCards('advanced')">고급 단어</button>
+  <button class="filter-btn cat-business" onclick="filterCards('business')">비즈니스 전용</button>
+</div>
+
+<div class="grid" id="cardGrid">
+
+<!-- ────────────────────────────────── PHRASAL VERBS ────────────────────────────────── -->
+
+<div class="section-header"><span>Phrasal Verbs</span><hr></div>
+
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">give <mark>way to</mark></div>
+    <div class="entry-kor">~에게 자리를 내주다, ~으로 대체되다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"…bold experiments must <em>give way to</em> disciplined execution."<br>→ 대담한 실험이 규율 잡힌 실행으로 대체되어야 한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">give way to</div>
+    <div class="nuance-box">도로에서 양보하듯 <strong>한쪽이 물러서고 다른 쪽이 그 자리를 채우는</strong> 전환을 표현합니다. 자연스러운 흐름 속에서 이전 것이 새로운 것으로 대체되는 뉘앙스입니다. "Night gave way to dawn"처럼 완전히 자연스러운 전환에도, "Doubt gave way to confidence"처럼 심리 변화에도 씁니다.</div>
+    <div class="compare-box"><strong>vs. "be replaced by"</strong> — be replaced by는 외부에서 강제로 교체된 느낌. give way to는 스스로 물러나는, 더 자연스럽고 불가피한 전환 뉘앙스</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">bolt <mark>on</mark></div>
+    <div class="entry-kor">(기존 시스템에) 겉으로 덧붙이다, 임시방편으로 추가하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"AI cannot simply be <em>bolted on</em> to legacy systems."<br>→ AI를 기존 시스템에 단순히 갖다 붙일 수는 없다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">bolt on</div>
+    <div class="nuance-box">볼트로 겉에 붙이듯 <strong>내부 구조 변경 없이 표면에 추가하는</strong> 이미지입니다. 기술 문맥에서는 대부분 부정적 의미로, "근본적인 통합 없이 억지로 갖다 붙인" 어설픈 방식을 비판할 때 씁니다. <strong>a bolt-on solution / feature / acquisition</strong>처럼 형용사로도 흔히 씁니다.</div>
+    <div class="compare-box"><strong>vs. "integrate"</strong> — integrate는 내부부터 깊이 결합. bolt on은 표면적 추가로 근본 문제가 해결되지 않는다는 비판적 뉘앙스</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">build <mark>on</mark></div>
+    <div class="entry-kor">~을 토대로 발전시키다, ~위에 쌓아가다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Organizations <em>build on</em> early pilots to scale AI across operations."<br>→ 조직들은 초기 시범 사업을 토대로 AI를 운영 전반에 확대한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">build on</div>
+    <div class="nuance-box">이미 놓여진 기반 위에 <strong>추가로 쌓아 올린다</strong>는 건축 이미지입니다. 단순한 "사용"이 아니라 기존 성과를 인정하고 그 위에 더 발전된 것을 더한다는 누적·연속의 뉘앙스가 있습니다. <strong>build on success / momentum / experience</strong> 등의 조합이 매우 자연스럽습니다.</div>
+    <div class="compare-box"><strong>vs. "rely on"</strong> — rely on은 의존하다. build on은 단순 의존이 아니라 적극적으로 활용해서 더 발전시키는 동적인 뉘앙스</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">scale <mark>up</mark></div>
+    <div class="entry-kor">규모를 확대하다, 본격화하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Three quarters of large organizations are piloting or <em>scaling up</em> GenAI."<br>→ 대형 조직의 4분의 3이 GenAI를 시범 운영하거나 본격 확대하고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">scale up</div>
+    <div class="nuance-box">소규모에서 대규모로 <strong>비례적으로 키운다</strong>는 뜻입니다. 스타트업이 성장하거나, 시범 사업을 전사적으로 확대할 때 핵심 표현입니다. 반대말은 <strong>scale down</strong>(축소). 명사형 <strong>scale-up</strong>은 "성장 단계의 회사"를 뜻하기도 합니다.</div>
+    <div class="compare-box"><strong>vs. "expand"</strong> — expand는 단순한 확장. scale up은 기존 모델·시스템을 유지하면서 비율에 맞게 키우는 뉘앙스</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">look <mark>out for</mark></div>
+    <div class="entry-kor">주의해서 지켜보다, 경계하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"What to <em>look out for</em>: AI agents that schedule and adapt in real time."<br>→ 주목할 것: 실시간으로 일정을 짜고 적응하는 AI 에이전트</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">look out for</div>
+    <div class="nuance-box">두 가지 의미가 있습니다. ① <strong>위험·문제를 경계하다</strong> ("look out for scams") ② <strong>기회·변화를 예의주시하다</strong>. 이 보고서에서는 ②의 의미로, 다가오는 기술 변화를 능동적으로 감시하라는 뜻입니다. "Keep an eye out for"와 비슷하지만 더 일상적인 표현입니다.</div>
+    <div class="compare-box"><strong>vs. "watch for"</strong> — 거의 동일하나 look out for는 약간 더 긴박하거나 놓치지 않으려는 능동성이 강조됨</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">move <mark>upstream</mark></div>
+    <div class="entry-kor">상류(고부가가치 단계)로 이동하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"AI vendors are <em>moving upstream</em> to capture more value in the stack."<br>→ AI 벤더들이 더 높은 가치를 차지하기 위해 스택의 상류로 이동하고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">move upstream</div>
+    <div class="nuance-box">강의 상류처럼 <strong>공급망·가치사슬에서 더 앞 단계(원천에 가까운 고부가가치 영역)</strong>로 이동하는 전략적 행동입니다. 부품 공급업체가 완제품 제조로 올라가거나, 클라우드 인프라 회사가 소프트웨어 레이어로 진출하는 것이 전형적 예입니다. 반대는 <strong>move downstream</strong>(하류로, 최종 소비자 쪽으로).</div>
+    <div class="compare-box"><strong>관련 개념:</strong> vertical integration(수직 통합) — upstream move는 그 전략의 방향을 설명하는 표현</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────── IDIOMS / 비유 ────────────────────────────────── -->
+
+<div class="section-header"><span>Idioms &amp; 비유 표현</span><hr></div>
+
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom / 비유</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">innovation <mark>theater</mark></div>
+    <div class="entry-kor">보여주기식 혁신, 실질 없는 혁신 퍼포먼스</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Organizations must move beyond <em>innovation theater</em> to real value delivery."<br>→ 조직들은 보여주기식 혁신을 넘어 실질적 가치 창출로 나아가야 한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">innovation theater</div>
+    <div class="nuance-box">연극처럼 <strong>실제 효과는 없고 겉으로만 혁신하는 척하는 행위</strong>를 비판하는 용어입니다. 화려한 해커톤, 혁신 랩, AI 파일럿 프로젝트를 진행하지만 실제 비즈니스 결과로 이어지지 않는 패턴을 가리킵니다. Silicon Valley에서 광범위하게 쓰이는 표현으로, 상당히 신랄한 비판의 뉘앙스를 담고 있습니다.</div>
+    <div class="compare-box"><strong>유사 표현:</strong> "security theater"(보여주기식 보안), "safety theater" — "-theater" 패턴은 영미권에서 "겉치레"를 비판할 때 폭넓게 사용됨</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom / 비유</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">year of <mark>truth</mark></div>
+    <div class="entry-kor">진실이 드러나는 해, 성과의 실체가 판명되는 해</div>
+    <div class="divider"></div>
+    <div class="entry-example">"2026 is <em>the year of truth</em> for AI — where hype meets reality."<br>→ 2026년은 AI의 진실의 해 — 과대 선전이 현실을 만나는 때</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">year of truth</div>
+    <div class="nuance-box">스포츠에서 특정 선수가 <strong>능력을 증명해야 하는 결정적 시즌</strong>을 "year of truth"라고 부른 데서 유래합니다. 비즈니스에서는 과대평가나 기대가 쌓인 뒤 <strong>실제 성과로 진가가 판명되는 시점</strong>을 뜻합니다. 긍정·부정 어느 방향으로도 판가름 날 수 있다는 긴장감을 내포합니다.</div>
+    <div class="compare-box"><strong>관련 표현:</strong> "moment of truth"(결정적 순간) · "reality check"(현실 직시) — year of truth는 이 두 표현보다 더 장기적·전략적 맥락에서 씀</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom / 비유</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">toy <mark>agents</mark></div>
+    <div class="entry-kor">장난감 수준의 에이전트, 실전 미달의 에이전트</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Most early deployments were <em>toy agents</em> — not ready for enterprise operations."<br>→ 초기 배포의 대부분은 장난감 수준의 에이전트였다 — 기업 운영에는 미흡했다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">toy agents</div>
+    <div class="nuance-box">어린아이의 장난감처럼 <strong>실제 업무에는 쓸 수 없는 수준의 데모·시연용 에이전트</strong>를 비판적으로 부르는 표현입니다. "toy model", "toy example"처럼 기술 분야에서 "실제 환경에서 검증되지 않은 단순화된 버전"을 뜻할 때 "toy"를 형용사로 씁니다. Production-grade(실제 운영 수준)의 반대 개념입니다.</div>
+    <div class="compare-box"><strong>vs. "proof-of-concept"</strong> — POC는 개념 검증 단계로서 의도적으로 제한된 것. toy agents는 비의도적으로 부족하다는 비판의 뉘앙스</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom / 비유</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">value <mark>compounding</mark></div>
+    <div class="entry-kor">가치의 복리 효과, 가치가 누적·배가되는 현상</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Connecting AI use cases creates <em>value compounding</em> across the enterprise."<br>→ AI 활용 사례를 연결하면 기업 전반에서 가치의 복리 효과가 창출된다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">value compounding</div>
+    <div class="nuance-box">금융의 복리(compound interest)에서 빌린 메타포입니다. 원금에서 이자가 붙고, 그 이자가 또 원금이 되어 이자를 낳듯 <strong>AI의 각 성과가 다른 영역에 시너지를 만들어 기하급수적으로 가치가 쌓이는 현상</strong>을 설명합니다. 단순 합산(1+1=2)이 아니라 곱하기 효과(1×1.2×1.3...)임을 강조합니다.</div>
+    <div class="compare-box"><strong>관련 표현:</strong> "network effects"(네트워크 효과) · "flywheel effect"(플라이휠 효과) — 모두 누적·가속 성장을 설명하는 비유</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom / 비유</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">proof-of-<mark>impact</mark></div>
+    <div class="entry-kor">영향력·효과 증명, 실질 성과 검증</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Boards now demand <em>proof-of-impact</em>, not just proof-of-concept."<br>→ 이사회는 이제 개념 검증이 아닌 실질 효과 증명을 요구한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">proof-of-impact</div>
+    <div class="nuance-box">기술 개발 단계를 3단계로 구분합니다: <strong>proof-of-concept(POC, 개념 검증) → proof-of-value(POV, 가치 검증) → proof-of-impact(실제 비즈니스 영향 검증)</strong>. 가장 높은 단계로, "기술이 작동한다"가 아니라 "이 기술이 실제 비즈니스 결과(매출·비용·효율)를 바꿨다"는 것을 증명해야 합니다.</div>
+    <div class="compare-box"><strong>vs. "proof-of-concept (POC)"</strong> — POC: "이것이 가능한가?" / proof-of-impact: "이것이 실제로 중요한 차이를 만드는가?"</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom / 비유</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">AI is <mark>eating</mark> software</div>
+    <div class="entry-kor">AI가 소프트웨어를 잠식하고 있다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Just as 'software ate the world,' now <em>AI is eating software</em> itself."<br>→ '소프트웨어가 세상을 먹어치웠듯,' 이제 AI가 소프트웨어 자체를 잠식하고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">AI is eating software</div>
+    <div class="nuance-box">마크 안드레센(Marc Andreessen)의 2011년 명언 <strong>"Software is eating the world"</strong>(소프트웨어가 모든 산업을 잠식한다)에서 영감을 받은 표현입니다. AI가 소프트웨어 개발 도구, 코드 작성, 테스트까지 자동화함으로써 <strong>기존 소프트웨어 산업 자체를 재편</strong>하고 있다는 메시지입니다. "eating"은 경쟁을 넘어 존재를 흡수·소멸시킨다는 강렬한 이미지입니다.</div>
+    <div class="compare-box"><strong>원문:</strong> Andreessen(2011) "Software is eating the world" → Capgemini 변용: AI가 이제 그 소프트웨어마저 먹어치우고 있다</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────── COLLOCATIONS ────────────────────────────────── -->
+
+<div class="section-header"><span>Collocations</span><hr></div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">production-<mark>grade</mark></div>
+    <div class="entry-kor">실제 운영 수준의, 상용화 가능한</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Moving from pilots to <em>production-grade</em> AI deployments requires governance."<br>→ 시범 사업에서 실제 운영 수준의 AI 배포로 이동하려면 거버넌스가 필요하다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">production-grade</div>
+    <div class="nuance-box">소프트웨어 엔지니어링에서 <strong>"실제 서비스 환경(production)"에 투입할 수 있는 수준</strong>을 뜻합니다. 단순히 작동하는 것을 넘어, 안정성·보안·확장성·유지보수성이 보장된 상태입니다. "-grade" 패턴은 <strong>military-grade(군용 수준), enterprise-grade(기업용 수준), consumer-grade(소비자용 수준)</strong> 등으로 넓게 씁니다.</div>
+    <div class="compare-box"><strong>vs. "prototype"</strong> — prototype은 초기 개념 모형. production-grade는 실제 비즈니스 환경에서 신뢰할 수 있는 완성된 수준</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">human-AI <mark>co-steering</mark></div>
+    <div class="entry-kor">인간과 AI의 공동 조향(操向), 협력적 의사결정</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Intelligent ops require <em>human-AI co-steering</em> of complex workflows."<br>→ 지능형 운영은 복잡한 워크플로우에 대한 인간-AI 공동 제어를 요구한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">human-AI co-steering</div>
+    <div class="nuance-box">자동차나 선박의 조향 장치(steering)에서 온 메타포입니다. <strong>AI가 완전히 자율적으로 결정하지도, 인간이 완전히 통제하지도 않고, 양쪽이 함께 방향을 잡는</strong> 협력 모델입니다. "co-"는 "함께, 공동으로"라는 접두사로, <strong>co-pilot, co-creation, co-design</strong> 등 AI 협업 담론에서 핵심 어근입니다.</div>
+    <div class="compare-box"><strong>vs. "human-in-the-loop"</strong> — human-in-the-loop는 인간이 중간 검토 단계에 개입. co-steering은 처음부터 끝까지 인간과 AI가 함께 운전하는 더 긴밀한 협력</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">from the <mark>ground up</mark></div>
+    <div class="entry-kor">처음부터, 완전히 새로 (밑바닥부터)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"AI-native software is being built <em>from the ground up</em>, not retrofitted."<br>→ AI 네이티브 소프트웨어는 개조가 아닌 처음부터 새로 만들어지고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">from the ground up</div>
+    <div class="nuance-box">건물의 기초(ground)부터 쌓아 올린다는 이미지입니다. <strong>기존 것을 수정·개조하는 것이 아니라 가장 기본 단위부터 완전히 새롭게 설계하고 구축한다</strong>는 뜻입니다. 특히 레거시 시스템의 한계를 극복할 때 "기존 시스템에 AI를 덧붙이는 것과 달리, 우리는 ground up으로 만들었다"는 식으로 강조합니다.</div>
+    <div class="compare-box"><strong>vs. "from scratch"</strong> — 거의 동일한 의미. from scratch는 아무것도 없는 상태, from the ground up은 "기초 공사부터"라는 건축 메타포가 더 강함</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">fragmented <mark>pilots</mark></div>
+    <div class="entry-kor">파편화된 시범 프로젝트들, 고립·분산된 파일럿</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Companies must connect <em>fragmented pilots</em> into a coherent AI strategy."<br>→ 기업들은 파편화된 파일럿들을 일관된 AI 전략으로 연결해야 한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">fragmented pilots</div>
+    <div class="nuance-box">기업 AI 도입의 전형적 함정을 포착한 표현입니다. 각 부서·팀이 제각각 AI 파일럿을 진행하지만 서로 연결되지 않아, <strong>전사적 시너지 없이 에너지·예산이 분산</strong>되는 상태입니다. "fragmented"는 깨진 조각처럼 흩어진 이미지로, 통합의 반대말입니다. 이 보고서에서 극복해야 할 핵심 과제로 반복 언급됩니다.</div>
+    <div class="compare-box"><strong>반대 표현:</strong> "integrated AI roadmap"(통합된 AI 로드맵) · "enterprise-wide deployment"(전사적 배포)</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">resilient <mark>interdependence</mark></div>
+    <div class="entry-kor">탄력적 상호의존, 회복력을 갖춘 상호연결</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Sovereignty is being redefined as <em>resilient interdependence</em>, not isolation."<br>→ 주권은 고립이 아닌 탄력적 상호의존으로 재정의되고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">resilient interdependence</div>
+    <div class="nuance-box">기술 주권 논쟁에서 나온 핵심 개념입니다. 순수 자립(isolation)은 불가능하므로, 대신 <strong>연결성은 유지하되 외부 충격에 잘 버티는 구조</strong>를 만드는 것이 목표라는 의미입니다. "resilient"(탄력적, 회복력 있는) + "interdependence"(상호의존)의 결합으로, 두 가지 언뜻 반대처럼 보이는 개념의 균형을 추구합니다.</div>
+    <div class="compare-box"><strong>vs. "strategic autonomy"</strong> — EU가 쓰는 표현. resilient interdependence는 자율성보다 회복력·연결의 강화에 방점</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">agentic <mark>pipeline</mark></div>
+    <div class="entry-kor">에이전틱 파이프라인, 자율 에이전트 작업 흐름</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Multi-step tasks are now handled by <em>agentic pipelines</em> that operate autonomously."<br>→ 다단계 작업이 이제 자율적으로 작동하는 에이전틱 파이프라인에 의해 처리된다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">agentic pipeline</div>
+    <div class="nuance-box">"agentic"은 <strong>목표를 스스로 설정하고 행동하는 자율적 성격</strong>을 뜻하는 형용사입니다. "pipeline"은 데이터·작업이 단계적으로 처리되는 흐름입니다. 결합하면 <strong>AI 에이전트들이 순서대로 각자 역할을 수행하며 복잡한 작업을 자동으로 완수하는 구조</strong>입니다. 기존 RPA와 달리, 사전 정의된 규칙이 아닌 AI 판단으로 작동합니다.</div>
+    <div class="compare-box"><strong>vs. "workflow automation"</strong> — workflow automation은 규칙 기반. agentic pipeline은 AI 에이전트가 상황에 따라 판단·적응하는 것이 핵심 차이</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">default <mark>capability</mark></div>
+    <div class="entry-kor">기본 역량, 당연히 갖춰야 할 기능</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Cloud infrastructure is becoming a <em>default capability</em> for AI workloads."<br>→ 클라우드 인프라는 AI 워크로드의 기본 역량이 되어가고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">default capability</div>
+    <div class="nuance-box">"default"는 <strong>특별히 선택하지 않아도 기본으로 주어지는, 또는 당연히 갖춰야 하는</strong> 상태를 뜻합니다. "default setting"(기본 설정)에서 온 개념으로, 이 맥락에서는 "경쟁에서 살아남으려면 기본적으로 보유해야 하는 역량"을 의미합니다. 예전에는 차별화 요소였던 것이 이제는 당연한 것(hygiene factor)이 되었다는 뉘앙스입니다.</div>
+    <div class="compare-box"><strong>vs. "core competency"</strong> — core competency는 경쟁 우위의 원천. default capability는 "없으면 탈락"인 최소 요건</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────── 고급 단어 ────────────────────────────────── -->
+
+<div class="section-header"><span>고급 단어</span><hr></div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">commoditize</div>
+    <div class="entry-pron">/kəˈmɒdɪtaɪz/</div>
+    <div class="entry-kor">일용품화하다, 차별성 없는 범용품으로 만들다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Foundation models are rapidly being <em>commoditized</em>, shifting value to applications."<br>→ 파운데이션 모델은 빠르게 일용품화되어, 가치가 애플리케이션으로 이동하고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">commoditize</div>
+    <div class="nuance-box">commodity(일용품, 원자재)에서 파생되었습니다. 한때 차별화된 제품·서비스가 <strong>품질·가격이 표준화되어 누가 만들든 비슷해지는 현상</strong>입니다. 기술 산업에서는 하드웨어·OS·클라우드 인프라가 순차적으로 commoditize된 역사가 있습니다. 이 보고서는 AI 모델 자체가 그 단계에 접어들고 있다고 진단합니다.</div>
+    <div class="compare-box"><strong>어원:</strong> commodity(라틴어 commoditas, '편의·이익') → 경제학에서 대체 가능한 표준 상품 → 동사화: 그 상태가 되다</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">sovereignty</div>
+    <div class="entry-pron">/ˈsɒvrənti/</div>
+    <div class="entry-kor">주권, 자주성, 독립적 통제권</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Technological <em>sovereignty</em> means controlling your own AI infrastructure and data."<br>→ 기술 주권이란 자신의 AI 인프라와 데이터를 스스로 통제하는 것을 뜻한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">sovereignty</div>
+    <div class="nuance-box">원래 <strong>국가가 영토와 국민에 대해 갖는 최고 통치권</strong>을 뜻하는 정치 용어입니다. 기술 맥락에서는 "외국 기업·정부에 의존하지 않고 자국(또는 자기 조직)의 기술·데이터·인프라를 스스로 결정·통제하는 능력"으로 확장되었습니다. EU의 "digital sovereignty", "data sovereignty" 논의가 대표적입니다.</div>
+    <div class="compare-box"><strong>파생어:</strong> sovereign(adj, 주권을 가진), sovereign state(주권 국가), sovereign cloud(주권 클라우드, 자국 법률 적용 클라우드)</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">orchestrate</div>
+    <div class="entry-pron">/ˈɔːkɪstreɪt/</div>
+    <div class="entry-kor">조율하다, 체계적으로 조직하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"An AI orchestrator <em>orchestrates</em> multiple specialized agents to complete complex tasks."<br>→ AI 오케스트레이터는 복잡한 작업을 완수하기 위해 여러 전문 에이전트를 조율한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">orchestrate</div>
+    <div class="nuance-box">오케스트라 지휘자(conductor)가 여러 악기 파트를 조화롭게 이끌듯, <strong>여러 독립적 요소가 함께 작동하도록 총체적으로 조율·지휘하는</strong> 행위입니다. 기술 분야에서 container orchestration(쿠버네티스), AI agent orchestration 등에 핵심 용어입니다. 단순 "관리(manage)"와 달리, 복잡한 의존관계와 타이밍까지 조정하는 뉘앙스입니다.</div>
+    <div class="compare-box"><strong>어원:</strong> orchestra(그리스어 orkhestra, '춤추는 공간') → 여러 악기의 조화 → 동사: 여러 요소를 체계적으로 조율하다</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">provenance</div>
+    <div class="entry-pron">/ˈprɒvɪnəns/</div>
+    <div class="entry-kor">출처, 기원, (데이터·AI의) 생성 경위</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Regulators require full <em>provenance</em> of AI training data and model decisions."<br>→ 규제기관은 AI 학습 데이터와 모델 결정의 완전한 출처를 요구한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">provenance</div>
+    <div class="nuance-box">원래 <strong>미술품·골동품의 소유 이력과 출처</strong>를 기록하는 미술계 용어입니다. AI 시대에는 "어디서 만들어진 데이터인지, 어떤 과정으로 학습·생성되었는지의 완전한 이력"으로 확장되었습니다. 규제·감사·신뢰 확보에 필수적입니다. 단순한 "source(출처)"보다 연쇄적 이력과 추적 가능성에 방점이 있습니다.</div>
+    <div class="compare-box"><strong>어원:</strong> 프랑스어 provenir("~에서 오다") → 라틴어 provenire → "어디서 왔는가"의 완전한 기록</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">resilient</div>
+    <div class="entry-pron">/rɪˈzɪlɪənt/</div>
+    <div class="entry-kor">회복력 있는, 탄력적인, 충격을 견디는</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Organizations need <em>resilient</em> supply chains that can absorb geopolitical shocks."<br>→ 조직들은 지정학적 충격을 흡수할 수 있는 탄력적 공급망이 필요하다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">resilient</div>
+    <div class="nuance-box">고무공처럼 눌렸다가 <strong>다시 원래 형태로 돌아오는 물리적 탄성</strong>에서 온 비유입니다. 단순한 "강함(strong)"과 달리, 충격을 받더라도 <strong>빠르게 회복하는 능력</strong>에 방점이 있습니다. 비즈니스·기술·심리 모든 맥락에서 핵심 키워드로, 특히 COVID 이후 supply chain resilience, organizational resilience 등에 폭발적으로 쓰입니다.</div>
+    <div class="compare-box"><strong>어원:</strong> 라틴어 resilire("뒤로 튀어오르다") → 명사: resilience(회복탄력성) → 반의어: fragile(취약한), brittle(부러지기 쉬운)</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">interoperability</div>
+    <div class="entry-pron">/ˌɪntərˌɒpərəˈbɪlɪti/</div>
+    <div class="entry-kor">상호운용성, 서로 다른 시스템 간 연동 능력</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Cloud 3.0 demands <em>interoperability</em> across public, private, and sovereign clouds."<br>→ 클라우드 3.0은 퍼블릭·프라이빗·소버린 클라우드 간 상호운용성을 요구한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">interoperability</div>
+    <div class="nuance-box">inter-(상호) + operable(작동 가능한) + -ity(명사)의 합성어입니다. <strong>서로 다른 시스템·표준·기술이 데이터를 원활히 교환하고 함께 작동할 수 있는 능력</strong>입니다. 의료(의료 기록 시스템 간), 금융(결제 시스템 간), 클라우드(멀티클라우드) 등 표준화가 핵심인 모든 분야에서 필수 개념입니다.</div>
+    <div class="compare-box"><strong>관련 개념:</strong> compatibility(호환성, 단방향도 포함) vs. interoperability(쌍방향 교환·협력 가능성이 핵심)</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">pervasive</div>
+    <div class="entry-pron">/pəˈveɪsɪv/</div>
+    <div class="entry-kor">만연한, 어디에나 스며든, 광범위하게 퍼진</div>
+    <div class="divider"></div>
+    <div class="entry-example">"AI is becoming <em>pervasive</em> across every layer of enterprise operations."<br>→ AI는 기업 운영의 모든 레이어에 걸쳐 만연하게 퍼지고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">pervasive</div>
+    <div class="nuance-box">물이 스며들 듯 <strong>의도적 노력 없이도 모든 곳에 자연스럽게 퍼져있는</strong> 이미지입니다. "widespread(광범위한)"는 넓게 분포한다는 의미인 반면, pervasive는 <strong>깊이 침투해서 빠져나오기 어렵게 된</strong> 상태입니다. "pervasive influence", "pervasive anxiety", "pervasive technology" 등에 씁니다.</div>
+    <div class="compare-box"><strong>어원:</strong> 라틴어 pervadere("완전히 관통하다") → per-(통과) + vadere(가다) → 어디든 뚫고 들어가는 이미지</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">agentic</div>
+    <div class="entry-pron">/eɪˈdʒentɪk/</div>
+    <div class="entry-kor">에이전틱, 자율적 목표 추구 행동의</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>Agentic</em> AI systems plan and execute multi-step tasks without constant human input."<br>→ 에이전틱 AI 시스템은 지속적인 인간 개입 없이 다단계 작업을 계획하고 실행한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">agentic</div>
+    <div class="nuance-box">심리학 용어 "agency(자기 행위성, 스스로 목표를 세우고 행동하는 능력)"에서 파생된 신조어입니다. AI 맥락에서 <strong>단순히 질문에 답하는 것을 넘어, 목표를 스스로 분해하고 순서를 계획하며 도구를 사용해 자율적으로 실행하는</strong> 시스템의 특성을 가리킵니다. 2024-2025년 AI 담론에서 가장 급격히 부상한 신조어 중 하나입니다.</div>
+    <div class="compare-box"><strong>vs. "autonomous"</strong> — autonomous는 자율적으로 작동. agentic은 여기에 더해 목표 지향적이고 다단계 추론·행동이 가능하다는 뉘앙스</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">scrutiny</div>
+    <div class="entry-pron">/ˈskruːtɪni/</div>
+    <div class="entry-kor">면밀한 검토·감시, 엄격한 심사</div>
+    <div class="divider"></div>
+    <div class="entry-example">"AI systems face increasing regulatory <em>scrutiny</em> around bias and transparency."<br>→ AI 시스템은 편향성과 투명성과 관련해 증가하는 규제적 감시에 직면하고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">scrutiny</div>
+    <div class="nuance-box">쓰레기를 뒤지는 누더기 상인(Latin: scrutarius)에서 유래했다는 설이 있습니다. <strong>세밀하게 뒤지고 살펴보는</strong> 이미지입니다. 단순한 "review(검토)"보다 훨씬 강도 높고 비판적인 시선을 담고 있습니다. <strong>come under scrutiny(감시를 받다), face scrutiny(감시에 직면하다), withstand scrutiny(감시를 견디다)</strong> 등이 고정 표현입니다.</div>
+    <div class="compare-box"><strong>어원:</strong> 라틴어 scrutari("세밀히 살피다, 뒤지다") → 매우 꼼꼼하고 비판적인 검토의 뉘앙스</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">compounding</div>
+    <div class="entry-pron">/kəmˈpaʊndɪŋ/</div>
+    <div class="entry-kor">복리의, 누적·배가되는</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Connected AI use cases create <em>compounding</em> returns across the enterprise."<br>→ 연결된 AI 활용 사례는 기업 전반에 걸쳐 복리 방식의 수익을 창출한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">compounding</div>
+    <div class="nuance-box">금융의 <strong>복리(compound interest)</strong>에서 온 개념입니다. 각 주기마다 원금에 이자가 더해지고, 그 합계가 다시 원금이 되어 이자를 낳는 구조입니다. 비즈니스에서는 "성과가 다음 성과의 기반이 되어 기하급수적으로 성장하는" 현상을 설명합니다. <strong>compounding effect, compounding growth, compounding advantage</strong> 등이 자주 씁니다.</div>
+    <div class="compare-box"><strong>vs. "additive"</strong> — additive는 1+1=2 (단순 합산). compounding은 1×1.1×1.1×... (기하급수 성장)의 차이</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────── 비즈니스 전용 ────────────────────────────────── -->
+
+<div class="section-header"><span>비즈니스 전용</span><hr></div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">C-suite</div>
+    <div class="entry-kor">최고위 임원진 (CEO, CFO, CTO 등)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>C-suite</em> executives must champion AI transformation from the top."<br>→ 최고위 임원진이 최상위에서 AI 전환을 이끌어야 한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">C-suite</div>
+    <div class="nuance-box">"C"는 "Chief(최고)"의 약자입니다. CEO(최고경영자), CFO(최고재무책임자), CTO(최고기술책임자), COO(최고운영책임자), CISO(최고정보보안책임자) 등 <strong>직함에 "Chief"가 붙는 최고위 임원들의 집합</strong>을 가리킵니다. 그들이 사용하는 고층 건물의 "suite(스위트룸)"에 있다는 데서 유래했습니다.</div>
+    <div class="compare-box"><strong>관련 표현:</strong> "boardroom"(이사회실) · "executive leadership"(경영진) · "top management"(최고경영층) — C-suite는 이 중 가장 구체적으로 직함 기반</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">technical debt</div>
+    <div class="entry-kor">기술 부채, 미래 비용을 유발하는 기술적 타협</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Bolting AI onto legacy systems only increases <em>technical debt</em>."<br>→ AI를 레거시 시스템에 덧붙이는 것은 기술 부채를 증가시킬 뿐이다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">technical debt</div>
+    <div class="nuance-box">Ward Cunningham이 만든 메타포입니다. 금융 부채처럼 <strong>지금 빠르게 만들기 위해 취한 기술적 타협·편법이 나중에 이자처럼 추가 비용(수정·재작성)을 유발하는 현상</strong>입니다. 단기적으로는 빠르지만 장기적으로는 시스템을 무겁게 만듭니다. "갚지 않으면 이자가 쌓인다"는 금융 메타포가 소프트웨어 엔지니어링 전반에 정착했습니다.</div>
+    <div class="compare-box"><strong>관련 표현:</strong> "refactoring"(기술 부채 상환) · "legacy system"(오래된 시스템, 부채가 쌓인 결과물)</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">DevOps</div>
+    <div class="entry-kor">개발-운영 통합, 소프트웨어 개발·운영 협업 방법론</div>
+    <div class="divider"></div>
+    <div class="entry-example">"AI is transforming <em>DevOps</em> by automating testing, deployment, and monitoring."<br>→ AI는 테스트·배포·모니터링 자동화를 통해 DevOps를 혁신하고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">DevOps</div>
+    <div class="nuance-box">Development(개발) + Operations(운영)의 합성어입니다. 전통적으로 분리되었던 소프트웨어 개발팀과 IT 운영팀이 <strong>협업, 자동화, 지속적 통합/배포(CI/CD)를 통해 빠르고 안정적으로 소프트웨어를 출시</strong>하는 방법론입니다. AI가 코드 리뷰, 테스트 자동화, 이상 감지 등 DevOps 단계를 혁신하면서 "AI-powered DevOps" 또는 "AIOps"라는 파생 개념도 등장했습니다.</div>
+    <div class="compare-box"><strong>관련 개념:</strong> CI/CD(지속적 통합/배포), MLOps(머신러닝 운영), AIOps(AI 기반 IT 운영)</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">RPA</div>
+    <div class="entry-kor">로봇 프로세스 자동화 (Robotic Process Automation)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>RPA</em> handles repetitive rule-based tasks, while AI agents manage exceptions."<br>→ RPA는 반복적인 규칙 기반 작업을 처리하고, AI 에이전트는 예외를 관리한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">RPA</div>
+    <div class="nuance-box">소프트웨어 로봇이 <strong>사람이 반복적으로 하던 컴퓨터 작업(클릭, 데이터 복사, 양식 입력 등)을 자동으로 수행</strong>하는 기술입니다. 규칙이 명확하고 예외가 거의 없는 작업에 특화됩니다. AI 에이전트와의 차이점은 RPA가 정해진 규칙만 따르는 반면, AI 에이전트는 판단·학습·적응이 가능합니다. 이 보고서는 RPA를 AI 에이전트가 대체·보완하는 흐름을 다룹니다.</div>
+    <div class="compare-box"><strong>vs. AI agents</strong> — RPA: 규칙 기반, 구조화된 작업 / AI agents: 비정형 작업, 판단·추론·예외 처리 가능</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">SaaS</div>
+    <div class="entry-kor">서비스형 소프트웨어 (Software as a Service)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"AI is disrupting the <em>SaaS</em> model by embedding intelligence into every layer."<br>→ AI는 모든 레이어에 지능을 내장함으로써 SaaS 모델을 파괴하고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">SaaS</div>
+    <div class="nuance-box">소프트웨어를 구매·설치하는 대신 <strong>인터넷을 통해 구독료를 내고 사용하는 클라우드 기반 배포 모델</strong>입니다. Salesforce, Slack, Google Workspace가 대표적입니다. 이 보고서에서 AI는 SaaS를 위협합니다: AI 에이전트가 특정 SaaS 기능을 대체하거나, 기존 SaaS 기업들이 AI를 내장하지 않으면 경쟁력을 잃게 되는 구조를 설명합니다.</div>
+    <div class="compare-box"><strong>클라우드 서비스 3계층:</strong> IaaS(인프라) → PaaS(플랫폼) → SaaS(소프트웨어) — SaaS가 최종 사용자에 가장 가까움</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">ROI</div>
+    <div class="entry-kor">투자 수익률 (Return on Investment)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Boards demand clear <em>ROI</em> metrics before approving large-scale AI investments."<br>→ 이사회는 대규모 AI 투자를 승인하기 전에 명확한 투자 수익률 지표를 요구한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">ROI</div>
+    <div class="nuance-box">투자 대비 얼마나 수익이 났는지를 나타내는 가장 기본적인 재무 지표입니다. 공식: <strong>(순이익 / 투자비용) × 100%</strong>. AI 맥락에서는 정량화하기 어려운 생산성·품질 향상도 포함해야 하기 때문에 "AI ROI를 측정하기 어렵다"는 게 주요 도전 과제입니다. 이 보고서는 proof-of-impact(실질 효과 증명)를 통해 ROI를 명확히 해야 한다고 강조합니다.</div>
+    <div class="compare-box"><strong>관련 지표:</strong> NPV(순현재가치), IRR(내부수익률), TCO(총소유비용) — ROI는 이 중 가장 단순하고 직관적</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+</div><!-- end grid -->
+
+<script>
+  let learnedCards = new Set();
+
+  function flipCard(el) {
+    el.classList.toggle('flipped');
+    if (el.classList.contains('flipped')) {
+      learnedCards.add(el);
+    } else {
+      learnedCards.delete(el);
+    }
+    updateStats();
+    updateProgress();
+  }
+
+  function updateStats() {
+    const total = document.querySelectorAll('.card:not(.hidden)').length;
+    const learned = learnedCards.size;
+    document.getElementById('learnedCount').textContent = learned;
+    document.getElementById('remainCount').textContent = total - learned;
+  }
+
+  function updateProgress() {
+    const total = document.querySelectorAll('.card').length;
+    const pct = (learnedCards.size / total * 100).toFixed(0);
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  function filterCards(cat) {
+    // reset all filter buttons
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    // activate correct button
+    const target = event.target;
+    target.classList.add('active');
+
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    // Update total count
+    const visible = document.querySelectorAll('.card:not(.hidden)').length;
+    document.getElementById('totalCount').textContent = visible;
+
+    // Hide section headers if no cards visible under them
+    document.querySelectorAll('.section-header').forEach(header => {
+      let sibling = header.nextElementSibling;
+      let hasVisible = false;
+      while (sibling && !sibling.classList.contains('section-header')) {
+        if (!sibling.classList.contains('hidden') && sibling.classList.contains('card')) {
+          hasVisible = true;
+          break;
+        }
+        sibling = sibling.nextElementSibling;
+      }
+      header.style.display = hasVisible ? '' : 'none';
+    });
+    updateStats();
+  }
+
+  // Init count
+  document.getElementById('totalCount').textContent = document.querySelectorAll('.card').length;
+  document.getElementById('remainCount').textContent = document.querySelectorAll('.card').length;
+</script>
+</body>
+</html>

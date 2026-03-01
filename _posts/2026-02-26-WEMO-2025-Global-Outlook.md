@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "WEMO 2025 Global Outlook - Full Report Summary"
-categories: English
+categories: Report_Summary
 tags: [energy, capgemini, english-study, climate, nuclear, AI, geopolitics, renewable]
 toc: true
 toc_sticky: true

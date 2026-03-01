@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "The Next Big Shifts in AI Workloads and Hyperscaler Strategies"
-categories: English
+categories: Report_Summary
 tags: [investment, AI, english-study, mckinsey, data-center]
 toc: true
 toc_sticky: true

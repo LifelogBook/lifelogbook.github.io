@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "Retail AI Trends 2026 - From Hype to How (Capgemini NRF Report)"
-categories: English
+categories: Report_Summary
 tags: [retail, AI, capgemini, english-study, agentic-commerce, NRF]
 toc: true
 toc_sticky: true

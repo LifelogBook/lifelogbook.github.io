@@ -1,7 +1,7 @@
 ---
 layout: single
 title:  "[English Study] The State of AI in 2025 - McKinsey Report Summary & Vocabulary"
-categories: English
+categories: Report_Summary
 tags: [investment, AI, english-study, mckinsey, vocabulary]
 toc: true
 toc_sticky: true

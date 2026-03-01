@@ -1,7 +1,7 @@
 ---
 layout: single
 title: "McKinsey Global Energy Perspective 2025 - Full Report Summary"
-categories: English
+categories: Report_Summary
 tags: [energy, mckinsey, english-study, climate, renewables, fossil-fuels]
 toc: true
 toc_sticky: true
