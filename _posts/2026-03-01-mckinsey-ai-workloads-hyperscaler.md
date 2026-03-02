@@ -1,7 +1,7 @@
 ---
 layout: single
 classes: wide
-title: "AI 워크로드와 하이퍼스케일러 전략의 다음 큰 변화 — McKinsey & Company"
+title: "AI 워크로드와 하이퍼스케일러 전략의 다음 큰 변화 - McKinsey"
 categories: Report
 tags: [AI, mckinsey, data-center, hyperscaler, english-study, investment, infrastructure]
 toc: true

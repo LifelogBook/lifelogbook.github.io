@@ -1,7 +1,7 @@
 ---
 layout: single
 classes: wide
-title: "[번역] Capgemini WEMO 2025 — 세계 에너지 시장 전망: AI와 주권이 이끄는 새로운 에너지 패러다임"
+title: "WEMO 2025 — 세계 에너지 시장 전망 - Capgemini"
 categories: Report
 tags: [energy, capgemini, WEMO, renewables, nuclear, hydrogen, grid, geopolitics, AI, english-study, energy-transition]
 toc: true
