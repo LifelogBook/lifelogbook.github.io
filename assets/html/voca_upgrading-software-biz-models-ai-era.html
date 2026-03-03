@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 시대 소프트웨어 비즈니스 모델 — 어휘 학습 카드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d1b2a;
+    --ink2: #1e3a5f;
+    --accent: #1a56db;
+    --accent2: #0ea5e9;
+    --sky: #38bdf8;
+    --bg: #f0f6ff;
+    --card-bg: #ffffff;
+    --border: #bfdbfe;
+    --text: #1e293b;
+    --text-soft: #475569;
+    --tag-phrasal: #1a56db;
+    --tag-idiom: #0ea5e9;
+    --tag-colloc: #0369a1;
+    --tag-vocab: #7c3aed;
+    --tag-biz: #0f766e;
+    --radius: 14px;
+    --shadow: 0 4px 24px rgba(26,86,219,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1e3a5f 60%, #0369a1 100%);
+    padding: 36px 24px 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(14,165,233,0.18) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .site-header .badge {
+    display: inline-block;
+    background: rgba(56,189,248,0.18);
+    border: 1px solid rgba(56,189,248,0.4);
+    color: var(--sky);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .site-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(20px, 4vw, 28px);
+    color: #f0f9ff;
+    line-height: 1.25;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .site-header p {
+    font-size: 13px;
+    color: rgba(186,230,255,0.85);
+    position: relative;
+  }
+
+  /* ── Stats Bar ── */
+  .stats-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 20px;
+    background: var(--ink);
+    color: #f0f9ff;
+    font-size: 12px;
+  }
+  .stats-bar .stat { display: flex; align-items: center; gap: 6px; }
+  .stats-bar .stat strong { color: var(--sky); font-size: 15px; font-weight: 700; }
+  .progress-wrap { flex: 1; min-width: 140px; }
+  .progress-label { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 11px; color: #94a3b8; }
+  .progress-bar { height: 5px; background: #1e3a5f; border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--sky)); border-radius: 99px; transition: width .5s ease; }
+  .reset-btn {
+    background: none; border: 1px solid #334155; color: #94a3b8;
+    padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 11px;
+    transition: all .2s;
+  }
+  .reset-btn:hover { border-color: var(--sky); color: var(--sky); }
+
+  /* ── Filters ── */
+  .filter-wrap {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 18px 20px 10px;
+    background: #fff;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .filter-btn {
+    padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border);
+    background: #fff; color: var(--text-soft); font-size: 12px; font-weight: 500;
+    cursor: pointer; transition: all .18s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .filter-btn[data-cat="phrasal"].active { background: var(--tag-phrasal); border-color: var(--tag-phrasal); }
+  .filter-btn[data-cat="idiom"].active { background: var(--tag-idiom); border-color: var(--tag-idiom); }
+  .filter-btn[data-cat="colloc"].active { background: var(--tag-colloc); border-color: var(--tag-colloc); }
+  .filter-btn[data-cat="vocab"].active { background: var(--tag-vocab); border-color: var(--tag-vocab); }
+  .filter-btn[data-cat="biz"].active { background: var(--tag-biz); border-color: var(--tag-biz); }
+
+  /* ── Grid ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ── Flip Card ── */
+  .card-wrap { perspective: 900px; height: 220px; cursor: pointer; }
+  .card-inner {
+    position: relative; width: 100%; height: 100%;
+    transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1);
+  }
+  .card-wrap.flipped .card-inner { transform: rotateY(180deg); }
+  .card-front, .card-back {
+    position: absolute; inset: 0;
+    border-radius: var(--radius);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    padding: 18px 18px 14px;
+    display: flex; flex-direction: column;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .card-front {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+  }
+  .card-back {
+    background: linear-gradient(145deg, var(--ink) 0%, var(--ink2) 100%);
+    transform: rotateY(180deg);
+    border: 1.5px solid rgba(14,165,233,0.3);
+  }
+
+  /* Card Front */
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .card-cat {
+    font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em;
+    padding: 2px 8px; border-radius: 20px; color: #fff;
+  }
+  .cat-phrasal { background: var(--tag-phrasal); }
+  .cat-idiom   { background: var(--tag-idiom); }
+  .cat-colloc  { background: var(--tag-colloc); }
+  .cat-vocab   { background: var(--tag-vocab); }
+  .cat-biz     { background: var(--tag-biz); }
+
+  .diff-dots { display: flex; gap: 3px; align-items: center; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #e2e8f0; }
+  .dot.on { background: var(--accent); }
+
+  .card-word {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px; color: var(--ink); line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .card-pron { font-size: 11px; color: #94a3b8; margin-bottom: 6px; font-style: italic; }
+  .card-meaning { font-size: 14px; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+  .card-example {
+    font-size: 11.5px; color: var(--text-soft); line-height: 1.55;
+    border-left: 2px solid var(--border); padding-left: 8px;
+    margin-top: auto; font-style: italic;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .flip-hint { font-size: 10px; color: #cbd5e1; text-align: right; margin-top: 6px; }
+
+  /* Card Back */
+  .back-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .back-word { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--sky); }
+  .learned-toggle {
+    background: none; border: 1px solid rgba(56,189,248,0.4); color: #94a3b8;
+    padding: 3px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all .2s;
+  }
+  .learned-toggle.on { background: rgba(56,189,248,0.15); border-color: var(--sky); color: var(--sky); }
+  .back-nuance { font-size: 12px; color: #cbd5e1; line-height: 1.6; flex: 1; overflow: hidden; }
+  .back-nuance strong { color: var(--sky); font-weight: 600; }
+  .back-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+  .back-tag {
+    font-size: 10px; padding: 2px 8px; border-radius: 20px;
+    background: rgba(255,255,255,0.07); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* Hidden cards */
+  .card-wrap.hidden { display: none; }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    .cards-grid { grid-template-columns: 1fr; padding: 12px; gap: 12px; }
+    .card-wrap { height: 210px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="badge">McKinsey · September 2025</div>
+  <h1>AI 시대 소프트웨어 비즈니스 모델 업그레이드</h1>
+  <p>Upgrading software business models to thrive in the AI era — 어휘 학습 카드 35</p>
+</header>
+
+<div class="stats-bar">
+  <div class="stat"><strong id="learnedCount">0</strong> / 35 학습완료</div>
+  <div class="progress-wrap">
+    <div class="progress-label"><span>진행률</span><span id="pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <button class="reset-btn" onclick="resetAll()">초기화</button>
+</div>
+
+<div class="filter-wrap">
+  <button class="filter-btn active" data-cat="all" onclick="filterCards('all',this)">전체 35</button>
+  <button class="filter-btn" data-cat="phrasal" onclick="filterCards('phrasal',this)">Phrasal Verb 6</button>
+  <button class="filter-btn" data-cat="idiom" onclick="filterCards('idiom',this)">Idiom·비유 6</button>
+  <button class="filter-btn" data-cat="colloc" onclick="filterCards('colloc',this)">Collocation 7</button>
+  <button class="filter-btn" data-cat="vocab" onclick="filterCards('vocab',this)">고급단어 10</button>
+  <button class="filter-btn" data-cat="biz" onclick="filterCards('biz',this)">비즈니스 전용 6</button>
+</div>
+
+<div class="cards-grid" id="cardsGrid">
+
+  <!-- ── Phrasal Verbs ── -->
+
+  <!-- 1. phase in -->
+  <div class="card-wrap" data-cat="phrasal" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-phrasal">Phrasal Verb</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">phase in</div>
+        <div class="card-pron">— verb phrase</div>
+        <div class="card-meaning">단계적으로 도입하다</div>
+        <div class="card-example">"Vendors are phasing in consumption-based pricing as buyers grow more comfortable with AI outcomes."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">phase in</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>뉘앙스:</strong> 한 번에 바꾸는 것이 아니라 일정 기간에 걸쳐 조금씩 새 시스템·정책을 도입할 때 씁니다.<br><br>
+          <strong>반대:</strong> phase out (단계적으로 폐기)<br>
+          <strong>유사:</strong> roll out, introduce gradually, transition to
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">phase-in period</span>
+          <span class="back-tag">phased approach</span>
+          <span class="back-tag">gradual rollout</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. opt for -->
+  <div class="card-wrap" data-cat="phrasal" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-phrasal">Phrasal Verb</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">opt for</div>
+        <div class="card-pron">— verb phrase</div>
+        <div class="card-meaning">선택하다, 채택하다</div>
+        <div class="card-example">"90% of customers opted for activity-based pricing rather than outcome-based pricing."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">opt for</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>뉘앙스:</strong> 여러 선택지 중 하나를 의식적으로 고를 때. 특히 비즈니스·정책 문맥에서 자연스럽습니다.<br><br>
+          <strong>유사:</strong> choose, go with, select, prefer<br>
+          <strong>파생:</strong> opt out (탈퇴하다), opt in (참여하다)
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">opt-in model</span>
+          <span class="back-tag">opt out</span>
+          <span class="back-tag">decision-making</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. double down on -->
+  <div class="card-wrap" data-cat="phrasal" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-phrasal">Phrasal Verb</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">double down on</div>
+        <div class="card-pron">— verb phrase</div>
+        <div class="card-meaning">~에 집중 투자·강화하다</div>
+        <div class="card-example">"Leading software companies are doubling down on AI-native monetization strategies."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">double down on</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>어원:</strong> 블랙잭에서 패를 보고 베팅을 2배로 늘리는 행위에서 유래. 위험을 감수하고 자원을 집중 투입하는 뉘앙스.<br><br>
+          <strong>유사:</strong> intensify, ramp up, invest heavily in, double efforts<br>
+          <strong>주의:</strong> 때로는 '고집스럽게 밀어붙이다'는 부정적 뉘앙스도 있음
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">strategic bet</span>
+          <span class="back-tag">commitment</span>
+          <span class="back-tag">intensify efforts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. roll out -->
+  <div class="card-wrap" data-cat="phrasal" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-phrasal">Phrasal Verb</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">roll out</div>
+        <div class="card-pron">— verb phrase</div>
+        <div class="card-meaning">출시하다, 배포하다</div>
+        <div class="card-example">"Adobe rolled out standalone AI SKUs after initially embedding features for free."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">roll out</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>뉘앙스:</strong> 제품·서비스·정책을 순차적으로 또는 공식적으로 출시·배포하는 과정. launch보다 단계적 느낌.<br><br>
+          <strong>명사형:</strong> rollout (제품 출시, 배포 일정)<br>
+          <strong>유사:</strong> launch, deploy, release, introduce
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">product rollout</span>
+          <span class="back-tag">feature release</span>
+          <span class="back-tag">gradual deployment</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. move toward -->
+  <div class="card-wrap" data-cat="phrasal" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-phrasal">Phrasal Verb</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">move toward</div>
+        <div class="card-pron">— verb phrase</div>
+        <div class="card-meaning">~방향으로 전환하다</div>
+        <div class="card-example">"Companies are moving toward hybrid pricing models that combine seat-based and consumption elements."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">move toward</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>뉘앙스:</strong> 완전히 전환한 것이 아니라 그 방향으로 이동 중임을 나타냄. 진행형 변화를 설명할 때 유용.<br><br>
+          <strong>유사:</strong> transition to, shift toward, gravitate toward<br>
+          <strong>반대:</strong> move away from
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">industry shift</span>
+          <span class="back-tag">transition</span>
+          <span class="back-tag">evolving model</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. build on -->
+  <div class="card-wrap" data-cat="phrasal" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-phrasal">Phrasal Verb</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">build on</div>
+        <div class="card-pron">— verb phrase</div>
+        <div class="card-meaning">~을 기반으로 발전시키다</div>
+        <div class="card-example">"Successful companies build on lighthouse use cases to expand AI adoption across the enterprise."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">build on</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>뉘앙스:</strong> 기존 성과·자산을 버리지 않고 그 위에 새로운 것을 쌓아올림. 확장·발전의 긍정적 뉘앙스.<br><br>
+          <strong>유사:</strong> leverage, capitalize on, draw upon, expand from<br>
+          <strong>파생:</strong> build upon (더 격식체)
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">leverage success</span>
+          <span class="back-tag">scale up</span>
+          <span class="back-tag">foundation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Idioms / 비유 ── -->
+
+  <!-- 7. land and expand -->
+  <div class="card-wrap" data-cat="idiom" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-idiom">Idiom · 비유</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">land and expand</div>
+        <div class="card-pron">— business idiom</div>
+        <div class="card-meaning">소규모 계약 후 점진적 확장 전략</div>
+        <div class="card-example">"The land-and-expand model works well for AI tools: start with one team, prove value, then scale."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">land and expand</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>뉘앙스:</strong> 군사 용어 "land (상륙)" 에서 유래. B2B SaaS의 핵심 영업 전략으로, 작은 파일럿으로 먼저 고객사 내 발판을 마련한 뒤 점진적으로 사용 범위를 넓히는 방식.<br><br>
+          <strong>관련:</strong> upsell, expand within accounts, net revenue retention (NRR)
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">GTM strategy</span>
+          <span class="back-tag">upsell</span>
+          <span class="back-tag">NRR growth</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. shelfware -->
+  <div class="card-wrap" data-cat="idiom" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-idiom">Idiom · 비유</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">shelfware</div>
+        <div class="card-pron">/ˈʃɛlf.wɛr/ — noun</div>
+        <div class="card-meaning">구매했지만 쓰지 않는 소프트웨어</div>
+        <div class="card-example">"The biggest risk for AI tools is becoming shelfware — licensed but never truly adopted."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">shelfware</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>어원:</strong> "shelf(선반) + ware(소프트웨어)" — 박스 소프트웨어 시대에 구매 후 선반에 쌓아두고 설치도 하지 않는 데서 유래.<br><br>
+          <strong>문맥:</strong> 보고서는 AI 도입 이후 실제 사용까지 이어지지 않는 "지속적 채택" 문제를 shelfware 위험으로 표현.<br>
+          <strong>유사:</strong> unused licenses, vapor adoption
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">adoption failure</span>
+          <span class="back-tag">license waste</span>
+          <span class="back-tag">change management</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. table stakes -->
+  <div class="card-wrap" data-cat="idiom" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-idiom">Idiom · 비유</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">table stakes</div>
+        <div class="card-pron">— noun (US idiom)</div>
+        <div class="card-meaning">기본 요건, 차별화 없는 최소 기준</div>
+        <div class="card-example">"Embedding basic AI features is now table stakes; the real question is standalone monetization."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">table stakes</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>어원:</strong> 포커에서 게임 참여를 위해 테이블 위에 올려놓는 최소 금액. '게임에 끼려면 갖춰야 할 최소한의 것'을 의미.<br><br>
+          <strong>뉘앙스:</strong> 이것만으로는 경쟁 우위를 갖지 못함. "AI 기능 탑재는 table stakes — 당연한 것"처럼 사용.<br>
+          <strong>유사:</strong> minimum requirement, hygiene factor, baseline
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">competitive baseline</span>
+          <span class="back-tag">minimum viable</span>
+          <span class="back-tag">market expectation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. quarterback -->
+  <div class="card-wrap" data-cat="idiom" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-idiom">Idiom · 비유</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">quarterback</div>
+        <div class="card-pron">/ˈkwɔːrtərˌbæk/ — noun/verb</div>
+        <div class="card-meaning">전체 고객 여정의 총괄 담당자</div>
+        <div class="card-example">"The new GTM model requires an account executive to quarterback the entire customer journey."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">quarterback</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>어원:</strong> 미식축구의 쿼터백 — 공격의 모든 플레이를 지휘하는 선수. 비즈니스에서는 여러 팀·기능을 조율하며 전체 프로세스를 이끄는 역할자를 가리킴.<br><br>
+          <strong>문맥:</strong> 보고서에서 소비 기반 영업 모델에서 어카운트 임원이 영업·CS·기술팀을 모두 조율하는 "quarterback model"을 제안.
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">account executive</span>
+          <span class="back-tag">GTM orchestration</span>
+          <span class="back-tag">cross-functional</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. super cycle -->
+  <div class="card-wrap" data-cat="idiom" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-idiom">Idiom · 비유</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+        </div>
+        <div class="card-word">super cycle</div>
+        <div class="card-pron">— noun</div>
+        <div class="card-meaning">특정 산업의 장기 성장 사이클</div>
+        <div class="card-example">"We believe we are at the beginning of an AI+SaaS supercycle that will reshape software economics."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">super cycle</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>어원:</strong> 원자재·경제 분야에서 수십 년에 걸친 장기 상승 사이클을 뜻하던 용어가 기술 산업으로 확장.<br><br>
+          <strong>뉘앙스:</strong> 단기 트렌드가 아닌 구조적·장기적 성장을 강조할 때 사용. 강한 낙관적 전망 표현.<br>
+          <strong>유사:</strong> secular growth, long-term wave, macro trend
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">secular growth</span>
+          <span class="back-tag">macro tailwind</span>
+          <span class="back-tag">long-term trend</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. lighthouse use case -->
+  <div class="card-wrap" data-cat="idiom" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-idiom">Idiom · 비유</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">lighthouse use case</div>
+        <div class="card-pron">— compound noun</div>
+        <div class="card-meaning">초기 성공 사례, 확장의 기준점</div>
+        <div class="card-example">"Identifying a lighthouse use case with clear ROI is the first step to broader AI adoption."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">lighthouse use case</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>비유:</strong> 등대(lighthouse)처럼 어둠 속에서 방향을 안내해 주는 초기 성공 사례. 다른 팀·조직이 "우리도 할 수 있다"는 확신을 갖게 하는 레퍼런스.<br><br>
+          <strong>문맥:</strong> AI 파일럿 이후 전사 확산의 시작점이 되는 성공 사례를 지칭.<br>
+          <strong>유사:</strong> flagship project, reference case, proof of concept (PoC)
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">proof of value</span>
+          <span class="back-tag">reference customer</span>
+          <span class="back-tag">pilot success</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Collocations ── -->
+
+  <!-- 13. consumption-based pricing -->
+  <div class="card-wrap" data-cat="colloc" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-colloc">Collocation</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">consumption-based pricing</div>
+        <div class="card-pron">— compound noun</div>
+        <div class="card-meaning">소비량 기반 가격 책정</div>
+        <div class="card-example">"Consumption-based pricing aligns vendor incentives with actual customer value delivered."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">consumption-based pricing</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> 고정 시트 요금 대신 실제 사용량(API 호출, 처리된 문서 수, 완료된 작업 수)에 따라 과금하는 방식. AI 시대에 자연스러운 모델.<br><br>
+          <strong>유사:</strong> usage-based pricing, pay-as-you-go, metered billing<br>
+          <strong>반대:</strong> seat-based pricing, flat-fee subscription
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">pay-as-you-go</span>
+          <span class="back-tag">metered billing</span>
+          <span class="back-tag">usage-based</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 14. go-to-market (GTM) -->
+  <div class="card-wrap" data-cat="colloc" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-colloc">Collocation</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">go-to-market (GTM)</div>
+        <div class="card-pron">— adjective / noun phrase</div>
+        <div class="card-meaning">시장 진출 전략</div>
+        <div class="card-example">"AI monetization requires a fundamental rethink of go-to-market strategy, not just pricing."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">go-to-market</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> 제품·서비스를 시장에 어떻게 출시하고 판매할지에 대한 전략 전반. 영업 채널, 타깃 고객, 가격 모델, 마케팅 방법 등 포함.<br><br>
+          <strong>구성 요소:</strong> GTM motion (영업 방식), GTM team, GTM playbook<br>
+          <strong>유사:</strong> market strategy, commercialization plan, sales strategy
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">GTM motion</span>
+          <span class="back-tag">sales strategy</span>
+          <span class="back-tag">commercialization</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 15. value realization -->
+  <div class="card-wrap" data-cat="colloc" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-colloc">Collocation</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">value realization</div>
+        <div class="card-pron">— noun phrase</div>
+        <div class="card-meaning">가치 실현 (약속한 ROI를 실제로 달성하는 것)</div>
+        <div class="card-example">"Only 30% of vendors publicly share quantitative ROI, creating a value realization gap."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">value realization</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> 소프트웨어·AI 투자가 실제 비즈니스 성과(비용 절감, 매출 증가)로 이어지는 것. "가치 약속(promise)"과 "가치 달성(realization)"의 간극이 AI 수익화 최대 과제.<br><br>
+          <strong>유사:</strong> ROI delivery, benefit capture, outcome achievement<br>
+          <strong>관련:</strong> value communication, time-to-value, customer success
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">ROI delivery</span>
+          <span class="back-tag">customer success</span>
+          <span class="back-tag">time-to-value</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 16. forward-deployed engineer -->
+  <div class="card-wrap" data-cat="colloc" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-colloc">Collocation</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+        </div>
+        <div class="card-word">forward-deployed engineer</div>
+        <div class="card-pron">— compound noun</div>
+        <div class="card-meaning">현장 배치 엔지니어 (고객 현장 상주)</div>
+        <div class="card-example">"Forward-deployed engineers help customers actually implement and adopt AI tools on-site."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">forward-deployed engineer</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> Palantir가 대중화한 개념. 기술 엔지니어가 고객 현장에 배치되어 제품 도입·커스터마이징을 직접 돕는 역할. AI 도입 복잡성이 높아질수록 중요도 증가.<br><br>
+          <strong>군사 비유:</strong> "forward-deployed" = 최전선 배치<br>
+          <strong>유사:</strong> embedded engineer, field engineer, customer engineer
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">field engineering</span>
+          <span class="back-tag">customer success</span>
+          <span class="back-tag">on-site support</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 17. revenue recognition -->
+  <div class="card-wrap" data-cat="colloc" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-colloc">Collocation</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+        </div>
+        <div class="card-word">revenue recognition</div>
+        <div class="card-pron">— noun phrase (accounting)</div>
+        <div class="card-meaning">수익 인식 (회계 기준)</div>
+        <div class="card-example">"Consumption-based models complicate revenue recognition under ASC 606 and IFRS 15 standards."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">revenue recognition</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> 기업이 수익을 언제, 어떻게 재무제표에 기록하는지에 대한 회계 원칙. 선불 연간 계약(ARR)은 인식이 간단하지만 소비 기반은 실시간 사용량 데이터가 필요해 복잡.<br><br>
+          <strong>관련 기준:</strong> ASC 606 (US GAAP), IFRS 15<br>
+          <strong>유사:</strong> income recognition, revenue booking
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">ASC 606</span>
+          <span class="back-tag">IFRS 15</span>
+          <span class="back-tag">financial compliance</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 18. change management -->
+  <div class="card-wrap" data-cat="colloc" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-colloc">Collocation</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">change management</div>
+        <div class="card-pron">— noun phrase</div>
+        <div class="card-meaning">변화 관리 (조직 전환 프로세스)</div>
+        <div class="card-example">"For every $1 spent on model development, companies need to invest $3 in change management."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">change management</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> 조직이 새 시스템·프로세스·문화로 전환할 때 사람·프로세스·기술을 관리하는 체계적 접근. AI 도입 실패의 주요 원인이 기술 문제가 아닌 변화 관리 부재.<br><br>
+          <strong>구성 요소:</strong> training, communication, stakeholder buy-in, process redesign<br>
+          <strong>유사:</strong> organizational change, transformation management
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">organizational change</span>
+          <span class="back-tag">adoption</span>
+          <span class="back-tag">training</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 19. pricing meter -->
+  <div class="card-wrap" data-cat="colloc" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-colloc">Collocation</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">pricing meter</div>
+        <div class="card-pron">— noun phrase</div>
+        <div class="card-meaning">가격 측정 기준 (과금 단위)</div>
+        <div class="card-example">"Choosing the right pricing meter—seat, outcome, or activity—is critical for AI monetization."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">pricing meter</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> 고객에게 무엇을 기준으로 요금을 부과할지 결정하는 단위. 보고서는 4가지 유형 제시: ①평면 요금 ②성공 결과 기반 ③활동 소비 기반 ④용량 기반.<br><br>
+          <strong>유사:</strong> billing unit, pricing dimension, charge metric<br>
+          <strong>관련:</strong> metered billing, usage metric, value metric
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">billing unit</span>
+          <span class="back-tag">value metric</span>
+          <span class="back-tag">pricing dimension</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 고급 단어 ── -->
+
+  <!-- 20. fungibility -->
+  <div class="card-wrap" data-cat="vocab" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-vocab">고급단어</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+        </div>
+        <div class="card-word">fungibility</div>
+        <div class="card-pron">/ˌfʌndʒɪˈbɪlɪti/ — noun</div>
+        <div class="card-meaning">대체 가능성 (자유롭게 교환·전환 가능한 성질)</div>
+        <div class="card-example">"65% of buyers say fungibility of credits across products is very important to their purchasing decisions."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">fungibility</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>어원:</strong> 라틴어 fungi (수행하다) + -ble. 경제·법률 용어에서 "같은 종류의 것으로 대체 가능한" 성질.<br><br>
+          <strong>문맥:</strong> 소비 기반 크레딧이 여러 제품에 걸쳐 자유롭게 사용 가능한지 여부. 구매자는 제품별 분리된 크레딧보다 통합 지갑(unified wallet)을 선호.<br>
+          <strong>형용사:</strong> fungible
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">credit wallet</span>
+          <span class="back-tag">interchangeable</span>
+          <span class="back-tag">flexible consumption</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 21. telemetry -->
+  <div class="card-wrap" data-cat="vocab" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-vocab">고급단어</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+        </div>
+        <div class="card-word">telemetry</div>
+        <div class="card-pron">/tɪˈlɛmɪtri/ — noun</div>
+        <div class="card-meaning">원격 측정 (실시간 사용량 데이터 수집)</div>
+        <div class="card-example">"Real-time telemetry is essential to track consumption, trigger billing, and manage COGS."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">telemetry</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>어원:</strong> 그리스어 tele(멀리) + metron(측정). 원래 우주·항공 분야에서 원격으로 데이터를 수집하는 기술.<br><br>
+          <strong>소프트웨어 문맥:</strong> 앱·서비스의 사용 패턴·성능 데이터를 자동으로 수집하는 시스템. 소비 기반 청구의 필수 인프라.<br>
+          <strong>관련:</strong> observability, monitoring, usage tracking, instrumentation
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">usage tracking</span>
+          <span class="back-tag">observability</span>
+          <span class="back-tag">metering infrastructure</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 22. monetization -->
+  <div class="card-wrap" data-cat="vocab" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-vocab">고급단어</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">monetization</div>
+        <div class="card-pron">/ˌmɒnɪtaɪˈzeɪʃən/ — noun</div>
+        <div class="card-meaning">수익화 (가치·자산을 매출로 전환하는 것)</div>
+        <div class="card-example">"AI monetization remains immature: only 16% of SaaS incumbents have commercialized AI as a standalone product."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">monetization</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> 기술·데이터·사용자 기반·콘텐츠 등의 가치를 실제 매출·수익으로 전환하는 전략과 실행 전반.<br><br>
+          <strong>동사:</strong> monetize ("How do we monetize AI features?")<br>
+          <strong>유사:</strong> commercialization, revenue generation, value capture<br>
+          <strong>관련:</strong> pricing strategy, packaging, go-to-market
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">commercialization</span>
+          <span class="back-tag">revenue capture</span>
+          <span class="back-tag">pricing strategy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 23. incumbent -->
+  <div class="card-wrap" data-cat="vocab" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-vocab">고급단어</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">incumbent</div>
+        <div class="card-pron">/ɪnˈkʌmbənt/ — noun/adjective</div>
+        <div class="card-meaning">기존 시장 지배 기업 (기성 플레이어)</div>
+        <div class="card-example">"AI-native companies price differently than incumbents—44% use flat fees vs. incumbents' 22%."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">incumbent</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>정치 원래 의미:</strong> 현직자, 현 직책 보유자. 비즈니스에서는 기존 시장에서 오랫동안 지배적 위치를 점한 기업.<br><br>
+          <strong>뉘앙스:</strong> 레거시 기업·기성 기업이라는 약간의 부정적 뉘앙스. AI-native vs. incumbent 대비 구도에서 자주 사용.<br>
+          <strong>반대:</strong> challenger, disruptor, new entrant, AI-native
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">legacy player</span>
+          <span class="back-tag">established vendor</span>
+          <span class="back-tag">market leader</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 24. overage -->
+  <div class="card-wrap" data-cat="vocab" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-vocab">고급단어</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">overage</div>
+        <div class="card-pron">/ˈoʊvərɪdʒ/ — noun</div>
+        <div class="card-meaning">초과 사용량 및 초과 요금</div>
+        <div class="card-example">"Unexpected overage charges create bill shock and erode customer trust in AI pricing models."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">overage</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> 사전 약정한 사용량(commit)을 초과했을 때 발생하는 추가 요금. 소비 기반 모델의 핵심 리스크 요소.<br><br>
+          <strong>관련:</strong> bill shock (예상치 못한 청구액 충격), usage cap, true-up<br>
+          <strong>유사:</strong> excess usage, overage fee, burst charge<br>
+          <strong>주의:</strong> overage와 overage charge 구분 (전자는 상황, 후자는 요금)
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">bill shock</span>
+          <span class="back-tag">usage cap</span>
+          <span class="back-tag">burst pricing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 25. clawback -->
+  <div class="card-wrap" data-cat="vocab" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-vocab">고급단어</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+        </div>
+        <div class="card-word">clawback</div>
+        <div class="card-pron">/ˈklɔːbæk/ — noun</div>
+        <div class="card-meaning">이미 지급된 보상을 반환받는 것</div>
+        <div class="card-example">"Sales incentive plans need clawback provisions if consumption doesn't materialize after close."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">clawback</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> 이미 지급된 커미션·보너스 등을 특정 조건(계약 해지, 목표 미달성) 발생 시 회수하는 조항. 소비 기반 모델에서 영업 담당자가 계약 후 실제 사용이 발생해야 인센티브를 유지하도록 설계.<br><br>
+          <strong>유사:</strong> commission reversal, incentive recovery<br>
+          <strong>관련:</strong> sales compensation, variable pay
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">sales compensation</span>
+          <span class="back-tag">commission recovery</span>
+          <span class="back-tag">incentive design</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 26. cohort -->
+  <div class="card-wrap" data-cat="vocab" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-vocab">고급단어</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">cohort</div>
+        <div class="card-pron">/ˈkoʊhɔːrt/ — noun</div>
+        <div class="card-meaning">동일 조건·시기의 고객 그룹</div>
+        <div class="card-example">"Finance teams should track cohort revenue growth instead of ARR as AI consumption scales."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">cohort</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>어원:</strong> 로마군 보병 단위. 데이터 분석·비즈니스에서는 같은 시기에 서비스를 시작했거나 동일 특성을 가진 사용자 그룹.<br><br>
+          <strong>분석 용도:</strong> "2024년 Q1 가입 코호트의 12개월 NRR"처럼 시간에 따른 행동 변화 분석.<br>
+          <strong>관련:</strong> cohort analysis, retention curve, LTV
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">cohort analysis</span>
+          <span class="back-tag">retention</span>
+          <span class="back-tag">LTV tracking</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 27. inferencing -->
+  <div class="card-wrap" data-cat="vocab" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-vocab">고급단어</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+        </div>
+        <div class="card-word">inferencing</div>
+        <div class="card-pron">/ˈɪnfərənsɪŋ/ — noun (AI)</div>
+        <div class="card-meaning">AI 추론 실행 (모델이 결과를 생성하는 과정)</div>
+        <div class="card-example">"The cost of inferencing is dropping rapidly—over 80% per year—as model efficiency improves."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">inferencing</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> 학습된 AI 모델이 새 입력에 대해 결과(텍스트, 예측 등)를 생성하는 실행 단계. "training"과 구분되는 서빙(serving) 단계.<br><br>
+          <strong>비용 중요성:</strong> LLM inferencing 비용이 빠르게 하락 → SaaS 기업의 COGS 구조 변화 → 가격 수준 재설정 필요.<br>
+          <strong>관련:</strong> token cost, API call, model serving, GPU compute
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">LLM serving</span>
+          <span class="back-tag">token cost</span>
+          <span class="back-tag">COGS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 28. fidelity -->
+  <div class="card-wrap" data-cat="vocab" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-vocab">고급단어</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">fidelity</div>
+        <div class="card-pron">/fɪˈdɛlɪti/ — noun</div>
+        <div class="card-meaning">충실도, 정확도 (원본 대비 재현 수준)</div>
+        <div class="card-example">"Higher workflow fidelity—where AI matches human accuracy—justifies premium outcome-based pricing."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">fidelity</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>어원:</strong> 라틴어 fidelitas (충성, 신뢰). 원래는 충성심·신실함을 뜻했지만 기술 맥락에서는 정확도·재현도.<br><br>
+          <strong>맥락별 의미:</strong> 오디오 = 음질 (Hi-Fi), AI = 인간 수준의 정확도로 워크플로우를 수행하는 능력, 데이터 = 데이터 충실도(무결성).<br>
+          <strong>유사:</strong> accuracy, precision, quality level
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">accuracy</span>
+          <span class="back-tag">workflow quality</span>
+          <span class="back-tag">AI performance</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 29. de minimis -->
+  <div class="card-wrap" data-cat="vocab" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-vocab">고급단어</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+        </div>
+        <div class="card-word">de minimis</div>
+        <div class="card-pron">/ˌdeɪ ˈmɪnɪmɪs/ — Latin phrase</div>
+        <div class="card-meaning">무시해도 될 만큼 미미한 수준</div>
+        <div class="card-example">"COGS has typically been de minimis in SaaS—but AI inferencing costs change that equation."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">de minimis</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>어원:</strong> 라틴어 "de minimis non curat lex" — "법은 사소한 것에는 관여하지 않는다"에서 유래. 법률·회계에서 중요도 임계치 이하의 금액·사안을 지칭.<br><br>
+          <strong>SaaS 문맥:</strong> 전통 SaaS에서 COGS(매출원가)는 서버비 수준으로 무시할 만했지만 AI 추론 비용은 달라짐.<br>
+          <strong>유사:</strong> negligible, immaterial, trivial, insignificant
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">legal Latin</span>
+          <span class="back-tag">immaterial</span>
+          <span class="back-tag">threshold concept</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 비즈니스 전용 ── -->
+
+  <!-- 30. SaaS -->
+  <div class="card-wrap" data-cat="biz" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-biz">비즈니스 전용</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">SaaS</div>
+        <div class="card-pron">/sæz/ — acronym</div>
+        <div class="card-meaning">Software as a Service (서비스형 소프트웨어)</div>
+        <div class="card-example">"The AI+SaaS combination creates a supercycle: AI intelligence plus cloud scalability and accessibility."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">SaaS</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> 소프트웨어를 설치하지 않고 인터넷을 통해 구독 방식으로 사용하는 모델. Salesforce, Slack, Notion 등.<br><br>
+          <strong>전통 SaaS 특성:</strong> 시트 기반 구독, 낮은 COGS, 높은 마진, 예측 가능한 ARR.<br>
+          <strong>AI+SaaS 변화:</strong> 소비 기반 가격으로 전환, COGS 상승, 새로운 수익 지표 필요.<br>
+          <strong>관련:</strong> PaaS, IaaS, SaaS metrics
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">cloud software</span>
+          <span class="back-tag">subscription model</span>
+          <span class="back-tag">ARR</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 31. ARR -->
+  <div class="card-wrap" data-cat="biz" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-biz">비즈니스 전용</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">ARR</div>
+        <div class="card-pron">— acronym</div>
+        <div class="card-meaning">Annual Recurring Revenue (연간 반복 매출)</div>
+        <div class="card-example">"Finance teams must move beyond ARR to cohort revenue growth and active customer metrics."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">ARR</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> 구독 계약에서 1년 동안 반복적으로 발생하는 매출. SaaS 기업 핵심 지표.<br><br>
+          <strong>계산:</strong> ARR = 월간 구독료 × 12 (또는 연간 계약 합산)<br>
+          <strong>소비 기반 한계:</strong> ARR은 고정 계약 기준이라 실제 소비량 증감을 반영 못함 → 보고서는 코호트 지표·활성 고객 수를 대안으로 제시.<br>
+          <strong>관련:</strong> MRR, NRR, churn, expansion revenue
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">MRR</span>
+          <span class="back-tag">NRR</span>
+          <span class="back-tag">SaaS metrics</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 32. GTM -->
+  <div class="card-wrap" data-cat="biz" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-biz">비즈니스 전용</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">GTM</div>
+        <div class="card-pron">— acronym</div>
+        <div class="card-meaning">Go-to-Market (시장 진출 전략)</div>
+        <div class="card-example">"AI pricing transformation requires cross-functional GTM redesign, not just a new rate card."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">GTM</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>포함 영역:</strong> 타깃 고객 세그먼트, 영업 채널, 가격 모델, 마케팅 전략, 파트너십, 어카운트 전략.<br><br>
+          <strong>AI 시대 GTM 변화:</strong> 구매자가 IT 부서 → 비즈니스 유닛으로 이동. 영업 보상은 ACV 대신 소비량 기반. 어카운트 임원이 전체 여정 총괄(quarterback model).<br>
+          <strong>관련:</strong> sales motion, channel strategy, ICP (Ideal Customer Profile)
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">sales motion</span>
+          <span class="back-tag">channel strategy</span>
+          <span class="back-tag">ICP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 33. SKU -->
+  <div class="card-wrap" data-cat="biz" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-biz">비즈니스 전용</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">SKU</div>
+        <div class="card-pron">/skjuː/ — acronym</div>
+        <div class="card-meaning">Stock Keeping Unit (독립 제품 관리 단위)</div>
+        <div class="card-example">"Adobe moved from free embedded AI to a standalone SKU, generating $125M in Q1 2025 alone."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">SKU</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>어원:</strong> 소매업의 재고 관리 코드. 소프트웨어·SaaS에서는 별도로 판매·가격이 책정된 제품 라인업 단위.<br><br>
+          <strong>문맥:</strong> AI 기능을 기존 제품에 무료 내장(embedded)하는 대신 별도 SKU로 분리해 추가 요금을 받는 "standalone AI SKU" 전략.<br>
+          <strong>관련:</strong> product packaging, tiering, pricing architecture, product catalog
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">product catalog</span>
+          <span class="back-tag">standalone product</span>
+          <span class="back-tag">packaging strategy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 34. SDR -->
+  <div class="card-wrap" data-cat="biz" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-biz">비즈니스 전용</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">SDR</div>
+        <div class="card-pron">— acronym</div>
+        <div class="card-meaning">Sales Development Representative (영업 개발 담당자)</div>
+        <div class="card-example">"An AI-native SDR company found 90% of customers preferred activity-based over outcome pricing."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">SDR</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>역할:</strong> 잠재 고객을 발굴하고 초기 접촉하는 인바운드/아웃바운드 영업 전담 역할. AE(Account Executive)에게 리드를 넘김.<br><br>
+          <strong>AI SDR 문맥:</strong> 보고서에서 AI가 SDR 역할 자체를 자동화하는 AI-native SDR 기업을 사례로 언급. 이들의 가격 실험이 흥미로운 인사이트 제공.<br>
+          <strong>관련:</strong> BDR, AE, pipeline generation
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">sales pipeline</span>
+          <span class="back-tag">AI agent</span>
+          <span class="back-tag">outbound sales</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 35. ACV -->
+  <div class="card-wrap" data-cat="biz" onclick="flipCard(this)">
+    <div class="card-inner">
+      <div class="card-front">
+        <div class="card-top">
+          <span class="card-cat cat-biz">비즈니스 전용</span>
+          <div class="diff-dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+        </div>
+        <div class="card-word">ACV</div>
+        <div class="card-pron">— acronym</div>
+        <div class="card-meaning">Annual Contract Value (연간 계약 가치)</div>
+        <div class="card-example">"Tying sales compensation to ACV at contract close may not incentivize adoption in consumption models."</div>
+        <div class="flip-hint">탭하여 뒤집기 ↩</div>
+      </div>
+      <div class="card-back">
+        <div class="back-top">
+          <span class="back-word">ACV</span>
+          <button class="learned-toggle" onclick="toggleLearned(event,this)">학습완료</button>
+        </div>
+        <div class="back-nuance">
+          <strong>개념:</strong> 고객과 맺은 계약의 연간 가치. ARR과 유사하지만 초기 계약 규모 기준.<br><br>
+          <strong>소비 기반 문제:</strong> 영업이 ACV 서명 시 커미션을 받으면 계약 이후 실제 사용 촉진 동기가 없어짐 → 보고서는 소비량 기반 보상 체계로 전환을 권고.<br>
+          <strong>관련:</strong> TCV (Total Contract Value), ARR, quota, sales comp
+        </div>
+        <div class="back-tags">
+          <span class="back-tag">sales quota</span>
+          <span class="back-tag">contract value</span>
+          <span class="back-tag">sales compensation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /cards-grid -->
+
+<script>
+  const STORAGE_KEY = 'sw_ai_era_learned';
+  let learnedSet = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+
+  function flipCard(el) {
+    el.classList.toggle('flipped');
+  }
+
+  function toggleLearned(e, btn) {
+    e.stopPropagation();
+    const card = btn.closest('.card-wrap');
+    const idx = [...document.querySelectorAll('.card-wrap')].indexOf(card);
+    if (learnedSet.has(idx)) {
+      learnedSet.delete(idx);
+      btn.classList.remove('on');
+      btn.textContent = '학습완료';
+    } else {
+      learnedSet.add(idx);
+      btn.classList.add('on');
+      btn.textContent = '✓ 완료';
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...learnedSet]));
+    updateStats();
+  }
+
+  function filterCards(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.card-wrap').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+        card.classList.remove('flipped');
+      }
+    });
+  }
+
+  function updateStats() {
+    const total = document.querySelectorAll('.card-wrap').length;
+    const learned = learnedSet.size;
+    const pct = Math.round(learned / total * 100);
+    document.getElementById('learnedCount').textContent = learned;
+    document.getElementById('pct').textContent = pct + '%';
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+
+  function resetAll() {
+    if (!confirm('학습 진행 상황을 초기화하시겠습니까?')) return;
+    learnedSet.clear();
+    localStorage.removeItem(STORAGE_KEY);
+    document.querySelectorAll('.learned-toggle').forEach(btn => {
+      btn.classList.remove('on');
+      btn.textContent = '학습완료';
+    });
+    document.querySelectorAll('.card-wrap').forEach(c => c.classList.remove('flipped'));
+    updateStats();
+  }
+
+  // Init: restore learned state
+  document.querySelectorAll('.card-wrap').forEach((card, idx) => {
+    if (learnedSet.has(idx)) {
+      const btn = card.querySelector('.learned-toggle');
+      if (btn) { btn.classList.add('on'); btn.textContent = '✓ 완료'; }
+    }
+  });
+  updateStats();
+</script>
+</body>
+</html>

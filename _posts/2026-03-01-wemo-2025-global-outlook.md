@@ -205,7 +205,7 @@ ITER(국제핵융합실험로) 프로젝트는 COVID-19 및 제조 결함으로 
     </tr>
   </thead>
   <tbody>
-    <tr style="background:#f0f7ff;">
+    <tr style="background:#f0f7ff;; color:#1e293b;">
       <td style="padding:9px 12px; border-bottom:1px solid #dde;">페로브스카이트 태양전지</td>
       <td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">4</td>
       <td style="padding:9px 12px; border-bottom:1px solid #dde;">효율 &gt;26%, 탠덤 셀 ~34%. 과제: 안정성·확장성·중금속 독성</td>
@@ -215,7 +215,7 @@ ITER(국제핵융합실험로) 프로젝트는 COVID-19 및 제조 결함으로 
       <td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">4-6</td>
       <td style="padding:9px 12px; border-bottom:1px solid #dde;">고에너지 밀도(400 Wh/kg). 과제: 덴드라이트 형성, 제조 비용</td>
     </tr>
-    <tr style="background:#f0f7ff;">
+    <tr style="background:#f0f7ff;; color:#1e293b;">
       <td style="padding:9px 12px; border-bottom:1px solid #dde;">PEM 전해조</td>
       <td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">7</td>
       <td style="padding:9px 12px; border-bottom:1px solid #dde;">재생에너지에 효율적, 비용·내구성 한계. GW급 확장 필요</td>
@@ -225,7 +225,7 @@ ITER(국제핵융합실험로) 프로젝트는 COVID-19 및 제조 결함으로 
       <td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">9</td>
       <td style="padding:9px 12px; border-bottom:1px solid #dde;">검증된 저비용 기술. 간헐 전원 대응·탄산염 형성 이슈</td>
     </tr>
-    <tr style="background:#f0f7ff;">
+    <tr style="background:#f0f7ff;; color:#1e293b;">
       <td style="padding:9px 12px; border-bottom:1px solid #dde;">소형 모듈 원자로(SMR)</td>
       <td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">6-8</td>
       <td style="padding:9px 12px; border-bottom:1px solid #dde;">별도 챕터 참조</td>
@@ -235,7 +235,7 @@ ITER(국제핵융합실험로) 프로젝트는 COVID-19 및 제조 결함으로 
       <td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">4-9</td>
       <td style="padding:9px 12px; border-bottom:1px solid #dde;">연소 후 포집(TRL 9). 직접 공기 포집(DAC)은 TRL 4~6</td>
     </tr>
-    <tr style="background:#f0f7ff;">
+    <tr style="background:#f0f7ff;; color:#1e293b;">
       <td style="padding:9px 12px; border-bottom:1px solid #dde;">고온 초전도체(HTS)</td>
       <td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">6-7</td>
       <td style="padding:9px 12px; border-bottom:1px solid #dde;">액체 질소 온도(77 K)에서 전기 저항 제로. 같은 공간에 10배 전력 전송</td>
@@ -292,11 +292,11 @@ ITER(국제핵융합실험로) 프로젝트는 COVID-19 및 제조 결함으로 
     </tr>
   </thead>
   <tbody>
-    <tr style="background:#f0f7ff;"><td style="padding:9px 12px; border-bottom:1px solid #dde;">태양광 패널 생산</td><td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">~80%</td></tr>
+    <tr style="background:#f0f7ff;; color:#1e293b;"><td style="padding:9px 12px; border-bottom:1px solid #dde;">태양광 패널 생산</td><td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">~80%</td></tr>
     <tr><td style="padding:9px 12px; border-bottom:1px solid #dde;">풍력 터빈 생산</td><td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">~65%</td></tr>
-    <tr style="background:#f0f7ff;"><td style="padding:9px 12px; border-bottom:1px solid #dde;">배터리 셀</td><td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">&gt;80%</td></tr>
+    <tr style="background:#f0f7ff;; color:#1e293b;"><td style="padding:9px 12px; border-bottom:1px solid #dde;">배터리 셀</td><td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">&gt;80%</td></tr>
     <tr><td style="padding:9px 12px; border-bottom:1px solid #dde;">전해조 제조</td><td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">60%</td></tr>
-    <tr style="background:#f0f7ff;"><td style="padding:9px 12px; border-bottom:1px solid #dde;">코발트 처리</td><td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">76%</td></tr>
+    <tr style="background:#f0f7ff;; color:#1e293b;"><td style="padding:9px 12px; border-bottom:1px solid #dde;">코발트 처리</td><td style="padding:9px 12px; text-align:center; border-bottom:1px solid #dde;">76%</td></tr>
     <tr><td style="padding:9px 12px;">희토류(REE) 처리</td><td style="padding:9px 12px; text-align:center;">90%</td></tr>
   </tbody>
 </table>

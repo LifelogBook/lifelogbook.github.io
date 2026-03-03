@@ -34,7 +34,7 @@ sidebar:
 </tr>
 </thead>
 <tbody>
-<tr style="background:#f0f6fa;">
+<tr style="background:#f0f6fa;; color:#1e293b;">
   <td style="padding:10px 16px; vertical-align:top;"><strong>시장 역학이 빠르게 변화 중</strong><br>• 67% 차세대 고객이 피지털(phygital) 참여 선호<br>• 2048년까지 USD 83.5조 세대간 자산 이전 예정</td>
   <td style="padding:10px 16px; vertical-align:top;"><strong>보험사들이 고전하는 영역</strong><br>• 사일로화된 데이터와 전통적 리스크 모델<br>• 재해 손실 5~7% 상승, 의료비 10%+ 증가로 비용 급등</td>
   <td style="padding:10px 16px; vertical-align:top;"><strong>혁신 속도 가속화</strong><br>• 88% 보험사 레거시 IT 현대화를 위해 하이브리드 클라우드 도입<br>• 70% 보험사 시장 혼란 대비를 위해 GenAI 투자 확대</td>
@@ -44,7 +44,7 @@ sidebar:
   <td style="padding:10px 16px; vertical-align:top;"><strong>집중 영역</strong><br>• 실시간 인텔리전트 인사이트를 위한 기업 데이터 통합<br>• 리스크 이해 향상을 위한 예측 분석 도입<br>• 투명성과 신속한 의사결정을 위한 협업 워크플로우 구축</td>
   <td style="padding:10px 16px; vertical-align:top;"><strong>지속을 위해 필요한 것</strong><br>• 확장성과 혁신을 위한 클라우드 네이티브 시스템 도입<br>• 기능 사일로 극복을 위한 AI 대규모 배포</td>
 </tr>
-<tr style="background:#f0f6fa;">
+<tr style="background:#f0f6fa;; color:#1e293b;">
   <td style="padding:10px 16px; vertical-align:top;"><strong>기대 효과</strong><br>✓ 계약자 만족도 향상<br>✓ 에이전트 생산성 증대<br>✓ 교차판매·추가판매 기회 확대</td>
   <td style="padding:10px 16px; vertical-align:top;"><strong>기대 효과</strong><br>✓ 비용 절감<br>✓ 운영 간소화<br>✓ 서비스 품질 개선</td>
   <td style="padding:10px 16px; vertical-align:top;"><strong>기대 효과</strong><br>✓ 시장 출시 속도 단축<br>✓ 의사결정 품질 향상</td>
@@ -67,7 +67,7 @@ sidebar:
 </tr>
 </thead>
 <tbody>
-<tr style="background:#e6f4f8;">
+<tr style="background:#e6f4f8;; color:#1e293b;">
   <td colspan="7" style="padding:8px 14px; font-weight:600; color:#0e7490; font-size:12px; letter-spacing:1px;">DISTRIBUTION AND ENGAGEMENT</td>
 </tr>
 <tr>
@@ -79,7 +79,7 @@ sidebar:
   <td style="padding:8px 14px; text-align:center; font-weight:600;">높음</td>
   <td style="padding:8px 14px; text-align:center; font-weight:600;">매우 높음</td>
 </tr>
-<tr style="background:#f8fafc;">
+<tr style="background:#f8fafc;; color:#1e293b;">
   <td style="padding:8px 14px; font-weight:700; color:#0e7490;">2</td>
   <td style="padding:8px 14px;"><strong>에이전트/어드바이저 참여 (Agent/advisor engagement)</strong><br><span style="font-size:12px; color:#64748b;">디지털 도구·실시간 인사이트로 에이전트 역량 강화</span></td>
   <td style="padding:8px 14px; text-align:center;">●</td>
@@ -97,7 +97,7 @@ sidebar:
   <td style="padding:8px 14px; text-align:center; font-weight:600;">높음</td>
   <td style="padding:8px 14px; text-align:center; font-weight:600;">높음</td>
 </tr>
-<tr style="background:#f8fafc;">
+<tr style="background:#f8fafc;; color:#1e293b;">
   <td style="padding:8px 14px; font-weight:700; color:#0e7490;">4</td>
   <td style="padding:8px 14px;"><strong>맞춤화를 위한 협업 (Collaboration for customization)</strong><br><span style="font-size:12px; color:#64748b;">의료공급자 파트너십으로 상품·커뮤니케이션 최적화</span></td>
   <td style="padding:8px 14px; text-align:center;">-</td>
@@ -106,7 +106,7 @@ sidebar:
   <td style="padding:8px 14px; text-align:center; font-weight:600;">높음</td>
   <td style="padding:8px 14px; text-align:center; font-weight:600;">높음</td>
 </tr>
-<tr style="background:#e6f4f8;">
+<tr style="background:#e6f4f8;; color:#1e293b;">
   <td colspan="7" style="padding:8px 14px; font-weight:600; color:#0d9488; font-size:12px; letter-spacing:1px;">OPERATIONAL EFFICIENCY</td>
 </tr>
 <tr>
@@ -118,7 +118,7 @@ sidebar:
   <td style="padding:8px 14px; text-align:center; font-weight:600;">매우 높음</td>
   <td style="padding:8px 14px; text-align:center; font-weight:600;">높음</td>
 </tr>
-<tr style="background:#f8fafc;">
+<tr style="background:#f8fafc;; color:#1e293b;">
   <td style="padding:8px 14px; font-weight:700; color:#0d9488;">6</td>
   <td style="padding:8px 14px;"><strong>언더라이팅 진화 (Underwriting evolution)</strong><br><span style="font-size:12px; color:#64748b;">첨단 지능형 협업 언더라이팅 도구로 리스크 모델 혁신</span></td>
   <td style="padding:8px 14px; text-align:center;">●</td>
@@ -136,7 +136,7 @@ sidebar:
   <td style="padding:8px 14px; text-align:center; font-weight:600;">보통</td>
   <td style="padding:8px 14px; text-align:center; font-weight:600;">보통</td>
 </tr>
-<tr style="background:#f8fafc;">
+<tr style="background:#f8fafc;; color:#1e293b;">
   <td style="padding:8px 14px; font-weight:700; color:#0d9488;">8</td>
   <td style="padding:8px 14px;"><strong>기후 및 재해 복원력 (Climate and catastrophe resilience)</strong><br><span style="font-size:12px; color:#64748b;">리스크 집중·규제 요건·재보험 조건 강화로 기후 탄력적 모델 필요</span></td>
   <td style="padding:8px 14px; text-align:center;">●</td>
@@ -145,7 +145,7 @@ sidebar:
   <td style="padding:8px 14px; text-align:center; font-weight:600;">높음</td>
   <td style="padding:8px 14px; text-align:center; font-weight:600;">높음</td>
 </tr>
-<tr style="background:#e6f4f8;">
+<tr style="background:#e6f4f8;; color:#1e293b;">
   <td colspan="7" style="padding:8px 14px; font-weight:600; color:#1d4ed8; font-size:12px; letter-spacing:1px;">TECHNOLOGICAL INNOVATION</td>
 </tr>
 <tr>
@@ -157,7 +157,7 @@ sidebar:
   <td style="padding:8px 14px; text-align:center; font-weight:600;">매우 높음</td>
   <td style="padding:8px 14px; text-align:center; font-weight:600;">매우 높음</td>
 </tr>
-<tr style="background:#f8fafc;">
+<tr style="background:#f8fafc;; color:#1e293b;">
   <td style="padding:8px 14px; font-weight:700; color:#1d4ed8;">10</td>
   <td style="padding:8px 14px;"><strong>대규모 AI 전환 (AI transformation at scale)</strong><br><span style="font-size:12px; color:#64748b;">파일럿 탈피해 전사 AI 통합으로 조직 모델 재편</span></td>
   <td style="padding:8px 14px; text-align:center;">●</td>
