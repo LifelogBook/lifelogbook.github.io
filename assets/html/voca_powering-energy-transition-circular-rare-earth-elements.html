@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Circular REE 2025 — Vocabulary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#052e16;--ink2:#14532d;
+  --accent:#b45309;--accent2:#92400e;
+  --sky:#d1fae5;--bg:#ecfdf5;--border:#a7f3d0;
+  --card-w:340px;--card-h:220px;
+  --radius:14px;--shadow:0 4px 20px rgba(5,46,22,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+
+/* ── Header ── */
+header{
+  background:linear-gradient(135deg,#052e16 0%,#065f46 50%,#78350f 100%);
+  color:#fff;padding:2.4rem 1.5rem 2rem;text-align:center;position:relative;overflow:hidden
+}
+header::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none
+}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.2rem);letter-spacing:-.5px;line-height:1.2;position:relative}
+header .badge{display:inline-block;margin-top:.7rem;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);border-radius:30px;padding:.3rem 1rem;position:relative}
+header p.sub{margin-top:.5rem;font-size:.88rem;opacity:.75;position:relative}
+
+/* ── Progress ── */
+#progress-wrap{background:var(--border);border-radius:20px;height:8px;margin:1.5rem auto .3rem;max-width:520px;overflow:hidden}
+#progress-bar{background:var(--accent);height:100%;width:0;transition:width .5s ease;border-radius:20px}
+#progress-label{text-align:center;font-size:.82rem;color:var(--ink2);margin-bottom:1.4rem}
+
+/* ── Filter chips ── */
+#filter-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;padding:.2rem 1rem 1.2rem}
+.chip{border:1.5px solid var(--border);border-radius:30px;padding:.35rem .9rem;font-size:.78rem;font-weight:600;cursor:pointer;background:#fff;color:var(--ink2);transition:all .2s}
+.chip:hover,.chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip[data-cat="phrasal"].active{background:#059669;border-color:#059669}
+.chip[data-cat="idiom"].active{background:#047857;border-color:#047857}
+.chip[data-cat="colloc"].active{background:#0369a1;border-color:#0369a1}
+.chip[data-cat="vocab"].active{background:#7c3aed;border-color:#7c3aed}
+.chip[data-cat="biz"].active{background:#b45309;border-color:#b45309}
+
+/* ── Grid ── */
+#card-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:1.2rem;padding:0 1rem 3rem;max-width:1200px;margin:0 auto}
+
+/* ── Card ── */
+.card-wrap{width:var(--card-w);height:var(--card-h);perspective:900px;cursor:pointer}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.card-wrap.flipped .card-inner{transform:rotateY(180deg)}
+.card-face{
+  position:absolute;inset:0;border-radius:var(--radius);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  display:flex;flex-direction:column;box-shadow:var(--shadow);overflow:hidden
+}
+/* Front */
+.card-front{background:#fff;border:1.5px solid var(--border);justify-content:center;align-items:center;padding:1.4rem}
+.card-front .cat-tag{font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.2rem .7rem;border-radius:30px;margin-bottom:.8rem}
+.cat-phrasal{background:#d1fae5;color:#059669}
+.cat-idiom{background:#d1fae5;color:#047857}
+.cat-colloc{background:#e0f2fe;color:#0369a1}
+.cat-vocab{background:#ede9fe;color:#7c3aed}
+.cat-biz{background:#fef3c7;color:#b45309}
+.card-front .word{font-family:'DM Serif Display',serif;font-size:1.55rem;color:var(--ink);text-align:center;line-height:1.25}
+.card-front .pron{font-size:.82rem;color:#6b7280;margin-top:.35rem;letter-spacing:.03em}
+.dots{display:flex;gap:4px;margin-top:.7rem}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.filled{background:var(--accent)}
+
+/* Back */
+.card-back{background:linear-gradient(135deg,#ecfdf5 0%,#d1fae5 100%);border:1.5px solid var(--border);transform:rotateY(180deg);padding:1.1rem 1.2rem;justify-content:space-between}
+.card-back .meaning-ko{font-size:.95rem;font-weight:600;color:var(--ink);line-height:1.45;flex:1}
+.card-back .ex-en{font-size:.76rem;color:#374151;font-style:italic;line-height:1.5;margin-top:.5rem;border-left:3px solid var(--accent);padding-left:.6rem}
+.card-back .ex-ko{font-size:.73rem;color:#4b5563;line-height:1.45;margin-top:.35rem;padding-left:.9rem}
+.card-back .learn-btn{margin-top:.6rem;align-self:flex-end;background:var(--accent);color:#fff;border:none;border-radius:20px;padding:.28rem .8rem;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s}
+.card-back .learn-btn:hover{background:var(--accent2)}
+
+/* Learned */
+.card-wrap.learned .card-front{background:linear-gradient(135deg,#ecfdf5 0%,#d1fae5 100%)}
+.card-wrap.learned .card-front .word{color:var(--accent2)}
+.card-wrap.learned .card-back .learn-btn{background:#6b7280}
+
+/* Hidden */
+.card-wrap.hidden-card{display:none}
+
+/* Reset */
+#reset-btn{display:block;margin:0 auto 2rem;background:transparent;border:1.5px solid var(--border);border-radius:30px;padding:.4rem 1.2rem;font-size:.8rem;font-weight:600;color:var(--ink2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+#reset-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+@media(max-width:380px){:root{--card-w:90vw;--card-h:200px}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Powering the Energy Transition's Motor<br>Circular Rare Earth Elements</h1>
+  <div class="badge">McKinsey &amp; Company · July 2025</div>
+  <p class="sub">35 key expressions · Mineral Jade &amp; Earth Copper</p>
+</header>
+
+<div style="max-width:600px;margin:1.5rem auto 0;padding:0 1rem">
+  <div id="progress-wrap"><div id="progress-bar"></div></div>
+  <div id="progress-label">0 / 35 learned</div>
+</div>
+
+<div id="filter-bar">
+  <button class="chip active" data-cat="all">전체 35</button>
+  <button class="chip" data-cat="phrasal">Phrasal Verb 6</button>
+  <button class="chip" data-cat="idiom">Idiom 6</button>
+  <button class="chip" data-cat="colloc">Collocation 7</button>
+  <button class="chip" data-cat="vocab">고급단어 10</button>
+  <button class="chip" data-cat="biz">비즈니스 전용 6</button>
+</div>
+
+<div id="card-grid"></div>
+<button id="reset-btn">학습 초기화</button>
+
+<script>
+const STORAGE_KEY = 'ree_circular_2025_learned';
+const cards = [
+  // ── Phrasal Verb (6) ──
+  {id:1,cat:'phrasal',word:'ramp up',pron:'',hint:'Phrasal Verb',diff:1,
+   ko:'(생산·투자를) 급속히 늘리다, 빠르게 강화하다',
+   en:'"Countries are ramping up efforts to establish local REE value chains."',
+   koEx:'각국은 지역 REE 가치사슬 구축 노력을 빠르게 강화하고 있다.'},
+  {id:2,cat:'phrasal',word:'tap into',pron:'',hint:'Phrasal Verb',diff:2,
+   ko:'(잠재 자원·시장을) 활용하다, 끌어 쓰다',
+   en:'"Recyclers can tap into the growing secondary REE market."',
+   koEx:'재활용업자들은 성장하는 2차 REE 시장을 활용할 수 있다.'},
+  {id:3,cat:'phrasal',word:'fall short',pron:'',hint:'Phrasal Verb',diff:1,
+   ko:'부족하다, 목표에 미치지 못하다',
+   en:'"The announced project pipeline could fall short of demand requirements by 60 kt."',
+   koEx:'발표된 프로젝트 파이프라인은 수요 요건에 60kt 부족할 수 있다.'},
+  {id:4,cat:'phrasal',word:'scale up',pron:'',hint:'Phrasal Verb',diff:1,
+   ko:'(기술·생산을) 규모 있게 확장하다, 상업화 수준으로 키우다',
+   en:'"Recovery technologies need to be scaled up before they can work at the industrial level."',
+   koEx:'회수 기술은 산업 수준에서 작동하기 전에 규모 있게 확장되어야 한다.'},
+  {id:5,cat:'phrasal',word:'get off the ground',pron:'',hint:'Phrasal Verb',diff:2,
+   ko:'(사업·프로젝트를) 본격적으로 궤도에 올리다, 시작하다',
+   en:'"Building alliances can help new recycling technologies get off the ground."',
+   koEx:'동맹을 구축하는 것이 새로운 재활용 기술을 궤도에 올리는 데 도움이 될 수 있다.'},
+  {id:6,cat:'phrasal',word:'end up',pron:'',hint:'Phrasal Verb',diff:1,
+   ko:'결국 ~이 되다, 결국 ~에 처하다',
+   en:'"REE magnets may end up in an iron smelter, where they would be lost as slag."',
+   koEx:'REE 자석은 결국 제철소에서 슬래그로 소실될 수 있다.'},
+
+  // ── Idiom·비유 (6) ──
+  {id:7,cat:'idiom',word:'supply crunch',pron:'',hint:'Idiom',diff:2,
+   ko:'공급 부족 사태, 극심한 공급 압박',
+   en:'"A supply crunch for magnetic REEs could threaten the entire energy transition."',
+   koEx:'자성 REE의 공급 부족 사태는 에너지 전환 전체를 위협할 수 있다.'},
+  {id:8,cat:'idiom',word:'resilience agenda',pron:'',hint:'Idiom',diff:3,
+   ko:'공급망 회복력 강화 의제 (지정학적 불안에 대응하는 전략 기조)',
+   en:'"The rise of REEs to the top of resilience agendas is accelerating circular value chains."',
+   koEx:'REE가 회복력 의제의 최상위에 오른 것이 순환 가치사슬을 가속화하고 있다.'},
+  {id:9,cat:'idiom',word:'at scale',pron:'',hint:'Idiom',diff:2,
+   ko:'대규모로, 상업적·산업적 규모에서',
+   en:'"Technologies at R&D stage need to be proven at scale before adoption."',
+   koEx:'R&D 단계의 기술은 채택되기 전에 상업적 규모에서 입증되어야 한다.'},
+  {id:10,cat:'idiom',word:'scrap pool',pron:'',hint:'Idiom',diff:2,
+   ko:'스크랩 풀 (재활용 가능한 폐소재의 집합체)',
+   en:'"Recyclers can manage volatile scrap pools by evaluating electronics recycling opportunities."',
+   koEx:'재활용업자들은 전자제품 재활용 기회를 평가함으로써 변동성 있는 스크랩 풀을 관리할 수 있다.'},
+  {id:11,cat:'idiom',word:'lead time',pron:'',hint:'Idiom',diff:2,
+   ko:'소요 기간 (투자 결정~생산 개시까지 걸리는 기간)',
+   en:'"Notoriously long lead times for opening new mines make secondary supply more attractive."',
+   koEx:'새 광산 개발에 악명 높이 긴 소요 기간이 2차 공급을 더 매력적으로 만든다.'},
+  {id:12,cat:'idiom',word:'poised to',pron:'',hint:'Idiom',diff:2,
+   ko:'~할 태세를 갖춘, ~할 직전에 있는 (임박한 변화 표현)',
+   en:'"Demand for rare earth elements is poised to triple over the next decade."',
+   koEx:'희토류 원소 수요는 향후 10년간 세 배로 급증할 태세다.'},
+
+  // ── Collocation (7) ──
+  {id:13,cat:'colloc',word:'rare earth elements',pron:'',hint:'Collocation',diff:1,
+   ko:'희토류 원소 (REE) — 에너지 전환의 핵심 소재',
+   en:'"Rare earth elements have emerged as essential building blocks for the energy transition."',
+   koEx:'희토류 원소는 에너지 전환을 위한 필수 구성 요소로 부상했다.'},
+  {id:14,cat:'colloc',word:'energy transition',pron:'',hint:'Collocation',diff:1,
+   ko:'에너지 전환 (화석연료에서 재생에너지·전동화로의 전환)',
+   en:'"The energy transition is driving a surge in demand for magnetic REEs."',
+   koEx:'에너지 전환이 자성 REE 수요 급증을 이끌고 있다.'},
+  {id:15,cat:'colloc',word:'postconsumer scrap',pron:'',hint:'Collocation',diff:2,
+   ko:'소비 후 스크랩 (제품 수명 종료 후 발생하는 재활용 소재)',
+   en:'"Postconsumer scrap from end-of-life EVs will become a key secondary supply source."',
+   koEx:'수명 종료 EV에서 나오는 소비 후 스크랩은 핵심 2차 공급원이 될 것이다.'},
+  {id:16,cat:'colloc',word:'circular economy',pron:'',hint:'Collocation',diff:2,
+   ko:'순환 경제 (자원의 재사용·재활용·재생 기반 경제 모델)',
+   en:'"Building circular economy pathways for REEs is now a strategic priority."',
+   koEx:'REE를 위한 순환 경제 경로 구축이 이제 전략적 우선순위가 되었다.'},
+  {id:17,cat:'colloc',word:'magnet isolation',pron:'',hint:'Collocation',diff:3,
+   ko:'자석 분리 (스크랩에서 희토류 자석을 전용으로 떼어내는 공정)',
+   en:'"The cost of manual magnet isolation could be prohibitive for smaller REE magnets."',
+   koEx:'수동 자석 분리 비용은 소형 REE 자석에서 엄두를 낼 수 없는 수준일 수 있다.'},
+  {id:18,cat:'colloc',word:'export restrictions',pron:'',hint:'Collocation',diff:2,
+   ko:'수출 규제 (정부가 특정 광물의 수출을 제한하는 조치)',
+   en:'"China\'s recent export restrictions on medium and heavy REEs have renewed supply concerns."',
+   koEx:'중국의 최근 중·중량 REE 수출 규제가 공급 우려를 새롭게 촉발했다.'},
+  {id:19,cat:'colloc',word:'secondary supply',pron:'',hint:'Collocation',diff:2,
+   ko:'2차 공급 (재활용·스크랩을 통해 확보하는 원료 공급)',
+   en:'"Secondary supply from postconsumer scrap could help close the projected REE supply gap."',
+   koEx:'소비 후 스크랩의 2차 공급이 예상 REE 공급 격차를 줄이는 데 도움이 될 수 있다.'},
+
+  // ── 고급단어 (10) ──
+  {id:20,cat:'vocab',word:'neodymium',pron:'/ˌniːəˈdɪmiəm/',hint:'고급단어',diff:2,
+   ko:'네오디뮴 (Nd) — REE 자석의 주요 구성 원소',
+   en:'"Neodymium is a primary constituent of REE magnets used in EV motors."',
+   koEx:'네오디뮴은 EV 모터에 사용되는 REE 자석의 주요 구성 원소다.'},
+  {id:21,cat:'vocab',word:'dysprosium',pron:'/dɪˈsprəʊziəm/',hint:'고급단어',diff:3,
+   ko:'디스프로슘 (Dy) — 고성능 응용 분야 열 안정성 향상 첨가 원소',
+   en:'"Dysprosium enhances the thermal stability of REE magnets in high-performance applications."',
+   koEx:'디스프로슘은 고성능 응용 분야에서 REE 자석의 열 안정성을 향상시킨다.'},
+  {id:22,cat:'vocab',word:'hydrometallurgy',pron:'/ˌhaɪdrəʊˈmetəlɜːdʒi/',hint:'고급단어',diff:3,
+   ko:'습식 제련 (용액 화학 반응으로 금속을 추출하는 공정)',
+   en:'"Hydrometallurgy is one of the bulk processing approaches explored for REE recovery."',
+   koEx:'습식 제련은 REE 회수를 위한 벌크 처리 접근법 중 하나다.'},
+  {id:23,cat:'vocab',word:'pyrometallurgy',pron:'/ˌpaɪrəʊˈmetəlɜːdʒi/',hint:'고급단어',diff:3,
+   ko:'건식 제련 (고온 열처리로 금속을 추출하는 공정)',
+   en:'"Pyrometallurgy offers an alternative route for extracting REEs from magnet scrap."',
+   koEx:'건식 제련은 자석 스크랩에서 REE를 추출하는 대안적 경로를 제공한다.'},
+  {id:24,cat:'vocab',word:'decrepitation',pron:'/dɪˌkrepɪˈteɪʃən/',hint:'고급단어',diff:3,
+   ko:'열분해 분쇄 (수소 처리로 자석을 분말화하는 공정)',
+   en:'"Hydrogen decrepitation converts REE magnets into powder for further processing."',
+   koEx:'수소 열분해 분쇄는 REE 자석을 추가 처리를 위한 분말로 변환한다.'},
+  {id:25,cat:'vocab',word:'geopolitical',pron:'/ˌdʒiːəʊpəˈlɪtɪkəl/',hint:'고급단어',diff:2,
+   ko:'지정학적 (지리와 정치의 상호작용에 관련된)',
+   en:'"Geopolitical developments are renewing ambitions to establish local REE supply chains."',
+   koEx:'지정학적 발전이 지역 REE 공급망 구축 야망을 새롭게 부추기고 있다.'},
+  {id:26,cat:'vocab',word:'circularity',pron:'/ˌsɜːkjʊˈlærɪti/',hint:'고급단어',diff:3,
+   ko:'순환성 (자원의 재사용·재활용 정도를 나타내는 개념)',
+   en:'"Increasing the circularity of REE magnets requires overcoming significant recovery challenges."',
+   koEx:'REE 자석의 순환성 향상은 상당한 회수 과제 극복을 필요로 한다.'},
+  {id:27,cat:'vocab',word:'slag',pron:'/slæɡ/',hint:'고급단어',diff:2,
+   ko:'슬래그 (금속 제련 과정에서 발생하는 부산물·찌꺼기)',
+   en:'"Without dedicated separation, REE magnets end up lost as slag in iron smelters."',
+   koEx:'전용 분리 없이는 REE 자석이 제철소에서 슬래그로 소실된다.'},
+  {id:28,cat:'vocab',word:'tailings',pron:'/ˈteɪlɪŋz/',hint:'고급단어',diff:3,
+   ko:'광미 (광석 처리 후 남은 폐기물)',
+   en:'"Some researchers are investigating how to extract REEs from mine tailings."',
+   koEx:'일부 연구자들은 광미에서 REE를 추출하는 방법을 조사하고 있다.'},
+  {id:29,cat:'vocab',word:'prohibitive',pron:'/prəˈhɪbɪtɪv/',hint:'고급단어',diff:2,
+   ko:'엄두를 낼 수 없는, 금지적으로 비싼 (실행 불가 수준)',
+   en:'"The cost of manual magnet isolation could be prohibitive for small REE magnets."',
+   koEx:'수동 자석 분리 비용은 소형 REE 자석에서 엄두를 낼 수 없는 수준일 수 있다.'},
+
+  // ── 비즈니스 전용 (6) ──
+  {id:30,cat:'biz',word:'REE',pron:'',hint:'비즈니스 전용',diff:1,
+   ko:'Rare Earth Elements — 희토류 원소 (17개 원소군)',
+   en:'"REEs are critical materials for manufacturing permanent magnets used in EVs and wind turbines."',
+   koEx:'REE는 EV와 풍력 터빈에 사용되는 영구 자석 제조에 필수적인 소재다.'},
+  {id:31,cat:'biz',word:'NdFeB',pron:'',hint:'비즈니스 전용',diff:2,
+   ko:'Neodymium Iron Boron — 네오디뮴-철-보론 영구 자석 (세계에서 가장 강력한 영구 자석)',
+   en:'"NdFeB magnets power EV motors and wind turbine generators worldwide."',
+   koEx:'NdFeB 자석은 전 세계 EV 모터와 풍력 터빈 발전기를 구동한다.'},
+  {id:32,cat:'biz',word:'BEV',pron:'',hint:'비즈니스 전용',diff:1,
+   ko:'Battery Electric Vehicle — 배터리 전기차 (순수 전기차)',
+   en:'"BEV adoption is the primary driver of surging demand for magnetic REEs through 2035."',
+   koEx:'BEV 채택이 2035년까지 자성 REE 수요 급증의 주요 동인이다.'},
+  {id:33,cat:'biz',word:'CAGR',pron:'',hint:'비즈니스 전용',diff:1,
+   ko:'Compound Annual Growth Rate — 연평균 성장률',
+   en:'"Magnetic REE demand is projected to grow at a CAGR of 9% through 2035."',
+   koEx:'자성 REE 수요는 2035년까지 연평균 9%의 성장률로 성장할 것으로 전망된다.'},
+  {id:34,cat:'biz',word:'kt',pron:'',hint:'비즈니스 전용',diff:1,
+   ko:'kiloton — 킬로톤 (1,000톤 단위; 광물·소재 산업 표준 계량 단위)',
+   en:'"Global demand for magnetic REEs is expected to reach 176 kt by 2035."',
+   koEx:'자성 REE의 글로벌 수요는 2035년까지 176kt에 달할 것으로 예상된다.'},
+  {id:35,cat:'biz',word:'OEM',pron:'',hint:'비즈니스 전용',diff:1,
+   ko:'Original Equipment Manufacturer — 완성품 제조업체 (여기서는 EV·가전 제조사)',
+   en:'"Producers and OEMs can help recyclers focus on the right devices by providing magnet transparency."',
+   koEx:'생산자와 OEM이 자석 투명성을 제공해 재활용업자가 올바른 장치에 집중하도록 도울 수 있다.'}
+];
+
+const LEARNED = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'));
+let currentCat = 'all';
+
+function diffDots(d){
+  return Array.from({length:3},(_,i)=>`<span class="dot${i<d?' filled':''}"></span>`).join('');
+}
+function catClass(c){return{phrasal:'cat-phrasal',idiom:'cat-idiom',colloc:'cat-colloc',vocab:'cat-vocab',biz:'cat-biz'}[c]||'';}
+
+function buildGrid(){
+  const grid = document.getElementById('card-grid');
+  grid.innerHTML='';
+  cards.forEach(c=>{
+    const wrap=document.createElement('div');
+    wrap.className='card-wrap'+(LEARNED.has(c.id)?' learned':'');
+    wrap.id='card-'+c.id;
+    if(currentCat!=='all'&&c.cat!==currentCat) wrap.classList.add('hidden-card');
+    wrap.innerHTML=`
+<div class="card-inner">
+  <div class="card-face card-front">
+    <span class="cat-tag ${catClass(c.cat)}">${c.hint}</span>
+    <div class="word">${c.word}</div>
+    ${c.pron?`<div class="pron">${c.pron}</div>`:''}
+    <div class="dots">${diffDots(c.diff)}</div>
+    <div style="margin-top:.4rem;font-size:.7rem;color:#9ca3af">클릭하여 뒤집기</div>
+  </div>
+  <div class="card-face card-back">
+    <div class="meaning-ko">${c.ko}</div>
+    <div class="ex-en">${c.en}</div>
+    <div class="ex-ko">${c.koEx}</div>
+    <button class="learn-btn" data-id="${c.id}">${LEARNED.has(c.id)?'✓ 완료':'✓ 학습완료'}</button>
+  </div>
+</div>`;
+    wrap.addEventListener('click',e=>{
+      if(e.target.classList.contains('learn-btn'))return;
+      wrap.classList.toggle('flipped');
+    });
+    grid.appendChild(wrap);
+  });
+  document.querySelectorAll('.learn-btn').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      const id=+btn.dataset.id;
+      const wrap=document.getElementById('card-'+id);
+      if(LEARNED.has(id)){LEARNED.delete(id);wrap.classList.remove('learned');btn.textContent='✓ 학습완료';}
+      else{LEARNED.add(id);wrap.classList.add('learned');btn.textContent='✓ 완료';}
+      save();updateProgress();
+    });
+  });
+  updateProgress();
+}
+
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify([...LEARNED]));}
+function updateProgress(){
+  const done=LEARNED.size;
+  document.getElementById('progress-bar').style.width=(done/35*100)+'%';
+  document.getElementById('progress-label').textContent=done+' / 35 learned';
+}
+
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.addEventListener('click',()=>{
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    currentCat=chip.dataset.cat;
+    document.querySelectorAll('.card-wrap').forEach(w=>{
+      const id=+w.id.replace('card-','');
+      const card=cards.find(c=>c.id===id);
+      if(currentCat==='all'||card.cat===currentCat) w.classList.remove('hidden-card');
+      else w.classList.add('hidden-card');
+    });
+  });
+});
+
+document.getElementById('reset-btn').addEventListener('click',()=>{
+  LEARNED.clear();save();buildGrid();
+});
+
+buildGrid();
+</script>
+</body>
+</html>

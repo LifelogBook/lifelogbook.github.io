@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Battery 2035: Building new advantages — 표현 정리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f172a;
+    --ink2: #1e293b;
+    --accent: #ca8a04;
+    --accent2: #a16207;
+    --sky: #fef9c3;
+    --bg: #fefce8;
+    --border: #fef08a;
+    --white: #ffffff;
+    --muted: #78716c;
+    --card-h: 260px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+  .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #78350f 100%);
+    color: #fff;
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(202,138,4,.25);
+    border: 1px solid rgba(202,138,4,.5);
+    color: #fef08a;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: .25rem .75rem;
+    border-radius: 20px;
+    margin-bottom: .9rem;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    line-height: 1.2;
+    margin-bottom: .5rem;
+    color: #fff;
+  }
+  .hero p { font-size: .88rem; color: rgba(255,255,255,.75); max-width: 560px; margin: 0 auto; }
+
+  .progress-wrap {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: .75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .progress-bar-bg { flex: 1; height: 8px; background: #e7e5e4; border-radius: 99px; overflow: hidden; }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 99px;
+    transition: width .4s ease;
+    width: 0%;
+  }
+  .progress-label { font-size: .8rem; font-weight: 600; color: var(--accent2); white-space: nowrap; }
+
+  .filters {
+    display: flex;
+    gap: .5rem;
+    padding: 1rem 1.5rem;
+    flex-wrap: wrap;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+  }
+  .filter-btn {
+    padding: .35rem .9rem;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .78rem;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--ink);
+    transition: all .18s;
+  }
+  .filter-btn.active, .filter-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+    padding: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .card-wrap { perspective: 1000px; height: var(--card-h); cursor: pointer; }
+  .card-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform .5s cubic-bezier(.4,0,.2,1);
+  }
+  .card-wrap.flipped .card-inner { transform: rotateY(180deg); }
+  .card-front, .card-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 14px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0,0,0,.07);
+    border: 1px solid var(--border);
+  }
+  .card-front { background: var(--white); justify-content: space-between; }
+  .card-back {
+    background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+    transform: rotateY(180deg);
+    justify-content: flex-start;
+    gap: .6rem;
+    overflow-y: auto;
+  }
+  .card-wrap.learned .card-front {
+    background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+    border-color: var(--accent);
+  }
+
+  .card-tag {
+    display: inline-block;
+    font-size: .68rem; font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: .18rem .55rem;
+    border-radius: 10px;
+    color: #fff;
+    align-self: flex-start;
+  }
+  .tag-phrasal { background: #ca8a04; }
+  .tag-idiom   { background: #92400e; }
+  .tag-colloc  { background: #1d4ed8; }
+  .tag-vocab   { background: #7c3aed; }
+  .tag-biz     { background: #065f46; }
+
+  .card-word {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.55rem;
+    line-height: 1.2;
+    color: var(--ink);
+    text-align: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-phonetic { font-size: .78rem; color: var(--muted); text-align: center; margin-top: .1rem; }
+  .card-dots { display: flex; gap: .3rem; justify-content: flex-end; align-items: center; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #e5e7eb; }
+  .dot.filled { background: var(--accent); }
+
+  .back-kr { font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+  .back-colloc { font-size: .82rem; color: var(--accent2); font-style: italic; font-weight: 500; }
+  .back-example {
+    font-size: .8rem; color: var(--ink2); line-height: 1.5;
+    background: rgba(255,255,255,.6);
+    padding: .5rem .7rem;
+    border-radius: 8px;
+    border-left: 3px solid var(--accent);
+  }
+  .back-def { font-size: .77rem; color: #57534e; line-height: 1.45; }
+
+  .learned-check {
+    position: absolute; top: .7rem; right: .7rem;
+    background: var(--accent);
+    color: #fff; border: none; border-radius: 50%;
+    width: 26px; height: 26px; font-size: .8rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .15s; z-index: 10;
+    backface-visibility: hidden;
+  }
+  .learned-check:hover { transform: scale(1.15); }
+  .card-wrap.learned .learned-check { background: #15803d; }
+
+  .footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: .78rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+  }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; padding: 1rem; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-badge">McKinsey &amp; Company · January 2026</div>
+  <h1>Battery 2035: Building new advantages</h1>
+  <p>비용 혁신 · 기술 로드맵 · 공급망 현지화 — 핵심 표현 35선</p>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0 / 35 학습완료</div>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" data-filter="all">전체 (35)</button>
+  <button class="filter-btn" data-filter="phrasal">Phrasal Verb (6)</button>
+  <button class="filter-btn" data-filter="idiom">Idiom·비유 (6)</button>
+  <button class="filter-btn" data-filter="colloc">Collocation (7)</button>
+  <button class="filter-btn" data-filter="vocab">고급단어 (10)</button>
+  <button class="filter-btn" data-filter="biz">비즈니스 전용 (6)</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer class="footer">
+  Battery 2035: Building new advantages &nbsp;·&nbsp; McKinsey &amp; Company · Automotive &amp; Assembly Practice<br>
+  Authors: Andreas Breiter, Denny Thiemig, Patrick Schaufuss, Raphael Rettig, Wenting Gao, Yunjing Kinzel
+</footer>
+
+<script>
+const STORAGE_KEY = 'battery_2035_learned';
+const learned = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+
+const cards = [
+  // ── Phrasal Verb (6) ──
+  { id:1, type:'phrasal', word:'ramp up', phonetic:'',
+    colloc:'ramp up production / ramp up to 95% yield',
+    kr:'(생산·활동을) 대폭 증가시키다, 가속화하다',
+    example:'Companies must ramp up localized supply chains to reduce dependence on Asian producers.',
+    def:'To increase the level of a process or activity rapidly and substantially' },
+  { id:2, type:'phrasal', word:'phase in', phonetic:'',
+    colloc:'phase in new technology / phase in over time',
+    kr:'단계적으로 도입하다',
+    example:'Dry electrode coating will be phased in as factories modernize their manufacturing processes.',
+    def:'To introduce something gradually in stages over a period of time' },
+  { id:3, type:'phrasal', word:'scale up', phonetic:'',
+    colloc:'scale up supply chains / scale up manufacturing',
+    kr:'(규모를) 확대하다, 스케일업하다',
+    example:'To build competitive global battery value chains, companies need to scale up outside of Asia.',
+    def:'To increase in size, volume, or capacity in a systematic way' },
+  { id:4, type:'phrasal', word:'lock in', phonetic:'',
+    colloc:'lock in cost leadership / lock in advantages',
+    kr:'확보하다, 고정시키다 (유리한 지위를)',
+    example:'Leaders must lock in cost advantages by optimizing bills of materials and improving yields.',
+    def:'To secure a position, price, or advantage that is difficult to change or withdraw from' },
+  { id:5, type:'phrasal', word:'roll back', phonetic:'',
+    colloc:'roll back clean-energy credits / roll back policies',
+    kr:'(정책·혜택을) 철회하다, 되돌리다',
+    example:'The US Congress rolled back clean-energy-related credits in 2025, creating policy uncertainty for battery producers.',
+    def:'To reverse or reduce a policy, benefit, or regulation to a previous state' },
+  { id:6, type:'phrasal', word:'spin off', phonetic:'',
+    colloc:'spin off from semiconductor advances / spin off subsidiaries',
+    kr:'파생되다; 분사시키다',
+    example:'Battery technology evolution mirrors the trajectory that computing advances spun off from semiconductor R&D.',
+    def:'To create a subsidiary or derivative entity from a larger organization; to result as a byproduct' },
+
+  // ── Idiom·비유 (6) ──
+  { id:7, type:'idiom', word:'inflection point', phonetic:'',
+    colloc:'at a new inflection point / reach an inflection point',
+    kr:'변곡점 (방향 전환이 일어나는 결정적 시점)',
+    example:'The global lithium-ion battery industry finds itself at a new inflection point as demand crosses 1 TWh.',
+    def:'A critical moment when a significant and often irreversible change in direction begins' },
+  { id:8, type:'idiom', word:'price floor', phonetic:'',
+    colloc:'a price floor is not guaranteed / establish a price floor',
+    kr:'가격 하한선 (가격이 더 이상 하락하지 않는 수준)',
+    example:'Battery pack prices have fallen to historic lows, but a price floor is not guaranteed without supply discipline.',
+    def:'The lowest price level below which prices are unlikely or unable to fall in a given market' },
+  { id:9, type:'idiom', word:'headroom', phonetic:'',
+    colloc:'limited headroom / create headroom for improvement',
+    kr:'여유 공간, 추가 성장·개선의 여지',
+    example:'With pack prices already near historic lows, producers have limited headroom for further cost reductions.',
+    def:'Available space, margin, or capacity for growth, improvement, or manoeuvre in a given situation' },
+  { id:10, type:'idiom', word:'playbook', phonetic:'',
+    colloc:'the playbook for operational excellence / follow the playbook',
+    kr:'전략 매뉴얼, 확립된 전략적 접근법',
+    example:'The playbook for reducing battery production ramp-up pain has three components: OEE, process innovation, and people.',
+    def:'A set of established strategies, tactics, or best practices used to handle specific business situations' },
+  { id:11, type:'idiom', word:'game plan', phonetic:'',
+    colloc:'a game plan approach / execute the game plan',
+    kr:'전략적 실행 계획',
+    example:'Capital needs to be deployed across the full value chain through a game plan approach — from raw materials to recycling.',
+    def:'A carefully considered strategy or plan of action for achieving a specific objective' },
+  { id:12, type:'idiom', word:'Battery Belt', phonetic:'',
+    colloc:'the Battery Belt / Battery Belt clusters',
+    kr:'배터리 벨트 (미국 배터리 산업 집적 지역)',
+    example:'Emerging industrial clusters in the Southeast and Midwest US are known as the "Battery Belt," echoing the historic Rust Belt.',
+    def:'A geographic region with concentrated battery and EV manufacturing activity, especially in southeastern and midwestern US states' },
+
+  // ── Collocation (7) ──
+  { id:13, type:'colloc', word:'overcapacity', phonetic:'',
+    colloc:'global overcapacity / overcapacity in cell manufacturing',
+    kr:'과잉 생산 능력',
+    example:'Global overcapacity of Li-ion batteries was approximately 900 GWh in 2025, driving pack prices to record lows.',
+    def:'A situation where installed production capacity significantly exceeds actual market demand' },
+  { id:14, type:'colloc', word:'gigafactory', phonetic:'',
+    colloc:'gigafactory construction / gigafactory ramp-up',
+    kr:'기가팩토리 (대형 배터리·EV 제조 공장)',
+    example:'Nearly 700 GWh in additional capacity was under construction in the United States alone as new gigafactories came online.',
+    def:'An extremely large-scale manufacturing facility for batteries or EVs, originally coined by Tesla' },
+  { id:15, type:'colloc', word:'bill of materials', phonetic:'',
+    colloc:'optimize the bill of materials / bill-of-materials plan',
+    kr:'자재명세서 (BOM) — 제품 구성 원자재 목록',
+    example:'Cost resilience increasingly depends on optimizing the bill of materials rather than negotiating lower commodity prices.',
+    def:'A comprehensive list of raw materials, components, and quantities required to manufacture a specific product' },
+  { id:16, type:'colloc', word:'energy density', phonetic:'',
+    colloc:'improve energy density / high energy density cells',
+    kr:'에너지 밀도 (단위 무게/부피당 저장 에너지량)',
+    example:"Commercial Li-ion battery energy density has more than doubled in the past 15 years, following a Moore's Law-like trajectory.",
+    def:'The amount of energy stored per unit weight (Wh/kg) or volume (Wh/L) of a battery system' },
+  { id:17, type:'colloc', word:'nameplate capacity', phonetic:'',
+    colloc:'nameplate capacity utilization / reach nameplate capacity',
+    kr:'명판 용량 (공장의 설계 최대 생산 능력)',
+    example:'Global plant nameplate capacity is expected to reach about 6.7 TWh by 2030, a 67 percent increase over current levels.',
+    def:'The theoretical maximum output capacity of a manufacturing plant as specified in its design documentation' },
+  { id:18, type:'colloc', word:'supply chain localization', phonetic:'',
+    colloc:'battery supply chain localization / localization strategy',
+    kr:'공급망 현지화 (지역 내 생산·조달 비중 확대)',
+    example:'Building regionalized supply chains is one of the four key areas in which industry winners will excel by 2035.',
+    def:'The strategic process of sourcing raw materials and manufacturing within a specific geographic region to reduce dependence on distant suppliers' },
+  { id:19, type:'colloc', word:'scrap rate', phonetic:'',
+    colloc:'yield and scrap rates / reduce scrap rates',
+    kr:'불량률, 스크랩율 (생산 중 폐기되는 제품 비율)',
+    example:"Scrap rates during a facility's early ramp-up period can reach 70 to 80 percent, making yield improvement a major profit lever.",
+    def:'The percentage of production output that fails quality standards and must be discarded or recycled' },
+
+  // ── 고급단어 (10) ──
+  { id:20, type:'vocab', word:'cathode', phonetic:'/ˈkæθoʊd/',
+    colloc:'cathode active material / cathode chemistry',
+    kr:'양극재 (배터리의 양극 물질)',
+    example:'LFP is likely to remain the cathode cost leader due to its lower-cost material ingredients through 2035.',
+    def:'The positive electrode in a battery cell; the material where lithium ions insert during charging' },
+  { id:21, type:'vocab', word:'anode', phonetic:'/ˈænoʊd/',
+    colloc:'graphite anode / silicon-anode blending',
+    kr:'음극재 (배터리의 음극 물질)',
+    example:'Silicon blends in graphite anodes will increase from under 5 percent in 2025 to approximately 10 percent by 2035.',
+    def:'The negative electrode in a battery cell; typically graphite-based, where lithium ions are stored during charging' },
+  { id:22, type:'vocab', word:'electrolyte', phonetic:'/ɪˈlektrəlaɪt/',
+    colloc:'liquid electrolyte / solid electrolyte / next-generation electrolytes',
+    kr:'전해질 (이온 전도를 담당하는 물질)',
+    example:'Firms are designing next-generation electrolytes to handle higher voltages and cold-temperature performance.',
+    def:'A substance that conducts electricity through the movement of ions, enabling charge transfer between battery electrodes' },
+  { id:23, type:'vocab', word:'provenance', phonetic:'/ˈprɒvənəns/',
+    colloc:'material provenance / verify provenance',
+    kr:'출처, 원산지 (특히 원자재의 생산지 추적)',
+    example:'Digital traceability tools can verify material provenance and ensure compliance with IRA and CRMA content standards.',
+    def:'The origin or documented history of materials, especially relevant for regulatory compliance in battery supply chains' },
+  { id:24, type:'vocab', word:'traceability', phonetic:'/ˌtreɪsəˈbɪlɪti/',
+    colloc:'digital traceability / supply chain traceability',
+    kr:'추적 가능성 (원자재 흐름을 기록·검증하는 역량)',
+    example:'Digital traceability can automatically verify that the critical minerals used meet domestic-content requirements.',
+    def:'The ability to track and document the origin, processing, and movement of materials through an entire supply chain' },
+  { id:25, type:'vocab', word:'derisking', phonetic:'/diːˈrɪskɪŋ/',
+    colloc:'derisking capital / derisking large-scale projects',
+    kr:'위험 완화, 리스크 경감 (투자·사업의 위험을 줄이는 행위)',
+    example:'Governments need to create incentive mechanisms focused on derisking capital for battery supply chain investments.',
+    def:'The process of reducing financial or operational risk associated with a project, investment, or strategic position' },
+  { id:26, type:'vocab', word:'offtake', phonetic:'/ˈɒfteɪk/',
+    colloc:'offtake certainty / offtake agreements',
+    kr:'구매 계약 (생산 완료 전 사전 판매 약정)',
+    example:'Strategic investment considerations involve risk-adjusted returns, contract terms, and offtake certainty for battery projects.',
+    def:'A prior agreement to purchase the production output from a project before or during its construction phase' },
+  { id:27, type:'vocab', word:'intermittency', phonetic:'/ˌɪntəˈmɪtənsi/',
+    colloc:'renewable intermittency / smooth intermittency',
+    kr:'간헐성 (재생에너지의 불규칙한 발전 특성)',
+    example:'BESS can smooth intermittency and balance grids as wind and solar production grows to a larger share of energy supply.',
+    def:'The irregular and unpredictable nature of renewable energy sources such as wind and solar power' },
+  { id:28, type:'vocab', word:'arbitrage', phonetic:'/ˈɑːrbɪtrɑːʒ/',
+    colloc:'energy arbitrage / nodal arbitrage',
+    kr:'차익거래 (시간대·지역별 가격 차이를 이용한 수익)',
+    example:'BESS revenue streams include ancillary services, energy arbitrage, and capacity payments that vary by region.',
+    def:'The practice of profiting from price differences across markets, time periods, or locations, especially in energy trading' },
+  { id:29, type:'vocab', word:'incumbent', phonetic:'/ɪnˈkʌmbənt/',
+    colloc:'incumbent technology / dethrone the incumbent',
+    kr:'기존 지배자, 현재 우위를 점한 기술·기업',
+    example:'It will become harder for technological challengers to dethrone conventional Li-ion batteries as EV and BESS markets mature.',
+    def:'The existing dominant player, technology, or system currently holding a position of power or market leadership' },
+
+  // ── 비즈니스 전용 (6) ──
+  { id:30, type:'biz', word:'LFP', phonetic:'',
+    colloc:'LFP chemistry / LFP cell cost / LFP market share',
+    kr:'리튬인산철 배터리 (Lithium Iron Phosphate)',
+    example:'LFP will anchor the mass-market EV and BESS segments through 2035, with projected pack costs of $55–65/kWh.',
+    def:'Lithium Iron Phosphate: a cathode chemistry known for lower cost, thermal safety, and long cycle life; dominant in BESS and mass-market EVs' },
+  { id:31, type:'biz', word:'NMC', phonetic:'',
+    colloc:'NMC chemistry / NMC pack cost / high-manganese NMC',
+    kr:'니켈망간코발트 배터리 (Nickel Manganese Cobalt Oxide)',
+    example:'NMC will remain the performance leader for long-range and premium EVs, with projected costs of $75–90/kWh by 2035.',
+    def:'Nickel Manganese Cobalt Oxide: a high-energy-density cathode chemistry used in premium EVs; faces sourcing risks from cobalt and nickel' },
+  { id:32, type:'biz', word:'BESS', phonetic:'',
+    colloc:'BESS deployment / BESS project economics / utility-scale BESS',
+    kr:'배터리 에너지 저장 시스템 (Battery Energy Storage System)',
+    example:"BESS is arguably the world's fastest-growing clean-energy technology, with installed capacity projected at 500–700 GWh by 2030.",
+    def:'Battery Energy Storage System: large-scale battery installations used to store and dispatch electricity for grid balancing and renewable integration' },
+  { id:33, type:'biz', word:'IRA', phonetic:'',
+    colloc:'IRA Section 45X / IRA incentives / IRA tax credit',
+    kr:'인플레이션 감축법 (Inflation Reduction Act)',
+    example:"The IRA's Section 45X $35/kWh manufacturing credit effectively lowers battery cell production costs by 30 to 50 percent in the US.",
+    def:'Inflation Reduction Act (2022): US legislation providing major tax credits for domestic clean energy manufacturing, including a $35/kWh battery cell production incentive' },
+  { id:34, type:'biz', word:'CRMA', phonetic:'',
+    colloc:'CRMA compliance / CRMA strategic projects / CRMA targets',
+    kr:'핵심원자재법 (Critical Raw Materials Act, EU)',
+    example:"The EU's CRMA targets mining 10%, processing 40%, and recycling 25% of strategic raw materials domestically by 2030.",
+    def:'Critical Raw Materials Act: EU regulation aimed at securing supply of strategic raw materials essential for clean technology and battery manufacturing' },
+  { id:35, type:'biz', word:'FEOC', phonetic:'',
+    colloc:'FEOC restrictions / FEOC compliance / FEOC exposure',
+    kr:'외국우려기관 (Foreign Entity of Concern)',
+    example:'FEOC restrictions now apply to federal grid-storage tax credits, compelling battery project developers to trace materials and select compliant vendors.',
+    def:'Foreign Entity of Concern: a US designation restricting battery supply chain ties to companies from China, Russia, Iran, and North Korea to maintain national security' }
+];
+
+const grid = document.getElementById('grid');
+const progressFill = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+
+function updateProgress() {
+  const n = document.querySelectorAll('.card-wrap.learned').length;
+  const pct = Math.round(n / cards.length * 100);
+  progressFill.style.width = pct + '%';
+  progressLabel.textContent = n + ' / ' + cards.length + ' 학습완료';
+}
+
+function makeDots(level) {
+  let h = '<div class="card-dots">';
+  for (let i = 1; i <= 3; i++) h += '<span class="dot' + (i <= level ? ' filled' : '') + '"></span>';
+  return h + '</div>';
+}
+const levelMap = { phrasal:2, idiom:3, colloc:2, vocab:3, biz:1 };
+const labelMap = { phrasal:'Phrasal', idiom:'Idiom', colloc:'Colloc', vocab:'Vocab', biz:'Biz' };
+
+function renderCards(filter) {
+  grid.innerHTML = '';
+  cards.filter(c => filter === 'all' || c.type === filter).forEach(c => {
+    const isLearned = learned.has(c.id);
+    const div = document.createElement('div');
+    div.className = 'card-wrap' + (isLearned ? ' learned' : '');
+    div.dataset.type = c.type;
+    div.innerHTML =
+      '<div class="card-inner">' +
+        '<div class="card-front">' +
+          '<span class="card-tag tag-' + c.type + '">' + labelMap[c.type] + '</span>' +
+          '<div>' +
+            '<div class="card-word">' + c.word + '</div>' +
+            (c.phonetic ? '<div class="card-phonetic">' + c.phonetic + '</div>' : '') +
+          '</div>' +
+          makeDots(levelMap[c.type]) +
+        '</div>' +
+        '<div class="card-back">' +
+          '<button class="learned-check" title="학습완료 토글">' + (isLearned ? '✓' : '○') + '</button>' +
+          '<div class="back-kr">' + c.kr + '</div>' +
+          '<div class="back-colloc">' + c.colloc + '</div>' +
+          '<div class="back-example">"' + c.example + '"</div>' +
+          '<div class="back-def">' + c.def + '</div>' +
+        '</div>' +
+      '</div>';
+    div.querySelector('.card-inner').addEventListener('click', function(e) {
+      if (e.target.closest('.learned-check')) return;
+      div.classList.toggle('flipped');
+    });
+    div.querySelector('.learned-check').addEventListener('click', function(e) {
+      e.stopPropagation();
+      const btn = e.currentTarget;
+      if (learned.has(c.id)) {
+        learned.delete(c.id);
+        div.classList.remove('learned');
+        btn.textContent = '○';
+      } else {
+        learned.add(c.id);
+        div.classList.add('learned');
+        btn.textContent = '✓';
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...learned]));
+      updateProgress();
+    });
+    grid.appendChild(div);
+  });
+  updateProgress();
+}
+
+document.querySelectorAll('.filter-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    renderCards(btn.dataset.filter);
+  });
+});
+
+renderCards('all');
+</script>
+</body>
+</html>

@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retail AI Trends 2026 — 어휘 카드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0c1b4d;
+    --ink2: #152359;
+    --accent: #be185d;
+    --accent2: #db2777;
+    --sky: #f9a8d4;
+    --bg: #fdf2f8;
+    --border: #fbcfe8;
+    --white: #ffffff;
+    --gray: #6b7280;
+    --card-h: 220px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #0c1b4d 0%, #1d4ed8 40%, #9d174d 100%);
+    color: var(--white);
+    padding: 32px 24px 28px;
+    text-align: center;
+  }
+  .header-badge {
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    color: rgba(255,255,255,0.9);
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.9rem;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .header p {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 20px;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .progress-label {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.85);
+    white-space: nowrap;
+  }
+  .progress-bar-outer {
+    width: 180px;
+    height: 6px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: var(--sky);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .progress-pct {
+    font-size: 0.82rem;
+    color: var(--sky);
+    min-width: 32px;
+  }
+  .reset-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.85);
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .reset-btn:hover { background: rgba(255,255,255,0.25); }
+
+  /* ── FILTER TABS ── */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 18px 20px 10px;
+    justify-content: center;
+  }
+  .filter-btn {
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    color: var(--ink);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--white);
+  }
+
+  /* ── CARD GRID ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 10px 20px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── FLIP CARD ── */
+  .card-wrap {
+    height: var(--card-h);
+    perspective: 1000px;
+    cursor: pointer;
+  }
+  .card-wrap.hidden { display: none; }
+  .card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+  }
+  .card-wrap.flipped .card-inner { transform: rotateY(180deg); }
+  .card-front, .card-back {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 20px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    box-shadow: 0 2px 8px rgba(12,27,77,0.06);
+  }
+  .card-back { transform: rotateY(180deg); background: var(--ink); color: var(--white); border-color: transparent; }
+
+  /* Front card elements */
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .card-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 9px;
+    border-radius: 12px;
+    color: var(--white);
+  }
+  .card-dots {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+  }
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #e5e7eb;
+  }
+  .dot.filled { background: var(--accent); }
+  .card-word {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.55rem;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 4px;
+    flex: 1;
+  }
+  .card-pron {
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+  .card-ko {
+    font-size: 0.88rem;
+    color: var(--ink2);
+    font-weight: 500;
+  }
+  .card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .hint-text {
+    font-size: 0.72rem;
+    color: #9ca3af;
+  }
+  .learned-btn {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    color: var(--gray);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .learned-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .card-wrap.learned .learned-btn {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--white);
+  }
+  .card-wrap.learned .card-front {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+  }
+
+  /* Back card elements */
+  .back-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--sky);
+    margin-bottom: 8px;
+  }
+  .back-def {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.5;
+    margin-bottom: 10px;
+    flex: 1;
+  }
+  .back-example {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.6);
+    font-style: italic;
+    line-height: 1.45;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 10px;
+    margin-top: auto;
+  }
+  .back-example span { color: var(--sky); font-style: normal; font-weight: 600; }
+
+  /* No results */
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--gray);
+    font-size: 0.95rem;
+    display: none;
+    grid-column: 1/-1;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">Capgemini AIE · NRF 2026</div>
+  <h1>리테일 AI 트렌드 2026</h1>
+  <p>From hype to how — 어휘 학습 카드 35</p>
+  <div class="progress-wrap">
+    <span class="progress-label" id="learnedCount">0 / 35 학습완료</span>
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="progressBar" style="width:0%"></div>
+    </div>
+    <span class="progress-pct" id="progressPct">0%</span>
+    <button class="reset-btn" onclick="resetAll()">초기화</button>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterCards('all', this)">전체 35</button>
+  <button class="filter-btn" onclick="filterCards('phrasal', this)">Phrasal Verb 6</button>
+  <button class="filter-btn" onclick="filterCards('idiom', this)">Idiom·비유 6</button>
+  <button class="filter-btn" onclick="filterCards('colloc', this)">Collocation 7</button>
+  <button class="filter-btn" onclick="filterCards('vocab', this)">고급단어 10</button>
+  <button class="filter-btn" onclick="filterCards('biz', this)">비즈니스 전용 6</button>
+</div>
+
+<div class="card-grid" id="cardGrid">
+
+<!-- ═══════════════ PHRASAL VERBS ═══════════════ -->
+
+<!-- 1. lean into -->
+<div class="card-wrap" data-cat="phrasal" data-id="1" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#be185d;">Phrasal Verb</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">lean into</div>
+      <div class="card-ko">~에 적극적으로 기대다, 수용하다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Phrasal Verb</div>
+      <div class="back-def">어떤 추세나 아이디어를 피하지 않고 적극적으로 받아들이거나 의존하다. 흐름에 몸을 맡기다.</div>
+      <div class="back-example">"retail leaders are no longer <span>leaning into</span> the hype — instead, they're leading with a more practical set of hows."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. draw out -->
+<div class="card-wrap" data-cat="phrasal" data-id="2" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#be185d;">Phrasal Verb</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">draw out</div>
+      <div class="card-ko">최대한 끌어내다, 이끌어내다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Phrasal Verb</div>
+      <div class="back-def">잠재된 가치·능력을 충분히 발휘하도록 끌어내다. 최대 효과를 얻다.</div>
+      <div class="back-example">"To <span>draw out</span> the full value from AI, retailers need to be more intentional about its use."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. move beyond -->
+<div class="card-wrap" data-cat="phrasal" data-id="3" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#be185d;">Phrasal Verb</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">move beyond</div>
+      <div class="card-ko">한 단계 나아가다, 초월하다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Phrasal Verb</div>
+      <div class="back-def">이전 단계나 방식을 뛰어넘어 더 발전된 수준으로 나아가다.</div>
+      <div class="back-example">"delivering value means <span>moving beyond</span> novelty to usefulness — helping a service team clear a surge in calls."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. hand off -->
+<div class="card-wrap" data-cat="phrasal" data-id="4" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#be185d;">Phrasal Verb</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">hand off</div>
+      <div class="card-ko">다음 단계로 넘기다, 인계하다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Phrasal Verb</div>
+      <div class="back-def">책임이나 작업을 다음 사람/시스템에게 넘기다. 체계 간 이관하다. 명사형: handoff(핸드오프)</div>
+      <div class="back-example">"Rather than forcing AI-driven experiences to <span>hand off</span> to fragmented, retailer-specific flows, UCP creates a common way."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. move away from -->
+<div class="card-wrap" data-cat="phrasal" data-id="5" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#be185d;">Phrasal Verb</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">move away from</div>
+      <div class="card-ko">~에서 벗어나다, 탈피하다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Phrasal Verb</div>
+      <div class="back-def">기존의 방식·도구·전략에서 멀어지다. 새로운 방향으로 전환하다.</div>
+      <div class="back-example">"Retailers should prioritize interoperability, <span>moving away from</span> standalone or bolt-on tools toward connected, scalable platforms."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. build on -->
+<div class="card-wrap" data-cat="phrasal" data-id="6" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#be185d;">Phrasal Verb</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">build on</div>
+      <div class="card-ko">~을 기반으로 발전시키다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Phrasal Verb</div>
+      <div class="back-def">기존의 토대·성과를 바탕으로 더 발전시키다. 기반을 쌓고 그 위에 쌓아 올리다.</div>
+      <div class="back-example">"organizations can <span>build on</span> integrated foundations rather than disconnected solutions."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ IDIOM/비유 ═══════════════ -->
+
+<!-- 7. hype vs. how -->
+<div class="card-wrap" data-cat="idiom" data-id="7" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#9d174d;">Idiom·비유</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">hype vs. how</div>
+      <div class="card-ko">과대 선전 vs. 실제 실행 방법</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Idiom·비유</div>
+      <div class="back-def">이 보고서의 핵심 대비 구도. 'hype'(과대 선전, 기대감 과잉)에서 'how'(실제 실행 방법, 구체적 적용법)로의 전환.</div>
+      <div class="back-example">"From <span>hype to how</span>: Less wow, more how. That is the sentiment of retailers going into 2026."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 8. connective tissue -->
+<div class="card-wrap" data-cat="idiom" data-id="8" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#9d174d;">Idiom·비유</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">connective tissue</div>
+      <div class="card-ko">연결 조직; 전체를 이어주는 핵심 요소</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Idiom·비유</div>
+      <div class="back-def">생물학 용어를 비유로 사용. 인체의 결합조직처럼 비즈니스의 여러 부문을 하나로 이어주는 핵심 인프라/기술을 의미.</div>
+      <div class="back-example">"AI is being used as the <span>connective tissue</span> within the business to unite data, decisions, and workflows end to end."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 9. go it alone -->
+<div class="card-wrap" data-cat="idiom" data-id="9" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#9d174d;">Idiom·비유</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">go it alone</div>
+      <div class="card-ko">혼자 해나가다, 독자적으로 행동하다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Idiom·비유</div>
+      <div class="back-def">협력자 없이 혼자서 모든 것을 해결하려 하다. 반대: collaborate, partner up. 리테일 맥락에서 빅테크와의 협업 없이 단독으로 AI를 구축하려는 접근을 지양하라는 의미.</div>
+      <div class="back-example">"Retail leaders know better than to <span>go it alone</span>. Collaboration is king."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 10. on the show floor -->
+<div class="card-wrap" data-cat="idiom" data-id="10" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#9d174d;">Idiom·비유</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">on the show floor</div>
+      <div class="card-ko">전시장·박람회 현장에서</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Idiom·비유</div>
+      <div class="back-def">컨퍼런스·전시회의 전시 공간을 의미. NRF(National Retail Federation) 컨퍼런스 전시 현장을 가리킴. 업계 트렌드를 직접 관찰할 수 있는 현장.</div>
+      <div class="back-example">"This shift is already materializing in retail. <span>On the NRF show floor</span>, it was unmistakable."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 11. point solution -->
+<div class="card-wrap" data-cat="idiom" data-id="11" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#9d174d;">Idiom·비유</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">point solution</div>
+      <div class="card-ko">단일 문제만 해결하는 솔루션</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Idiom·비유</div>
+      <div class="back-def">특정 하나의 문제만 해결하는 좁은 범위의 소프트웨어/솔루션. 전체 비즈니스와 연동되지 않아 확장성이 낮다. 반대: enterprise platform, integrated solution.</div>
+      <div class="back-example">"fewer one-off <span>point solutions</span> and more coordination across the enterprise — AI as embedded platform capability."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 12. the wiring -->
+<div class="card-wrap" data-cat="idiom" data-id="12" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#9d174d;">Idiom·비유</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">the wiring</div>
+      <div class="card-ko">눈에 보이지 않는 기반 인프라</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Idiom·비유</div>
+      <div class="back-def">전기 배선처럼 겉에서 보이지 않지만 모든 것을 작동하게 하는 숨겨진 인프라 구조. AI가 화려한 기능이 아닌 비즈니스의 근본 인프라임을 강조.</div>
+      <div class="back-example">"AI is not the headline, but <span>the wiring</span>. We're seeing the shift from AI as 'a feature' into AI as an operating layer." — Alexander Fleischer</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ COLLOCATION ═══════════════ -->
+
+<!-- 13. agentic commerce -->
+<div class="card-wrap" data-cat="colloc" data-id="13" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">agentic commerce</div>
+      <div class="card-ko">에이전틱 커머스</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">AI 에이전트가 소비자를 대신해 제품 탐색·비교·구매 등 커머스 행동을 자율적으로 수행하는 쇼핑 패러다임. 'agentic' = 자율적 행위 능력을 가진.</div>
+      <div class="back-example">"<span>Agentic commerce</span> is the reality — AI can act on behalf of customers—now retailers need to create a seamless, secure experience to match."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14. unified commerce -->
+<div class="card-wrap" data-cat="colloc" data-id="14" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">unified commerce</div>
+      <div class="card-ko">통합 커머스</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">옴니채널(omnichannel)의 현대적 계승. 에이전틱·소셜·마켓플레이스·도매 등 모든 구매 경로에서 데이터·재고·가격·풀필먼트를 단일 통합 시스템으로 조율하는 전략.</div>
+      <div class="back-example">"In 2026, few ideas are bigger than <span>unified commerce</span>. The focus is on unifying data, inventory, pricing, and fulfillment across these paths."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 15. interoperability -->
+<div class="card-wrap" data-cat="colloc" data-id="15" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">interoperability</div>
+      <div class="card-pron">/ˌɪntərˌɒpərəˈbɪlɪti/</div>
+      <div class="card-ko">상호운용성</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">서로 다른 시스템·플랫폼·애플리케이션이 원활하게 데이터를 교환하고 함께 작동하는 능력. 에이전틱 커머스 확산의 핵심 전제 조건.</div>
+      <div class="back-example">"The barriers to agentic commerce are no longer intelligence or technical feasibility, but integration, <span>interoperability</span>, trust, and provable ROI." — Sanjay Nand</div>
+    </div>
+  </div>
+</div>
+
+<!-- 16. bolt-on tool -->
+<div class="card-wrap" data-cat="colloc" data-id="16" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">bolt-on tool</div>
+      <div class="card-ko">부착식 추가 도구</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">기존 핵심 시스템과 통합되지 않고 겉에 부착식으로 덧붙인 도구. 임시방편적 솔루션으로 확장성이 낮고 데이터 사일로를 만든다. 반대: native/integrated solution.</div>
+      <div class="back-example">"retailers should prioritize interoperability, moving away from standalone or <span>bolt-on tools</span> toward connected, scalable platforms."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 17. guardrails -->
+<div class="card-wrap" data-cat="colloc" data-id="17" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">guardrails</div>
+      <div class="card-ko">안전장치, 가드레일</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">도로 가드레일처럼 AI 시스템이 허용 범위를 벗어나지 않도록 하는 규칙·제한·안전 장치. AI 거버넌스의 핵심 요소. 특히 소비자 신뢰 확보에 필수.</div>
+      <div class="back-example">"retailers and brands must prioritize strong <span>guardrails</span>, transparency, and explainability to ensure AI earns and maintains customer confidence."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 18. provable ROI -->
+<div class="card-wrap" data-cat="colloc" data-id="18" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">provable ROI</div>
+      <div class="card-ko">입증 가능한 투자 수익률</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">ROI(Return on Investment, 투자 대비 수익률)를 단순히 기대하는 것이 아닌, 데이터로 측정·증명할 수 있는 형태로 보여주는 것. AI 도입 확산의 핵심 조건.</div>
+      <div class="back-example">"The barriers to agentic commerce are no longer intelligence or technical feasibility, but integration, interoperability, trust, and <span>provable ROI</span>."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 19. brand-right -->
+<div class="card-wrap" data-cat="colloc" data-id="19" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">brand-right</div>
+      <div class="card-ko">브랜드 정체성에 맞는</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">해당 브랜드의 가치관·톤·아이덴티티에 적합한. AI 도구가 기술적으로 뛰어난 것 이상으로 브랜드 감성과 일치해야 함을 강조. (예: Ask Ralph = Ralph Lauren 특유의 분위기 재현)</div>
+      <div class="back-example">"The most effective AI isn't just fast or smart — it's <span>brand-right</span>, trust-building, and genuinely enhances the customer experience." — Kacey Burden</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 고급단어 ═══════════════ -->
+
+<!-- 20. industrialization -->
+<div class="card-wrap" data-cat="vocab" data-id="20" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">industrialization</div>
+      <div class="card-pron">/ɪnˌdʌstriələˈzeɪʃən/</div>
+      <div class="card-ko">산업화, 체계적 대량 적용</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">실험·파일럿 단계를 넘어 체계적·반복적·대규모로 기술을 적용하는 단계. AI 맥락에서는 'AI의 산업화' = 파일럿에서 전사 배포·표준화로의 전환.</div>
+      <div class="back-example">"2026 will mark the transition from experimentation to <span>industrialization</span>."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 21. interoperable -->
+<div class="card-wrap" data-cat="vocab" data-id="21" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">interoperable</div>
+      <div class="card-pron">/ˌɪntərˈɒpərəbl/</div>
+      <div class="card-ko">상호운용 가능한</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">서로 다른 시스템·플랫폼이 원활하게 연동되는. 명사: interoperability. NRF 2026에서 가장 강조된 기술 요구사항. UCP(Universal Commerce Protocol) 탄생 배경.</div>
+      <div class="back-example">"solutions that were truly <span>interoperable</span>, connecting systems, data, and teams and breaking the silos created over years and decades."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 22. ubiquitous -->
+<div class="card-wrap" data-cat="vocab" data-id="22" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">ubiquitous</div>
+      <div class="card-pron">/juːˈbɪkwɪtəs/</div>
+      <div class="card-ko">어디에나 있는, 편재하는</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">어느 곳에나 동시에 존재하는. 명사: ubiquity. AI가 특정 기능·부서에만 있는 게 아니라 비즈니스 전반에 녹아든 상태를 표현.</div>
+      <div class="back-example">"When AI becomes both <span>ubiquitous</span> throughout the business and unified across it — it doesn't just deliver isolated impact, it becomes a source of enterprise advantage."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 23. anticipatory -->
+<div class="card-wrap" data-cat="vocab" data-id="23" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">anticipatory</div>
+      <div class="card-pron">/ænˈtɪsɪpətɔːri/</div>
+      <div class="card-ko">예측적인, 선제적인</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">미리 예측하고 선제적으로 행동하는. 'Anticipatory Commerce' = AI 에이전트가 고객이 요청하기 전에 맥락(위치·일정·재고 상황)을 파악해 먼저 행동하는 쇼핑 패러다임.</div>
+      <div class="back-example">"This speed and agility will become critical as the industry advances to the next phase: <span>anticipatory</span> commerce."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 24. contextualize -->
+<div class="card-wrap" data-cat="vocab" data-id="24" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">contextualize</div>
+      <div class="card-pron">/kənˈtekstʃuəlaɪz/</div>
+      <div class="card-ko">맥락화하다, 상황에 맞게 해석하다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">정보나 행동을 특정 맥락·상황 속에 놓아 의미를 파악하거나 설명하다. 매장 직원이 AI 추천을 고객 상황에 맞게 해석·설명하는 능력.</div>
+      <div class="back-example">"Human expertise, delivered by associates that can explain, advise, and <span>contextualize</span> AI-driven recommendations."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 25. replenishment -->
+<div class="card-wrap" data-cat="vocab" data-id="25" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">replenishment</div>
+      <div class="card-pron">/rɪˈplenɪʃmənt/</div>
+      <div class="card-ko">보충, 재고 보충</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">소진된 것을 다시 채우는 행위. 리테일에서는 재고 보충(inventory replenishment)이 주요 사용처. 예측적 커머스에서 AI가 구매자의 재고 소진을 예측해 자동 주문.</div>
+      <div class="back-example">"In anticipatory commerce, shopping is shaped by real-time context, such as <span>replenishment</span> needs, time constraints, location, preferences, and trust signals."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 26. frictionless -->
+<div class="card-wrap" data-cat="vocab" data-id="26" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">frictionless</div>
+      <div class="card-pron">/ˈfrɪkʃənlɪs/</div>
+      <div class="card-ko">마찰 없는, 매끄러운</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">불필요한 단계·장애물·저항이 없는 매끄러운 경험. 리테일에서 특히 체크아웃·결제·탐색 경험에 쓰임. 'friction' = 구매 여정의 불편·지연 요소.</div>
+      <div class="back-example">"From <span>frictionless</span> checkout and intuitive navigation to relevant, real-time recommendations, AI can handle the routine moments of the journey."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 27. orchestrate -->
+<div class="card-wrap" data-cat="vocab" data-id="27" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">orchestrate</div>
+      <div class="card-pron">/ˈɔːrkɪstreɪt/</div>
+      <div class="card-ko">조율하다, 통합 관리하다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">오케스트라 지휘처럼 여러 구성 요소를 하나의 목표를 위해 체계적으로 조율·관리하다. 유니파이드 커머스의 핵심 역할: 데이터·재고·가격·풀필먼트를 통합 조율.</div>
+      <div class="back-example">"unified commerce goes beyond simply connecting channels to <span>orchestrating</span> demand across a broader set of routes to purchase."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 28. scalability -->
+<div class="card-wrap" data-cat="vocab" data-id="28" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">scalability</div>
+      <div class="card-pron">/ˌskeɪləˈbɪlɪti/</div>
+      <div class="card-ko">확장성</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">규모가 커지거나 요구가 늘어날 때 성능·품질을 유지하며 성장할 수 있는 능력. AI 파일럿은 쉬워도 전사 확장(scale)이 진짜 도전 과제. 'Scalability depends on having the right foundations in place.'</div>
+      <div class="back-example">"organizations are feeling the strain of fragmented systems and limited <span>scalability</span>."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 29. clienteling -->
+<div class="card-wrap" data-cat="vocab" data-id="29" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">clienteling</div>
+      <div class="card-pron">/ˈklaɪəntəlɪŋ/</div>
+      <div class="card-ko">고객 관계 기반 개인화 판매</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">고객 이력·선호도·구매 패턴 데이터를 활용해 장기적 관계를 기반으로 하는 고도화된 개인 맞춤 판매 기법. 원래 럭셔리 리테일에서 시작, AI로 대중화.</div>
+      <div class="back-example">"Salesfloor empowers store associates with AI-driven <span>clienteling</span> and virtual storefronts — extending personalized selling beyond the store."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 비즈니스 전용 ═══════════════ -->
+
+<!-- 30. NRF -->
+<div class="card-wrap" data-cat="biz" data-id="30" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#065f46;">비즈니스 전용</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">NRF</div>
+      <div class="card-ko">전미소매연맹 / 세계 최대 유통 컨퍼런스</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">비즈니스 전용</div>
+      <div class="back-def">National Retail Federation. 세계 최대 유통 업계 연례 컨퍼런스(매년 1월 뉴욕). 글로벌 리테일 트렌드의 바로미터. NRF 2026에서 Agentic Commerce와 Unified Commerce가 최대 화두.</div>
+      <div class="back-example">"On the <span>NRF</span> show floor, it was unmistakable: fewer one-off point solutions and more coordination across the enterprise."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 31. UCP -->
+<div class="card-wrap" data-cat="biz" data-id="31" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#065f46;">비즈니스 전용</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">UCP</div>
+      <div class="card-ko">범용 커머스 프로토콜</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">비즈니스 전용</div>
+      <div class="back-def">Universal Commerce Protocol. Google + Shopify가 NRF 2026에서 발표. AI 에이전트가 플랫폼 간 제품 탐색·재고 확인·가격·체크아웃을 표준화된 방식으로 수행할 수 있는 공통 규격. 에이전틱 커머스 인프라의 핵심.</div>
+      <div class="back-example">"One of the most important infrastructure moments at NRF was the announcement of the <span>Universal Commerce Protocol (UCP)</span> by Google and Shopify."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 32. AIE -->
+<div class="card-wrap" data-cat="biz" data-id="32" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#065f46;">비즈니스 전용</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">AIE</div>
+      <div class="card-ko">Capgemini 응용 혁신 거래소</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">비즈니스 전용</div>
+      <div class="back-def">Applied Innovation Exchange. Capgemini의 혁신 생태계 플랫폼으로, 스타트업·빅테크 파트너와 기업 고객을 연결해 실제 비즈니스 혁신을 실현. 이 보고서의 발행 주체.</div>
+      <div class="back-example">"Capgemini's <span>Applied Innovation Exchange</span> helps retailers turn ideas into real-world impact through joint partnerships with startups."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 33. PoV -->
+<div class="card-wrap" data-cat="biz" data-id="33" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#065f46;">비즈니스 전용</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">PoV</div>
+      <div class="card-ko">관점 보고서, 입장 문서</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">비즈니스 전용</div>
+      <div class="back-def">Point of View. 컨설팅·리서치 업계에서 특정 이슈에 대한 회사의 공식 관점·주장을 담은 보고서 형식. 학술 논문보다 실용적, 케이스 스터디보다 전략적. 이 보고서가 바로 PoV 형식.</div>
+      <div class="back-example">"This report is a <span>PoV</span> (Point of View) from Capgemini AIE, based on NRF 2026 observations."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 34. omnichannel -->
+<div class="card-wrap" data-cat="biz" data-id="34" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#065f46;">비즈니스 전용</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">omnichannel</div>
+      <div class="card-ko">옴니채널</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">비즈니스 전용</div>
+      <div class="back-def">온·오프라인의 모든 판매 채널을 통합해 일관된 고객 경험을 제공하는 전략. Unified Commerce의 전신. 2026년에는 옴니채널을 넘어 에이전틱·소셜 채널까지 포함한 통합 상거래로 진화.</div>
+      <div class="back-example">"Unified commerce — the modern successor to <span>omnichannel</span> — goes beyond simply connecting channels to orchestrating demand."</div>
+    </div>
+  </div>
+</div>
+
+<!-- 35. retail media -->
+<div class="card-wrap" data-cat="biz" data-id="35" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#065f46;">비즈니스 전용</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">retail media</div>
+      <div class="card-ko">리테일 미디어</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">비즈니스 전용</div>
+      <div class="back-def">유통 업체의 플랫폼(웹사이트·앱·매장 내 디스플레이)을 광고 미디어로 활용하는 전략. 2026년에는 물리 매장으로 확대: 디지털 선반 디스플레이·스마트 사이니지가 구매 시점 광고를 실현.</div>
+      <div class="back-example">"NRF also reinforced how quickly <span>retail media</span> is moving into physical spaces — turning the store into a dynamic channel for discovery."</div>
+    </div>
+  </div>
+</div>
+
+<div class="no-results" id="noResults">해당 카테고리의 카드가 없습니다.</div>
+</div>
+
+<script>
+const STORAGE_KEY = 'retail_ai_2026_learned';
+
+function getLearnedSet() {
+  try { return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')); }
+  catch { return new Set(); }
+}
+function saveLearnedSet(s) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...s]));
+}
+
+function updateStats() {
+  const learned = getLearnedSet();
+  const total = document.querySelectorAll('.card-wrap').length;
+  const n = learned.size;
+  document.getElementById('learnedCount').textContent = `${n} / ${total} 학습완료`;
+  const pct = Math.round(n / total * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+function applyLearnedState() {
+  const learned = getLearnedSet();
+  document.querySelectorAll('.card-wrap').forEach(card => {
+    const id = card.dataset.id;
+    if (learned.has(id)) card.classList.add('learned');
+    else card.classList.remove('learned');
+    const btn = card.querySelector('.learned-btn');
+    if (btn) btn.textContent = learned.has(id) ? '✓ 완료!' : '✓ 학습완료';
+  });
+}
+
+function flipCard(card) {
+  card.classList.toggle('flipped');
+}
+
+function toggleLearned(e, btn) {
+  e.stopPropagation();
+  const card = btn.closest('.card-wrap');
+  const id = card.dataset.id;
+  const learned = getLearnedSet();
+  if (learned.has(id)) { learned.delete(id); card.classList.remove('learned'); btn.textContent = '✓ 학습완료'; }
+  else { learned.add(id); card.classList.add('learned'); btn.textContent = '✓ 완료!'; }
+  saveLearnedSet(learned);
+  updateStats();
+}
+
+function filterCards(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  let visible = 0;
+  document.querySelectorAll('.card-wrap').forEach(card => {
+    const show = cat === 'all' || card.dataset.cat === cat;
+    card.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+  document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+}
+
+function resetAll() {
+  if (!confirm('모든 학습 기록을 초기화할까요?')) return;
+  saveLearnedSet(new Set());
+  document.querySelectorAll('.card-wrap').forEach(card => {
+    card.classList.remove('learned', 'flipped');
+    const btn = card.querySelector('.learned-btn');
+    if (btn) btn.textContent = '✓ 학습완료';
+  });
+  updateStats();
+}
+
+// init
+applyLearnedState();
+updateStats();
+</script>
+</body>
+</html>

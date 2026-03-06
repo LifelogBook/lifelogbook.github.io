@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gen AI for Credit Customer Assistance — 어휘 카드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f172a;
+    --ink2: #1e293b;
+    --accent: #dc2626;
+    --accent2: #ef4444;
+    --sky: #fca5a5;
+    --bg: #fff1f2;
+    --border: #fecdd3;
+    --radius: 14px;
+    --shadow: 0 4px 24px rgba(15,23,42,0.13);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 0 0 40px;
+  }
+  header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 45%, #991b1b 100%);
+    color: #fff;
+    padding: 28px 24px 22px;
+    text-align: center;
+  }
+  header .badge {
+    display: inline-block;
+    background: rgba(252,165,165,0.18);
+    border: 1px solid rgba(252,165,165,0.35);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    color: var(--sky);
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.35rem;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  header p { font-size: 0.82rem; opacity: 0.75; }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px 16px 0;
+    justify-content: center;
+  }
+  .filter-btn {
+    border: 1.5px solid var(--border);
+    background: #fff;
+    color: var(--ink2);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.78rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .progress-bar-wrap {
+    margin: 14px 16px 0;
+    background: var(--border);
+    border-radius: 8px;
+    height: 6px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    transition: width 0.4s;
+  }
+  .progress-label {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin: 6px 0 0;
+    font-weight: 600;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+  .card-wrap { perspective: 900px; }
+  .card {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.48s cubic-bezier(.4,0,.2,1);
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .card-front {
+    background: #fff;
+    border: 1.5px solid var(--border);
+  }
+  .card-back {
+    background: var(--ink);
+    color: #fff;
+    transform: rotateY(180deg);
+  }
+  .card.learned .card-front {
+    background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+    border-color: var(--accent);
+  }
+  .card-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 10px;
+    padding: 2px 9px;
+    margin-bottom: 10px;
+    width: fit-content;
+  }
+  .tag-phrasal { background: #fee2e2; color: #991b1b; }
+  .tag-idiom   { background: #fecdd3; color: #7f1d1d; }
+  .tag-colloc  { background: #dbeafe; color: #1d4ed8; }
+  .tag-vocab   { background: #ede9fe; color: #7c3aed; }
+  .tag-biz     { background: #d1fae5; color: #065f46; }
+  .card-word {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.45rem;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .card-pron { font-size: 0.78rem; color: #64748b; margin-bottom: 6px; }
+  .card-hint { font-size: 0.8rem; color: #94a3b8; font-style: italic; }
+  .card-back .def-ko {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--sky);
+  }
+  .card-back .def-en { font-size: 0.82rem; opacity: 0.82; line-height: 1.5; }
+  .card-back .example {
+    margin-top: 10px;
+    font-size: 0.76rem;
+    opacity: 0.65;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 8px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+  .learned-badge {
+    position: absolute;
+    top: 10px; right: 12px;
+    font-size: 1.1rem;
+    display: none;
+  }
+  .card.learned .learned-badge { display: block; }
+  .diff-dots {
+    position: absolute;
+    bottom: 12px; right: 14px;
+    display: flex; gap: 3px;
+  }
+  .diff-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .diff-dot.on { background: var(--accent); }
+  .learn-btn {
+    position: absolute;
+    bottom: 10px; left: 14px;
+    background: none;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    border-radius: 20px;
+    padding: 3px 11px;
+    font-size: 0.7rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .learn-btn:hover { background: var(--accent); color: #fff; }
+  .card.learned .learn-btn {
+    background: var(--accent);
+    color: #fff;
+  }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey Risk &amp; Resilience Practice · June 2024</div>
+  <h1>The Promise of Gen AI for Credit Customer Assistance</h1>
+  <p>35개 핵심 표현 · 플래시카드로 학습하기</p>
+</header>
+
+<div class="controls">
+  <button class="filter-btn active" data-filter="all">전체 35</button>
+  <button class="filter-btn" data-filter="phrasal">Phrasal Verb 6</button>
+  <button class="filter-btn" data-filter="idiom">Idiom 6</button>
+  <button class="filter-btn" data-filter="colloc">Collocation 7</button>
+  <button class="filter-btn" data-filter="vocab">고급단어 10</button>
+  <button class="filter-btn" data-filter="biz">비즈니스 6</button>
+</div>
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="pbar" style="width:0%"></div></div>
+<div class="progress-label" id="plabel">0 / 35 학습 완료</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const STORAGE_KEY = 'credit_genai_assistance_learned';
+const learned = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+
+const cards = [
+  // ── Phrasal Verb ──
+  {
+    id: 'pv1', type: 'phrasal', word: 'free up',
+    pron: '', hint: 'resources, time...',
+    ko: '여유를 만들다; (자원·시간을) 확보하다',
+    en: 'To release resources or time so they can be used for other purposes.',
+    ex: '"…freeing up their time for cases that require a high-touch approach."',
+    diff: 2
+  },
+  {
+    id: 'pv2', type: 'phrasal', word: 'roll out',
+    pron: '', hint: 'deploy widely...',
+    ko: '전사 배포하다; 단계적으로 출시하다',
+    en: 'To gradually deploy or launch something across an organization.',
+    ex: '"…roll out and scale the MVP to the full organization."',
+    diff: 1
+  },
+  {
+    id: 'pv3', type: 'phrasal', word: 'fine-tune',
+    pron: '', hint: 'AI model training...',
+    ko: '미세 조정하다; (모델을) 파인튜닝하다',
+    en: 'To make small, precise adjustments to a model using domain-specific data.',
+    ex: '"Gen AI applications can be fine-tuned on specific call models."',
+    diff: 2
+  },
+  {
+    id: 'pv4', type: 'phrasal', word: 'build on',
+    pron: '', hint: 'leverage existing...',
+    ko: '~을 기반으로 발전시키다; 활용하다',
+    en: 'To use something as a foundation to develop or expand further.',
+    ex: '"…building on the same modular architecture."',
+    diff: 1
+  },
+  {
+    id: 'pv5', type: 'phrasal', word: 'pressure-test',
+    pron: '', hint: 'validate under stress...',
+    ko: '압박 테스트를 통해 검증하다',
+    en: 'To rigorously test a system, plan, or capability under demanding conditions.',
+    ex: '"…a way to pressure-test an organization\'s capabilities and technical infrastructure."',
+    diff: 3
+  },
+  {
+    id: 'pv6', type: 'phrasal', word: 'plug in',
+    pron: '', hint: 'not that simple...',
+    ko: '플러그인처럼 연결하다; 단순 삽입하다',
+    en: 'To connect something with minimal effort (often used to contrast with reality).',
+    ex: '"Getting gen AI up and working isn\'t as simple as plugging in a computer."',
+    diff: 1
+  },
+  // ── Idiom ──
+  {
+    id: 'id1', type: 'idiom', word: 'high-touch approach',
+    pron: '', hint: 'complex, personal cases...',
+    ko: '개인 밀착형 대응 방식',
+    en: 'A hands-on, personalized method requiring significant human interaction and attention.',
+    ex: '"…freeing up their time for cases that require a high-touch approach."',
+    diff: 2
+  },
+  {
+    id: 'id2', type: 'idiom', word: 'bottom line',
+    pron: '', hint: 'profits, net result...',
+    ko: '최종 손익; 수익성',
+    en: 'The final profit or loss figure; the overall financial result of a business.',
+    ex: '"Integrating gen AI can improve the level of support…in a way that can benefit everyone\'s bottom line."',
+    diff: 1
+  },
+  {
+    id: 'id3', type: 'idiom', word: 'at a fraction of the cost',
+    pron: '', hint: 'much cheaper...',
+    ko: '훨씬 저렴하게; 비용의 일부만으로',
+    en: 'For a much smaller amount of money than the usual or expected price.',
+    ex: '"…handle more than 45 percent of its inbound volumes…at a fraction of the cost of customer representatives."',
+    diff: 2
+  },
+  {
+    id: 'id4', type: 'idiom', word: '360-degree',
+    pron: '', hint: 'comprehensive view...',
+    ko: '전방위적인; 360도 관점의',
+    en: 'Providing a complete, all-encompassing view of a situation or performance.',
+    ex: '"The company…created a 360-degree, personalized, digital performance management dashboard."',
+    diff: 2
+  },
+  {
+    id: 'id5', type: 'idiom', word: 'stumped',
+    pron: '/stʌmpt/', hint: 'AI cannot answer...',
+    ko: '막히다; 답을 못 찾다',
+    en: 'Unable to find an answer or solution; confused and unable to proceed.',
+    ex: '"When the technology is stumped, it can automatically escalate to a human agent."',
+    diff: 2
+  },
+  {
+    id: 'id6', type: 'idiom', word: 'road map',
+    pron: '', hint: 'implementation plan...',
+    ko: '실행 로드맵; 단계별 실행 계획',
+    en: 'A strategic plan that outlines key steps and milestones toward a goal.',
+    ex: '"…a structured road map is necessary to capture the most value, minimize risks…"',
+    diff: 1
+  },
+  // ── Collocation ──
+  {
+    id: 'co1', type: 'colloc', word: 'customer journey',
+    pron: '', hint: 'end-to-end experience...',
+    ko: '고객 여정',
+    en: 'The complete sequence of experiences a customer has with a company, from first contact to resolution.',
+    ex: '"Gen AI can enhance knowledge of the credit customer journey."',
+    diff: 1
+  },
+  {
+    id: 'co2', type: 'colloc', word: 'call transcript',
+    pron: '', hint: 'recorded conversation text...',
+    ko: '통화 녹취록',
+    en: 'A written record of a spoken conversation, especially from customer service calls.',
+    ex: '"Gen AI can be used at scale in analyzing call transcripts and chat interactions."',
+    diff: 1
+  },
+  {
+    id: 'co3', type: 'colloc', word: 'average handling time',
+    pron: '', hint: 'AHT in call centers...',
+    ko: '평균 처리 시간 (AHT)',
+    en: 'The average duration of a customer service interaction, from start to completion.',
+    ex: '"We project that average handling time could be reduced by 10 percent."',
+    diff: 2
+  },
+  {
+    id: 'co4', type: 'colloc', word: 'guardrails',
+    pron: '', hint: 'safety constraints for AI...',
+    ko: '가드레일; 안전 장치',
+    en: 'Rules, limits, or safeguards put in place to prevent AI systems from producing harmful outputs.',
+    ex: '"…they should have a limited yet clearly defined set of guardrails."',
+    diff: 2
+  },
+  {
+    id: 'co5', type: 'colloc', word: 'virtual agent',
+    pron: '', hint: 'AI-powered chatbot/IVR...',
+    ko: '가상 에이전트',
+    en: 'An AI-powered system that handles customer interactions autonomously, simulating a human agent.',
+    ex: '"…handle more than 45 percent of its inbound volumes through the new virtual agent."',
+    diff: 1
+  },
+  {
+    id: 'co6', type: 'colloc', word: 'minimal viable product',
+    pron: '', hint: 'MVP in agile...',
+    ko: '최소 기능 제품 (MVP)',
+    en: 'A version of a product with just enough features to be usable and testable by early users.',
+    ex: '"Agree on the highest-priority gen AI use case and start the development of a minimal viable product."',
+    diff: 2
+  },
+  {
+    id: 'co7', type: 'colloc', word: 'debt restructuring',
+    pron: '', hint: 'renegotiating loan terms...',
+    ko: '채무 재조정',
+    en: 'The process of renegotiating the terms of a debt to make repayment more manageable.',
+    ex: '"Collection agents…are also likely to have more successful debt or restructuring negotiations."',
+    diff: 3
+  },
+  // ── 고급단어 ──
+  {
+    id: 'vo1', type: 'vocab', word: 'delinquency',
+    pron: '/dɪˈlɪŋkwənsi/', hint: 'late payment...',
+    ko: '연체; 채무 불이행',
+    en: 'The failure to make required debt payments on time; being overdue on financial obligations.',
+    ex: '"…limited to use in reducing delinquencies."',
+    diff: 3
+  },
+  {
+    id: 'vo2', type: 'vocab', word: 'empathetic',
+    pron: '/ˌempəˈθetɪk/', hint: 'understanding feelings...',
+    ko: '공감적인; 감정이입하는',
+    en: 'Showing an ability to understand and share the feelings of another person.',
+    ex: '"These tools can potentially offer increased empathy and high-quality solutions for customers."',
+    diff: 2
+  },
+  {
+    id: 'vo3', type: 'vocab', word: 'proactive',
+    pron: '/prəʊˈæktɪv/', hint: 'act before problems arise...',
+    ko: '선제적인; 주도적인',
+    en: 'Taking action to address potential issues before they become problems, rather than reacting after.',
+    ex: '"…proactively engaging at an early stage of delinquency."',
+    diff: 2
+  },
+  {
+    id: 'vo4', type: 'vocab', word: 'semiautomate',
+    pron: '', hint: 'partial automation...',
+    ko: '반자동화하다',
+    en: 'To automate part of a process while retaining human involvement for other parts.',
+    ex: '"…employ quality control metrics to semiautomate the continuous improvement of operations."',
+    diff: 3
+  },
+  {
+    id: 'vo5', type: 'vocab', word: 'authenticate',
+    pron: '/ɔːˈθentɪkeɪt/', hint: 'verify identity...',
+    ko: '인증하다; 신원을 확인하다',
+    en: 'To verify the identity of a person or the validity of something.',
+    ex: '"…from restaurant drive-throughs to customer authentication in call centers."',
+    diff: 2
+  },
+  {
+    id: 'vo6', type: 'vocab', word: 'collateral',
+    pron: '/kəˈlætərəl/', hint: 'loan security...',
+    ko: '담보 (물); 부수적인',
+    en: 'An asset pledged as security for a loan; also used as adjective meaning secondary or indirect.',
+    ex: '"…used the gen AI capability of NLP to help identify collateral and match it to accounts."',
+    diff: 3
+  },
+  {
+    id: 'vo7', type: 'vocab', word: 'hyperpersonalized',
+    pron: '', hint: 'ultra-tailored content...',
+    ko: '초개인화된',
+    en: 'Customized at an extremely granular level using data and AI to tailor experiences per individual.',
+    ex: '"…they can power hyperpersonalized messages both in these channels and in mass communications."',
+    diff: 3
+  },
+  {
+    id: 'vo8', type: 'vocab', word: 'nuanced',
+    pron: '/ˈnjuːɑːnst/', hint: 'subtle, complex...',
+    ko: '미묘한; 세밀한; 복잡한',
+    en: 'Characterized by subtle distinctions or complexity; not simple or straightforward.',
+    ex: '"…free up time for real-life agents to focus on the cases that need more nuanced attention."',
+    diff: 2
+  },
+  {
+    id: 'vo9', type: 'vocab', word: 'unstructured',
+    pron: '/ʌnˈstrʌktʃəd/', hint: 'text, audio, free-form...',
+    ko: '비정형의 (데이터)',
+    en: 'Data that does not have a pre-defined format or organization, such as text, audio, or images.',
+    ex: '"Gen AI can be used to quickly analyze unstructured data to generate actionable insights."',
+    diff: 2
+  },
+  {
+    id: 'vo10', type: 'vocab', word: 'proprietary',
+    pron: '/prəˈpraɪətəri/', hint: 'owned, exclusive...',
+    ko: '독점적인; 자체 개발의',
+    en: 'Belonging exclusively to an owner; not publicly available or shared with competitors.',
+    ex: '"…analyze call recordings for comparison against a proprietary knowledge base of a call model."',
+    diff: 2
+  },
+  // ── 비즈니스 전용 ──
+  {
+    id: 'bz1', type: 'biz', word: 'LLM',
+    pron: '', hint: 'GPT, Claude...',
+    ko: '대규모 언어 모델 (Large Language Model)',
+    en: 'A type of AI model trained on vast amounts of text data, capable of generating and understanding language.',
+    ex: '"…a large bank in the United Kingdom is training existing LLMs with regulatory documentation."',
+    diff: 1
+  },
+  {
+    id: 'bz2', type: 'biz', word: 'IVR',
+    pron: '', hint: 'phone menu system...',
+    ko: '대화형 음성 응답 (Interactive Voice Response)',
+    en: 'A telephone system that interacts with callers using voice prompts and keypad inputs.',
+    ex: '"…the next generation of chatbots, human-like interactive voice response (IVR)."',
+    diff: 2
+  },
+  {
+    id: 'bz3', type: 'biz', word: 'MVP',
+    pron: '', hint: 'Minimal Viable Product...',
+    ko: '최소 기능 제품 (Minimal Viable Product)',
+    en: 'A product version with just enough features to test a hypothesis and gather user feedback.',
+    ex: '"…start the development of a minimal viable product (MVP)."',
+    diff: 1
+  },
+  {
+    id: 'bz4', type: 'biz', word: 'collections',
+    pron: '', hint: 'debt recovery function...',
+    ko: '(금융) 추심; 채권 회수',
+    en: 'The process of pursuing payments from individuals or businesses that owe debts to a creditor.',
+    ex: '"…credit customer assistance and collection functions are taking advantage of the technology\'s potential."',
+    diff: 2
+  },
+  {
+    id: 'bz5', type: 'biz', word: 'QuantumBlack',
+    pron: '', hint: 'McKinsey AI brand...',
+    ko: 'McKinsey의 AI 전문 브랜드',
+    en: 'McKinsey\'s AI and advanced analytics division, providing AI capabilities and tools.',
+    ex: '"QuantumBlack, AI by McKinsey — Risk & Resilience Practice"',
+    diff: 1
+  },
+  {
+    id: 'bz6', type: 'biz', word: 'GPT-4',
+    pron: '', hint: 'OpenAI model used in exhibit...',
+    ko: 'OpenAI의 4세대 거대 언어 모델',
+    en: 'OpenAI\'s fourth-generation large language model, used in the article\'s exhibit to analyze call data.',
+    ex: '"Source: GPT-4 results for 631 calls with promise to pay; McKinsey analysis."',
+    diff: 1
+  }
+];
+
+const tagClass = { phrasal:'tag-phrasal', idiom:'tag-idiom', colloc:'tag-colloc', vocab:'tag-vocab', biz:'tag-biz' };
+const tagLabel = { phrasal:'Phrasal Verb', idiom:'Idiom', colloc:'Collocation', vocab:'고급단어', biz:'비즈니스' };
+const diffDots = n => Array.from({length:3}, (_,i) => `<span class="diff-dot${i<n?' on':''}"></span>`).join('');
+
+function updateProgress() {
+  const visible = [...document.querySelectorAll('.card-wrap:not(.hidden)')];
+  const learnedCount = visible.filter(w => w.querySelector('.card').classList.contains('learned')).length;
+  const total = cards.length;
+  const pct = Math.round(learnedCount / total * 100);
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('plabel').textContent = `${learnedCount} / ${total} 학습 완료`;
+}
+
+function renderCards() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  cards.forEach(c => {
+    const isLearned = learned.has(c.id);
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap';
+    wrap.dataset.type = c.type;
+    wrap.innerHTML = `
+      <div class="card${isLearned?' learned':''}" id="card-${c.id}">
+        <div class="card-face card-front">
+          <span class="card-tag ${tagClass[c.type]}">${tagLabel[c.type]}</span>
+          <div class="card-word">${c.word}</div>
+          ${c.pron ? `<div class="card-pron">${c.pron}</div>` : ''}
+          <div class="card-hint">${c.hint}</div>
+          <span class="learned-badge">✓</span>
+          <button class="learn-btn" data-id="${c.id}">${isLearned?'✓ 학습 완료':'학습 완료'}</button>
+          <div class="diff-dots">${diffDots(c.diff)}</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="def-ko">${c.ko}</div>
+          <div class="def-en">${c.en}</div>
+          <div class="example">${c.ex}</div>
+        </div>
+      </div>`;
+    grid.appendChild(wrap);
+    wrap.querySelector('.card').addEventListener('click', e => {
+      if (e.target.classList.contains('learn-btn')) return;
+      e.currentTarget.classList.toggle('flipped');
+    });
+    wrap.querySelector('.learn-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      const id = e.target.dataset.id;
+      if (learned.has(id)) { learned.delete(id); } else { learned.add(id); }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...learned]));
+      const card = document.getElementById('card-' + id);
+      card.classList.toggle('learned', learned.has(id));
+      e.target.textContent = learned.has(id) ? '✓ 학습 완료' : '학습 완료';
+      updateProgress();
+    });
+  });
+  updateProgress();
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.card-wrap').forEach(w => {
+      w.classList.toggle('hidden', f !== 'all' && w.dataset.type !== f);
+    });
+    updateProgress();
+  });
+});
+
+renderCards();
+</script>
+</body>
+</html>

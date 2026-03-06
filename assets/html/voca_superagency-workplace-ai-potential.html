@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Superagency in the Workplace — 어휘 카드</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1e0a3c;
+    --ink2: #2d1057;
+    --accent: #9333ea;
+    --accent2: #a855f7;
+    --sky: #d8b4fe;
+    --bg: #faf5ff;
+    --border: #e9d5ff;
+    --card-bg: #ffffff;
+    --shadow: rgba(147, 51, 234, 0.15);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+  .hero {
+    background: linear-gradient(135deg, #1e0a3c 0%, #3b0764 45%, #6b21a8 100%);
+    padding: 2.5rem 1.5rem 2rem;
+    text-align: center;
+    color: #fff;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #e9d5ff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.9rem;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+    color: #fff;
+  }
+  .hero-sub {
+    font-size: 0.9rem;
+    color: #d8b4fe;
+    margin-bottom: 1.5rem;
+  }
+  .progress-wrap { max-width: 500px; margin: 0 auto; }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: #d8b4fe;
+    margin-bottom: 0.4rem;
+  }
+  .progress-bar-bg {
+    height: 6px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #a855f7, #d8b4fe);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    padding: 1.5rem 1rem 0.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .filter-btn {
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    border: 2px solid var(--border);
+    background: #fff;
+    color: var(--ink);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+    padding: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .card-wrap {
+    perspective: 1000px;
+    height: 210px;
+  }
+  .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+    cursor: pointer;
+  }
+  .card-wrap.flipped .card-inner { transform: rotateY(180deg); }
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    box-shadow: 0 2px 12px var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .card-front {
+    background: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .card-back {
+    background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%);
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+  }
+  .card-wrap.learned .card-front {
+    background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #fff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .tag-phrasal { background: #7c3aed; }
+  .tag-idiom   { background: #5b21b6; }
+  .tag-colloc  { background: #1e40af; }
+  .tag-vocab   { background: #0e7490; }
+  .tag-biz     { background: #065f46; }
+
+  .dots { display: flex; gap: 3px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .dot.filled { background: var(--accent); }
+
+  .card-word {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.45rem;
+    color: var(--ink);
+    line-height: 1.2;
+    margin: 0.4rem 0 0.1rem;
+  }
+  .card-pron { font-size: 0.78rem; color: #9ca3af; font-style: italic; }
+  .card-kr-hint { font-size: 0.8rem; color: #6b7280; }
+  .card-hint { font-size: 0.72rem; color: #9333ea; text-align: right; opacity: 0.7; }
+
+  .back-def {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+    flex: 1;
+  }
+  .back-ex {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: #6d28d9;
+    border-left: 2px solid var(--accent);
+    padding-left: 0.6rem;
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+  }
+  .back-kr { font-size: 0.72rem; color: #6b7280; line-height: 1.4; }
+  .back-actions { display: flex; justify-content: flex-end; margin-top: 0.5rem; }
+  .btn-learned {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: none;
+    border: 1.5px solid var(--accent);
+    border-radius: 8px;
+    padding: 0.25rem 0.7rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .btn-learned:hover { background: var(--accent); color: #fff; }
+  .card-wrap.learned .btn-learned { background: var(--accent); color: #fff; }
+
+  .footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: 0.75rem;
+    color: #9ca3af;
+  }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">McKinsey Global Institute · January 2025</div>
+  <h1>Superagency in the Workplace</h1>
+  <p class="hero-sub">직장의 슈퍼에이전시 — 핵심 어휘 35선</p>
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>학습 진도</span>
+      <span id="progress-text">0 / 35</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" data-filter="all">전체 35</button>
+  <button class="filter-btn" data-filter="phrasal">Phrasal Verb 6</button>
+  <button class="filter-btn" data-filter="idiom">Idiom·비유 6</button>
+  <button class="filter-btn" data-filter="colloc">Collocation 7</button>
+  <button class="filter-btn" data-filter="vocab">고급단어 10</button>
+  <button class="filter-btn" data-filter="biz">비즈니스 전용 6</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="footer">McKinsey Global Institute · <em>Superagency in the workplace: Empowering people to unlock AI's full potential</em> · January 2025</div>
+
+<script>
+const STORAGE_KEY = 'superagency_workplace_learned';
+const learned = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+
+const cards = [
+  // === Phrasal Verb (6) ===
+  {
+    id:'pv1', cat:'phrasal', word:'scale up', pron:'/skeɪl ʌp/',
+    krHint:'규모를 키우다, 체계적으로 확대하다',
+    def:'To increase the size, scope, or capacity of something in a systematic and deliberate way.',
+    ex:'"Leaders must scale up AI deployment across all business functions to achieve full organizational maturity."',
+    kr:'"리더는 완전한 조직적 성숙도를 달성하기 위해 전 비즈니스 기능에 걸쳐 AI 배포를 확대해야 한다."',
+    diff:2
+  },
+  {
+    id:'pv2', cat:'phrasal', word:'opt in', pron:'/ɒpt ɪn/',
+    krHint:'자발적으로 참여하다, 참여를 선택하다',
+    def:'To choose to participate in a program, system, or initiative on a voluntary basis.',
+    ex:'"Employees who opt in to AI training early become the most powerful change champions in their organizations."',
+    kr:'"AI 교육에 일찍 자발적으로 참여한 직원들이 조직에서 가장 강력한 변화 챔피언이 된다."',
+    diff:1
+  },
+  {
+    id:'pv3', cat:'phrasal', word:'step up', pron:'/stɛp ʌp/',
+    krHint:'앞장서다, 역할을 강화하다',
+    def:'To increase one\'s effort or involvement; to take on a more prominent or active role than before.',
+    ex:'"Millennial managers can step up as AI change champions to actively encourage and inspire their peers."',
+    kr:'"밀레니얼 세대 관리자들은 동료들을 적극적으로 독려하고 영감을 주는 AI 변화 챔피언으로 앞장설 수 있다."',
+    diff:1
+  },
+  {
+    id:'pv4', cat:'phrasal', word:'hold back', pron:'/həʊld bæk/',
+    krHint:'저해하다, 가로막다',
+    def:'To prevent someone or something from advancing, progressing, or reaching its full potential.',
+    ex:'"Fear of uncertainty can hold back organizations from unlocking the transformative power of AI."',
+    kr:'"불확실성에 대한 두려움이 AI의 변혁적 힘을 발휘하는 것을 조직이 가로막을 수 있다."',
+    diff:1
+  },
+  {
+    id:'pv5', cat:'phrasal', word:'level up', pron:'/ˈlɛv.əl ʌp/',
+    krHint:'역량을 높이다, 업그레이드하다',
+    def:'To improve one\'s skills, capabilities, or performance to reach a higher level.',
+    ex:'"Workers need structured, on-the-job opportunities to continuously level up their AI skills."',
+    kr:'"직원들은 AI 역량을 지속적으로 높이기 위해 체계적인 실무 교육 기회가 필요하다."',
+    diff:1
+  },
+  {
+    id:'pv6', cat:'phrasal', word:'turn to', pron:'/tɜːn tuː/',
+    krHint:'의지하다, ~에 도움을 구하다',
+    def:'To go to someone or something for help, support, or guidance when facing a challenge.',
+    ex:'"Employees increasingly turn to generative AI tools for complex research and brainstorming tasks."',
+    kr:'"직원들은 복잡한 리서치와 브레인스토밍 업무에 점점 더 생성형 AI 도구에 의존한다."',
+    diff:1
+  },
+
+  // === Idiom·비유 (6) ===
+  {
+    id:'id1', cat:'idiom', word:'from the bottom up', pron:'/frɒm ðə ˈbɒt.əm ʌp/',
+    krHint:'현장 중심으로, 아래서부터',
+    def:'Starting from lower organizational levels and building upward; driven by frontline employees rather than top-down directives.',
+    ex:'"The most sustainable AI adoption often comes from the bottom up, fueled by grassroots employee experimentation."',
+    kr:'"가장 지속 가능한 AI 도입은 종종 현장 직원들의 자발적 실험에서 시작되는, 아래서부터의 변화에서 비롯된다."',
+    diff:2
+  },
+  {
+    id:'id2', cat:'idiom', word:'at scale', pron:'/æt skeɪl/',
+    krHint:'대규모로, 광범위하게',
+    def:'Operating across a large, systematic scope that affects an entire organization or system, not just a limited pilot.',
+    ex:'"Only 1 percent of companies have successfully deployed AI at scale across their entire workforce."',
+    kr:'"전체 직원에게 대규모로 AI를 성공적으로 배포한 기업은 전체의 1%에 불과하다."',
+    diff:2
+  },
+  {
+    id:'id3', cat:'idiom', word:'on the job', pron:'/ɒn ðə dʒɒb/',
+    krHint:'실무 중에, 현장에서',
+    def:'While actually working; learning or developing skills through practical experience rather than separate formal training.',
+    ex:'"Effective AI upskilling happens on the job, embedded in daily workflows rather than isolated classroom sessions."',
+    kr:'"효과적인 AI 역량 강화는 격리된 교육 세션이 아닌 일상 업무 흐름에 내재된 실무 중에 이루어진다."',
+    diff:1
+  },
+  {
+    id:'id4', cat:'idiom', word:'imagination deficit', pron:'/ɪˌmædʒɪˈneɪʃən ˈdefɪsɪt/',
+    krHint:'상상력 결핍 (AI 가능성 인식 부족)',
+    def:'The gap between what AI is actually capable of doing and what most employees currently imagine or believe it can do.',
+    ex:'"The report identifies an \'imagination deficit\': most workers dramatically underestimate AI\'s real capabilities."',
+    kr:'"보고서는 \'상상력 결핍\'을 지적한다: 대부분의 직원들은 AI의 실제 역량을 크게 과소평가한다."',
+    diff:3
+  },
+  {
+    id:'id5', cat:'idiom', word:'perception gap', pron:'/pəˈsɛpʃən ɡæp/',
+    krHint:'인식 격차',
+    def:'A significant difference between how two groups understand or evaluate the same situation or reality.',
+    ex:'"The perception gap—90% of leaders vs. only 20% of employees feeling AI-proficient—is a major adoption barrier."',
+    kr:'"리더의 90% 대 직원의 20%라는 인식 격차는 AI 도입의 주요 장벽이다."',
+    diff:2
+  },
+  {
+    id:'id6', cat:'idiom', word:'ahead of the curve', pron:'/əˈhed əv ðə kɜːv/',
+    krHint:'시대를 앞서가는, 선도적인',
+    def:'More advanced or progressive than the current trend or standard; anticipating change before it becomes mainstream.',
+    ex:'"Companies that invest heavily in AI culture and workforce training today will be well ahead of the curve by 2030."',
+    kr:'"오늘 AI 문화와 인력 교육에 적극 투자하는 기업들은 2030년까지 크게 앞서갈 것이다."',
+    diff:2
+  },
+
+  // === Collocation (7) ===
+  {
+    id:'co1', cat:'colloc', word:'AI adoption', pron:'/eɪ aɪ əˈdɒpʃən/',
+    krHint:'AI 도입',
+    def:'The process by which organizations integrate AI tools, systems, and practices into their workflows and operations.',
+    ex:'"Successful AI adoption requires aligning technology investment with cultural and organizational transformation."',
+    kr:'"성공적인 AI 도입에는 기술 투자와 문화적·조직적 변화를 일치시키는 것이 필요하다."',
+    diff:1
+  },
+  {
+    id:'co2', cat:'colloc', word:'workforce transformation', pron:'/ˈwɜːkfɔːs ˌtrænsfəˈmeɪʃən/',
+    krHint:'인력 혁신',
+    def:'Systematic change in how employees work, what skills they need, and how roles are structured across an organization.',
+    ex:'"AI-driven workforce transformation is projected to create 170 million new roles globally by 2030."',
+    kr:'"AI 주도의 인력 혁신은 2030년까지 전 세계적으로 1억 7천만 개의 새로운 역할을 창출할 것으로 예상된다."',
+    diff:2
+  },
+  {
+    id:'co3', cat:'colloc', word:'productivity gain', pron:'/ˌprɒdʌkˈtɪvɪti ɡeɪn/',
+    krHint:'생산성 향상',
+    def:'A measurable increase in output or efficiency per unit of labor, capital, or time invested.',
+    ex:'"Early AI pilots in specific functions demonstrate productivity gains of up to 50 percent."',
+    kr:'"특정 기능에 대한 초기 AI 파일럿들은 최대 50%의 생산성 향상을 보여준다."',
+    diff:1
+  },
+  {
+    id:'co4', cat:'colloc', word:'human agency', pron:'/ˈhjuːmən ˈeɪdʒənsi/',
+    krHint:'인간의 주체성, 자율적 행위 능력',
+    def:'The capacity of individuals to act independently, make meaningful choices, and shape their own futures.',
+    ex:'"The core promise of superagency is that AI amplifies human agency rather than diminishing or replacing it."',
+    kr:'"슈퍼에이전시의 핵심 약속은 AI가 인간의 주체성을 감소시키거나 대체하는 것이 아니라 증폭시킨다는 것이다."',
+    diff:2
+  },
+  {
+    id:'co5', cat:'colloc', word:'talent development', pron:'/ˈtælənt dɪˈveləpmənt/',
+    krHint:'인재 개발',
+    def:'A systematic approach to identifying, nurturing, and improving employees\' skills and capabilities over time.',
+    ex:'"AI-native talent development must combine technical AI proficiency with creativity and critical thinking."',
+    kr:'"AI 네이티브 인재 개발은 기술적 AI 역량과 창의성 및 비판적 사고를 결합해야 한다."',
+    diff:1
+  },
+  {
+    id:'co6', cat:'colloc', word:'change champion', pron:'/tʃeɪndʒ ˈtʃæmpiən/',
+    krHint:'변화 선도자',
+    def:'An individual who actively advocates for and supports organizational change, influencing peers to adopt new practices.',
+    ex:'"Middle managers serve as critical change champions, bridging the gap between leadership vision and employee reality."',
+    kr:'"중간 관리자는 리더십 비전과 직원 현실 사이의 격차를 연결하는 핵심 변화 선도자 역할을 한다."',
+    diff:2
+  },
+  {
+    id:'co7', cat:'colloc', word:'use case', pron:'/juːs keɪs/',
+    krHint:'활용 사례',
+    def:'A specific scenario or application illustrating how a technology or process can be used to achieve a particular goal.',
+    ex:'"Researchers developed a comprehensive database of more than 250 potential AI use cases across major business functions."',
+    kr:'"연구진은 주요 비즈니스 기능 전반에 걸친 250개 이상의 잠재적 AI 활용 사례 데이터베이스를 구축했다."',
+    diff:1
+  },
+
+  // === 고급단어 (10) ===
+  {
+    id:'vo1', cat:'vocab', word:'superagency', pron:'/suːpərˈeɪdʒənsi/',
+    krHint:'슈퍼에이전시 (AI로 증폭된 인간 역량)',
+    def:'A state where individuals, empowered by AI, amplify their creativity, productivity, and positive impact beyond previous human limits.',
+    ex:'"Superagency emerges when workers are given the tools, training, and trust to unlock AI\'s transformative potential."',
+    kr:'"슈퍼에이전시는 직원들이 AI의 변혁적 잠재력을 발휘할 도구, 교육, 신뢰를 받을 때 나타난다."',
+    diff:3
+  },
+  {
+    id:'vo2', cat:'vocab', word:'empower', pron:'/ɪmˈpaʊər/',
+    krHint:'역량을 부여하다, 힘을 주다',
+    def:'To give someone the authority, skills, confidence, or means to act independently and effectively.',
+    ex:'"Leaders must empower employees with both the tools and the psychological safety to experiment with AI freely."',
+    kr:'"리더는 직원들에게 AI를 자유롭게 실험할 도구와 심리적 안전감 모두를 부여해야 한다."',
+    diff:2
+  },
+  {
+    id:'vo3', cat:'vocab', word:'archetype', pron:'/ˈɑːkɪtaɪp/',
+    krHint:'원형, 전형적 유형',
+    def:'A typical, recurring pattern, model, or category that represents a broader class of behaviors or personas.',
+    ex:'"Five worker archetypes—from detached skeptics to all-in innovators—reveal diverse attitudes toward AI adoption."',
+    kr:'"무관심한 회의론자부터 전면 혁신가까지 다섯 가지 직원 유형은 AI 도입에 대한 다양한 태도를 보여준다."',
+    diff:3
+  },
+  {
+    id:'vo4', cat:'vocab', word:'proliferate', pron:'/prəˈlɪfəreɪt/',
+    krHint:'급증하다, 확산되다',
+    def:'To rapidly increase in number or spread widely throughout an area, system, or population.',
+    ex:'"As AI tools proliferate across industries, demand for workers who can use them effectively surges dramatically."',
+    kr:'"AI 도구들이 산업 전반에 걸쳐 확산됨에 따라 효과적으로 활용할 수 있는 직원에 대한 수요가 크게 급증한다."',
+    diff:3
+  },
+  {
+    id:'vo5', cat:'vocab', word:'augment', pron:'/ɔːɡˈmɛnt/',
+    krHint:'보강하다, 증대시키다',
+    def:'To make something greater by adding to it; to enhance capabilities without replacing the original.',
+    ex:'"Gen AI is designed to augment human judgment and creativity, not to automate away the human element."',
+    kr:'"생성형 AI는 인간의 요소를 자동화로 제거하는 것이 아니라 인간의 판단력과 창의성을 보강하도록 설계되었다."',
+    diff:2
+  },
+  {
+    id:'vo6', cat:'vocab', word:'reimagine', pron:'/ˌriːɪˈmædʒɪn/',
+    krHint:'재구상하다, 새롭게 생각하다',
+    def:'To think about something in an entirely new and creative way, often discovering radically better possibilities.',
+    ex:'"AI invites leaders to reimagine traditional cost centers as dynamic, value-driven functions of the future."',
+    kr:'"AI는 리더들이 전통적인 비용 센터를 미래의 역동적인 가치 창출 기능으로 재구상하도록 이끈다."',
+    diff:2
+  },
+  {
+    id:'vo7', cat:'vocab', word:'holistic', pron:'/həˈlɪstɪk/',
+    krHint:'전체론적인, 통합적인',
+    def:'Treating or considering all parts of something as interconnected and interdependent, rather than examining them in isolation.',
+    ex:'"A holistic approach to AI adoption addresses technology, culture, skills, and governance simultaneously."',
+    kr:'"AI 도입에 대한 통합적 접근법은 기술, 문화, 역량, 거버넌스를 동시에 다룬다."',
+    diff:2
+  },
+  {
+    id:'vo8', cat:'vocab', word:'transparency', pron:'/trænsˈpærənsi/',
+    krHint:'투명성',
+    def:'The quality of being open, honest, and clear about processes, decisions, and data so stakeholders can understand and trust them.',
+    ex:'"Trust, safety, and transparency are foundational to responsible AI deployment in any organization."',
+    kr:'"신뢰, 안전성, 투명성은 모든 조직에서 책임감 있는 AI 배포의 기반이 된다."',
+    diff:2
+  },
+  {
+    id:'vo9', cat:'vocab', word:'hallucination', pron:'/həˌluːsɪˈneɪʃən/',
+    krHint:'(AI) 환각, 오류 출력',
+    def:'When an AI system generates false, fabricated, or inaccurate information and presents it with apparent confidence.',
+    ex:'"Leaders must build guardrails to manage AI hallucination risks, especially in high-stakes decision-making contexts."',
+    kr:'"리더는 특히 중요한 의사결정에서 AI 환각 위험을 관리하기 위한 가드레일을 구축해야 한다."',
+    diff:3
+  },
+  {
+    id:'vo10', cat:'vocab', word:'incumbent', pron:'/ɪnˈkʌmbənt/',
+    krHint:'의무적인; 현직의',
+    def:'(adj) Necessary as an obligation or duty. (n) A person or organization currently holding a position.',
+    ex:'"It is incumbent on leaders to set bold AI commitments and meet employee needs with on-the-job training."',
+    kr:'"리더가 담대한 AI 목표를 설정하고 현장 교육으로 직원의 필요를 충족하는 것은 의무다."',
+    diff:3
+  },
+
+  // === 비즈니스 전용 (6) ===
+  {
+    id:'bz1', cat:'biz', word:'C-suite', pron:'/siː suːt/',
+    krHint:'최고경영진 (CEO, CFO, CTO 등)',
+    def:'The group of the most senior executives in a company, whose titles typically begin with "Chief" (CEO, CFO, CTO, CHRO, etc.).',
+    ex:'"The survey included 238 C-suite executives alongside 3,613 employees across six countries."',
+    kr:'"설문에는 6개국의 3,613명의 직원과 함께 238명의 최고경영진 임원이 포함되었다."',
+    diff:1
+  },
+  {
+    id:'bz2', cat:'biz', word:'ROI', pron:'/ɑːr əʊ aɪ/',
+    krHint:'투자 대비 수익 (Return on Investment)',
+    def:'A performance measure used to evaluate the efficiency or profitability of an investment relative to its cost.',
+    ex:'"Leaders must define clear success indicators to evaluate whether AI investments are yielding the desired ROI."',
+    kr:'"리더는 AI 투자가 원하는 투자 수익률을 내고 있는지 평가하기 위한 명확한 성공 지표를 정의해야 한다."',
+    diff:1
+  },
+  {
+    id:'bz3', cat:'biz', word:'gen AI', pron:'/dʒen eɪ aɪ/',
+    krHint:'생성형 AI (Generative AI)',
+    def:'AI systems built on foundation models that can generate new content—text, images, code, audio—based on patterns learned from vast training data.',
+    ex:'"The goal is to capture the enormous potential of gen AI to drive innovation and create real business value."',
+    kr:'"목표는 혁신을 이끌고 실질적인 비즈니스 가치를 창출하기 위해 생성형 AI의 엄청난 잠재력을 활용하는 것이다."',
+    diff:1
+  },
+  {
+    id:'bz4', cat:'biz', word:'HAI', pron:'/eɪtʃ eɪ aɪ/',
+    krHint:'스탠퍼드 인간 중심 AI 연구소',
+    def:'Stanford Institute for Human-Centered Artificial Intelligence — a research center studying AI\'s societal impact and promoting responsible AI development.',
+    ex:'"The report was enriched by discussions with experts at Stanford HAI and the Digital Economy Lab."',
+    kr:'"이 보고서는 스탠퍼드 HAI와 디지털 경제 연구소 전문가들과의 토론을 통해 더욱 풍부해졌다."',
+    diff:2
+  },
+  {
+    id:'bz5', cat:'biz', word:'agentic AI', pron:'/eɪˈdʒentɪk eɪ aɪ/',
+    krHint:'에이전틱 AI (자율적 행동 AI)',
+    def:'AI systems with autonomy and goal-directed behavior capable of making independent decisions, planning, and adapting to achieve objectives.',
+    ex:'"Agentic AI marks a new frontier: systems that can autonomously plan and execute complex multi-step business processes."',
+    kr:'"에이전틱 AI는 새로운 개척지를 나타낸다: 복잡한 다단계 비즈니스 프로세스를 자율적으로 계획·실행하는 시스템."',
+    diff:3
+  },
+  {
+    id:'bz6', cat:'biz', word:'LLM', pron:'/el el em/',
+    krHint:'대형 언어 모델 (Large Language Model)',
+    def:'A class of AI foundation models trained on massive text datasets to understand and generate human language. Examples: GPT-4, Llama.',
+    ex:'"LLMs power most gen AI applications today, from intelligent chatbots to advanced code generation and summarization tools."',
+    kr:'"LLM은 지능형 챗봇부터 고급 코드 생성·요약 도구까지 오늘날 대부분의 생성형 AI 애플리케이션을 구동한다."',
+    diff:2
+  }
+];
+
+function getDots(diff) {
+  let h = '<div class="dots">';
+  for (let i = 1; i <= 3; i++) h += `<div class="dot${i <= diff ? ' filled' : ''}"></div>`;
+  return h + '</div>';
+}
+const TAG_CLS   = {phrasal:'tag-phrasal', idiom:'tag-idiom', colloc:'tag-colloc', vocab:'tag-vocab', biz:'tag-biz'};
+const TAG_LABEL = {phrasal:'Phrasal Verb', idiom:'Idiom·비유', colloc:'Collocation', vocab:'고급단어', biz:'비즈니스'};
+
+function updateProgress() {
+  const done = learned.size, total = cards.length;
+  document.getElementById('progress-text').textContent = `${done} / ${total}`;
+  document.getElementById('progress-fill').style.width = `${(done/total)*100}%`;
+}
+
+function renderCards(filter='all') {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const list = filter === 'all' ? cards : cards.filter(c => c.cat === filter);
+  list.forEach(card => {
+    const isLearned = learned.has(card.id);
+    const wrap = document.createElement('div');
+    wrap.className = `card-wrap${isLearned ? ' learned flipped' : ''}`;
+    wrap.dataset.id = card.id;
+    wrap.innerHTML = `
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="card-top">
+            <span class="tag ${TAG_CLS[card.cat]}">${TAG_LABEL[card.cat]}</span>
+            ${getDots(card.diff)}
+          </div>
+          <div>
+            <div class="card-word">${card.word}</div>
+            ${card.pron ? `<div class="card-pron">${card.pron}</div>` : ''}
+            <div class="card-kr-hint">${card.krHint}</div>
+          </div>
+          <div class="card-hint">탭하여 뒤집기 →</div>
+        </div>
+        <div class="card-back">
+          <div class="back-def">${card.def}</div>
+          <div class="back-ex">${card.ex}</div>
+          <div class="back-kr">${card.kr}</div>
+          <div class="back-actions">
+            <button class="btn-learned" data-id="${card.id}">${isLearned ? '✓ 학습완료' : '학습완료'}</button>
+          </div>
+        </div>
+      </div>`;
+    wrap.addEventListener('click', function(e) {
+      if (!e.target.classList.contains('btn-learned')) this.classList.toggle('flipped');
+    });
+    wrap.querySelector('.btn-learned').addEventListener('click', function(e) {
+      e.stopPropagation();
+      const id = this.dataset.id;
+      if (learned.has(id)) {
+        learned.delete(id);
+        wrap.classList.remove('learned');
+        this.textContent = '학습완료';
+      } else {
+        learned.add(id);
+        wrap.classList.add('learned');
+        this.textContent = '✓ 학습완료';
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...learned]));
+      updateProgress();
+    });
+    grid.appendChild(wrap);
+  });
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    renderCards(this.dataset.filter);
+  });
+});
+renderCards();
+updateProgress();
+</script>
+</body>
+</html>

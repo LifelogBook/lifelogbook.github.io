@@ -4,8 +4,9 @@
     {
       "name": "jekyll",
       "runtimeExecutable": "bundle",
-      "runtimeArgs": ["exec", "jekyll", "serve", "--livereload"],
-      "port": 4000
+      "runtimeArgs": ["exec", "jekyll", "serve", "--livereload", "--future"],
+      "port": 4000,
+      "autoPort": false
     }
   ]
 }

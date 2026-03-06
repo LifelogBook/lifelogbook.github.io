@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AV Experts 2026 — Vocabulary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1c1917;--ink2:#292524;
+  --accent:#1d4ed8;--accent2:#1e40af;
+  --sky:#dbeafe;--bg:#eff6ff;--border:#bfdbfe;
+  --card-w:340px;--card-h:220px;
+  --radius:14px;--shadow:0 4px 20px rgba(28,25,23,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+
+/* ── Header ── */
+header{
+  background:linear-gradient(135deg,#1c1917 0%,#1e3a8a 45%,#0c4a6e 100%);
+  color:#fff;padding:2.4rem 1.5rem 2rem;text-align:center;position:relative;overflow:hidden
+}
+header::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none
+}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.2rem);letter-spacing:-.5px;line-height:1.2;position:relative}
+header .badge{display:inline-block;margin-top:.7rem;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);border-radius:30px;padding:.3rem 1rem;position:relative}
+header p.sub{margin-top:.5rem;font-size:.88rem;opacity:.75;position:relative}
+
+/* ── Progress ── */
+#progress-wrap{background:var(--border);border-radius:20px;height:8px;margin:1.5rem auto .3rem;max-width:520px;overflow:hidden}
+#progress-bar{background:var(--accent);height:100%;width:0;transition:width .5s ease;border-radius:20px}
+#progress-label{text-align:center;font-size:.82rem;color:var(--ink2);margin-bottom:1.4rem}
+
+/* ── Filter chips ── */
+#filter-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;padding:.2rem 1rem 1.2rem}
+.chip{border:1.5px solid var(--border);border-radius:30px;padding:.35rem .9rem;font-size:.78rem;font-weight:600;cursor:pointer;background:#fff;color:var(--ink2);transition:all .2s}
+.chip:hover,.chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip[data-cat="phrasal"].active{background:#0284c7;border-color:#0284c7}
+.chip[data-cat="idiom"].active{background:#0369a1;border-color:#0369a1}
+.chip[data-cat="colloc"].active{background:#2563eb;border-color:#2563eb}
+.chip[data-cat="vocab"].active{background:#7c3aed;border-color:#7c3aed}
+.chip[data-cat="biz"].active{background:#065f46;border-color:#065f46}
+
+/* ── Grid ── */
+#card-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:1.2rem;padding:0 1rem 3rem;max-width:1200px;margin:0 auto}
+
+/* ── Card ── */
+.card-wrap{width:var(--card-w);height:var(--card-h);perspective:900px;cursor:pointer}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.card-wrap.flipped .card-inner{transform:rotateY(180deg)}
+.card-face{
+  position:absolute;inset:0;border-radius:var(--radius);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  display:flex;flex-direction:column;box-shadow:var(--shadow);overflow:hidden
+}
+/* Front */
+.card-front{background:#fff;border:1.5px solid var(--border);justify-content:center;align-items:center;padding:1.4rem}
+.card-front .cat-tag{font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.2rem .7rem;border-radius:30px;margin-bottom:.8rem}
+.cat-phrasal{background:#e0f2fe;color:#0284c7}
+.cat-idiom{background:#e0f2fe;color:#0369a1}
+.cat-colloc{background:#dbeafe;color:#2563eb}
+.cat-vocab{background:#ede9fe;color:#7c3aed}
+.cat-biz{background:#d1fae5;color:#065f46}
+.card-front .word{font-family:'DM Serif Display',serif;font-size:1.55rem;color:var(--ink);text-align:center;line-height:1.25}
+.card-front .pron{font-size:.82rem;color:#6b7280;margin-top:.35rem;letter-spacing:.03em}
+.card-front .hint{font-size:.75rem;color:#9ca3af;margin-top:.6rem}
+.dots{display:flex;gap:4px;margin-top:.7rem}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.filled{background:var(--accent)}
+
+/* Back */
+.card-back{background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border:1.5px solid var(--border);transform:rotateY(180deg);padding:1.1rem 1.2rem;justify-content:space-between}
+.card-back .meaning-ko{font-size:.95rem;font-weight:600;color:var(--ink);line-height:1.45;flex:1}
+.card-back .ex-en{font-size:.76rem;color:#374151;font-style:italic;line-height:1.5;margin-top:.5rem;border-left:3px solid var(--accent);padding-left:.6rem}
+.card-back .ex-ko{font-size:.73rem;color:#4b5563;line-height:1.45;margin-top:.35rem;padding-left:.9rem}
+.card-back .learn-btn{margin-top:.6rem;align-self:flex-end;background:var(--accent);color:#fff;border:none;border-radius:20px;padding:.28rem .8rem;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s}
+.card-back .learn-btn:hover{background:var(--accent2)}
+
+/* Learned state */
+.card-wrap.learned .card-front{background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%)}
+.card-wrap.learned .card-front .word{color:var(--accent2)}
+.card-wrap.learned .card-back .learn-btn{background:#6b7280}
+
+/* Hidden */
+.card-wrap.hidden-card{display:none}
+
+/* ── Reset ── */
+#reset-btn{display:block;margin:0 auto 2rem;background:transparent;border:1.5px solid var(--border);border-radius:30px;padding:.4rem 1.2rem;font-size:.8rem;font-weight:600;color:var(--ink2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+#reset-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+@media(max-width:380px){:root{--card-w:90vw;--card-h:200px}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Where to Next?<br>Autonomous Vehicle Experts</h1>
+  <div class="badge">McKinsey &amp; Company · January 2026</div>
+  <p class="sub">35 key expressions · AV Cockpit Charcoal &amp; Signal Blue</p>
+</header>
+
+<div style="max-width:600px;margin:1.5rem auto 0;padding:0 1rem">
+  <div id="progress-wrap"><div id="progress-bar"></div></div>
+  <div id="progress-label">0 / 35 learned</div>
+</div>
+
+<div id="filter-bar">
+  <button class="chip active" data-cat="all">전체 35</button>
+  <button class="chip" data-cat="phrasal">Phrasal Verb 6</button>
+  <button class="chip" data-cat="idiom">Idiom 6</button>
+  <button class="chip" data-cat="colloc">Collocation 7</button>
+  <button class="chip" data-cat="vocab">고급단어 10</button>
+  <button class="chip" data-cat="biz">비즈니스 전용 6</button>
+</div>
+
+<div id="card-grid"></div>
+<button id="reset-btn">학습 초기화</button>
+
+<script>
+const STORAGE_KEY = 'av_experts_2025_learned';
+const cards = [
+  // ── Phrasal Verb (6) ──
+  {id:1,cat:'phrasal',word:'roll out',pron:'',hint:'Phrasal Verb',diff:2,
+   ko:'(신기술·서비스를) 단계적으로 출시하다, 배포하다',
+   en:'"Robo-taxi services are being rolled out gradually in geo-fenced urban areas."',
+   koEx:'로보택시 서비스가 지오펜스 도시 지역에서 단계적으로 배포되고 있다.'},
+  {id:2,cat:'phrasal',word:'take over',pron:'',hint:'Phrasal Verb',diff:1,
+   ko:'(인간의 역할·제어권을) 넘겨받다, 인수하다',
+   en:'"At Level 4, the vehicle takes over all driving tasks without human intervention."',
+   koEx:'레벨 4에서 차량은 인간의 개입 없이 모든 주행 작업을 인수한다.'},
+  {id:3,cat:'phrasal',word:'push out',pron:'',hint:'Phrasal Verb',diff:2,
+   ko:'(일정·목표를) 뒤로 미루다, 연기하다',
+   en:'"The timeline for L4 mass deployment has been pushed out to 2030."',
+   koEx:'L4 대량 배포 타임라인이 2030년으로 연기됐다.'},
+  {id:4,cat:'phrasal',word:'bear out',pron:'',hint:'Phrasal Verb',diff:3,
+   ko:'(주장·예측을) 뒷받침하다, 입증하다',
+   en:'"Survey data bears out the concern that costs remain the biggest barrier."',
+   koEx:'설문 데이터는 비용이 여전히 가장 큰 장벽이라는 우려를 뒷받침한다.'},
+  {id:5,cat:'phrasal',word:'work hand in hand',pron:'',hint:'Phrasal Verb',diff:2,
+   ko:'긴밀히 협력하다, 손잡고 함께 일하다',
+   en:'"OEMs and tech suppliers must work hand in hand to industrialize AV technology."',
+   koEx:'OEM과 기술 공급업체는 AV 기술 산업화를 위해 긴밀히 협력해야 한다.'},
+  {id:6,cat:'phrasal',word:'keep in check',pron:'',hint:'Phrasal Verb',diff:2,
+   ko:'(비용·리스크를) 억제하다, 통제하다',
+   en:'"Effective cost management keeps hardware expenses in check during scale-up."',
+   koEx:'효과적인 비용 관리는 확장 단계에서 하드웨어 비용을 억제한다.'},
+
+  // ── Idiom·비유 (6) ──
+  {id:7,cat:'idiom',word:'on the on-ramp',pron:'',hint:'Idiom',diff:2,
+   ko:'본격 진입 직전 단계에 있는; 초기 성장 궤도에 오른',
+   en:'"Autonomous vehicles are on the on-ramp to mass deployment."',
+   koEx:'자율주행 차량은 대량 보급의 온램프(진입로)에 올라서 있다.'},
+  {id:8,cat:'idiom',word:'long tail of edge cases',pron:'',hint:'Idiom',diff:3,
+   ko:'끝없이 이어지는 예외 시나리오들 (AI 학습의 드문 극단 사례)',
+   en:'"Handling the long tail of edge cases remains the hardest challenge for AV engineers."',
+   koEx:'끝없이 이어지는 엣지 케이스를 처리하는 것이 AV 엔지니어에게 가장 어려운 과제다.'},
+  {id:9,cat:'idiom',word:'take the pulse',pron:'',hint:'Idiom',diff:2,
+   ko:'현황·분위기를 파악하다, 동향을 점검하다',
+   en:'"This survey takes the pulse of 91 AV decision-makers worldwide."',
+   koEx:'이 설문은 전 세계 91명의 AV 의사결정자들의 현황을 파악한다.'},
+  {id:10,cat:'idiom',word:'black box',pron:'',hint:'Idiom',diff:1,
+   ko:'내부 작동 원리를 알 수 없는 불투명한 시스템',
+   en:'"End-to-end AI models are often criticized as a black box, making validation harder."',
+   koEx:'엔드투엔드 AI 모델은 블랙박스로 비판받아 검증을 어렵게 한다.'},
+  {id:11,cat:'idiom',word:'speed bump',pron:'',hint:'Idiom',diff:1,
+   ko:'(진전을 가로막는) 장애물, 걸림돌',
+   en:'"Regulatory uncertainty is a major speed bump for AV commercialization."',
+   koEx:'규제 불확실성은 자율주행 차량 상용화의 주요 장애물이다.'},
+  {id:12,cat:'idiom',word:'split view',pron:'',hint:'Idiom',diff:2,
+   ko:'의견이 양분된 상황; 서로 다른 두 관점',
+   en:'"Experts have a split view on whether hardware and software should be decoupled."',
+   koEx:'전문가들은 하드웨어와 소프트웨어를 분리해야 하는지에 대해 의견이 양분되어 있다.'},
+
+  // ── Collocation (7) ──
+  {id:13,cat:'colloc',word:'robo-taxi',pron:'',hint:'Collocation',diff:1,
+   ko:'무인 로보택시 (자율주행 택시 서비스)',
+   en:'"Globally, robo-taxi services now offer over 700,000 rides per week."',
+   koEx:'전 세계적으로 로보택시 서비스는 주당 70만 건 이상의 탑승을 제공한다.'},
+  {id:14,cat:'colloc',word:'tech stack',pron:'',hint:'Collocation',diff:1,
+   ko:'기술 스택 (소프트웨어·하드웨어 기술의 조합 체계)',
+   en:'"74% of experts predict a dedicated China tech stack will emerge by 2030."',
+   koEx:'전문가의 74%는 2030년까지 독자적인 중국 기술 스택이 등장할 것으로 예측한다.'},
+  {id:15,cat:'colloc',word:'edge case',pron:'',hint:'Collocation',diff:2,
+   ko:'극단적·예외적 상황 (일반 규칙이 잘 작동하지 않는 사례)',
+   en:'"Rare edge cases—like unusual road markings—still challenge autonomous systems."',
+   koEx:'특이한 도로 표시와 같은 드문 엣지 케이스가 여전히 자율주행 시스템에 도전이 된다.'},
+  {id:16,cat:'colloc',word:'liability framework',pron:'',hint:'Collocation',diff:2,
+   ko:'책임 귀속 체계 (사고 발생 시 법적 책임 구조)',
+   en:'"Clear liability frameworks are essential before L4 vehicles can operate commercially."',
+   koEx:'L4 차량이 상업적으로 운행되기 전에 명확한 책임 귀속 체계가 필수적이다.'},
+  {id:17,cat:'colloc',word:'sensor fusion',pron:'',hint:'Collocation',diff:2,
+   ko:'센서 융합 (카메라·LiDAR·레이더 등 복수 센서 데이터 통합)',
+   en:'"Sensor fusion combines LiDAR, radar, and camera data for robust environment perception."',
+   koEx:'센서 융합은 LiDAR·레이더·카메라 데이터를 결합해 강건한 환경 인식을 구현한다.'},
+  {id:18,cat:'colloc',word:'end-to-end learning',pron:'',hint:'Collocation',diff:3,
+   ko:'엔드투엔드 학습 (입력부터 출력까지 통합 신경망으로 학습)',
+   en:'"End-to-end learning reduces hand-coded rules but raises explainability concerns."',
+   koEx:'엔드투엔드 학습은 수동 코딩 규칙을 줄이지만 설명 가능성 우려를 높인다.'},
+  {id:19,cat:'colloc',word:'mass-market adoption',pron:'',hint:'Collocation',diff:2,
+   ko:'대중 시장 채택 (주류 소비자들의 광범위한 수용)',
+   en:'"49% of experts believe L2+ will reach mass-market adoption by 2035."',
+   koEx:'전문가의 49%는 L2+가 2035년까지 대중 시장 채택에 도달할 것으로 믿는다.'},
+
+  // ── 고급단어 (10) ──
+  {id:20,cat:'vocab',word:'autonomy',pron:'/ɔːˈtɒnəmi/',hint:'고급단어',diff:1,
+   ko:'자율성, 독립적 기능 수행 능력',
+   en:'"Full autonomy—where no human intervention is needed—remains the ultimate goal."',
+   koEx:'인간 개입이 불필요한 완전 자율성은 여전히 궁극적 목표로 남아 있다.'},
+  {id:21,cat:'vocab',word:'validation',pron:'/ˌvæl.ɪˈdeɪ.ʃən/',hint:'고급단어',diff:2,
+   ko:'검증, 유효성 확인 (안전성·성능 확인 과정)',
+   en:'"Rigorous safety validation is the most time-consuming step before AV deployment."',
+   koEx:'엄격한 안전 검증은 AV 배포 전 가장 시간이 많이 걸리는 단계다.'},
+  {id:22,cat:'vocab',word:'deployment',pron:'/dɪˈplɔɪmənt/',hint:'고급단어',diff:1,
+   ko:'배포, 배치 (기술·서비스의 실제 운영 개시)',
+   en:'"Commercial deployment of L4 robo-taxis is projected for 2030 in key corridors."',
+   koEx:'L4 로보택시의 상업적 배포는 주요 노선에서 2030년으로 전망된다.'},
+  {id:23,cat:'vocab',word:'perception',pron:'/pəˈsepʃən/',hint:'고급단어',diff:2,
+   ko:'인지, 환경 인식 (센서로 주변 환경을 파악하는 과정)',
+   en:'"Adverse weather significantly degrades AV perception performance."',
+   koEx:'악천후는 AV 인지 성능을 크게 저하시킨다.'},
+  {id:24,cat:'vocab',word:'consolidation',pron:'/kənˌsɒlɪˈdeɪʃən/',hint:'고급단어',diff:2,
+   ko:'통합, 합병 (산업 내 기업 수 감소·집중화)',
+   en:'"Industry consolidation will leave only a handful of AV software platform winners."',
+   koEx:'산업 통합으로 AV 소프트웨어 플랫폼 승자는 소수만 남을 것이다.'},
+  {id:25,cat:'vocab',word:'liability',pron:'/ˌlaɪəˈbɪlɪti/',hint:'고급단어',diff:2,
+   ko:'법적 책임, 배상 의무',
+   en:'"Who bears liability in an L4 accident—the OEM, software supplier, or operator?"',
+   koEx:'L4 사고에서 법적 책임은 OEM, 소프트웨어 공급업체, 운영자 중 누가 지는가?'},
+  {id:26,cat:'vocab',word:'industrialization',pron:'/ɪnˌdʌstriəlaɪˈzeɪʃən/',hint:'고급단어',diff:3,
+   ko:'산업화, 대량생산 체계 구축',
+   en:'"AV industrialization requires cost-effective hardware and scalable software pipelines."',
+   koEx:'AV 산업화는 비용 효율적인 하드웨어와 확장 가능한 소프트웨어 파이프라인을 필요로 한다.'},
+  {id:27,cat:'vocab',word:'regionalization',pron:'/ˌriːdʒənəlaɪˈzeɪʃən/',hint:'고급단어',diff:3,
+   ko:'지역화, 지역별 분화 (기술·공급망의 지역 독자화)',
+   en:'"Geopolitical tensions are accelerating the regionalization of AV tech stacks."',
+   koEx:'지정학적 긴장이 AV 기술 스택의 지역화를 가속화하고 있다.'},
+  {id:28,cat:'vocab',word:'hallucination',pron:'/həˌluːsɪˈneɪʃən/',hint:'고급단어',diff:3,
+   ko:'환각 (AI 모델이 잘못된 인식·출력을 생성하는 현상)',
+   en:'"AI hallucination—where the model perceives phantom objects—poses safety risks."',
+   koEx:'AI 환각(모델이 유령 객체를 인식하는 현상)은 AV에 안전 위험을 초래한다.'},
+  {id:29,cat:'vocab',word:'modularization',pron:'/ˌmɒdjʊləraɪˈzeɪʃən/',hint:'고급단어',diff:3,
+   ko:'모듈화, 부품·소프트웨어 단위 분리',
+   en:'"Software modularization allows OEMs to swap subsystems without full stack redesign."',
+   koEx:'소프트웨어 모듈화로 OEM은 전체 스택 재설계 없이 서브시스템을 교체할 수 있다.'},
+
+  // ── 비즈니스 전용 (6) ──
+  {id:30,cat:'biz',word:'ADAS',pron:'',hint:'비즈니스 전용',diff:1,
+   ko:'Advanced Driver-Assistance Systems — 첨단 운전자 보조 시스템',
+   en:'"ADAS features like lane-keeping and adaptive cruise are now standard on premium vehicles."',
+   koEx:'차선 유지 및 적응형 크루즈 같은 ADAS 기능은 이제 프리미엄 차량의 표준이다.'},
+  {id:31,cat:'biz',word:'L4',pron:'',hint:'비즈니스 전용',diff:1,
+   ko:'Level 4 Autonomy — SAE 기준 4단계 자율주행 (특정 조건 완전 자율)',
+   en:'"L4 vehicles handle all driving tasks within their defined operational design domain."',
+   koEx:'L4 차량은 정해진 운행 설계 도메인 내에서 모든 주행 작업을 처리할 수 있다.'},
+  {id:32,cat:'biz',word:'OEM',pron:'',hint:'비즈니스 전용',diff:1,
+   ko:'Original Equipment Manufacturer — 완성차 제조업체',
+   en:'"OEMs are investing billions to integrate AV software into next-generation platforms."',
+   koEx:'OEM들은 차세대 플랫폼에 AV 소프트웨어를 통합하기 위해 수십억 달러를 투자한다.'},
+  {id:33,cat:'biz',word:'LiDAR',pron:'',hint:'비즈니스 전용',diff:1,
+   ko:'Light Detection and Ranging — 레이저 기반 3D 거리 측정 센서',
+   en:'"LiDAR costs have fallen dramatically, enabling broader AV deployment."',
+   koEx:'LiDAR 비용이 급격히 하락하여 더 광범위한 AV 배포를 가능하게 했다.'},
+  {id:34,cat:'biz',word:'SOC',pron:'',hint:'비즈니스 전용',diff:2,
+   ko:'System on Chip — 단일 칩에 CPU·GPU·AI 가속기 통합한 반도체',
+   en:'"High-performance SOC designs are critical for real-time AV inference at the edge."',
+   koEx:'고성능 SOC 설계는 엣지에서의 실시간 AV 추론에 핵심적이다.'},
+  {id:35,cat:'biz',word:'SAE',pron:'',hint:'비즈니스 전용',diff:1,
+   ko:'Society of Automotive Engineers — AV 자율화 레벨(L0–L5) 국제 표준 제정 기관',
+   en:'"The SAE J3016 standard defines six levels of driving automation from L0 to L5."',
+   koEx:'SAE J3016 표준은 L0부터 L5까지 6단계 주행 자동화를 정의한다.'}
+];
+
+const LEARNED = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'));
+let currentCat = 'all';
+
+function diffDots(d){
+  return Array.from({length:3},(_,i)=>`<span class="dot${i<d?' filled':''}"></span>`).join('');
+}
+function catClass(c){return{phrasal:'cat-phrasal',idiom:'cat-idiom',colloc:'cat-colloc',vocab:'cat-vocab',biz:'cat-biz'}[c]||'';}
+
+function buildGrid(){
+  const grid = document.getElementById('card-grid');
+  grid.innerHTML='';
+  cards.forEach(c=>{
+    const wrap=document.createElement('div');
+    wrap.className='card-wrap'+(LEARNED.has(c.id)?' learned':'');
+    wrap.id='card-'+c.id;
+    if(currentCat!=='all'&&c.cat!==currentCat) wrap.classList.add('hidden-card');
+    wrap.innerHTML=`
+<div class="card-inner">
+  <div class="card-face card-front">
+    <span class="cat-tag ${catClass(c.cat)}">${c.hint}</span>
+    <div class="word">${c.word}</div>
+    ${c.pron?`<div class="pron">${c.pron}</div>`:''}
+    <div class="dots">${diffDots(c.diff)}</div>
+    <div class="hint" style="margin-top:.4rem;font-size:.7rem;color:#9ca3af">클릭하여 뒤집기</div>
+  </div>
+  <div class="card-face card-back">
+    <div class="meaning-ko">${c.ko}</div>
+    <div class="ex-en">${c.en}</div>
+    <div class="ex-ko">${c.koEx}</div>
+    <button class="learn-btn" data-id="${c.id}">${LEARNED.has(c.id)?'✓ 완료':'✓ 학습완료'}</button>
+  </div>
+</div>`;
+    wrap.addEventListener('click',e=>{
+      if(e.target.classList.contains('learn-btn'))return;
+      wrap.classList.toggle('flipped');
+    });
+    grid.appendChild(wrap);
+  });
+  // learn buttons
+  document.querySelectorAll('.learn-btn').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.stopPropagation();
+      const id=+btn.dataset.id;
+      const wrap=document.getElementById('card-'+id);
+      if(LEARNED.has(id)){LEARNED.delete(id);wrap.classList.remove('learned');btn.textContent='✓ 학습완료';}
+      else{LEARNED.add(id);wrap.classList.add('learned');btn.textContent='✓ 완료';}
+      save();updateProgress();
+    });
+  });
+  updateProgress();
+}
+
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify([...LEARNED]));}
+
+function updateProgress(){
+  const total=35;const done=LEARNED.size;
+  document.getElementById('progress-bar').style.width=(done/total*100)+'%';
+  document.getElementById('progress-label').textContent=done+' / '+total+' learned';
+}
+
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.addEventListener('click',()=>{
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    currentCat=chip.dataset.cat;
+    document.querySelectorAll('.card-wrap').forEach(w=>{
+      const id=+w.id.replace('card-','');
+      const card=cards.find(c=>c.id===id);
+      if(currentCat==='all'||card.cat===currentCat) w.classList.remove('hidden-card');
+      else w.classList.add('hidden-card');
+    });
+  });
+});
+
+document.getElementById('reset-btn').addEventListener('click',()=>{
+  LEARNED.clear();save();buildGrid();
+});
+
+buildGrid();
+</script>
+</body>
+</html>

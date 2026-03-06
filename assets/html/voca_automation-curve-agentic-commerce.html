@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>에이전틱 커머스의 자동화 커브 — 어휘 카드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a1628;
+    --ink2: #0f2444;
+    --accent: #06b6d4;
+    --accent2: #22d3ee;
+    --sky: #67e8f9;
+    --bg: #ecfeff;
+    --border: #a5f3fc;
+    --white: #ffffff;
+    --gray: #6b7280;
+    --card-h: 220px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #0a1628 0%, #0e2954 40%, #0e7490 100%);
+    color: var(--white);
+    padding: 32px 24px 28px;
+    text-align: center;
+  }
+  .header-badge {
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    color: rgba(255,255,255,0.9);
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.9rem;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .header p {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 20px;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .progress-label {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.85);
+    white-space: nowrap;
+  }
+  .progress-bar-outer {
+    width: 180px;
+    height: 6px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: var(--sky);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .progress-pct {
+    font-size: 0.82rem;
+    color: var(--sky);
+    min-width: 32px;
+  }
+  .reset-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.85);
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .reset-btn:hover { background: rgba(255,255,255,0.25); }
+
+  /* ── FILTER TABS ── */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 18px 20px 10px;
+    justify-content: center;
+  }
+  .filter-btn {
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    color: var(--ink);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--white);
+  }
+
+  /* ── CARD GRID ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 10px 20px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── FLIP CARD ── */
+  .card-wrap {
+    height: var(--card-h);
+    perspective: 1000px;
+    cursor: pointer;
+  }
+  .card-wrap.hidden { display: none; }
+  .card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+  }
+  .card-wrap.flipped .card-inner { transform: rotateY(180deg); }
+  .card-front, .card-back {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 20px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    box-shadow: 0 2px 8px rgba(10,22,40,0.06);
+  }
+  .card-back { transform: rotateY(180deg); background: var(--ink); color: var(--white); border-color: transparent; }
+
+  /* Front card elements */
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .card-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 9px;
+    border-radius: 12px;
+    color: var(--white);
+  }
+  .card-dots {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+  }
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #e5e7eb;
+  }
+  .dot.filled { background: var(--accent); }
+  .card-word {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.55rem;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 4px;
+    flex: 1;
+  }
+  .card-pron {
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+  .card-ko {
+    font-size: 0.88rem;
+    color: var(--ink2);
+    font-weight: 500;
+  }
+  .card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .hint-text {
+    font-size: 0.72rem;
+    color: #9ca3af;
+  }
+  .learned-btn {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    color: var(--gray);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .learned-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .card-wrap.learned .learned-btn {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--white);
+  }
+  .card-wrap.learned .card-front {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
+  }
+
+  /* Back card elements */
+  .back-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--sky);
+    margin-bottom: 8px;
+  }
+  .back-def {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.5;
+    margin-bottom: 10px;
+    flex: 1;
+  }
+  .back-example {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.6);
+    font-style: italic;
+    line-height: 1.45;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 10px;
+    margin-top: auto;
+  }
+  .back-example span { color: var(--sky); font-style: normal; font-weight: 600; }
+
+  /* No results */
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--gray);
+    font-size: 0.95rem;
+    display: none;
+    grid-column: 1/-1;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">QuantumBlack, AI by McKinsey · January 2026</div>
+  <h1>에이전틱 커머스의 자동화 커브</h1>
+  <p>The Automation Curve in Agentic Commerce — 어휘 학습 카드 35</p>
+  <div class="progress-wrap">
+    <span class="progress-label" id="learnedCount">0 / 35 학습완료</span>
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="progressBar" style="width:0%"></div>
+    </div>
+    <span class="progress-pct" id="progressPct">0%</span>
+    <button class="reset-btn" onclick="resetAll()">초기화</button>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterCards('all', this)">전체 35</button>
+  <button class="filter-btn" onclick="filterCards('phrasal', this)">Phrasal Verb 6</button>
+  <button class="filter-btn" onclick="filterCards('idiom', this)">Idiom·비유 6</button>
+  <button class="filter-btn" onclick="filterCards('colloc', this)">Collocation 7</button>
+  <button class="filter-btn" onclick="filterCards('vocab', this)">고급단어 10</button>
+  <button class="filter-btn" onclick="filterCards('biz', this)">비즈니스 전용 6</button>
+</div>
+
+<div class="card-grid" id="cardGrid">
+
+<!-- ═══════════════ PHRASAL VERBS ═══════════════ -->
+
+<!-- 1. step in -->
+<div class="card-wrap" data-cat="phrasal" data-id="1" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#0e7490;">Phrasal Verb</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">step in</div>
+      <div class="card-ko">개입하다, 직접 나서다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Phrasal Verb</div>
+      <div class="back-def">특정 상황에서 주도적으로 개입하거나 직접 나서다. 에이전틱 커머스에서 에이전트 결정에 이의가 있을 때 소비자가 직접 개입하는 행위.</div>
+      <div class="back-example">"consumers can <span>step in</span> at any point to override agent decisions when their preferences or circumstances change"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. fall outside -->
+<div class="card-wrap" data-cat="phrasal" data-id="2" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#0e7490;">Phrasal Verb</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">fall outside</div>
+      <div class="card-ko">~의 범위를 벗어나다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Phrasal Verb</div>
+      <div class="back-def">정해진 경계나 카테고리의 범주에 포함되지 않다. 에이전트가 처리할 수 있는 위임 범위(guardrails)를 넘어서는 상황. 반의어: fall within.</div>
+      <div class="back-example">"transactions that <span>fall outside</span> the agent's guardrails are escalated to the consumer for review and approval"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. run out of -->
+<div class="card-wrap" data-cat="phrasal" data-id="3" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#0e7490;">Phrasal Verb</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">run out of</div>
+      <div class="card-ko">바닥나다, 고갈되다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Phrasal Verb</div>
+      <div class="back-def">공급·재고·시간 등이 완전히 소진되다. 자동 재고 보충(auto-replenishment) 시나리오에서 핵심 트리거. 에이전트가 소진 감지 시 자동 주문.</div>
+      <div class="back-example">"an agent can detect when household staples are about to <span>run out of</span> stock and automatically reorder before the consumer notices"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. stop short of -->
+<div class="card-wrap" data-cat="phrasal" data-id="4" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#0e7490;">Phrasal Verb</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">stop short of</div>
+      <div class="card-ko">~에는 이르지 않다, 직전에서 멈추다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Phrasal Verb</div>
+      <div class="back-def">어떤 한계점이나 목표에 완전히 도달하지 않고 그 직전에서 멈추다. 자율성의 경계를 표현. "I stopped short of buying it" = 구매 직전까지 갔지만 결국 안 했다.</div>
+      <div class="back-example">"Level 3 agents <span>stop short of</span> full autonomy — they execute within consumer-set guardrails but escalate anything ambiguous"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. unlock -->
+<div class="card-wrap" data-cat="phrasal" data-id="5" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#0e7490;">Phrasal Verb</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">unlock</div>
+      <div class="card-ko">가능하게 하다, 잠금을 열다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Phrasal Verb</div>
+      <div class="back-def">잠재적 가치·기회·기능을 실현 가능하게 만들다. 비즈니스 맥락에서 "unlock value/potential"은 새로운 수익·역량을 열어낸다는 의미로 매우 자주 쓰임.</div>
+      <div class="back-example">"standardized rails like MCP and A2A will <span>unlock</span> entirely new categories of agent-mediated value across commerce"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. narrow down -->
+<div class="card-wrap" data-cat="phrasal" data-id="6" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#0e7490;">Phrasal Verb</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">narrow down</div>
+      <div class="card-ko">범위를 좁히다, 추려내다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Phrasal Verb</div>
+      <div class="back-def">여러 옵션 중 기준에 맞는 것을 선별하여 선택지를 줄이다. Level 1~2 에이전트(Assist/Assemble)의 핵심 기능 — 수백 개 상품에서 최적 후보를 추림.</div>
+      <div class="back-example">"the agent can <span>narrow down</span> hundreds of product options to a curated shortlist tailored to your stated preferences and past behavior"</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ IDIOMS & 비유 ═══════════════ -->
+
+<!-- 7. set it and forget it -->
+<div class="card-wrap" data-cat="idiom" data-id="7" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#155e75;">Idiom·비유</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">set it and forget it</div>
+      <div class="card-ko">한 번 설정하고 잊어버리다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Idiom·비유</div>
+      <div class="back-def">한 번 설정해두면 이후 신경 쓰지 않아도 자동으로 작동하는 시스템의 관용구. Level 0 (Programmed Convenience)의 특성: 규칙 기반 구독, 인간 개입 최소화.</div>
+      <div class="back-example">"Subscribe & Save exemplifies the '<span>set it and forget it</span>' model — rules-based convenience that predates true agentic AI"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 8. ceiling of delegation -->
+<div class="card-wrap" data-cat="idiom" data-id="8" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#155e75;">Idiom·비유</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">ceiling of delegation</div>
+      <div class="card-ko">위임의 상한선</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Idiom·비유</div>
+      <div class="back-def">소비자가 AI 에이전트에게 기꺼이 맡기려는 의사결정의 최대 한계. 구매 카테고리·리스크 수준·신뢰도에 따라 달라짐. 천장처럼 더 이상 올라갈 수 없는 위임의 경계.</div>
+      <div class="back-example">"the <span>ceiling of delegation</span> is not fixed — it shifts with purchase category, regret risk, and the trust built over time with the agent"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 9. on the happy path -->
+<div class="card-wrap" data-cat="idiom" data-id="9" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#155e75;">Idiom·비유</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">on the happy path</div>
+      <div class="card-ko">이상적 경로에서 (순조롭게)</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Idiom·비유</div>
+      <div class="back-def">소프트웨어 개발 용어 전용. 아무런 예외나 오류 없이 이상적으로 흘러가는 시나리오. 에이전트가 순조로울 때는 잘 작동하지만, 예외 상황(edge case) 처리가 신뢰의 진짜 시험대.</div>
+      <div class="back-example">"agents perform well <span>on the happy path</span>, but consumer trust ultimately depends on how gracefully they handle exceptions"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 10. machine-readable -->
+<div class="card-wrap" data-cat="idiom" data-id="10" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#155e75;">Idiom·비유</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">machine-readable</div>
+      <div class="card-ko">기계 판독 가능한, AI가 읽을 수 있는</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Idiom·비유</div>
+      <div class="back-def">컴퓨터·AI 시스템이 직접 파싱하고 이해할 수 있는 형태의 데이터. 에이전트 시대 상품 메타데이터 전략의 핵심. 인간이 읽는 마케팅 카피가 아닌, AI가 읽는 구조화된 속성 데이터.</div>
+      <div class="back-example">"structured, <span>machine-readable</span> product attributes allow agents to make nuanced comparisons across thousands of options instantly"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 11. agent-mediated -->
+<div class="card-wrap" data-cat="idiom" data-id="11" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#155e75;">Idiom·비유</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">agent-mediated</div>
+      <div class="card-ko">에이전트가 매개하는</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Idiom·비유</div>
+      <div class="back-def">AI 에이전트가 거래·결정·상호작용의 중간 역할을 담당하는 구조. 에이전틱 커머스의 핵심 특성. "-mediated"는 "~가 매개한"의 복합형용사 접두 패턴.</div>
+      <div class="back-example">"<span>agent-mediated</span> commerce is already reshaping how consumers discover, evaluate, and purchase — it is not a distant possibility"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 12. cognitive sidekick -->
+<div class="card-wrap" data-cat="idiom" data-id="12" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#155e75;">Idiom·비유</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">cognitive sidekick</div>
+      <div class="card-ko">인지적 보조자, 두뇌 파트너</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Idiom·비유</div>
+      <div class="back-def">사용자의 사고·판단을 보조하는 AI 역할. Level 1 에이전트의 공식 명칭. 정보 수집·요약·제시는 하지만, 최종 행동은 인간이 결정. sidekick = 조수, 충실한 보조자.</div>
+      <div class="back-example">"at Level 1, the agent acts as a <span>cognitive sidekick</span> — gathering and presenting information while leaving the final decision to the consumer"</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ COLLOCATIONS ═══════════════ -->
+
+<!-- 13. automation curve -->
+<div class="card-wrap" data-cat="colloc" data-id="13" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">automation curve</div>
+      <div class="card-ko">자동화 커브 (6단계 위임 프레임워크)</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">에이전틱 커머스에서 AI 에이전트의 자율성과 인간 개입 간 균형을 Level 0~5로 나타낸 QuantumBlack 프레임워크. 이 보고서의 핵심 개념 및 제목.</div>
+      <div class="back-example">"the <span>automation curve</span> maps six distinct levels — from programmed rules to fully networked multiagent systems handling commerce autonomously"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14. low-regret purchase -->
+<div class="card-wrap" data-cat="colloc" data-id="14" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">low-regret purchase</div>
+      <div class="card-ko">후회 위험이 낮은 구매</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">잘못 구매해도 후회가 적고 교정하기 쉬운 상품. 식료품·소모품·가정용품 등이 해당. 에이전트 위임이 가장 빠르게 가속화되는 카테고리. 반대: high-regret purchase.</div>
+      <div class="back-example">"delegation accelerates fastest for <span>low-regret purchases</span> — staples where value is defined by efficiency and predictability, not discovery"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 15. standing intent -->
+<div class="card-wrap" data-cat="colloc" data-id="15" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">standing intent</div>
+      <div class="card-ko">지속적 의도, 상시 목표</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">단발적 요청이 아닌 지속적으로 유효한 소비자 목표. Level 4 에이전트(Autonomize)가 이를 바탕으로 사전 예측하고 행동. standing = "지속적으로 유효한" (standing order와 같은 패턴).</div>
+      <div class="back-example">"at Level 4, the agent operates on <span>standing intent</span> — proactively fulfilling ongoing goals without repeated prompting from the consumer"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 16. edge case -->
+<div class="card-wrap" data-cat="colloc" data-id="16" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">edge case</div>
+      <div class="card-ko">엣지 케이스, 예외 상황</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">일반적인 시나리오에서 벗어난 특수하거나 드문 경우. 에이전트가 처리하기 어려운 예외 상황으로, 소비자에게 에스컬레이션 필요. 원래 수학/통계 용어, 소프트웨어로 확장.</div>
+      <div class="back-example">"when an agent encounters an <span>edge case</span> — an out-of-stock item or pricing anomaly — it should escalate rather than guess"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 17. reversibility -->
+<div class="card-wrap" data-cat="colloc" data-id="17" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">reversibility</div>
+      <div class="card-ko">가역성, 취소 가능성</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">결정이나 행동을 되돌릴 수 있는 능력. 에이전트 신뢰 구축의 핵심 요건 — 소비자는 에이전트 행동을 되돌릴 수 있을 때 더 많은 자율성을 위임함.</div>
+      <div class="back-example">"consumer trust in agents depends on <span>reversibility</span> — the ability to undo automated decisions and understand why they were made"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 18. API-first merchandising -->
+<div class="card-wrap" data-cat="colloc" data-id="18" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">API-first merchandising</div>
+      <div class="card-ko">API 우선 상품 기획</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">상품 데이터·재고·가격 정보를 AI 에이전트가 직접 호출할 수 있도록 API로 노출하는 전략. 에이전트 시대 필수 인프라. 인간 쇼퍼가 아닌 AI 에이전트를 위한 상품 기획.</div>
+      <div class="back-example">"<span>API-first merchandising</span> ensures real-time product data is accessible to agents — a prerequisite for autonomous commerce at scale"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 19. value pool -->
+<div class="card-wrap" data-cat="colloc" data-id="19" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#1d4ed8;">Collocation</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">value pool</div>
+      <div class="card-ko">가치 풀 (이동하는 경제적 가치)</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">Collocation</div>
+      <div class="back-def">특정 산업·시장에서 창출되거나 포착되는 경제적 가치의 집합. 에이전틱 커머스에서 가치가 전통 발견 퍼널에서 에이전트 매개 순간으로 이동 중.</div>
+      <div class="back-example">"the shift to agentic commerce is moving <span>value pools</span> — from discovery-led traffic to operational excellence and agent-trust metrics"</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 고급단어 ═══════════════ -->
+
+<!-- 20. mediate -->
+<div class="card-wrap" data-cat="vocab" data-id="20" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">mediate</div>
+      <div class="card-pron">/ˈmiːdieɪt/</div>
+      <div class="card-ko">매개하다, 중재하다</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">두 당사자 사이에서 중간 역할을 하다. AI 에이전트가 소비자와 판매자 사이를 매개. 명사: mediation(중재), mediator(중재자). "AI-mediated"는 복합형용사로 자주 쓰임.</div>
+      <div class="back-example">"AI agents could <span>mediate</span> $3 trillion to $5 trillion of global consumer commerce by 2030, reshaping retail value chains"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 21. episodic -->
+<div class="card-wrap" data-cat="vocab" data-id="21" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">episodic</div>
+      <div class="card-pron">/ˌepɪˈsɒdɪk/</div>
+      <div class="card-ko">단편적인, 간헐적으로 발생하는</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">지속적이지 않고 간헐적·단발적으로 발생하는. Level 4(Autonomize)에서 소비자 개입이 episodic — 예외 상황 시에만 관여하고 평소엔 에이전트가 자율 처리.</div>
+      <div class="back-example">"at Level 4, human intervention becomes <span>episodic</span> — consumers step in only for meaningful decisions or unexpected exceptions"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 22. salience -->
+<div class="card-wrap" data-cat="vocab" data-id="22" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">salience</div>
+      <div class="card-pron">/ˈseɪliəns/</div>
+      <div class="card-ko">현저성, 두드러짐</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">다른 것들 중에서 두드러지거나 중요하게 인식되는 정도. 에이전트 시대 브랜드 현저성(brand salience)은 감성 스토리텔링이 아닌 에이전트 알고리즘 내 속성 표현력에 달림.</div>
+      <div class="back-example">"brand <span>salience</span> in an agentic world depends less on emotional appeal and more on how clearly attributes are expressed to AI systems"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 23. delegation -->
+<div class="card-wrap" data-cat="vocab" data-id="23" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">delegation</div>
+      <div class="card-pron">/ˌdelɪˈɡeɪʃən/</div>
+      <div class="card-ko">위임, 권한 이양</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">의사결정 권한이나 작업 수행을 다른 주체에게 넘기는 행위. 이 보고서의 핵심 주제 — 소비자가 AI에게 얼마나 위임하느냐가 자동화 커브의 축. delegate(동사)도 필수 암기.</div>
+      <div class="back-example">"the pace of <span>delegation</span> varies dramatically by category — accelerating for staples, stalling for aspirational and identity-laden purchases"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 24. provenance -->
+<div class="card-wrap" data-cat="vocab" data-id="24" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">provenance</div>
+      <div class="card-pron">/ˈprɒvənəns/</div>
+      <div class="card-ko">출처, 유래, 제조 이력</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">제품·정보의 기원이나 제조 이력. 원래 미술품·골동품 분야 용어 → 럭셔리·식품·지속가능성 영역으로 확대. 에이전트가 고가품 결정 시 참조하는 맥락적 속성.</div>
+      <div class="back-example">"brands must expose <span>provenance</span>, craftsmanship, and long-term value as structured, machine-readable data for agents to reference"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 25. auditability -->
+<div class="card-wrap" data-cat="vocab" data-id="25" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">auditability</div>
+      <div class="card-pron">/ˌɔːdɪtəˈbɪlɪti/</div>
+      <div class="card-ko">감사 가능성, 추적 가능성</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">에이전트의 결정 과정과 행동 이력을 검토·검증할 수 있는 능력. 에이전트 신뢰의 핵심 요건. audit(감사하다) + -ability(~할 수 있는 능력). explainability와 함께 AI 거버넌스의 핵심 개념.</div>
+      <div class="back-example">"<span>auditability</span> — the ability to trace why an agent took a specific action — is foundational to consumer trust at higher delegation levels"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 26. disintermediation -->
+<div class="card-wrap" data-cat="vocab" data-id="26" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">disintermediation</div>
+      <div class="card-pron">/ˌdɪsˌɪntəˌmiːdiˈeɪʃən/</div>
+      <div class="card-ko">탈중개화</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">중간 유통 단계나 플랫폼을 제거하는 현상. 에이전트가 발견·비교·구매를 통합하면 기존 검색·비교 플랫폼이 소외될 위험. dis-(제거) + intermediary(중간상) + -ation.</div>
+      <div class="back-example">"sellers reliant on discovery-led traffic face <span>disintermediation</span> as agents bypass traditional search and comparison touchpoints entirely"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 27. explainability -->
+<div class="card-wrap" data-cat="vocab" data-id="27" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">explainability</div>
+      <div class="card-pron">/ɪkˌspleɪnəˈbɪlɪti/</div>
+      <div class="card-ko">설명가능성</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">AI 시스템이 자신의 결정 이유와 과정을 인간이 이해할 수 있도록 설명하는 능력. 복잡한 구매에서 에이전트 신뢰의 핵심 — "왜 그 행동을 했는가?"에 답할 수 있어야 함.</div>
+      <div class="back-example">"for complex purchases, <span>explainability</span> is essential — consumers need to understand why the agent made a specific recommendation or substitution"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 28. procurement -->
+<div class="card-wrap" data-cat="vocab" data-id="28" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">procurement</div>
+      <div class="card-pron">/prəˈkjʊərmənt/</div>
+      <div class="card-ko">조달, 구매 관리</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">조직이 필요한 상품·서비스를 체계적으로 획득하는 과정. B2B 에이전틱 커머스에서 AI가 공급업체 선정·계약·주문을 자동화. procure(조달하다) + -ment. B2B 보고서 필수 용어.</div>
+      <div class="back-example">"in B2B contexts, agentic <span>procurement</span> enables companies to automate supplier negotiation, order placement, and contract renewal end-to-end"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 29. substitution -->
+<div class="card-wrap" data-cat="vocab" data-id="29" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#7c3aed;">고급단어</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">substitution</div>
+      <div class="card-pron">/ˌsʌbstɪˈtjuːʃən/</div>
+      <div class="card-ko">대체, 치환</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">고급단어</div>
+      <div class="back-def">하나의 제품·브랜드·공급자를 다른 것으로 교체하는 행위. 에이전트가 재고 부족이나 가격 변동 시 자동으로 대체 상품을 선택. 브랜드 로열티에 큰 영향을 미치는 핵심 이슈.</div>
+      <div class="back-example">"agents handle <span>substitution</span> automatically — when a preferred item is unavailable, they select the nearest equivalent within consumer-set parameters"</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 비즈니스 전용 ═══════════════ -->
+
+<!-- 30. MCP -->
+<div class="card-wrap" data-cat="biz" data-id="30" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#065f46;">비즈니스 전용</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">MCP</div>
+      <div class="card-ko">Model Context Protocol</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">비즈니스 전용</div>
+      <div class="back-def">Anthropic이 개발한 AI 에이전트 연동 표준 프로토콜. 에이전트가 외부 도구·데이터 소스를 일관된 방식으로 호출 가능. 에이전틱 커머스 생태계 rails의 핵심 표준 중 하나.</div>
+      <div class="back-example">"MCP is one of the emerging ecosystem rails enabling agents to access product catalogs, inventory systems, and checkout flows across platforms"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 31. A2A -->
+<div class="card-wrap" data-cat="biz" data-id="31" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#065f46;">비즈니스 전용</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">A2A</div>
+      <div class="card-ko">Agent-to-Agent Protocol</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">비즈니스 전용</div>
+      <div class="back-def">AI 에이전트 간 직접 소통·협상·작업 위임을 가능하게 하는 프로토콜(Google 발표). Level 5 Networked Autonomy의 기술적 기반. 개인 에이전트 ↔ 공급업체 에이전트 직접 협상.</div>
+      <div class="back-example">"A2A protocols allow a personal agent to negotiate with a vendor's agent autonomously — the foundation of Level 5 networked autonomy"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 32. ACP -->
+<div class="card-wrap" data-cat="biz" data-id="32" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#065f46;">비즈니스 전용</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">ACP</div>
+      <div class="card-ko">Agent Communication Protocol</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">비즈니스 전용</div>
+      <div class="back-def">에이전트 간 메시지 포맷과 상호작용 규칙을 표준화하는 프로토콜(IBM 제안). MCP·A2A와 함께 에이전틱 커머스 생태계 rails를 구성하는 3대 표준 중 하나.</div>
+      <div class="back-example">"ACP, alongside MCP and A2A, forms the emerging standards stack enabling cross-platform agentic commerce and multiagent orchestration"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 33. Subscribe & Save -->
+<div class="card-wrap" data-cat="biz" data-id="33" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#065f46;">비즈니스 전용</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">Subscribe &amp; Save</div>
+      <div class="card-ko">구독 및 할인 (아마존)</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">비즈니스 전용</div>
+      <div class="back-def">아마존의 정기 배송·할인 구독 프로그램. 2024년 기준 미국 아마존 쇼퍼 약 23%가 이용. Level 0 '에이전틱 이전' 자동화의 대표 사례. 규칙 기반이라 진정한 에이전틱 AI는 아님.</div>
+      <div class="back-example">"approximately 23% of US Amazon shoppers had an active <span>Subscribe &amp; Save</span> order in 2024 — the most prevalent Level 0 programmed convenience"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 34. QuantumBlack -->
+<div class="card-wrap" data-cat="biz" data-id="34" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#065f46;">비즈니스 전용</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="card-word">QuantumBlack</div>
+      <div class="card-ko">McKinsey AI 연구 부문</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">비즈니스 전용</div>
+      <div class="back-def">McKinsey & Company의 AI 전문 연구 부문. 2012년 영국 F1 팀 분석 스타트업으로 설립 → 2015년 McKinsey 인수. 'QuantumBlack, AI by McKinsey' 브랜드로 AI 인사이트 리포트 발행.</div>
+      <div class="back-example">"<span>QuantumBlack</span>, AI by McKinsey published this foundational framework for agentic commerce, authored by researchers Deepa Mahajan and Roger Roberts"</div>
+    </div>
+  </div>
+</div>
+
+<!-- 35. multiagent commerce -->
+<div class="card-wrap" data-cat="biz" data-id="35" onclick="flipCard(this)">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-top">
+        <span class="card-tag" style="background:#065f46;">비즈니스 전용</span>
+        <div class="card-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+      </div>
+      <div class="card-word">multiagent commerce</div>
+      <div class="card-ko">멀티에이전트 커머스</div>
+      <div class="card-bottom">
+        <span class="hint-text">클릭하여 뒤집기</span>
+        <button class="learned-btn" onclick="toggleLearned(event,this)">✓ 학습완료</button>
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="back-tag">비즈니스 전용</div>
+      <div class="back-def">여러 AI 에이전트가 자율적으로 협력·협상하는 Level 5 커머스 형태. 개인 에이전트가 공급업체·서비스 제공자 에이전트와 직접 거래. 사전 위임된 목표 범위 내에서 인간 개입 최소화.</div>
+      <div class="back-example">"<span>multiagent commerce</span> represents the frontier — personal agents negotiate with vendor agents to secure optimal terms without human involvement"</div>
+    </div>
+  </div>
+</div>
+
+<div class="no-results" id="noResults">해당 카테고리의 카드가 없습니다.</div>
+</div>
+
+<script>
+const STORAGE_KEY = 'agentic_commerce_automation_learned';
+
+function getLearnedSet() {
+  try { return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')); }
+  catch { return new Set(); }
+}
+function saveLearnedSet(s) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...s]));
+}
+
+function updateStats() {
+  const learned = getLearnedSet();
+  const total = document.querySelectorAll('.card-wrap').length;
+  const n = learned.size;
+  document.getElementById('learnedCount').textContent = `${n} / ${total} 학습완료`;
+  const pct = Math.round(n / total * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+function applyLearnedState() {
+  const learned = getLearnedSet();
+  document.querySelectorAll('.card-wrap').forEach(card => {
+    const id = card.dataset.id;
+    if (learned.has(id)) card.classList.add('learned');
+    else card.classList.remove('learned');
+    const btn = card.querySelector('.learned-btn');
+    if (btn) btn.textContent = learned.has(id) ? '✓ 완료!' : '✓ 학습완료';
+  });
+}
+
+function flipCard(card) {
+  card.classList.toggle('flipped');
+}
+
+function toggleLearned(e, btn) {
+  e.stopPropagation();
+  const card = btn.closest('.card-wrap');
+  const id = card.dataset.id;
+  const learned = getLearnedSet();
+  if (learned.has(id)) { learned.delete(id); card.classList.remove('learned'); btn.textContent = '✓ 학습완료'; }
+  else { learned.add(id); card.classList.add('learned'); btn.textContent = '✓ 완료!'; }
+  saveLearnedSet(learned);
+  updateStats();
+}
+
+function filterCards(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  let visible = 0;
+  document.querySelectorAll('.card-wrap').forEach(card => {
+    const show = cat === 'all' || card.dataset.cat === cat;
+    card.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+  document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+}
+
+function resetAll() {
+  if (!confirm('모든 학습 기록을 초기화할까요?')) return;
+  saveLearnedSet(new Set());
+  document.querySelectorAll('.card-wrap').forEach(card => {
+    card.classList.remove('learned', 'flipped');
+    const btn = card.querySelector('.learned-btn');
+    if (btn) btn.textContent = '✓ 학습완료';
+  });
+  updateStats();
+}
+
+// init
+applyLearnedState();
+updateStats();
+</script>
+</body>
+</html>
