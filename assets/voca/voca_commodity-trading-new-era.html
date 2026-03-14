@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commodity Trading New Era — 영어 표현 학습 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --ink2: #2d2d44;
+    --cream: #faf8f4;
+    --warm: #f0ede6;
+    --accent: #c0392b;
+    --accent2: #e67e22;
+    --teal: #16a085;
+    --blue: #2471a3;
+    --purple: #7d3c98;
+    --gold: #d4a017;
+    --line: #ddd9d0;
+    --card-bg: #ffffff;
+    --shadow: 0 2px 16px rgba(26,26,46,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--ink);
+    color: white;
+    padding: 48px 40px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(192,57,43,0.15);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 30%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(22,160,133,0.1);
+  }
+  .header-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    position: relative; z-index: 1;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.2;
+    position: relative; z-index: 1;
+    max-width: 680px;
+  }
+  header h1 em { font-style: italic; color: #f0c040; }
+  .header-sub {
+    margin-top: 14px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    position: relative; z-index: 1;
+  }
+
+  .stats-bar {
+    background: white;
+    border-bottom: 1px solid var(--line);
+    padding: 16px 40px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .stat { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #666; }
+  .stat strong { color: var(--ink); font-weight: 600; font-size: 18px; }
+
+  .filters {
+    padding: 24px 40px 0;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #999; margin-right: 4px; }
+  .filter-btn {
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--ink2);
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--ink); color: white; border-color: var(--ink); }
+  .filter-btn.cat-phrasal.active { background: var(--teal); border-color: var(--teal); }
+  .filter-btn.cat-idiom.active { background: var(--purple); border-color: var(--purple); }
+  .filter-btn.cat-collocation.active { background: var(--blue); border-color: var(--blue); }
+  .filter-btn.cat-advanced.active { background: var(--accent); border-color: var(--accent); }
+  .filter-btn.cat-business.active { background: var(--accent2); border-color: var(--accent2); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+    padding: 24px 40px 60px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(26,26,46,0.12);
+  }
+  .card.flipped .card-front { display: none; }
+  .card.flipped .card-back { display: flex; }
+  .card.flipped { border-color: var(--gold); }
+
+  .card-top {
+    padding: 20px 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .tag-phrasal { background: #e8f8f5; color: var(--teal); }
+  .tag-idiom { background: #f5eef8; color: var(--purple); }
+  .tag-collocation { background: #eaf4fb; color: var(--blue); }
+  .tag-advanced { background: #fdedec; color: var(--accent); }
+  .tag-business { background: #fef9e7; color: #b7770d; }
+
+  .difficulty { display: flex; gap: 3px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+  .dot.on { background: var(--accent2); }
+
+  .card-front {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 20px 20px;
+  }
+
+  .entry-word {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .entry-word mark {
+    background: #fff3cd;
+    border-radius: 3px;
+    padding: 0 2px;
+    font-style: italic;
+  }
+
+  .divider { height: 1px; background: var(--line); margin: 10px 0; }
+
+  .entry-kor {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .entry-example {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+    background: var(--warm);
+    border-left: 3px solid var(--line);
+    padding: 8px 12px;
+    border-radius: 0 6px 6px 0;
+    margin-top: 8px;
+  }
+  .entry-example em { color: var(--ink); font-style: normal; font-weight: 500; }
+
+  .flip-hint { font-size: 11px; color: #bbb; text-align: right; margin-top: 12px; }
+
+  .card-back {
+    display: none;
+    flex-direction: column;
+    padding: 20px;
+    background: var(--ink);
+    color: white;
+    flex: 1;
+  }
+  .card-back .back-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: #f0c040;
+    margin-bottom: 12px;
+  }
+
+  .nuance-box {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.88);
+  }
+  .nuance-box strong { color: #f0c040; }
+
+  .compare-box {
+    background: rgba(192,57,43,0.2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+  }
+  .compare-box strong { color: #ff9f9f; }
+
+  .flip-hint-back { font-size: 11px; color: rgba(255,255,255,0.3); text-align: right; margin-top: 10px; }
+
+  .card.hidden { display: none; }
+
+  .section-header {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0 4px;
+  }
+  .section-header span {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #aaa;
+    white-space: nowrap;
+  }
+  .section-header hr { flex: 1; border: none; border-top: 1px solid var(--line); }
+
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--line);
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.3s;
+    width: 0%;
+  }
+
+  @media (max-width: 600px) {
+    header, .stats-bar, .filters, .grid { padding-left: 20px; padding-right: 20px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
+
+<header>
+  <div class="header-label">McKinsey Commodity Trading Report · 어휘 학습</div>
+  <h1>원어민처럼 읽는 <em>원자재 트레이딩 영어</em><br>표현 완전 정복</h1>
+  <div class="header-sub">카드를 클릭하면 뉘앙스 해설이 나옵니다 · Click cards to reveal nuance</div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat"><strong id="totalCount">40</strong> 표현</div>
+  <div class="stat"><strong id="learnedCount">0</strong> 학습완료</div>
+  <div class="stat"><strong id="remainCount">40</strong> 남은 표현</div>
+</div>
+
+<div class="filters">
+  <span class="filter-label">분류</span>
+  <button class="filter-btn active" onclick="filterCards('all')">전체</button>
+  <button class="filter-btn cat-phrasal" onclick="filterCards('phrasal')">Phrasal Verb</button>
+  <button class="filter-btn cat-idiom" onclick="filterCards('idiom')">Idiom / 비유</button>
+  <button class="filter-btn cat-collocation" onclick="filterCards('collocation')">Collocation</button>
+  <button class="filter-btn cat-advanced" onclick="filterCards('advanced')">고급 단어</button>
+  <button class="filter-btn cat-business" onclick="filterCards('business')">비즈니스 전용</button>
+</div>
+
+<div class="grid" id="cardGrid">
+
+<!-- ────────────────────────────────── PHRASAL VERBS ────────────────────────────────── -->
+
+<div class="section-header"><span>Phrasal Verbs</span><hr></div>
+
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">build <mark>up</mark></div>
+    <div class="entry-kor">쌓이다, 점진적으로 축적·강화되다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"New pressures are <em>building up</em> beneath the surface in commodity trading."<br>→ 원자재 트레이딩 내부에서 새로운 압력이 서서히 쌓이고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">build up</div>
+    <div class="nuance-box">벽돌을 하나씩 쌓아 올라가는 이미지. <strong>시간이 지남에 따라 점진적으로 강도·규모·강도가 커진다</strong>는 뜻입니다. "build up pressure/tension/momentum/reserves"처럼 씁니다. 명사형 <strong>build-up</strong>도 자주 씁니다 — "a build-up of pressure"(압력 축적). 한 번에 폭발하기 전 서서히 쌓이는 느낌이 핵심입니다.</div>
+    <div class="compare-box"><strong>vs. "accumulate"</strong> — accumulate는 더 formal하고 숫자나 물질에 씁니다. build up은 더 자연스럽고 긴장·모멘텀처럼 추상적인 것에도 씁니다</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">scale <mark>into</mark></div>
+    <div class="entry-kor">점진적으로 규모를 키우며 진입하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Players with flexible balance sheets can <em>scale into</em> dislocations."<br>→ 유연한 대차대조표를 가진 플레이어들은 가격 불균형 상황에서 규모를 키우며 진입할 수 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">scale into</div>
+    <div class="nuance-box">트레이딩·투자에서 한 번에 전부 사는 것이 아니라 <strong>시장 상황에 따라 점진적으로 포지션을 키워가는 것</strong>. "scale into a position/trade" = 분할 매수. 위험을 분산하면서 기회를 극대화하는 전문적 거래 방식. 반대 표현 <strong>"scale out of"</strong> = 분할 매도(포지션을 점진적으로 줄이는 것).</div>
+    <div class="compare-box"><strong>vs. "enter"</strong> — enter는 단순 진입. scale into는 시장 흐름에 맞춰 점차 규모를 늘리는 전략적·단계적 접근</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">double <mark>down on</mark></div>
+    <div class="entry-kor">~에 배가하다, 더욱 강하게 밀어붙이다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"US IOCs are <em>doubling down on</em> monetizing optionality in oil and LNG trading."<br>→ 미국 IOC들은 석유·LNG 트레이딩 옵셔널리티 수익화에 더욱 집중하고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">double down on</div>
+    <div class="nuance-box">블랙잭에서 <strong>베팅을 두 배로 늘리는 행위</strong>에서 유래. 비즈니스에서는 기존 전략이나 방향에 <strong>더욱 강하게 투자하고 집중한다</strong>는 의미입니다. "double down on a strategy/commitment/approach"처럼 씁니다. 후퇴 없이 확신을 갖고 더 강하게 밀어붙이는 뉘앙스입니다.</div>
+    <div class="compare-box"><strong>vs. "focus on"</strong> — focus on은 단순히 집중. double down on은 "기존 것을 더 강하게 밀어붙인다"는 의지와 배팅의 뉘앙스가 있음</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">leave <mark>on the table</mark></div>
+    <div class="entry-kor">실현하지 못하고 남겨두다 (미활용 가치)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"$20 billion of additional value is <em>left on the table</em> in oil and oil products alone."<br>→ 석유 및 제품에만 200억 달러의 가치가 아직 실현되지 않고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">leave (money) on the table</div>
+    <div class="nuance-box">협상 테이블에 돈을 그냥 두고 나왔다는 이미지. <strong>이미 가능한데 활용하지 못한 가치·기회·돈</strong>을 의미합니다. 비즈니스에서 매우 자주 쓰이는 표현. "leaving money on the table" = 나쁜 협상이나 미활용 기회를 가리킵니다. 무능함이나 아쉬움의 뉘앙스가 포함됩니다.</div>
+    <div class="compare-box"><strong>vs. "unrealized value"</strong> — unrealized value는 정확한 기술 용어. leave on the table은 더 구어적이고 "충분히 챙기지 못했다"는 아쉬움 뉘앙스</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">rewire</div>
+    <div class="entry-kor">근본적으로 재편하다, 새로운 방식으로 연결을 재구성하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"AI could <em>rewire</em> how trading companies operate."<br>→ AI가 트레이딩 기업들의 운영 방식을 근본적으로 재편할 수 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">rewire</div>
+    <div class="nuance-box">집의 전기 배선을 교체하듯 <strong>기존의 연결 방식·구조를 완전히 새로 바꾼다</strong>는 의미. 단순 개선이 아니라 근본적인 재구성을 강조합니다. "rewire processes/operations/the organization"처럼 씁니다. 신경과학에서는 뇌의 신경 연결이 바뀌는 plasticity를 가리키기도 합니다.</div>
+    <div class="compare-box"><strong>vs. "transform"</strong> — transform은 중립적 변화. rewire는 "기존 배선을 뜯고 새로 연결한다"는 더 근본적이고 구체적인 이미지</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">tap <mark>into</mark></div>
+    <div class="entry-kor">~에 접근하다, 수도꼭지처럼 끌어다 활용하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Traders pursue opportunities to <em>tap into</em> additional flows and exposures."<br>→ 트레이더들은 추가적인 흐름과 노출을 활용할 기회를 추구한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">tap into</div>
+    <div class="nuance-box">수도관에 수도꼭지(tap)를 꽂아 물을 끌어오듯 <strong>기존에 있는 자원이나 시스템에 접근하여 가치를 끌어내는 것</strong>. "tap into a market/network/resource/potential"처럼 씁니다. <strong>"tap into"</strong> = 이미 존재하는 것에 연결해서 끌어온다는 능동적이고 전략적인 뉘앙스입니다.</div>
+    <div class="compare-box"><strong>vs. "access"</strong> — access는 단순히 접근. tap into는 "연결하여 적극적으로 끌어내다"는 더 능동적이고 전략적인 의미</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="phrasal" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-phrasal">Phrasal Verb</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">unwind (a position)</div>
+    <div class="entry-kor">(포지션을) 청산하다, 감아둔 것을 풀다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Flexible players can remain in trades that others are forced to <em>unwind</em>."<br>→ 유연한 플레이어들은 다른 이들이 강제로 청산해야 할 거래에도 남아 있을 수 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">unwind</div>
+    <div class="nuance-box">감겨 있는 것을 푼다는 이미지. 금융에서는 <strong>보유 포지션을 청산(팔아서 나오거나 헤지를 제거)하는 것</strong>을 의미합니다. <strong>"forced to unwind"</strong> = 시장 압력이나 마진콜 등으로 원치 않게 청산해야 하는 상황. 헤지나 파생을 포함한 복잡한 포지션 전체를 청산할 때 씁니다.</div>
+    <div class="compare-box"><strong>vs. "sell"</strong> — sell은 단순히 파는 것. unwind는 "헤지나 파생을 포함한 복잡한 포지션 전체를 청산하는" 더 포괄적인 금융 전문 표현</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────── IDIOMS ────────────────────────────────── -->
+
+<div class="section-header"><span>Idioms / 비유 표현</span><hr></div>
+
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">beneath the <mark>surface</mark></div>
+    <div class="entry-kor">표면 아래에서, 겉으로 드러나지 않게</div>
+    <div class="divider"></div>
+    <div class="entry-example">"New pressures are building <em>beneath the surface</em> in commodity trading."<br>→ 원자재 트레이딩 내부에서 표면 아래 새로운 압력이 쌓이고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">beneath the surface</div>
+    <div class="nuance-box">수면 위에서는 조용해 보이지만 <strong>물 아래에서 큰 변화가 일어나고 있다</strong>는 이미지. 빙산의 일각처럼 겉으로 드러나지 않은 더 큰 무언가가 존재한다는 뉘앙스. "beneath the surface tensions/problems/dynamics"처럼 씁니다. 안정적으로 보이는 상황의 이면에 위험이 도사리고 있다는 경고 어조로 자주 씁니다.</div>
+    <div class="compare-box"><strong>vs. "behind the scenes"</strong> — behind the scenes는 무대 뒤 과정. beneath the surface는 표면적으로 조용한데 내부에 긴장이 축적되는 것을 강조</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">take stock <mark>of</mark></div>
+    <div class="entry-kor">현황을 점검·평가하다, 전체 상황을 파악하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>Taking stock of</em> commodity trading" — 2025년 업계 현황 점검<br>→ 가게 재고를 세듯 업계 전체 현황을 파악하다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">take stock of</div>
+    <div class="nuance-box">가게에서 재고(stock)를 세어 현황을 파악하듯, <strong>현재 상황을 체계적으로 점검하고 평가한다</strong>는 의미. "take stock of the situation/performance/year"처럼 씁니다. 서두르지 않고 한 발 물러서 전체 그림을 파악하는 것. "pause and take stock"(잠시 멈추고 현황 점검) 형태로도 자주 씁니다.</div>
+    <div class="compare-box"><strong>vs. "assess"</strong> — assess는 판단·평가에 초점. take stock of는 현황을 전체적으로 파악하는 과정 자체, 더 넓고 성찰적인 느낌</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">the privileged <mark>few</mark></div>
+    <div class="entry-kor">소수의 특권층 — 시장을 지배하는 극소수 강자</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Power could concentrate in the hands of the so-called <em>privileged few</em>."<br>→ 소위 '특권층'의 손에 더 많은 집중이 이루어질 수 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">the privileged few</div>
+    <div class="nuance-box">"privileged"(특권을 가진) + "few"(소수). 시장에서 <strong>막대한 자본·접근성·역량을 가진 극소수 플레이어들이 불균형적으로 큰 이익을 가져가는 상황</strong>을 묘사합니다. McKinsey의 경고적 어조가 담긴 표현. "so-called"(이른바)가 붙어 약간의 비판적 거리를 두는 뉘앙스입니다.</div>
+    <div class="compare-box"><strong>vs. "dominant players"</strong> — dominant players는 중립적. the privileged few는 "소수에게 기회가 집중된다"는 불공평함과 경고의 뉘앙스 포함</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">virtuous <mark>cycle</mark></div>
+    <div class="entry-kor">선순환 — 성공이 더 많은 성공을 낳는 구조</div>
+    <div class="divider"></div>
+    <div class="entry-example">"This creates a <em>virtuous cycle</em> of increased returns, which can then be reinvested."<br>→ 이는 증가된 수익의 선순환을 형성하며, 이를 재투자할 수 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">virtuous cycle</div>
+    <div class="nuance-box">"virtuous"(덕스러운, 선한). 반대는 <strong>vicious cycle</strong>(악순환). 성공이 자원을 만들고, 그 자원으로 더 큰 성공을 낳는 <strong>자기 강화적 긍정 피드백 루프</strong>. 비즈니스에서 네트워크 효과(network effect), 규모의 경제(economies of scale)와 함께 자주 등장하는 개념입니다.</div>
+    <div class="compare-box"><strong>vs. "positive feedback loop"</strong> — 동의어이지만 더 학술적. virtuous cycle은 일반적으로 쓰이는 비즈니스 표현. vicious cycle(악순환)과 대비해서 기억하세요</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">in the same <mark>vein</mark></div>
+    <div class="entry-kor">같은 맥락에서, 마찬가지로</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>In the same vein</em>, established players will need to define a response to data-driven houses."<br>→ 같은 맥락에서, 기존 플레이어들은 대응 전략을 정의해야 할 것이다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">in the same vein</div>
+    <div class="nuance-box">"vein"은 정맥이자 광맥(ore vein). <strong>같은 광맥에서 나온 것처럼 일관된 흐름이나 논리를 따르는 것</strong>. "in a similar vein"도 자주 씁니다. 앞서 말한 논리 흐름을 이어받아 <strong>같은 방향의 추가 포인트를 제시</strong>할 때 씁니다. 에세이·보고서에서 매우 자주 보이는 연결 표현입니다.</div>
+    <div class="compare-box"><strong>vs. "similarly"</strong> — similarly는 단순 비교. in the same vein은 "같은 논리 흐름 속에서 연결된 포인트"라는 맥락의 연속성을 더 강조</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="idiom" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-idiom">Idiom</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">a ways to go</div>
+    <div class="entry-kor">아직 갈 길이 멀다, 아직 성숙하지 않았다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"AI still has <em>a ways to go</em> before it reaches maturity."<br>→ AI는 성숙에 도달하기까지 아직 갈 길이 멀다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">a ways to go / a long way to go</div>
+    <div class="nuance-box">목표 지점까지 아직 가야 할 길이 남아있다는 이미지. <strong>현재 상태가 목표에 아직 미치지 못하고, 시간·노력·발전이 더 필요하다</strong>는 의미입니다. "a ways to go"는 구어적 미국 영어. "still have a long way to go"가 더 formal한 표현. 과장 없이 솔직한 현실 인정의 뉘앙스를 담고 있습니다.</div>
+    <div class="compare-box"><strong>관련 표현:</strong> "room for improvement"(개선 여지가 있음), "not there yet"(아직 도달하지 못했음), "work in progress"(진행 중인 작업)</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────── COLLOCATIONS ────────────────────────────────── -->
+
+<div class="section-header"><span>Collocations</span><hr></div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">value pool</div>
+    <div class="entry-kor">가치 풀 — 시장에서 창출·분배되는 총 경제적 가치</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Overall global <em>value pools</em> in 2025 decreased by approximately 5 percent."<br>→ 2025년 전 세계 가치 풀은 약 5% 감소했다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">value pool</div>
+    <div class="nuance-box">연못(pool)처럼 시장에 고여 있는 <strong>총 경제적 가치의 크기</strong>를 의미합니다. 여러 플레이어들이 나눠 가질 수 있는 파이의 전체 크기이고, 각 플레이어들이 그 중 얼마를 가져가느냐가 시장 점유율 경쟁. McKinsey 보고서에서 매우 자주 사용하는 핵심 분석 개념입니다.</div>
+    <div class="compare-box"><strong>vs. "market size"</strong> — market size는 단순히 시장 규모. value pool은 "실제로 창출되고 분배되는 가치의 크기"에 초점. 더 구체적이고 전략적인 표현</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">working capital</div>
+    <div class="entry-kor">운전자본 — 일상 영업 활동에 필요한 유동 자금</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Leading firms steer the trading risk triangle while managing <em>working capital</em>."<br>→ 선도 기업들은 트레이딩 위험 삼각형을 조율하면서 운전자본을 관리한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">working capital</div>
+    <div class="nuance-box"><strong>기업이 일상적인 영업 활동을 위해 사용하는 유동 자금</strong>. 공식: 운전자본 = 유동자산 - 유동부채. 상품을 사서 팔기까지 필요한 자금. 트레이딩 기업에서는 특히 중요한데, 대규모 실물 상품 거래에 막대한 현금이 필요하기 때문입니다. "deploy working capital" = 운전자본을 배치·활용하다.</div>
+    <div class="compare-box"><strong>vs. "capital" (일반)</strong> — capital은 총 자본 전체. working capital은 그 중 단기 운영에 사용되는 유동성 있는 자금만을 의미</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">price discovery</div>
+    <div class="entry-kor">가격 발견 — 시장에서 적정 가격이 형성되는 과정</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Higher liquidity eases <em>price discovery</em> and dampens small unexpected price changes."<br>→ 높은 유동성은 가격 발견을 용이하게 하고 소규모 가격 변화를 완충한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">price discovery</div>
+    <div class="nuance-box"><strong>매수자와 매도자의 거래를 통해 자산의 공정 시장 가치가 결정되는 과정</strong>. "발견"이라는 표현을 쓰는 이유는 가격이 사전에 알 수 없고 시장 참여자들의 상호작용을 통해 비로소 "드러나기" 때문입니다. 유동성이 높을수록 price discovery가 효율적입니다.</div>
+    <div class="compare-box"><strong>vs. "pricing"</strong> — pricing은 기업이 능동적으로 가격을 정하는 것. price discovery는 시장 메커니즘을 통해 가격이 자연스럽게 형성되는 시장 원리</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">bid-ask spread</div>
+    <div class="entry-kor">매수-매도 스프레드 (사려는 가격과 팔려는 가격의 차이)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Higher liquidity implies narrowing <em>bid-ask spreads</em>, easing price discovery."<br>→ 높은 유동성은 매수-매도 스프레드 축소를 의미하며 가격 발견을 용이하게 한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">bid-ask spread</div>
+    <div class="nuance-box">"bid"(사려는 최고 가격) - "ask/offer"(팔려는 최저 가격)의 차이. <strong>스프레드가 좁을수록 시장이 효율적이고 거래 비용이 낮습니다</strong>. 모든 금융·원자재 시장의 핵심 개념. 마켓메이커(market maker)는 이 스프레드를 수익으로 가져갑니다. 스프레드 = 시장의 유동성·효율성 지표.</div>
+    <div class="compare-box"><strong>핵심 용어:</strong> bid price(매수 호가) · ask/offer price(매도 호가) · spread(차이) · tight spread(좁은 스프레드 = 효율적 시장)</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">optionality</div>
+    <div class="entry-kor">옵셔널리티 — 유연성의 가치, 미래 선택권을 유지하는 것</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Resilience can reduce capital drag, preserve <em>optionality</em>, and enable growth."<br>→ 회복력은 자본 부담을 줄이고 옵셔널리티를 보존하며 성장을 가능하게 한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">optionality</div>
+    <div class="nuance-box">금융의 옵션(선택권) 개념에서 유래. <strong>미래의 다양한 선택지를 유지하는 가치</strong>. "preserve optionality" = 섣불리 결정하지 않고 여러 가능성을 열어두는 것. 원자재 트레이딩에서는 저장 시설, 운송 경로, 계약 조건의 유연성 등을 의미. "monetize optionality" = 이 유연성을 수익으로 전환하다.</div>
+    <div class="compare-box"><strong>vs. "flexibility"</strong> — flexibility는 일반적 유연성. optionality는 더 금융적이고 정량적으로 가치를 표현할 수 있는 개념으로, "선택권 자체에 가치가 있다"는 뉘앙스</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">deal life cycle</div>
+    <div class="entry-kor">딜 라이프사이클 — 거래 처음부터 결제까지의 전 과정</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Labor efforts for parts of the <em>deal life cycle</em> can be reduced by 20 to 40 percent."<br>→ 딜 라이프사이클의 일부 단계에서 인력 투입을 20~40% 줄일 수 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">deal life cycle</div>
+    <div class="nuance-box">거래가 <strong>처음 발생(origination)에서 체결(execution), 확인(confirmation), 결제(settlement)까지 거치는 전체 단계</strong>. 트레이딩에서는 각 단계마다 수많은 업무가 필요합니다(가격 계산, 문서 작성, 위험 관리, 규정 준수, 결제 등). AI는 이 라이프사이클의 여러 단계를 자동화합니다.</div>
+    <div class="compare-box"><strong>vs. "trade process"</strong> — trade process는 더 일반적. deal life cycle은 시작부터 끝까지 거래의 전체 여정을 단계별로 강조하는 용어</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="collocation" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-collocation">Collocation</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">market intelligence</div>
+    <div class="entry-kor">시장 인텔리전스 — 경쟁·시장에 관한 전략적 정보</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Physical flows provide real-time <em>market intelligence</em> as well as first-touch opportunities."<br>→ 실물 흐름은 실시간 시장 인텔리전스와 첫 접점 기회를 제공한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">market intelligence</div>
+    <div class="nuance-box">단순한 데이터가 아니라 <strong>경쟁 상황, 가격 동향, 공급망, 고객 행동에 관한 전략적으로 가치 있는 정보</strong>. 원자재 트레이딩에서는 실물 흐름에 가깝게 있을수록 더 빠르고 정확한 market intelligence를 얻을 수 있습니다. "intelligence" = 단순 정보가 아닌 분석되어 실행 가능한 인사이트.</div>
+    <div class="compare-box"><strong>vs. "market data"</strong> — market data는 원자료(raw data). market intelligence는 분석되어 의사결정에 활용 가능한 전략 정보</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────── ADVANCED VOCAB ────────────────────────────────── -->
+
+<div class="section-header"><span>고급 어휘 (Advanced Vocabulary)</span><hr></div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">supercycle</div>
+    <div class="entry-kor">슈퍼사이클 — 수십 년에 걸친 장기 원자재 가격 상승 주기</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Many players are positioning themselves for the next <em>supercycle</em>."<br>→ 많은 기업들이 다음 슈퍼사이클에 대비하여 포지션을 잡고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">supercycle</div>
+    <div class="nuance-box">원자재 가격이 <strong>수십 년 단위로 크게 오르고 내리는 장기 주기</strong>. 일반 경기 사이클(약 5-7년)보다 훨씬 길어 10~30년에 걸칩니다. 2000년대 중국의 급속 산업화가 원자재 슈퍼사이클을 이끌었고, 지금은 에너지 전환(전기차·배터리)이 다음 슈퍼사이클의 촉매로 거론됩니다.</div>
+    <div class="compare-box"><strong>vs. "bull market"</strong> — bull market은 일반적 상승장(단기~중기). supercycle은 수십 년에 걸친 구조적 수요 변화로 인한 초장기 가격 상승 주기</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">monetize</div>
+    <div class="entry-kor">수익화하다 — 자산·기회·데이터를 돈으로 전환하다</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Fewer opportunities to <em>monetize</em> price movements in European power markets."<br>→ 유럽 전력 시장에서 가격 변동을 수익화할 기회가 줄었다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">monetize</div>
+    <div class="nuance-box">"money"(돈)에서 유래. <strong>자산, 데이터, 관계, 역량 등을 실제 수익(현금)으로 전환하는 것</strong>. 디지털 경제에서는 "앱을 monetize한다"(광고나 유료화로 수익 창출), 트레이딩에서는 가격 변동이나 유연성을 수익으로 변환하는 것. "monetize optionality"(유연성 수익화)가 이 보고서의 핵심 개념입니다.</div>
+    <div class="compare-box"><strong>vs. "capitalize on"</strong> — capitalize on은 기회를 활용한다는 의미. monetize는 구체적으로 "수익(돈)으로 바꾼다"는 더 명확한 재무적 의미</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">volatility</div>
+    <div class="entry-kor">변동성 — 가격이 얼마나 크고 빠르게 오르내리는가</div>
+    <div class="divider"></div>
+    <div class="entry-example">"The new era of price <em>volatility</em> will fundamentally change the trading landscape."<br>→ 새로운 가격 변동성 시대가 트레이딩 환경을 근본적으로 바꿀 것이다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">volatility</div>
+    <div class="nuance-box">라틴어 "volare"(날다)에서 유래. 가격·수익률이 <strong>얼마나 빠르고 크게 변동하는가</strong>를 나타내는 지표. 금융에서는 표준편차로 측정합니다. 트레이더들에게 변동성은 "위험이자 기회" — 변동성이 클수록 수익 기회도 크지만 손실 위험도 큽니다. VIX = 주식시장의 예상 변동성 지수.</div>
+    <div class="compare-box"><strong>vs. "fluctuation"</strong> — fluctuation은 실제 가격의 오름내림. volatility는 그 변동의 크기와 빈도를 측정한 통계적 개념. "high volatility"(고변동성)처럼 씁니다</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">dislocation</div>
+    <div class="entry-kor">디스로케이션 — 시장의 정상 균형이 깨진 가격 불균형 상태</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Players with flexible balance sheets can scale into <em>dislocations</em>."<br>→ 유연한 플레이어들은 가격 불균형 상황에서 규모를 키우며 진입할 수 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">dislocation</div>
+    <div class="nuance-box">뼈가 관절에서 빠지는 것처럼 <strong>시장이 정상 균형에서 벗어난 상태</strong>. 수요·공급이나 지정학적 충격으로 인해 가격이 "틀린" 수준에 있을 때, 이 불균형을 활용해 수익을 얻는 것이 트레이딩의 핵심입니다. "market dislocation" = 가격 왜곡이 발생한 시장.</div>
+    <div class="compare-box"><strong>vs. "market disruption"</strong> — disruption은 시장 구조의 변화. dislocation은 가격이 단기적으로 잘못된 수준에 있는 더 구체적인 금융 개념. 트레이더에게는 기회</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">trilemma <span style="font-family:'DM Sans';font-size:14px;font-weight:400">→ quadrilemma</span></div>
+    <div class="entry-kor">트릴레마 → 쿼드릴레마 (동시 달성 불가능한 세 가지 → 네 가지 목표)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"The energy <em>trilemma</em> is evolving into an energy <em>quadrilemma</em>, reflecting rising structural demand."<br>→ 에너지 트릴레마가 쿼드릴레마로 진화하고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">trilemma / quadrilemma</div>
+    <div class="nuance-box">"tri"(셋) + "dilemma"(딜레마). 동시에 충족할 수 없는 <strong>세 가지 목표 사이의 갈등</strong>:<br><br>⚡ <strong>Energy security</strong>(에너지 안보) — 안정적 공급<br>💰 <strong>Affordability</strong>(경제성) — 저렴한 가격<br>🌱 <strong>Sustainability</strong>(탈탄소화) — 기후 대응<br><br>이 보고서는 급증하는 에너지 수요라는 네 번째 목표가 더해져 <strong>quadrilemma</strong>가 됐다고 주장합니다.</div>
+    <div class="compare-box"><strong>vs. "dilemma"</strong> — dilemma는 둘 사이의 갈등. trilemma는 셋, quadrilemma는 넷 사이의 갈등. 숫자가 늘수록 해결이 더 어려움</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">origination</div>
+    <div class="entry-kor">오리지네이션 — 새로운 거래·딜을 발굴하고 구조화하는 역량</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Human expertise should be redeployed toward <em>origination</em> and complex risk steering."<br>→ 인력 전문성을 오리지네이션과 복잡한 위험 조율에 재배치해야 한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">origination</div>
+    <div class="nuance-box">금융·트레이딩에서 <strong>새로운 비즈니스 기회를 발굴하고, 고객을 유치하며, 거래를 구조화하는 역량</strong>. 모기지에서는 "loan origination"(대출 발생)이라고도 씁니다. AI가 반복 업무를 자동화하면, 인간은 더 창의적이고 고부가가치인 오리지네이션에 집중할 수 있다는 것이 이 보고서의 핵심 주장입니다.</div>
+    <div class="compare-box"><strong>vs. "deal sourcing"</strong> — deal sourcing은 딜 발굴(탐색). origination은 발굴·구조화·실행까지 포함하는 더 넓고 전략적인 역량 개념</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">arbitrage</div>
+    <div class="entry-kor">차익거래 — 같은 자산의 가격 차이를 이용한 수익</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Players can <em>time arbitrage</em> with storage when the market pays for it."<br>→ 시장이 지불할 때 저장을 통한 시간 차익거래를 활용할 수 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">arbitrage</div>
+    <div class="nuance-box">프랑스어에서 유래. <strong>같은 자산이 두 시장에서 서로 다른 가격으로 거래될 때, 싼 곳에서 사서 비싼 곳에 팔아 수익</strong>을 얻는 것. "spatial arbitrage"(지역 간 가격 차이), "time arbitrage"(시간 차이 — 현재와 미래 가격 차이) 등이 있습니다. 완전히 효율적인 시장에서는 이론적으로 기회가 없습니다.</div>
+    <div class="compare-box"><strong>vs. "speculation"</strong> — speculation은 가격 방향에 베팅하는 것(위험 있음). arbitrage는 가격 차이를 이용하는 것(이론적으로 위험이 적음)</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">resilience</div>
+    <div class="entry-kor">회복력 — 충격에도 버티고 회복하는 능력</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>Resilience</em> can reduce capital drag, preserve optionality, and enable growth amid volatility."<br>→ 회복력은 자본 부담을 줄이고 옵셔널리티를 보존하며 성장을 가능하게 한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">resilience</div>
+    <div class="nuance-box">라틴어 "resilire"(뒤로 튀어오르다)에서 유래. <strong>충격·역경에도 흔들리지 않고 원상태로 돌아오거나 더 강해지는 능력</strong>. 비즈니스에서는 공급망 충격, 시장 변동, 규제 변화 등에 버티는 능력. 소재공학에서는 변형 후 원상복구되는 물질 특성. 코로나 이후 필수 경영 개념이 됐습니다.</div>
+    <div class="compare-box"><strong>vs. "stability"</strong> — stability는 변화가 적은 안정된 상태(수동적). resilience는 변화와 충격에도 회복하는 적극적 능력(능동적)</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">sophistication</div>
+    <div class="entry-kor">정교함, 고도화 — 복잡한 상황을 다루는 능숙한 역량</div>
+    <div class="divider"></div>
+    <div class="entry-example">"High levels of trading <em>sophistication</em> in data analytics or origination lead to higher returns."<br>→ 데이터 분석이나 오리지네이션에서의 높은 트레이딩 정교함이 더 높은 수익으로 이어진다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">sophistication</div>
+    <div class="nuance-box">그리스 철학자 소피스트(sophist = 지혜로운 사람)에서 유래. 현대에서는 <strong>복잡한 문제를 다루는 높은 수준의 기술과 판단력</strong>. 트레이딩에서는 복잡한 파생상품 구조화, 고급 데이터 분석, 위험 관리 역량 등을 포함. "sophisticated investor"(고급 투자자)처럼도 씁니다.</div>
+    <div class="compare-box"><strong>vs. "expertise"</strong> — expertise는 특정 분야의 전문 지식. sophistication은 복잡성을 다루는 전반적 능력과 세련됨. 더 포괄적이고 우아한 표현</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="advanced" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-advanced">고급 단어</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">decarbonization</div>
+    <div class="entry-kor">탈탄소화 — 에너지 시스템에서 탄소 배출을 줄이는 과정</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Only ~13.5% of <em>decarbonization</em> technologies had been deployed by 2025."<br>→ 2025년까지 탈탄소화 기술의 약 13.5%만이 배포되었다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">decarbonization</div>
+    <div class="nuance-box">"de-"(제거) + "carbon"(탄소). <strong>에너지 시스템에서 탄소 배출량을 줄이거나 제로로 만드는 과정</strong>. 화석연료를 재생에너지로 대체하거나, CCS(탄소 포집·저장) 기술을 도입하는 것이 포함됩니다. "net-zero"(순배출 제로), "carbon neutral"(탄소 중립)과 함께 에너지 전환의 핵심 개념입니다.</div>
+    <div class="compare-box"><strong>vs. "carbon neutrality"</strong> — carbon neutrality는 목표 상태(결과). decarbonization은 그 목표를 향한 과정(과정). vs. "net zero" — 순 배출량 제로를 달성한 상태</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────── BUSINESS TERMS ────────────────────────────────── -->
+
+<div class="section-header"><span>비즈니스 전용 표현</span><hr></div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">EBIT</div>
+    <div class="entry-kor">이자·세금 전 영업이익 (Earnings Before Interest and Taxes)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Total trading <em>EBIT</em> decreased from $72 billion in 2024 to $69 billion in 2025."<br>→ 전체 트레이딩 EBIT이 720억에서 690억 달러로 감소했다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">EBIT</div>
+    <div class="nuance-box">Earnings Before Interest and Taxes. <strong>이자 비용과 세금을 내기 전의 영업이익</strong>. 자본 구조(부채 비율)와 세율에 상관없이 기업의 <strong>순수 영업 능력</strong>을 비교할 수 있게 해주는 지표. 원자재 트레이딩 산업에서는 전체 시장 가치 측정의 기준 지표로 자주 씁니다.</div>
+    <div class="compare-box"><strong>vs. "EBITDA"</strong> — EBITDA는 여기에 감가상각(D&A)까지 더한 것. 자본 집약도가 높은 산업에서는 EBITDA가 더 자주 쓰임. EBIT은 통신사보다 원자재 트레이딩에서 더 많이 사용</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">NOC / IOC</div>
+    <div class="entry-kor">국영석유회사 vs. 국제석유회사 (National / International Oil Company)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>NOCs</em> across regions are building professional trading capabilities on their production bases."<br>→ 전 세계 NOC들이 생산 기반 위에 전문적인 트레이딩 역량을 구축하고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">NOC vs. IOC</div>
+    <div class="nuance-box">🏛 <strong>NOC (National Oil Company)</strong>: 정부 소유 국영 석유회사. Aramco(사우디), ADNOC(UAE), Petronas(말레이시아), CNPC(중국) 등. 막대한 매장량 보유.<br><br>🌍 <strong>IOC (International Oil Company)</strong>: 민간 소유 국제 석유회사. ExxonMobil, Shell, BP, TotalEnergies, Chevron 등. 기술·트레이딩 역량이 강점.<br><br>"US IOC" vs "EU IOC" — 보고서에서 대조되는 핵심 그룹입니다.</div>
+    <div class="compare-box"><strong>US IOC</strong>(Exxon·Chevron): 탄화수소·LNG 강화 중 / <strong>EU IOC</strong>(Shell·BP·Total): 에너지 전환 역풍 속 핵심 회귀</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">M&amp;A</div>
+    <div class="entry-kor">인수합병 (Mergers &amp; Acquisitions)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>M&amp;A</em> remains a potential pathway but often faces structural limitations."<br>→ M&A는 잠재적 경로이지만 구조적 한계에 자주 직면한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">M&amp;A</div>
+    <div class="nuance-box">Mergers(합병) &amp; Acquisitions(인수). <strong>합병</strong>: 두 회사가 하나로 합쳐지는 것. <strong>인수</strong>: 한 회사가 다른 회사를 사서 소유하는 것. 트레이딩에서 M&A는 빠른 역량 확보 수단이지만 핵심 인재 이탈이라는 리스크가 있습니다. "hostile takeover"(적대적 인수), "friendly merger"(우호적 합병)처럼 씁니다.</div>
+    <div class="compare-box"><strong>vs. "JV"</strong> — JV는 별도 법인을 만들어 협력(독립성 유지). M&A는 한 회사가 다른 회사를 완전히 흡수. 트레이딩 문화 보존은 JV가 유리</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">KYC</div>
+    <div class="entry-kor">고객확인의무 (Know Your Customer)</div>
+    <div class="divider"></div>
+    <div class="entry-example">"<em>KYC</em> squads of 100+ microagents processed 12 of 18 onboarding steps automatically."<br>→ 100개 이상의 마이크로에이전트로 구성된 KYC 팀이 18개 중 12개 단계를 자동 처리했다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">KYC (Know Your Customer)</div>
+    <div class="nuance-box"><strong>금융 기관이 거래 상대방(고객)의 신원을 확인하고, 자금세탁 방지(AML)를 위해 수행하는 실사 절차</strong>. 원자재 트레이딩에서는 새 거래 상대방 온보딩 시 필수. 수십~수백 개의 문서 검토, 배경 조사, 컴플라이언스 확인이 필요합니다. AI가 이 과정의 상당 부분을 자동화하는 것이 최신 트렌드입니다.</div>
+    <div class="compare-box"><strong>vs. "AML"</strong> — AML(Anti-Money Laundering)은 자금세탁 방지 전체 체계. KYC는 고객 신원 확인으로 AML의 핵심 수단. 항상 함께 언급됩니다</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">front office / back office</div>
+    <div class="entry-kor">프런트오피스 vs. 백오피스 — 수익 창출 vs. 지원 기능</div>
+    <div class="divider"></div>
+    <div class="entry-example">"The <em>back office</em> is no longer overhead; it's a competitive tool for the <em>front office</em>."<br>→ 백오피스는 더 이상 오버헤드가 아니라 프런트오피스의 경쟁 도구다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">front office / middle / back office</div>
+    <div class="nuance-box">금융·트레이딩 조직의 핵심 구분:<br><br>📈 <strong>Front office</strong>: 수익 창출 — 트레이더, 세일즈, 오리지네이션<br>⚖️ <strong>Middle office</strong>: 위험 관리, 컴플라이언스, PnL 모니터링<br>⚙️ <strong>Back office</strong>: 결제, 확인, 회계, IT, 데이터 관리<br><br>AI가 back office를 자동화하면 비용이 줄고 front office가 더 빠르게 작동합니다.</div>
+    <div class="compare-box"><strong>vs. "operations"</strong> — operations는 더 넓은 개념. front/back office는 금융 조직의 특정 기능 구분으로 업계 공통 표준 용어</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">(trading) book</div>
+    <div class="entry-kor">북 — 트레이더가 보유한 모든 포지션의 집합</div>
+    <div class="divider"></div>
+    <div class="entry-example">"AI could help firms run faster <em>books</em>, unlock balance sheet optionality sooner."<br>→ AI가 기업들이 더 빠르게 북을 운영하도록 도울 수 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">book (trading book)</div>
+    <div class="nuance-box">트레이더 또는 트레이딩 데스크가 <strong>보유하고 있는 모든 포지션(매수·매도)의 집합</strong>. 위험 관리 단위. "running a book" = 포지션을 보유하고 관리하는 것. "commodity book" = 원자재 포지션 전체. "fast books" = AI로 실시간 관리되는 빠른 포지션 운영 체계.</div>
+    <div class="compare-box"><strong>vs. "portfolio"</strong> — portfolio는 더 일반적인 보유 자산 집합. book은 트레이딩 맥락에서 더 구체적이고 전문적인 용어. "run the book"처럼 동사와 함께 씁니다</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">organic entry</div>
+    <div class="entry-kor">유기적 진입 — 외부 도움 없이 자체 역량으로 시장에 진입</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Three pathways: <em>organic entry</em>, JV or partnership, and acquisition."<br>→ 트레이딩 역량 구축의 세 경로: 유기적 진입, JV 또는 파트너십, 인수</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">organic entry / organic growth</div>
+    <div class="nuance-box">"organic"은 농업에서 "자연 그대로의" 뜻이지만, 비즈니스에서는 <strong>외부 인수나 합병 없이 내부 역량만으로 자체적으로 성장·구축하는 것</strong>. 시간이 더 걸리지만 문화와 역량이 더 잘 통합됩니다. 반대는 <strong>inorganic growth</strong>(인수를 통한 성장). "organic revenue growth"(자체 매출 성장)처럼도 씁니다.</div>
+    <div class="compare-box"><strong>vs. "inorganic entry"</strong> — 인수나 JV를 통해 외부에서 역량을 가져오는 것. 더 빠르지만 통합 위험(핵심 인재 이탈, 문화 충돌)이 있음</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">upstream / downstream</div>
+    <div class="entry-kor">업스트림 vs. 다운스트림 — 가치 사슬에서의 위치</div>
+    <div class="divider"></div>
+    <div class="entry-example">"EU IOCs are refocusing on core activities, facing leaner <em>downstream</em> bases."<br>→ EU IOC들은 슬림해진 다운스트림 기반에 직면하여 핵심 활동으로 재집중하고 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">upstream / midstream / downstream</div>
+    <div class="nuance-box">강의 상류(upstream)와 하류(downstream)에서 유래한 에너지 산업 구분:<br><br>⛏ <strong>Upstream</strong>: 자원 탐사·추출 — 석유 시추, 광산 채굴<br>🚢 <strong>Midstream</strong>: 운송·저장 — 파이프라인, 탱커, 터미널<br>🏭 <strong>Downstream</strong>: 정제·유통·소비 — 정유, 화학, 소매<br><br>트레이더는 midstream에서 활동하며 upstream과 downstream을 연결합니다.</div>
+    <div class="compare-box"><strong>소프트웨어에서도 씁니다:</strong> upstream = 의존성 제공자(라이브러리), downstream = 의존성 소비자. 맥락에 따라 다름에 주의</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">balance sheet</div>
+    <div class="entry-kor">대차대조표 — 자산, 부채, 자본을 보여주는 재무제표</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Players with <em>flexible balance sheets</em> can scale into dislocations."<br>→ 유연한 대차대조표를 가진 플레이어들은 가격 불균형에서 규모를 키울 수 있다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">balance sheet</div>
+    <div class="nuance-box"><strong>특정 시점에서 기업의 자산(보유하는 것), 부채(빚진 것), 자본(주주 몫)을 보여주는 재무제표</strong>. "flexible balance sheet" = 부채가 낮고 유동성이 높아 갑작스러운 기회에 빠르게 자본을 배치할 수 있는 상태. "balance sheet capacity" = 얼마나 큰 포지션을 질 수 있는가.</div>
+    <div class="compare-box"><strong>vs. "income statement / P&L"</strong> — income statement는 일정 기간의 수익 흐름(동영상). balance sheet는 특정 시점의 재무 상태(사진). 둘이 합쳐져 재무제표를 이룸</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+<div class="card" data-cat="business" onclick="flipCard(this)">
+  <div class="card-top">
+    <span class="tag tag-business">비즈니스</span>
+    <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+  </div>
+  <div class="card-front">
+    <div class="entry-word">spot market</div>
+    <div class="entry-kor">현물 시장 — 즉시 거래·인도가 이루어지는 시장</div>
+    <div class="divider"></div>
+    <div class="entry-example">"Players aim to insulate themselves against price risk from <em>spot markets</em>."<br>→ 플레이어들은 현물 시장의 가격 위험으로부터 자신을 보호하려 한다</div>
+    <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+  </div>
+  <div class="card-back">
+    <div class="back-title">spot market / spot price</div>
+    <div class="nuance-box"><strong>거래 즉시(보통 2 영업일 내) 상품이 인도되는 시장</strong>. 현재 시점의 가격을 "spot price"라고 합니다. 반대는 선물 시장(futures market) — 미래 특정 날짜에 인도가 이루어집니다. 원자재 트레이딩에서 spot market의 가격 위험을 헤지하기 위해 파생상품(선물·옵션)을 활용합니다.</div>
+    <div class="compare-box"><strong>vs. "futures market"</strong> — futures market은 미래 가격을 오늘 고정하는 것. spot market은 현재 가격으로 즉시 거래. "on the spot"(즉석에서)도 같은 어원</div>
+    <div class="flip-hint-back">↩ 다시 클릭</div>
+  </div>
+</div>
+
+</div><!-- end grid -->
+
+<script>
+  let learnedCards = new Set();
+
+  function flipCard(el) {
+    el.classList.toggle('flipped');
+    if (el.classList.contains('flipped')) {
+      learnedCards.add(el);
+    } else {
+      learnedCards.delete(el);
+    }
+    updateStats();
+    updateProgress();
+  }
+
+  function updateStats() {
+    const total = document.querySelectorAll('.card:not(.hidden)').length;
+    const learned = learnedCards.size;
+    document.getElementById('learnedCount').textContent = learned;
+    document.getElementById('remainCount').textContent = total - learned;
+  }
+
+  function updateProgress() {
+    const total = document.querySelectorAll('.card').length;
+    const pct = (learnedCards.size / total * 100).toFixed(0);
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  function filterCards(cat) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    const target = event.target;
+    target.classList.add('active');
+
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    const visible = document.querySelectorAll('.card:not(.hidden)').length;
+    document.getElementById('totalCount').textContent = visible;
+
+    document.querySelectorAll('.section-header').forEach(header => {
+      let sibling = header.nextElementSibling;
+      let hasVisible = false;
+      while (sibling && !sibling.classList.contains('section-header')) {
+        if (!sibling.classList.contains('hidden') && sibling.classList.contains('card')) {
+          hasVisible = true;
+          break;
+        }
+        sibling = sibling.nextElementSibling;
+      }
+      header.style.display = hasVisible ? '' : 'none';
+    });
+    updateStats();
+  }
+
+  document.getElementById('totalCount').textContent = document.querySelectorAll('.card').length;
+  document.getElementById('remainCount').textContent = document.querySelectorAll('.card').length;
+</script>
+</body>
+</html>
