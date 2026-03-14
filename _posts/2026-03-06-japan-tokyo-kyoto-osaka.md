@@ -2,7 +2,7 @@
 layout: single
 classes: wide
 title: "Japan — Tokyo / Kyoto / Osaka"
-categories: Travel
+categories: Travel_Ob
 tags: [Japan, Tokyo, Kyoto, Osaka, history, travel, 일본여행, 도쿄, 교토, 오사카]
 toc: true
 toc_sticky: true
