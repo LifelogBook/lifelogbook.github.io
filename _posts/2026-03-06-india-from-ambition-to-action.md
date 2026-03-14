@@ -15,6 +15,12 @@ sidebar:
 
 > **보고서 정보** McKinsey India Practice · *India: From Ambition to Action — A compendium of McKinsey insights about the world's fastest-growing economy* · January 2026
 
+<div class="notice--info">
+  <h4>🔥 영어 표현 플래시카드</h4>
+  <p>이 아티클의 핵심 표현 40개를 플래시카드로 학습하세요.<br>
+  → <a href="/assets/voca/voca_india-from-ambition-to-action.html" target="_blank">플래시카드 열기</a></p>
+</div>
+
 ---
 
 ## Introduction

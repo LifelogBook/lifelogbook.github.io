@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>India: From Ambition to Action — 영어 표현 학습 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --cream: #f7f4ef;
+    --accent: #c0392b;
+    --accent2: #e67e22;
+    --teal: #0d7377;
+    --blue: #2563eb;
+    --purple: #7c3aed;
+    --gold: #d4a017;
+    --line: #e2ddd6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* Progress bar */
+  #progress-bar-wrap {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--line);
+    z-index: 100;
+  }
+  #progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--blue));
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* Hero */
+  .hero {
+    background: var(--ink);
+    color: white;
+    padding: 72px 48px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: 120px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,140,0,0.08);
+  }
+  .hero-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    max-width: 520px;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    gap: 32px;
+    padding: 20px 48px;
+    background: white;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .stat { display: flex; align-items: baseline; gap: 6px; }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--ink); }
+  .stat-label { color: #888; font-size: 13px; }
+
+  /* Filters */
+  .filter-wrap {
+    padding: 20px 48px 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label { font-size: 12px; color: #888; font-weight: 500; margin-right: 4px; }
+  .filter-btn {
+    padding: 7px 16px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    background: white;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    color: #555;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .filter-btn.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: white;
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 32px 48px 64px;
+  }
+
+  /* Section header */
+  .section-header {
+    grid-column: 1 / -1;
+    margin-top: 12px;
+    margin-bottom: -4px;
+  }
+  .section-header h2 {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #aaa;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* Card */
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    border: 1.5px solid var(--line);
+    transition: transform 0.18s, box-shadow 0.18s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-height: 220px;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.09);
+  }
+  .card.flipped { background: var(--ink); color: white; border-color: var(--ink); }
+  .card.learned { opacity: 0.55; }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .tag-phrasal { background: rgba(13,115,119,0.1); color: var(--teal); }
+  .tag-idiom   { background: rgba(124,58,237,0.1); color: var(--purple); }
+  .tag-collocation { background: rgba(37,99,235,0.1); color: var(--blue); }
+  .tag-advanced { background: rgba(192,57,43,0.1); color: var(--accent); }
+  .tag-business { background: rgba(230,126,34,0.1); color: var(--accent2); }
+
+  .difficulty { display: flex; gap: 3px; }
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--line);
+  }
+  .dot.on { background: var(--gold); }
+
+  /* Front */
+  .card-front { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .card.flipped .card-front { display: none; }
+
+  .entry-word {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.55rem;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .entry-word mark {
+    background: none;
+    color: var(--teal);
+    font-style: italic;
+  }
+  .entry-kor {
+    font-size: 13px;
+    color: #666;
+    font-weight: 400;
+  }
+  .divider {
+    height: 1px;
+    background: var(--line);
+    margin: 8px 0;
+  }
+  .entry-example {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.65;
+    font-style: italic;
+  }
+  .entry-example strong { font-style: normal; font-weight: 600; color: var(--ink); }
+  .entry-example br + span, .entry-example .arrow {
+    font-style: normal;
+    color: #888;
+    font-size: 12px;
+  }
+  .flip-hint {
+    margin-top: auto;
+    padding-top: 14px;
+    font-size: 11px;
+    color: #bbb;
+    text-align: right;
+  }
+
+  /* Back */
+  .card-back { display: none; flex-direction: column; gap: 12px; flex: 1; }
+  .card.flipped .card-back { display: flex; }
+
+  .back-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    color: white;
+  }
+  .nuance-box {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+  }
+  .nuance-box strong { color: white; font-weight: 600; }
+  .compare-box {
+    background: rgba(212,160,23,0.15);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.75);
+  }
+  .compare-box strong { color: var(--gold); }
+  .flip-hint-back {
+    margin-top: auto;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    text-align: right;
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 48px 24px 40px; }
+    .stats-bar { padding: 16px 24px; gap: 20px; }
+    .filter-wrap { padding: 16px 24px 0; }
+    .grid { padding: 24px 16px 48px; gap: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+
+<div class="hero">
+  <div class="hero-label">McKinsey India Report &middot; 어휘 학습</div>
+  <h1>원어민처럼 읽는 <em>인도 경제</em><br>영어 표현 완전 정복</h1>
+  <p>카드를 클릭하면 뉘앙스 해설이 나옵니다 &middot; Click cards to reveal nuance</p>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><span class="stat-num" id="stat-total">40</span><span class="stat-label">표현</span></div>
+  <div class="stat"><span class="stat-num" id="stat-learned">0</span><span class="stat-label">학습완료</span></div>
+  <div class="stat"><span class="stat-num" id="stat-remaining">40</span><span class="stat-label">남은 표현</span></div>
+</div>
+
+<div class="filter-wrap">
+  <span class="filter-label">분류</span>
+  <button class="filter-btn active" onclick="filterCards('all')">전체</button>
+  <button class="filter-btn" onclick="filterCards('phrasal')">Phrasal Verb</button>
+  <button class="filter-btn" onclick="filterCards('idiom')">Idiom / 비유</button>
+  <button class="filter-btn" onclick="filterCards('collocation')">Collocation</button>
+  <button class="filter-btn" onclick="filterCards('advanced')">고급 단어</button>
+  <button class="filter-btn" onclick="filterCards('business')">비즈니스 전용</button>
+</div>
+
+<div class="grid" id="card-grid">
+
+  <!-- ═══════════════════════════════ PHRASAL VERBS ═══════════════════════════════ -->
+  <div class="section-header" data-section="phrasal"><h2>Phrasal Verbs</h2></div>
+
+  <!-- 1. build on -->
+  <div class="card" data-cat="phrasal" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-phrasal">Phrasal Verb</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">build <mark>on</mark></div>
+      <div class="entry-kor">~을 기반으로 삼다, ~을 활용하다</div>
+      <div class="divider"></div>
+      <div class="entry-example">"India must <strong>build on</strong> its strong fundamentals, young population, and ongoing structural reforms."<br><span class="arrow">→ 인도는 강력한 기본 여건과 젊은 인구를 기반으로 삼아야 한다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">build on</div>
+      <div class="nuance-box">이미 가진 것을 <strong>발판 삼아 더 발전</strong>시킨다는 뜻. "기반을 구축하다"가 아니라 <strong>"기존 강점을 활용하다"</strong>에 가깝다. build upon도 동일하게 쓴다.</div>
+      <div class="compare-box"><strong>vs. "build up"</strong> — build up은 없던 것을 쌓아가는 것. build on은 이미 있는 것을 토대로 올라가는 것.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 2. draw in -->
+  <div class="card" data-cat="phrasal" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-phrasal">Phrasal Verb</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">draw <mark>in</mark></div>
+      <div class="entry-kor">끌어들이다, 유치하다</div>
+      <div class="divider"></div>
+      <div class="entry-example">"To fund growth, the economy needs to <strong>draw in</strong> capital from outside the country."<br><span class="arrow">→ 성장 자금을 마련하려면 해외 자본을 끌어들여야 한다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">draw in</div>
+      <div class="nuance-box">자연스럽게 <strong>당겨서 안으로 끌어들인다</strong>는 이미지. attract보다 능동적 흡입력이 느껴진다. 투자·인재·자본을 유치할 때 자주 쓰인다.</div>
+      <div class="compare-box"><strong>vs. "attract"</strong> — attract은 중립적. draw in은 마치 자석처럼 빨아들이는 뉘앙스로 더 강렬하다.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 3. stare down -->
+  <div class="card" data-cat="phrasal" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-phrasal">Phrasal Verb</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">stare <mark>down</mark></div>
+      <div class="entry-kor">정면으로 맞서다, 두려움 없이 대면하다</div>
+      <div class="divider"></div>
+      <div class="entry-example">"A new wave of FDI could help the country <strong>stare down</strong> uncertainty."<br><span class="arrow">→ FDI의 새로운 물결이 불확실성을 정면으로 맞서는 데 도움이 될 수 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">stare down</div>
+      <div class="nuance-box">눈을 마주친 채 상대를 <strong>눈빛으로 제압하다</strong>는 어원. 위협적인 상황을 피하지 않고 <strong>당당히 직면한다</strong>는 강한 의지를 담는다. 언론·경제 기사에서 자주 등장.</div>
+      <div class="compare-box"><strong>vs. "face"</strong> — face는 단순히 직면하다. stare down은 "굽히지 않고" 맞선다는 불굴의 뉘앙스가 추가된다.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 4. carve out -->
+  <div class="card" data-cat="phrasal" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-phrasal">Phrasal Verb</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">carve <mark>out</mark></div>
+      <div class="entry-kor">개척하다, (틈새를) 따내다</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Indian companies could <strong>carve out</strong> a substantial portion of global markets for auto components and cybersecurity."<br><span class="arrow">→ 자동차 부품·사이버보안 분야에서 글로벌 시장의 상당 부분을 개척할 수 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">carve out</div>
+      <div class="nuance-box">칼로 조각하듯 <strong>노력으로 공간을 만들어낸다</strong>는 이미지. 아무것도 없던 곳에서 자기만의 영역을 적극적으로 확보하는 것. "carve out a niche(틈새 개척)"가 대표 표현.</div>
+      <div class="compare-box"><strong>vs. "capture"</strong> — capture는 이미 있는 시장을 차지. carve out은 새롭게 만들어내거나 치열하게 따내는 뉘앙스.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 5. open up -->
+  <div class="card" data-cat="phrasal" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-phrasal">Phrasal Verb</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">open <mark>up</mark></div>
+      <div class="entry-kor">열다, 새로운 가능성을 만들어내다</div>
+      <div class="divider"></div>
+      <div class="entry-example">"The global reassessment of trade partnerships could <strong>open up</strong> new trade corridors and business opportunities."<br><span class="arrow">→ 무역 파트너십 재평가가 새로운 무역 회랑과 기회를 열어줄 수 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">open up</div>
+      <div class="nuance-box">닫혀 있던 문이 <strong>활짝 열리는</strong> 이미지. 기회·시장·대화 등이 새롭게 생겨난다는 맥락에서 두루 쓰인다. 경제 기사에서 "open up markets / opportunities"는 고빈도 표현.</div>
+      <div class="compare-box"><strong>vs. "create"</strong> — create는 만들어낸다는 것. open up은 이미 잠재적으로 존재했지만 접근이 가능해진다는 뉘앙스.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 6. scale up -->
+  <div class="card" data-cat="phrasal" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-phrasal">Phrasal Verb</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">scale <mark>up</mark></div>
+      <div class="entry-kor">규모를 확대하다, 스케일업하다</div>
+      <div class="divider"></div>
+      <div class="entry-example">"The most successful companies establish ambitious goals for <strong>scaling up</strong> their Indian operations."<br><span class="arrow">→ 가장 성공적인 기업들은 인도 사업 확대를 위한 야심찬 목표를 세운다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">scale up</div>
+      <div class="nuance-box">비용·구조를 유지하면서 <strong>규모만 비례적으로 키우는</strong> 것. 스타트업이 비즈니스 모델을 검증한 후 확장할 때 필수 표현. 명사형 "scale-up"도 자주 쓰인다.</div>
+      <div class="compare-box"><strong>vs. "grow"</strong> — grow는 자연스러운 성장. scale up은 <strong>의도적·전략적</strong> 확장으로 속도와 구조가 강조된다.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 7. grapple with -->
+  <div class="card" data-cat="phrasal" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-phrasal">Phrasal Verb</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">grapple <mark>with</mark></div>
+      <div class="entry-kor">~와 씨름하다, 어려운 문제를 다루다</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Companies may need to <strong>grapple with</strong> complex regulations, labor strikes, and red tape."<br><span class="arrow">→ 기업들은 복잡한 규제와 관료주의적 장벽과 씨름해야 할 수도 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">grapple with</div>
+      <div class="nuance-box">레슬링에서 <strong>손으로 맞붙어 싸우다(grapple)</strong>에서 유래. 단순한 어려움이 아닌, <strong>지속적으로 씨름하는</strong> 느낌. struggle with보다 더 능동적이고 치열한 뉘앙스.</div>
+      <div class="compare-box"><strong>vs. "deal with"</strong> — deal with는 무난히 처리. grapple with는 <strong>힘겹게 맞붙어 싸운다</strong>는 강도 높은 표현.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ IDIOMS ═══════════════════════════════ -->
+  <div class="section-header" data-section="idiom"><h2>Idioms / 비유 표현</h2></div>
+
+  <!-- 8. the last person standing -->
+  <div class="card" data-cat="idiom" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-idiom">Idiom / 비유</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">the last person <mark>standing</mark></div>
+      <div class="entry-kor">최후의 생존자, 끝까지 살아남은 자</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Upgrade supply chain strengths to secure the '<strong>last person standing</strong>' advantage in the ICE segment."<br><span class="arrow">→ 내연기관 분야에서 최후의 생존자 우위를 확보하라</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">the last person standing</div>
+      <div class="nuance-box">경쟁자가 모두 탈락한 후 <strong>홀로 살아남은 플레이어</strong>. 사양 산업(ICE 등)에서도 시장을 독점할 수 있다는 역설적 전략. 게임·격투에서 유래한 이미지.</div>
+      <div class="compare-box"><strong>활용</strong> — "last mover advantage"와 다르다. 이건 경쟁자가 다 떠난 시장에서의 독점적 지위.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 9. a sure thing -->
+  <div class="card" data-cat="idiom" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-idiom">Idiom / 비유</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">a <mark>sure</mark> thing</div>
+      <div class="entry-kor">확실한 것, 보장된 결과</div>
+      <div class="divider"></div>
+      <div class="entry-example">"India could benefit from these shifts, but this is not <strong>a sure thing</strong>."<br><span class="arrow">→ 인도가 이 변화로 이익을 얻을 수 있지만, 이것이 확실한 보장은 아니다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">a sure thing</div>
+      <div class="nuance-box">도박이나 경마에서 반드시 이긴다고 여겨지는 것에서 유래. "<strong>not a sure thing</strong>"은 결과가 불확실하다는 점을 강조할 때 쓰는 완곡한 경고 표현.</div>
+      <div class="compare-box"><strong>vs. "guaranteed"</strong> — guaranteed는 딱딱한 공식 표현. a sure thing은 더 구어적이고 경계심을 부드럽게 전달.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 10. on the right track -->
+  <div class="card" data-cat="idiom" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-idiom">Idiom / 비유</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">on the <mark>right track</mark></div>
+      <div class="entry-kor">올바른 방향으로 나아가고 있다</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Estimates show the country is <strong>on the right track</strong>; by 2030, it is expected to become the world's third-largest economy."<br><span class="arrow">→ 수치들은 인도가 옳은 방향으로 가고 있음을 보여준다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">on the right track</div>
+      <div class="nuance-box">기차가 <strong>올바른 선로 위에 있다</strong>는 이미지. 목표를 향해 나아가는 방향성이 맞다는 것. 이미 좋은 성과를 내고 있다는 긍정적 평가에 쓴다.</div>
+      <div class="compare-box"><strong>vs. "making progress"</strong> — making progress는 단순히 진전. on the right track은 <strong>방향까지 올바르다</strong>는 뉘앙스가 추가.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 11. safe bet -->
+  <div class="card" data-cat="idiom" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-idiom">Idiom / 비유</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word"><mark>safe</mark> bet</div>
+      <div class="entry-kor">안전한 베팅, 실패 위험이 낮은 선택</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Trade corridors between emerging economies could be among the <strong>safest bets</strong>."<br><span class="arrow">→ 신흥 경제 간 무역 회랑이 가장 안전한 베팅이 될 수 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">safe bet</div>
+      <div class="nuance-box">도박에서 이길 가능성이 매우 높은 베팅에서 유래. 비즈니스·투자에서 <strong>리스크가 낮고 성공 가능성이 높은 선택지</strong>를 가리킨다. "It's a safe bet that…"으로도 많이 쓰임.</div>
+      <div class="compare-box"><strong>vs. "safe option"</strong> — safe option은 무난한 선택. safe bet은 베팅(투자·전략)의 맥락에서 쓰여 더 역동적인 뉘앙스.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 12. pave the way -->
+  <div class="card" data-cat="idiom" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-idiom">Idiom / 비유</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">pave the <mark>way</mark></div>
+      <div class="entry-kor">길을 닦다, 기반을 마련하다</div>
+      <div class="divider"></div>
+      <div class="entry-example">"The global reassessment of trade partnerships could <strong>pave the way</strong> for new trade corridors and fresh business opportunities."<br><span class="arrow">→ 무역 파트너십 재평가가 새로운 기회를 위한 길을 닦을 수 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">pave the way</div>
+      <div class="nuance-box">돌을 깔아 길을 만든다는 이미지. 다음 단계를 위한 <strong>환경과 조건을 갖춰준다</strong>는 뜻. "pave the way for + 명사 / to + 동사" 형태로 쓰인다.</div>
+      <div class="compare-box"><strong>vs. "enable"</strong> — enable은 가능하게 만든다. pave the way는 길 자체를 준비해주는 <strong>선행 작업</strong>의 뉘앙스가 강하다.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 13. poised to -->
+  <div class="card" data-cat="idiom" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-idiom">Idiom / 비유</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word"><mark>poised</mark> to</div>
+      <div class="entry-kor">~할 태세다, 도약 직전이다</div>
+      <div class="divider"></div>
+      <div class="entry-example">"India is <strong>poised to</strong> overtake Japan as the world's fourth-largest economy."<br><span class="arrow">→ 인도는 일본을 제치고 세계 4위 경제대국이 될 태세다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">poised to</div>
+      <div class="nuance-box">발레리나가 <strong>완벽한 균형 자세(poise)</strong>로 다음 동작을 준비한다는 이미지. 모든 조건이 갖춰져 <strong>곧 일어날 것</strong>이 거의 확실할 때 쓴다. McKinsey 리포트의 단골 표현.</div>
+      <div class="compare-box"><strong>vs. "expected to"</strong> — expected to는 단순 예측. poised to는 준비까지 완료된 <strong>임박한 전환점</strong>의 뉘앙스.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ COLLOCATIONS ═══════════════════════════════ -->
+  <div class="section-header" data-section="collocation"><h2>Collocations</h2></div>
+
+  <!-- 14. trade corridor -->
+  <div class="card" data-cat="collocation" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-collocation">Collocation</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">trade <mark>corridor</mark></div>
+      <div class="entry-kor">무역 회랑, 교역 통로</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Over 30% of global trade in 2035 could swing from one <strong>trade corridor</strong> to another."<br><span class="arrow">→ 2035년 글로벌 무역의 30% 이상이 한 무역 회랑에서 다른 회랑으로 이동할 수 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">trade corridor</div>
+      <div class="nuance-box">두 경제 간의 <strong>주된 교역 경로</strong>. 지리적 통로(corridor)에서 유래. 지정학적 변화로 어떤 회랑은 강화되고 어떤 회랑은 약화된다. 무역 전략 기사의 핵심 용어.</div>
+      <div class="compare-box"><strong>관련 표현</strong> — "safe bet corridors(안전 회랑)", "emerging market corridors(신흥 시장 회랑)", "intraregional corridors(역내 회랑)"</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 15. spillover effect -->
+  <div class="card" data-cat="collocation" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-collocation">Collocation</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">spillover <mark>effect</mark></div>
+      <div class="entry-kor">파급 효과, 넘쳐흐르는 영향</div>
+      <div class="divider"></div>
+      <div class="entry-example">"FDI inflows themselves amount to a tiny fraction, but <strong>spillover effects</strong> can have outsize impacts over time."<br><span class="arrow">→ FDI 유입 자체는 미미하지만, 파급 효과는 시간이 지나며 막대한 영향을 줄 수 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">spillover effect</div>
+      <div class="nuance-box">물이 그릇에서 <strong>흘러넘쳐 주변을 적신다</strong>는 이미지. 원래 의도한 것 이상으로 <strong>다른 분야로 퍼져나가는 긍정적 부수 효과</strong>. 경제학 용어로 FDI·기술 이전 맥락에 자주 등장.</div>
+      <div class="compare-box"><strong>vs. "ripple effect"</strong> — ripple effect는 파문처럼 퍼진다는 중립적 뉘앙스. spillover effect는 넘쳐흘러 예상 범위를 초과한다는 느낌.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 16. value chain -->
+  <div class="card" data-cat="collocation" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-collocation">Collocation</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">value <mark>chain</mark></div>
+      <div class="entry-kor">가치 사슬, 생산-유통-판매의 전체 과정</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Trade shifts have implications for India's automotive component <strong>value chain</strong>."<br><span class="arrow">→ 무역 변화는 인도 자동차 부품 가치 사슬에 영향을 미친다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">value chain</div>
+      <div class="nuance-box">원자재 조달→생산→유통→판매→서비스까지, <strong>각 단계에서 가치가 추가되는 연쇄 과정</strong>. Porter의 가치 사슬 분석에서 나온 경영 전략 핵심 개념.</div>
+      <div class="compare-box"><strong>관련 표현</strong> — "global value chain(GVC 글로벌 가치 사슬)", "move up the value chain(고부가가치로 이동)", "value chain integration(수직 통합)"</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 17. talent pool -->
+  <div class="card" data-cat="collocation" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-collocation">Collocation</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">talent <mark>pool</mark></div>
+      <div class="entry-kor">인재 풀, 활용 가능한 인재 집단</div>
+      <div class="divider"></div>
+      <div class="entry-example">"India today accounts for 16% of the global AI <strong>talent pool</strong> and turns out five times as many STEM graduates as the United States."<br><span class="arrow">→ 인도는 글로벌 AI 인재 풀의 16%를 차지한다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">talent pool</div>
+      <div class="nuance-box">수영장(pool)처럼 <strong>인재가 모여 있는 집합체</strong>. 채용 담당자가 여기서 원하는 인재를 "건져 올린다"는 이미지. 산업·지역·기술 분야별로 쓰인다.</div>
+      <div class="compare-box"><strong>관련 표현</strong> — "deep talent pool(풍부한 인재)", "tap into a talent pool(인재를 활용)", "talent shortage vs. talent surplus(인재 부족 vs. 잉여)"</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 18. addressable market -->
+  <div class="card" data-cat="collocation" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-collocation">Collocation</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word"><mark>addressable</mark> market</div>
+      <div class="entry-kor">유효 시장, 실제로 공략 가능한 시장</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Growing sectors where demand outstrips the rest of the economy could unlock a large and growing <strong>addressable market</strong>."<br><span class="arrow">→ 수요가 경제 전체를 앞서는 성장 분야는 큰 유효 시장을 열어준다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">addressable market</div>
+      <div class="nuance-box">이론상 전체 시장(TAM) 중 <strong>실제로 내가 접근·공략할 수 있는 부분</strong>. TAM(Total Addressable Market)이 풀폼. 투자자에게 시장 규모를 설명할 때 필수 용어.</div>
+      <div class="compare-box"><strong>TAM / SAM / SOM</strong> — TAM(전체 유효 시장) → SAM(서비스 가능 시장) → SOM(점유 가능 시장)으로 좁아진다.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 19. patient capital -->
+  <div class="card" data-cat="collocation" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-collocation">Collocation</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word"><mark>patient</mark> capital</div>
+      <div class="entry-kor">인내 자본, 장기 수익을 기다리는 투자</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Provide domestic players with <strong>patient capital</strong>, export-linked incentives, and long-term demand visibility."<br><span class="arrow">→ 국내 플레이어에게 인내 자본과 장기적 수요 가시성을 제공하라</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">patient capital</div>
+      <div class="nuance-box">단기 수익을 추구하지 않고 <strong>장기 성장을 위해 기다릴 수 있는 자본</strong>. 신흥 시장·초기 단계 기업 투자에 필수. 사모펀드·개발 금융 기관(DFI)이 주로 공급한다.</div>
+      <div class="compare-box"><strong>vs. "hot money"</strong> — hot money는 단기 차익을 노리고 빠르게 드나드는 자금. patient capital의 정반대 개념.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 20. regulatory framework -->
+  <div class="card" data-cat="collocation" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-collocation">Collocation</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">regulatory <mark>framework</mark></div>
+      <div class="entry-kor">규제 프레임워크, 법규 체계</div>
+      <div class="divider"></div>
+      <div class="entry-example">"To attract FDI, the new playbook should offer predictable and effective <strong>regulatory frameworks</strong> and legal structures."<br><span class="arrow">→ FDI 유치를 위해 예측 가능하고 효과적인 규제 프레임워크를 갖춰야 한다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">regulatory framework</div>
+      <div class="nuance-box">특정 분야를 규율하는 <strong>법·규정·지침의 전체 체계</strong>. 단순한 법률(law)이 아니라 정책·가이드라인·감독 기관까지 포함하는 포괄적 개념. 외국 투자자 신뢰의 핵심.</div>
+      <div class="compare-box"><strong>관련 표현</strong> — "sandbox regulation(혁신 허용 규제 완화)", "predictable framework(예측 가능한 체계)", "regulatory clarity(규제 명확성)"</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ ADVANCED VOCAB ═══════════════════════════════ -->
+  <div class="section-header" data-section="advanced"><h2>고급 단어</h2></div>
+
+  <!-- 21. nascent -->
+  <div class="card" data-cat="advanced" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-advanced">고급 단어</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">nascent</div>
+      <div class="entry-kor">초기 단계의, 막 태동하는</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Consulting was still a <strong>nascent</strong> concept in this part of the world."<br><span class="arrow">→ 컨설팅이라는 개념 자체가 이 지역에서는 아직 태동기였다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">nascent</div>
+      <div class="nuance-box">라틴어 nasci(태어나다)에서 유래. <strong>이제 막 시작되어 아직 충분히 발전하지 않은</strong> 상태. emerging(신흥)보다 더 초기 단계를 강조. 기술·산업·개념 모두에 쓰임.</div>
+      <div class="compare-box"><strong>vs. "emerging"</strong> — emerging은 이미 어느 정도 나타나는 중. nascent는 막 탄생 직후의 아주 초기 상태.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 22. tailwind -->
+  <div class="card" data-cat="advanced" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-advanced">고급 단어</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">tailwind</div>
+      <div class="entry-kor">순풍, 유리한 조건</div>
+      <div class="divider"></div>
+      <div class="entry-example">"This vision is rooted in several <strong>tailwinds</strong>, including government initiatives to boost manufacturing and exports."<br><span class="arrow">→ 이 비전은 제조업·수출 촉진 등 여러 순풍을 기반으로 한다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">tailwind</div>
+      <div class="nuance-box">항공에서 <strong>뒤에서 밀어주는 바람</strong>. 힘들이지 않아도 앞으로 나아가게 해주는 유리한 외부 환경. 반대는 headwind(역풍). 경제·투자 기사에서 필수 은유.</div>
+      <div class="compare-box"><strong>vs. "headwind"</strong> — headwind는 진행을 막는 역풍·장애 요인. 두 단어를 함께 알아야 완전한 이해 가능.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 23. disproportionate -->
+  <div class="card" data-cat="advanced" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-advanced">고급 단어</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">disproportionate</div>
+      <div class="entry-kor">불균형적인, 기대 이상의</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Indian companies could attain <strong>disproportionate</strong> growth through distinctly Indian capabilities."<br><span class="arrow">→ 인도 기업들은 인도 고유의 역량으로 불균형적으로 큰 성장을 이룰 수 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">disproportionate</div>
+      <div class="nuance-box">투입 대비 결과가 <strong>비율에서 크게 벗어난</strong> 것. 긍정적 맥락에서는 "투자 대비 훨씬 큰 성과", 부정적으로는 "규모 대비 지나치게 큰 피해"를 표현.</div>
+      <div class="compare-box"><strong>부사형</strong> — "disproportionately affected(불균형적으로 영향받은)"처럼 부사형도 자주 쓰인다. 반의어는 proportionate.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 24. liberalization -->
+  <div class="card" data-cat="advanced" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-advanced">고급 단어</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">liberalization</div>
+      <div class="entry-kor">자유화, 규제 완화</div>
+      <div class="divider"></div>
+      <div class="entry-example">"With <strong>liberalization</strong> reforms reshaping the business environment, domestic companies were reassessing their strategy."<br><span class="arrow">→ 자유화 개혁이 사업 환경을 재편하면서 국내 기업들은 전략을 재검토했다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">liberalization</div>
+      <div class="nuance-box">정부가 시장에 대한 <strong>규제·제한을 완화하여 자유로운 경쟁을 허용</strong>하는 과정. 인도의 1991년 경제 자유화가 대표 사례. "trade liberalization(무역 자유화)", "financial liberalization(금융 자유화)"도 중요.</div>
+      <div class="compare-box"><strong>vs. "deregulation"</strong> — deregulation은 규제 자체를 제거. liberalization은 좀 더 점진적으로 허용 범위를 넓히는 것.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 25. compendium -->
+  <div class="card" data-cat="advanced" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-advanced">고급 단어</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">compendium</div>
+      <div class="entry-kor">편람, 요약 모음집</div>
+      <div class="divider"></div>
+      <div class="entry-example">"A <strong>compendium</strong> of McKinsey insights about the world's fastest-growing economy."<br><span class="arrow">→ 세계에서 가장 빠르게 성장하는 경제에 대한 맥킨지 인사이트 모음집</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">compendium</div>
+      <div class="nuance-box">라틴어 compendere(저울에 달다)에서 유래. 방대한 내용을 <strong>압축하여 핵심만 모아놓은 참고 자료</strong>. encyclopedia(백과사전)보다 작고 anthology(선집)와 비슷하지만 더 실용적 성격.</div>
+      <div class="compare-box"><strong>vs. "anthology"</strong> — anthology는 문학·예술 작품 선집. compendium은 정보·지식의 실용적 요약 모음.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 26. outperform -->
+  <div class="card" data-cat="advanced" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-advanced">고급 단어</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">outperform</div>
+      <div class="entry-kor">능가하다, 초과 달성하다</div>
+      <div class="divider"></div>
+      <div class="entry-example">"The global chemicals industry, which <strong>outperformed</strong> broader capital markets for most of the past two decades, is no longer an outperformer."<br><span class="arrow">→ 지난 20년간 자본시장을 능가했던 화학 산업이 이제 그렇지 않다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">outperform</div>
+      <div class="nuance-box">비교 대상보다 <strong>더 좋은 성과를 낸다</strong>는 뜻. 투자에서 "outperform the market"은 시장 평균 수익률을 초과. 명사형 "outperformer"도 자주 쓰인다.</div>
+      <div class="compare-box"><strong>vs. "overperform"</strong> — overperform은 기대치를 초과. outperform은 <strong>비교 대상</strong>을 초과. 둘 다 쓰이지만 outperform이 훨씬 일반적.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 27. flummoxed -->
+  <div class="card" data-cat="advanced" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-advanced">고급 단어</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">flummoxed</div>
+      <div class="entry-kor">당혹스러워하는, 어리둥절한</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Business leaders are understandably <strong>flummoxed</strong> by all the recent changes in trade policy."<br><span class="arrow">→ 비즈니스 리더들이 최근의 무역 정책 변화에 당혹스러워하는 것은 이해할 만하다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">flummoxed</div>
+      <div class="nuance-box">19세기 영국 방언에서 유래. 단순히 confused가 아니라 <strong>완전히 혼란스러워 어찌할 바를 모르는</strong> 강한 당혹감. 격식 문서에서 이 단어를 쓰면 독자가 눈길을 멈춘다.</div>
+      <div class="compare-box"><strong>vs. "confused"</strong> — confused는 일반적 혼란. flummoxed는 상황이 너무 복잡해서 <strong>완전히 손을 놓은</strong> 강한 당혹.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 28. proliferate -->
+  <div class="card" data-cat="advanced" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-advanced">고급 단어</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">proliferate</div>
+      <div class="entry-kor">급증하다, 빠르게 퍼지다</div>
+      <div class="divider"></div>
+      <div class="entry-example">"As GCCs <strong>proliferate</strong>, India is increasingly becoming the second headquarters for many global enterprises."<br><span class="arrow">→ GCC가 급증하면서 인도는 많은 글로벌 기업의 제2 본부가 되고 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">proliferate</div>
+      <div class="nuance-box">라틴어 proles(자손) + ferre(낳다)에서 유래. 생물이 빠르게 번식하듯 <strong>수적으로 급속히 늘어난다</strong>는 뜻. 기술·기업·정책 모두에 쓰이며 통제하기 어려운 빠른 증가를 암시.</div>
+      <div class="compare-box"><strong>vs. "increase"</strong> — increase는 단순 증가. proliferate는 <strong>통제 불능에 가까운 폭발적 확산</strong>의 뉘앙스.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 29. centenary -->
+  <div class="card" data-cat="advanced" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-advanced">고급 단어</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">centenary</div>
+      <div class="entry-kor">100주년, 백 년째</div>
+      <div class="divider"></div>
+      <div class="entry-example">"By 2047, when India celebrates a <strong>centenary</strong> of independence, it could become a $30 trillion economy."<br><span class="arrow">→ 2047년 인도 독립 100주년을 맞을 때, 30조 달러 경제가 될 수 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">centenary</div>
+      <div class="nuance-box">라틴어 centum(100)에서 유래. 영국 영어에서는 centenary, 미국 영어에서는 centennial을 주로 쓴다. 인도 정책의 핵심 키워드 — "Viksit Bharat@2047(선진 인도 2047)"이 centenary를 기반으로 한다.</div>
+      <div class="compare-box"><strong>centenary vs. centennial</strong> — 의미는 같다. 영국식(centenary)이냐 미국식(centennial)이냐의 차이.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 30. ecosystem -->
+  <div class="card" data-cat="advanced" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-advanced">고급 단어</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">ecosystem</div>
+      <div class="entry-kor">생태계, (비즈니스) 상호 연결된 환경</div>
+      <div class="divider"></div>
+      <div class="entry-example">"India has the world's third-largest start-up <strong>ecosystem</strong>, incubating innovation capabilities."<br><span class="arrow">→ 인도는 세계 3위 스타트업 생태계를 보유하며 혁신 역량을 배양하고 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">ecosystem</div>
+      <div class="nuance-box">생태학에서 차용한 비유. 기업·투자자·정부·대학 등이 <strong>유기적으로 연결되어 서로 영향을 주고받는 환경</strong>. 혼자서는 성립할 수 없고 참여자 모두가 있어야 번성한다는 의미.</div>
+      <div class="compare-box"><strong>관련 표현</strong> — "startup ecosystem", "talent ecosystem", "supply chain ecosystem", "innovation ecosystem" 모두 자주 등장.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ BUSINESS TERMS ═══════════════════════════════ -->
+  <div class="section-header" data-section="business"><h2>비즈니스 전용 용어</h2></div>
+
+  <!-- 31. GCC -->
+  <div class="card" data-cat="business" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-business">비즈니스 전용</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word"><mark>GCC</mark></div>
+      <div class="entry-kor">글로벌 역량 센터 (Global Capability Center)</div>
+      <div class="divider"></div>
+      <div class="entry-example">"India is already home to almost 2,000 <strong>GCCs</strong>, serving the tech and operational needs of major companies."<br><span class="arrow">→ 인도는 이미 약 2,000개의 GCC를 보유하며 기업의 기술·운영 수요를 충족한다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">GCC</div>
+      <div class="nuance-box">과거 "captive center" → "shared service center" → "offshore delivery center" → <strong>GCC</strong>로 명칭이 진화. 이제 단순 비용 절감이 아닌 <strong>전략적 혁신 허브</strong>로 역할이 고도화되었다.</div>
+      <div class="compare-box"><strong>vs. "BPO"</strong> — BPO는 외부 업체에 위탁. GCC는 자사가 직접 운영하는 내부 글로벌 센터. 독립성과 통제력이 다르다.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 32. greenfield FDI -->
+  <div class="card" data-cat="business" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-business">비즈니스 전용</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">greenfield <mark>FDI</mark></div>
+      <div class="entry-kor">그린필드 외국인 직접투자 (신규 생산 시설 투자)</div>
+      <div class="divider"></div>
+      <div class="entry-example">"India stands as the world's top emerging-market destination for announced <strong>greenfield FDI</strong>—cross-border projects that create net new production capacity."<br><span class="arrow">→ 인도는 신규 생산 능력을 창출하는 그린필드 FDI의 신흥 시장 최고 목적지다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">greenfield FDI</div>
+      <div class="nuance-box"><strong>아무것도 없는 빈 땅(green field)에 처음부터 새로 짓는</strong> 투자. 기존 기업 인수(brownfield)와 달리 순수하게 새 생산 능력을 창출하므로 고용 효과가 크고 파급력이 높다.</div>
+      <div class="compare-box"><strong>greenfield vs. brownfield</strong> — brownfield는 기존 시설·기업을 인수·개조. greenfield는 백지에서 새로 시작.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 33. unicorn -->
+  <div class="card" data-cat="business" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-business">비즈니스 전용</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">unicorn</div>
+      <div class="entry-kor">유니콘 (기업가치 10억 달러 이상 비상장 스타트업)</div>
+      <div class="divider"></div>
+      <div class="entry-example">"India is a global innovation leader, accounting for more than one out of ten '<strong>unicorns</strong>'—start-ups that achieve a $1 billion valuation."<br><span class="arrow">→ 인도는 전 세계 유니콘 기업 10개 중 하나 이상을 배출하는 혁신 리더다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">unicorn</div>
+      <div class="nuance-box">전설의 동물처럼 <strong>존재하기 드문</strong> 것에서 유래. Aileen Lee가 2013년 만든 용어. 기업가치 $1B+ 비상장. $10B+ = decacorn, $100B+ = hectocorn. 인도는 2025년 기준 약 100개 이상 보유.</div>
+      <div class="compare-box"><strong>관련 표현</strong> — "soonicorn(곧 유니콘이 될 기업)", "zombie unicorn(높은 밸류에이션이 실제와 괴리된 기업)"도 알아두면 좋다.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 34. PLI -->
+  <div class="card" data-cat="business" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-business">비즈니스 전용</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word"><mark>PLI</mark></div>
+      <div class="entry-kor">생산연계인센티브 (Production-Linked Incentive)</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Manufacturing policy examples include the expansion of <strong>production-linked incentives</strong>; new infrastructure has improved supply chain efficiency."<br><span class="arrow">→ 생산연계인센티브 확대 등 친기업 제조업 정책이 공급망 효율을 향상시켰다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">PLI (Production-Linked Incentive)</div>
+      <div class="nuance-box">인도 정부가 국내 생산을 늘린 기업에 <strong>증분 생산액의 일정 비율을 인센티브로 지급</strong>하는 정책. 스마트폰·반도체·전기차·제약 등 14개 분야에 적용. 중국 의존 탈피와 수출 확대가 목표.</div>
+      <div class="compare-box"><strong>효과</strong> — Apple의 인도 iPhone 생산(폭스콘·위스트론)이 PLI의 대표 성과. 삼성도 수혜 기업 중 하나.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 35. MSME -->
+  <div class="card" data-cat="business" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-business">비즈니스 전용</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word"><mark>MSME</mark></div>
+      <div class="entry-kor">소기업·중소기업 (Micro, Small and Medium Enterprises)</div>
+      <div class="divider"></div>
+      <div class="entry-example">"<strong>MSMEs</strong>, which contribute approximately 40% to industry revenue, face structural inequities such as lack of economies of scale."<br><span class="arrow">→ 산업 매출의 40%를 차지하는 중소기업들이 구조적 불평등에 직면해 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">MSME</div>
+      <div class="nuance-box">인도에서 <strong>Micro(소기업) → Small(소기업) → Medium(중기업)</strong>을 포괄하는 공식 분류. 서구의 SME(Small and Medium Enterprises)에 Micro가 추가된 형태. 인도 경제의 근간으로 GDP의 약 30% 담당.</div>
+      <div class="compare-box"><strong>vs. "SME"</strong> — SME는 서구 일반 표현. MSME는 인도·일부 아시아 국가에서 Micro 계층까지 포함하는 더 넓은 개념.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 36. TSR -->
+  <div class="card" data-cat="business" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-business">비즈니스 전용</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word"><mark>TSR</mark></div>
+      <div class="entry-kor">주주 총수익률 (Total Shareholder Return)</div>
+      <div class="divider"></div>
+      <div class="entry-example">"The global chemicals industry saw a <strong>TSR</strong> of –3.6% between January 2023 and January 2025, contrasting with the 22.8% TSR for the MSCI World Index."<br><span class="arrow">→ 글로벌 화학 산업 TSR은 –3.6%로, MSCI 세계지수 22.8%와 대조된다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">TSR (Total Shareholder Return)</div>
+      <div class="nuance-box"><strong>주가 상승 + 배당금</strong>을 합산한 주주 관점의 총수익률. 기업의 가치 창출 능력을 가장 포괄적으로 보여주는 지표. McKinsey가 산업 비교에 즐겨 쓰는 핵심 KPI.</div>
+      <div class="compare-box"><strong>vs. "ROI"</strong> — ROI는 투자 대비 수익 일반. TSR은 <strong>주주에게 돌아가는 수익만</strong> 측정하는 주식 투자자 관점의 지표.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 37. CAGR -->
+  <div class="card" data-cat="business" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-business">비즈니스 전용</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word"><mark>CAGR</mark></div>
+      <div class="entry-kor">연평균 성장률 (Compound Annual Growth Rate)</div>
+      <div class="divider"></div>
+      <div class="entry-example">"The Indian auto component industry recorded a <strong>CAGR</strong> of about 10% over the past five years."<br><span class="arrow">→ 인도 자동차 부품 산업은 지난 5년간 약 10%의 연평균 성장률을 기록했다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">CAGR (Compound Annual Growth Rate)</div>
+      <div class="nuance-box">여러 해에 걸친 성장을 <strong>연 단위 복리 기준으로 평준화</strong>한 수치. 매년 다른 성장률을 "이 속도로 매년 성장했다면"으로 단순화. 비교 용도로는 최적이지만 연도별 변동을 숨기는 단점이 있다.</div>
+      <div class="compare-box"><strong>계산법</strong> — (최종값/초기값)^(1/연수) - 1. 10억 → 16억, 5년이면 CAGR = (16/10)^(1/5) - 1 ≈ 9.86%.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 38. red tape -->
+  <div class="card" data-cat="business" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-business">비즈니스 전용</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">red <mark>tape</mark></div>
+      <div class="entry-kor">관료주의적 절차, 행정적 장벽</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Companies may need to grapple with complex regulations, labor strikes, and <strong>red tape</strong>."<br><span class="arrow">→ 기업들은 복잡한 규제와 관료주의적 장벽과 씨름해야 할 수도 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">red tape</div>
+      <div class="nuance-box">16세기 유럽에서 <strong>법률 문서를 빨간 리본으로 묶었던</strong> 관행에서 유래. 불필요하게 복잡하고 느린 관료적 절차를 비판할 때 쓰는 표현. 외국 기업이 인도·중국 진출 시 자주 언급.</div>
+      <div class="compare-box"><strong>vs. "bureaucracy"</strong> — bureaucracy는 중립적 명칭. red tape는 <strong>부정적 뉘앙스</strong> — 불필요하고 방해가 되는 규제를 강조.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 39. playbook -->
+  <div class="card" data-cat="business" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-business">비즈니스 전용</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">playbook</div>
+      <div class="entry-kor">전략 지침서, 성공 공식</div>
+      <div class="divider"></div>
+      <div class="entry-example">"India cannot just keep doing what it has been doing. The country needs a new <strong>playbook</strong>."<br><span class="arrow">→ 인도는 지금까지의 방식만을 고수할 수 없다. 새로운 전략 지침서가 필요하다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">playbook</div>
+      <div class="nuance-box">미식축구에서 모든 작전을 정리한 전술 노트. 비즈니스에서는 <strong>검증된 전략·행동 방식의 모음</strong>. "The standard playbook(표준 공식)", "a new playbook(새로운 전략)"처럼 유연하게 쓰인다.</div>
+      <div class="compare-box"><strong>관련 표현</strong> — "run the same playbook(같은 전략 반복)", "write a new playbook(새 공식 만들기)", "differentiated playbook(차별화된 전략)"</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+  <!-- 40. empowerment line -->
+  <div class="card" data-cat="business" onclick="flipCard(this)">
+    <div class="card-top">
+      <span class="tag tag-business">비즈니스 전용</span>
+      <div class="difficulty"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div></div>
+    </div>
+    <div class="card-front">
+      <div class="entry-word">empowerment <mark>line</mark></div>
+      <div class="entry-kor">역량 강화선, 자립 가능 소득 기준선</div>
+      <div class="divider"></div>
+      <div class="entry-example">"Over a billion Indians remain below the '<strong>empowerment line</strong>' in the country."<br><span class="arrow">→ 10억 명 이상의 인도인이 여전히 역량 강화선 이하에 머물러 있다</span></div>
+      <div class="flip-hint">↩ 클릭해서 뉘앙스 확인</div>
+    </div>
+    <div class="card-back">
+      <div class="back-title">empowerment line</div>
+      <div class="nuance-box">McKinsey Global Institute가 개발한 개념. 단순 생존(poverty line)을 넘어, <strong>교육·의료·주거 등 기본 필요를 충족하며 자립할 수 있는 소득 수준</strong>. 인도 기준 약 $12/일(2024년).</div>
+      <div class="compare-box"><strong>vs. "poverty line"</strong> — poverty line은 최저 생존 기준. empowerment line은 그보다 높은, <strong>삶의 질과 자율성</strong>을 보장하는 기준.</div>
+      <div class="flip-hint-back">↩ 다시 클릭</div>
+    </div>
+  </div>
+
+</div><!-- /.grid -->
+
+<script>
+  function flipCard(el) {
+    el.classList.toggle('flipped');
+    if (el.classList.contains('flipped') && !el.classList.contains('learned')) {
+      el.classList.add('learned');
+    }
+    updateStats();
+    updateProgress();
+  }
+
+  function filterCards(cat) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    const cards = document.querySelectorAll('.card');
+    const headers = document.querySelectorAll('.section-header');
+
+    cards.forEach(c => {
+      c.style.display = (cat === 'all' || c.dataset.cat === cat) ? '' : 'none';
+    });
+
+    headers.forEach(h => {
+      if (cat === 'all') {
+        h.style.display = '';
+      } else {
+        h.style.display = (h.dataset.section === cat) ? '' : 'none';
+      }
+    });
+
+    updateStats();
+  }
+
+  function updateStats() {
+    const visible = [...document.querySelectorAll('.card')].filter(c => c.style.display !== 'none');
+    const learned = visible.filter(c => c.classList.contains('learned')).length;
+    document.getElementById('stat-total').textContent = visible.length;
+    document.getElementById('stat-learned').textContent = learned;
+    document.getElementById('stat-remaining').textContent = visible.length - learned;
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('.card').length;
+    const learned = document.querySelectorAll('.card.learned').length;
+    document.getElementById('progress-bar').style.width = (learned / all * 100) + '%';
+  }
+</script>
+</body>
+</html>
