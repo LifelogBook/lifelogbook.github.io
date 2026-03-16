@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Six Breakthrough Business Models — 어휘 카드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f172a;
+    --ink2: #1e293b;
+    --accent: #6366f1;
+    --accent2: #4f46e5;
+    --sky: #e0e7ff;
+    --bg: #f8faff;
+    --border: #c7d2fe;
+    --radius: 14px;
+    --shadow: 0 4px 24px rgba(15,23,42,0.13);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 0 0 40px;
+  }
+  header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 45%, #0e7490 100%);
+    color: #fff;
+    padding: 28px 24px 22px;
+    text-align: center;
+  }
+  header .badge {
+    display: inline-block;
+    background: rgba(224,231,255,0.18);
+    border: 1px solid rgba(224,231,255,0.35);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    color: var(--sky);
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.35rem;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  header p { font-size: 0.82rem; opacity: 0.75; }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px 16px 0;
+    justify-content: center;
+  }
+  .filter-btn {
+    border: 1.5px solid var(--border);
+    background: #fff;
+    color: var(--ink2);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.78rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .progress-bar-wrap {
+    margin: 14px 16px 0;
+    background: var(--border);
+    border-radius: 8px;
+    height: 6px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    transition: width 0.4s;
+  }
+  .progress-label {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin: 6px 0 0;
+    font-weight: 600;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+  .card-wrap { perspective: 900px; }
+  .card {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.48s cubic-bezier(.4,0,.2,1);
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .card-front {
+    background: #fff;
+    border: 1.5px solid var(--border);
+  }
+  .card-back {
+    background: var(--ink);
+    color: #fff;
+    transform: rotateY(180deg);
+  }
+  .card.learned .card-front {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+    border-color: var(--accent);
+  }
+  .card-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 10px;
+    padding: 2px 9px;
+    margin-bottom: 10px;
+    width: fit-content;
+  }
+  .tag-phrasal { background: #e0e7ff; color: #6366f1; }
+  .tag-idiom   { background: #cffafe; color: #0891b2; }
+  .tag-colloc  { background: #d1fae5; color: #059669; }
+  .tag-vocab   { background: #ede9fe; color: #7c3aed; }
+  .tag-biz     { background: #fef3c7; color: #b45309; }
+  .card-word {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.45rem;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .card-pron { font-size: 0.78rem; color: #64748b; margin-bottom: 6px; }
+  .card-hint { font-size: 0.8rem; color: #94a3b8; font-style: italic; }
+  .card-back .def-ko {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--sky);
+  }
+  .card-back .def-en { font-size: 0.82rem; opacity: 0.82; line-height: 1.5; }
+  .card-back .example {
+    margin-top: 10px;
+    font-size: 0.76rem;
+    opacity: 0.65;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 8px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+  .learned-badge {
+    position: absolute;
+    top: 10px; right: 12px;
+    font-size: 1.1rem;
+    display: none;
+  }
+  .card.learned .learned-badge { display: block; }
+  .diff-dots {
+    position: absolute;
+    bottom: 12px; right: 14px;
+    display: flex; gap: 3px;
+  }
+  .diff-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .diff-dot.on { background: var(--accent); }
+  .learn-btn {
+    position: absolute;
+    bottom: 10px; left: 14px;
+    background: none;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    border-radius: 20px;
+    padding: 3px 11px;
+    font-size: 0.7rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .learn-btn:hover { background: var(--accent); color: #fff; }
+  .card.learned .learn-btn {
+    background: var(--accent);
+    color: #fff;
+  }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey &amp; Company · 2026</div>
+  <h1>Six Breakthrough Business Models</h1>
+  <p>35개 핵심 표현 · 플래시카드로 학습하기</p>
+</header>
+
+<div class="controls">
+  <button class="filter-btn active" data-filter="all">전체 35</button>
+  <button class="filter-btn" data-filter="phrasal">Phrasal Verb 6</button>
+  <button class="filter-btn" data-filter="idiom">Idiom 6</button>
+  <button class="filter-btn" data-filter="colloc">Collocation 7</button>
+  <button class="filter-btn" data-filter="vocab">고급단어 10</button>
+  <button class="filter-btn" data-filter="biz">비즈니스 6</button>
+</div>
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="pbar" style="width:0%"></div></div>
+<div class="progress-label" id="plabel">0 / 35 학습 완료</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const STORAGE_KEY = 'asian_vanguard_global_growth_learned';
+const learned = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+
+const cards = [
+  // ── Phrasal Verb ──
+  {
+    id: 'pv1', type: 'phrasal', word: 'scale up',
+    pron: '', hint: 'expand capacity, operations...',
+    ko: '규모를 키우다; 확장하다',
+    en: 'To increase the size, capacity, or scope of something significantly.',
+    ex: '"Using these models, companies in Asia have achieved CAGRs above 15 percent and rapidly doubled their gross merchandise value (GMV)."',
+    diff: 1
+  },
+  {
+    id: 'pv2', type: 'phrasal', word: 'tap into',
+    pron: '', hint: 'access, leverage resources...',
+    ko: '활용하다; ~에 접근·이용하다',
+    en: 'To access and make use of available resources, talent, or opportunities.',
+    ex: '"By tapping into the trend of self-education and making a natural link to the broking platform, Zerodha captured high-value customers."',
+    diff: 2
+  },
+  {
+    id: 'pv3', type: 'phrasal', word: 'roll out',
+    pron: '', hint: 'deploy, launch at scale...',
+    ko: '대규모로 출시·배포하다',
+    en: 'To introduce or launch something gradually across a wide area or user base.',
+    ex: '"Digital infrastructure allows even the smallest merchants to roll out their products to national demand."',
+    diff: 2
+  },
+  {
+    id: 'pv4', type: 'phrasal', word: 'build on',
+    pron: '', hint: 'leverage existing strengths...',
+    ko: '~을 기반으로 발전시키다',
+    en: 'To use existing strengths, conditions, or foundations as a base for further development.',
+    ex: '"What truly differentiates the region is the way companies build on these conditions to create new business models."',
+    diff: 1
+  },
+  {
+    id: 'pv5', type: 'phrasal', word: 'break out',
+    pron: '', hint: 'achieve exceptional performance...',
+    ko: '돌파 성장하다; 이탈 성과를 내다',
+    en: 'To achieve exceptional performance that far exceeds market norms or peers.',
+    ex: '"Six archetypes have helped spur breakout growth for Asian companies, resulting in CAGRs that far outpace the underlying market."',
+    diff: 2
+  },
+  {
+    id: 'pv6', type: 'phrasal', word: 'move beyond',
+    pron: '', hint: 'transcend old model, advance...',
+    ko: '~을 넘어서다; 탈피하다',
+    en: 'To go past the limitations of a previous approach and adopt something more advanced.',
+    ex: '"Conglomerates 3.0 move beyond pooling capital, common brands, and shared management expertise."',
+    diff: 1
+  },
+  // ── Idiom / 비유 ──
+  {
+    id: 'id1', type: 'idiom', word: 'asymmetric growth',
+    pron: '', hint: 'growth far above market rate...',
+    ko: '비대칭 성장; 시장 평균을 압도하는 성장',
+    en: 'Growth that is disproportionately large compared to market norms, enabled by structural or model advantages.',
+    ex: '"Companies build on these conditions to create new business models—architectures that unlock asymmetric growth."',
+    diff: 2
+  },
+  {
+    id: 'id2', type: 'idiom', word: 'fertile ground',
+    pron: '', hint: 'ideal conditions for development...',
+    ko: '비옥한 토대; 발전에 이상적인 여건',
+    en: 'An environment or set of conditions that are especially favorable for a particular idea or approach to thrive.',
+    ex: '"High levels of digital adoption and public–private collaboration create fertile ground for experimentation."',
+    diff: 1
+  },
+  {
+    id: 'id3', type: 'idiom', word: 'at the forefront of',
+    pron: '', hint: 'leading position in a field...',
+    ko: '~의 선두에서; 최전선에서',
+    en: 'In the leading or most advanced position in a field or activity.',
+    ex: '"Asian firms are ensuring they have the compute required to support this wave of AI use by being at the forefront of building, planning, and funding data centers."',
+    diff: 2
+  },
+  {
+    id: 'id4', type: 'idiom', word: 'near-zero marginal cost',
+    pron: '', hint: 'almost free to serve one more user...',
+    ko: '한계비용 제로에 가까운; 추가 고객 서비스 비용이 거의 없는',
+    en: 'A situation where the cost of serving one additional customer or unit is negligible, enabling massive scalability.',
+    ex: '"AI tutors approximate one-to-one tutoring at near-zero marginal cost."',
+    diff: 3
+  },
+  {
+    id: 'id5', type: 'idiom', word: 'trust architecture',
+    pron: '', hint: 'designed system for building trust...',
+    ko: '신뢰 구조; 신뢰를 설계한 시스템',
+    en: 'A deliberately designed set of signals, channels, and practices that systematically builds consumer trust.',
+    ex: '"The lesson is not to replicate Asia\'s creators but to replicate their trust architecture: transparent claims, live Q&A, local cultural cues, fulfillment clarity, and authenticity."',
+    diff: 3
+  },
+  {
+    id: 'id6', type: 'idiom', word: 'disproportionate growth',
+    pron: '', hint: 'growth far exceeding expectations...',
+    ko: '불균형적·압도적 성장; 기대치를 훨씬 초과하는 성장',
+    en: 'Growth that is significantly larger than what would be expected given market conditions or resource inputs.',
+    ex: '"The strategic question is how quickly these models can be adapted to unlock the next wave of disproportionate, sustainable growth."',
+    diff: 2
+  },
+  // ── Collocation ──
+  {
+    id: 'co1', type: 'colloc', word: 'gross merchandise value',
+    pron: '/ɡroʊs məˈtʃændaɪs ˈvæljuː/', hint: 'GMV, total platform sales...',
+    ko: '총 거래액 (GMV); 플랫폼 내 전체 판매 금액',
+    en: 'The total value of merchandise sold through a marketplace or platform over a given period.',
+    ex: '"Douyin\'s e-commerce GMV grew approximately sevenfold in five years, from an estimated $75 billion in 2020 to $490 billion in 2024."',
+    diff: 2
+  },
+  {
+    id: 'co2', type: 'colloc', word: 'customer-acquisition cost',
+    pron: '', hint: 'CAC, cost to win one customer...',
+    ko: '고객 획득 비용 (CAC); 신규 고객 1명 확보 비용',
+    en: 'The total cost a company incurs to acquire a new customer, including marketing and sales expenses.',
+    ex: '"Groww\'s customer-acquisition costs represent only 12 to 13 percent of revenue—compared with 20 to 23 percent for competitor AngelOne."',
+    diff: 2
+  },
+  {
+    id: 'co3', type: 'colloc', word: 'creator-led commerce',
+    pron: '', hint: 'sales through content creators...',
+    ko: '크리에이터 주도 커머스; 콘텐츠 창작자를 통한 판매',
+    en: 'A retail model in which content creators serve as primary distribution channels, driving purchases through trust and community.',
+    ex: '"Consumers have embraced shopping within chat, livestreams, and short video to normalize creator-led commerce."',
+    diff: 2
+  },
+  {
+    id: 'co4', type: 'colloc', word: 'super-app ecosystem',
+    pron: '', hint: 'all-in-one app platform...',
+    ko: '슈퍼앱 생태계; 수백 개 미니앱을 통합한 앱 플랫폼',
+    en: 'A mobile application platform that hosts hundreds or thousands of mini-apps, integrating payments, identity, logistics, and services.',
+    ex: '"Super-app ecosystems—which host hundreds or even thousands of mini apps—embed payments, identity, logistics, messaging, and credit into a single interface."',
+    diff: 2
+  },
+  {
+    id: 'co5', type: 'colloc', word: 'network-driven distribution',
+    pron: '', hint: 'selling through communities/creators...',
+    ko: '네트워크 기반 유통; 커뮤니티·크리에이터 채널을 통한 판매',
+    en: 'A distribution model that leverages trust networks, communities, and creators rather than traditional top-down advertising.',
+    ex: '"Marketing in Asia has moved decisively away from top-down messaging toward network-driven distribution."',
+    diff: 2
+  },
+  {
+    id: 'co6', type: 'colloc', word: 'supply chain digitalization',
+    pron: '', hint: 'digital transformation of supply...',
+    ko: '공급망 디지털화; 수요 예측·생산·물류의 디지털 전환',
+    en: 'The process of using digital technologies to automate and optimize supply chain operations including demand sensing and fulfillment.',
+    ex: '"Microproduction is now economically viable through advances in supply chain digitalization and demand sensing."',
+    diff: 2
+  },
+  {
+    id: 'co7', type: 'colloc', word: 'emotional resonance',
+    pron: '', hint: 'strong emotional connection to brand...',
+    ko: '감성적 공명; 소비자의 감정을 자극하는 브랜드 연결성',
+    en: 'The degree to which a brand or product creates a deep emotional connection that drives loyalty and engagement.',
+    ex: '"These models are broadly focused on harnessing trust, emotional resonance, and personalization, with AI as an accelerant."',
+    diff: 2
+  },
+  // ── 고급단어 ──
+  {
+    id: 'vc1', type: 'vocab', word: 'archetype',
+    pron: '/ˈɑːrkɪtaɪp/', hint: 'recurring original pattern...',
+    ko: '원형; 반복 등장하는 전형적 모델',
+    en: 'An original or typical example of something; a recurring model or pattern that others are based on.',
+    ex: '"Over the past three to five years, six archetypes have repeatedly surfaced in the region across markets, sectors, and companies of various sizes."',
+    diff: 2
+  },
+  {
+    id: 'vc2', type: 'vocab', word: 'asymmetric',
+    pron: '/ˌeɪsɪˈmetrɪk/', hint: 'unequal, disproportionate...',
+    ko: '비대칭의; 불균등하게 한쪽에 치우친',
+    en: 'Lacking symmetry or proportion; in business, referring to advantages or outcomes that are disproportionately large.',
+    ex: '"Companies build on these conditions to create new business models—architectures that unlock asymmetric growth."',
+    diff: 2
+  },
+  {
+    id: 'vc3', type: 'vocab', word: 'bespoke',
+    pron: '/bɪˈspoʊk/', hint: 'custom-made, tailored...',
+    ko: '맞춤형의; 개인화된 주문 제작',
+    en: 'Made or tailored specifically for a particular person or purpose; customized.',
+    ex: '"Brands are experimenting with AI companions to emulate the voice and style of artists while generating bespoke content and maintaining continuity across fan interactions."',
+    diff: 2
+  },
+  {
+    id: 'vc4', type: 'vocab', word: 'ubiquitous',
+    pron: '/juːˈbɪkwɪtəs/', hint: 'present everywhere...',
+    ko: '어디에나 있는; 편재하는',
+    en: 'Present, appearing, or found everywhere; seemingly omnipresent.',
+    ex: '"AI transforms personalization at scale from cost prohibitive to potentially ubiquitous."',
+    diff: 3
+  },
+  {
+    id: 'vc5', type: 'vocab', word: 'monetize',
+    pron: '/ˈmɒnɪtaɪz/', hint: 'convert to revenue...',
+    ko: '수익화하다; 가치를 현금 흐름으로 전환하다',
+    en: 'To convert an asset, service, or user base into a source of revenue.',
+    ex: '"Emotional engagement can be designed, measured, and monetized at scale."',
+    diff: 2
+  },
+  {
+    id: 'vc6', type: 'vocab', word: 'proliferate',
+    pron: '/prəˈlɪfəreɪt/', hint: 'spread, multiply rapidly...',
+    ko: '급증하다; 빠르게 확산·번식하다',
+    en: 'To increase rapidly in number or spread quickly throughout an area or population.',
+    ex: '"As AI-native platforms proliferate, frontline services could rapidly become a competitive necessity."',
+    diff: 3
+  },
+  {
+    id: 'vc7', type: 'vocab', word: 'catalyze',
+    pron: '/ˈkætəlaɪz/', hint: 'accelerate, trigger change...',
+    ko: '촉진하다; 반응·변화를 가속하다',
+    en: 'To accelerate a process or cause a reaction to happen more quickly.',
+    ex: '"Regulation has catalyzed the fast and responsible scaling of digital services, with examples ranging from financial inclusion to healthcare triage."',
+    diff: 3
+  },
+  {
+    id: 'vc8', type: 'vocab', word: 'replicate',
+    pron: '/ˈreplɪkeɪt/', hint: 'copy, reproduce at scale...',
+    ko: '복제하다; 동일하게 재현·확장하다',
+    en: 'To make an exact copy of something or reproduce it in a different context.',
+    ex: '"The lesson is not to replicate Asia\'s creators but to replicate their trust architecture."',
+    diff: 1
+  },
+  {
+    id: 'vc9', type: 'vocab', word: 'conglomerate',
+    pron: '/kənˈɡlɒmərɪt/', hint: 'diversified multi-business group...',
+    ko: '복합기업; 다각화된 대기업 그룹',
+    en: 'A large corporation made up of a number of different, sometimes unrelated, businesses.',
+    ex: '"Next-generation conglomerates are ecosystem-based organizations that move beyond pooling capital, common brands, and shared management expertise."',
+    diff: 2
+  },
+  {
+    id: 'vc10', type: 'vocab', word: 'frictionless',
+    pron: '/ˈfrɪkʃənlɪs/', hint: 'without barriers or obstacles...',
+    ko: '마찰 없는; 장벽 없이 매끄러운',
+    en: 'Operating without barriers, delays, or resistance; enabling smooth and effortless interaction.',
+    ex: '"Public–private digital infrastructure lowers friction and increases inclusion."',
+    diff: 2
+  },
+  // ── 비즈니스 전용 ──
+  {
+    id: 'bz1', type: 'biz', word: 'GMV',
+    pron: '', hint: 'platform total sales volume...',
+    ko: 'GMV: 총 거래액 (Gross Merchandise Value); 플랫폼 유통 총액',
+    en: 'The total monetary value of all goods sold through a platform or marketplace in a given period.',
+    ex: '"Douyin\'s e-commerce GMV grew approximately sevenfold in five years, from an estimated $75 billion in 2020 to $490 billion in 2024."',
+    diff: 1
+  },
+  {
+    id: 'bz2', type: 'biz', word: 'CAC',
+    pron: '', hint: 'cost to acquire one customer...',
+    ko: 'CAC: 고객 획득 비용 (Customer Acquisition Cost)',
+    en: 'The total cost of sales and marketing efforts required to acquire a new customer.',
+    ex: '"Groww\'s customer-acquisition costs represent only 12 to 13 percent of revenue—compared with 20 to 23 percent for competitor AngelOne."',
+    diff: 2
+  },
+  {
+    id: 'bz3', type: 'biz', word: 'SKU',
+    pron: '', hint: 'individual product identifier...',
+    ko: 'SKU: 재고 관리 단위 (Stock Keeping Unit); 개별 상품 식별 코드',
+    en: 'A unique identifier for each distinct product or service that can be purchased, used in inventory management.',
+    ex: '"Shein lists 2,000 to 10,000 new SKUs per day, offering up to 1.3 million new styles annually."',
+    diff: 1
+  },
+  {
+    id: 'bz4', type: 'biz', word: 'ONDC',
+    pron: '', hint: 'India open commerce network...',
+    ko: 'ONDC: 디지털 상거래 개방 네트워크 (Open Network for Digital Commerce); 인도 정부 이니셔티브',
+    en: 'India\'s government-led initiative to create an open e-commerce network, allowing any merchant to access national demand.',
+    ex: '"ONDC shows how local artisans, home businesses, and small retailers can access national demand through shared identity, payments, and logistics rails."',
+    diff: 2
+  },
+  {
+    id: 'bz5', type: 'biz', word: 'IP',
+    pron: '', hint: 'brand/character as economic asset...',
+    ko: 'IP: 지식재산 (Intellectual Property); 브랜드·캐릭터·콘텐츠의 경제적 자산화',
+    en: 'Intellectual property — creative works, brand characters, or innovations legally protected and monetized as business assets.',
+    ex: '"Pop Mart\'s Monsters IP accounts for more than a third of its revenue; this IP can become a multiproduct growth engine rather than a marketing asset."',
+    diff: 1
+  },
+  {
+    id: 'bz6', type: 'biz', word: 'UPI',
+    pron: '', hint: 'India real-time payment rail...',
+    ko: 'UPI: 통합결제인터페이스 (Unified Payments Interface); 인도 실시간 디지털 결제 인프라',
+    en: 'India\'s government-backed real-time payment system that enables instant fund transfers for hundreds of millions of users.',
+    ex: '"India\'s Unified Payments Interface provides real-time payments for hundreds of millions of users."',
+    diff: 2
+  }
+];
+
+function dots(n) {
+  return [1,2,3].map(i => `<span class="diff-dot${i<=n?' on':''}"></span>`).join('');
+}
+
+function render(filter) {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  cards.forEach(c => {
+    const hide = filter !== 'all' && c.type !== filter;
+    const isLearned = learned.has(c.id);
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap' + (hide ? ' hidden' : '');
+    wrap.innerHTML = `
+      <div class="card${isLearned?' learned':''}" id="card-${c.id}" onclick="flip('${c.id}',event)">
+        <div class="card-face card-front">
+          <span class="card-tag tag-${c.type}">${tagLabel(c.type)}</span>
+          <div class="card-word">${c.word}</div>
+          ${c.pron ? `<div class="card-pron">${c.pron}</div>` : ''}
+          <div class="card-hint">${c.hint}</div>
+          <span class="learned-badge">✓</span>
+          <div class="diff-dots">${dots(c.diff)}</div>
+          <button class="learn-btn" onclick="toggleLearn('${c.id}',event)">${isLearned?'학습 완료':'학습하기'}</button>
+        </div>
+        <div class="card-face card-back">
+          <div class="def-ko">${c.ko}</div>
+          <div class="def-en">${c.en}</div>
+          ${c.ex ? `<div class="example">${c.ex}</div>` : ''}
+        </div>
+      </div>`;
+    grid.appendChild(wrap);
+  });
+  updateProgress();
+}
+
+function tagLabel(t) {
+  return {phrasal:'Phrasal Verb',idiom:'Idiom',colloc:'Collocation',vocab:'고급단어',biz:'비즈니스'}[t]||t;
+}
+
+function flip(id, e) {
+  if (e.target.classList.contains('learn-btn')) return;
+  document.getElementById('card-'+id).classList.toggle('flipped');
+}
+
+function toggleLearn(id, e) {
+  e.stopPropagation();
+  const card = document.getElementById('card-'+id);
+  const btn = card.querySelector('.learn-btn');
+  if (learned.has(id)) {
+    learned.delete(id);
+    card.classList.remove('learned');
+    btn.textContent = '학습하기';
+  } else {
+    learned.add(id);
+    card.classList.add('learned');
+    btn.textContent = '학습 완료';
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...learned]));
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = cards.length;
+  const done = learned.size;
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('plabel').textContent = `${done} / ${total} 학습 완료`;
+}
+
+let current = 'all';
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    current = btn.dataset.filter;
+    render(current);
+  });
+});
+
+render('all');
+</script>
+</body>
+</html>

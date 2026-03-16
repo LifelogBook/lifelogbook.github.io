@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>At 250 — Vocabulary Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0c1a3a;
+    --ink2: #1a2d5a;
+    --accent: #b8860b;
+    --accent2: #8b6700;
+    --sky: #fef9e7;
+    --bg: #fffef5;
+    --border: #f0d988;
+    --radius: 14px;
+    --shadow: 0 4px 20px rgba(12,26,58,0.10);
+    --flip: 0.55s;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #0a1628 0%, #1a2d5a 50%, #9b1c2e 100%);
+    color: #fff;
+    padding: 28px 24px 22px;
+    text-align: center;
+  }
+  header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.3rem,4vw,1.8rem); letter-spacing: .02em; }
+  header .badge {
+    display: inline-block; margin-top: 8px;
+    background: rgba(184,134,11,0.28); border: 1px solid rgba(240,217,136,0.5);
+    color: #f0d988; font-size: .72rem; font-weight: 600; letter-spacing: .08em;
+    padding: 3px 12px; border-radius: 20px; text-transform: uppercase;
+  }
+  /* ── PROGRESS ── */
+  .progress-wrap { padding: 14px 20px 0; }
+  .progress-bar-track { background: #e8e4d0; border-radius: 99px; height: 6px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; transition: width .4s; }
+  .progress-label { font-size: .75rem; color: var(--ink2); margin-top: 5px; text-align: right; opacity: .75; }
+
+  /* ── FILTERS ── */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 20px 4px; }
+  .filters button {
+    font-family: 'DM Sans', sans-serif; font-size: .72rem; font-weight: 600;
+    letter-spacing: .06em; text-transform: uppercase;
+    border: 1.5px solid var(--border); background: #fff; color: var(--ink2);
+    padding: 5px 14px; border-radius: 99px; cursor: pointer; transition: all .18s;
+  }
+  .filters button:hover { background: var(--sky); }
+  .filters button.active { background: var(--ink2); color: #fff; border-color: var(--ink2); }
+
+  /* ── GRID ── */
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px; padding: 16px 20px 32px;
+  }
+
+  /* ── CARD ── */
+  .card-wrap { perspective: 900px; height: 180px; cursor: pointer; }
+  .card-wrap.hidden { display: none; }
+  .card { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform var(--flip) cubic-bezier(.4,0,.2,1); }
+  .card-wrap.flipped .card { transform: rotateY(180deg); }
+  .face {
+    position: absolute; inset: 0; border-radius: var(--radius);
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 16px; text-align: center;
+    box-shadow: var(--shadow); border: 1.5px solid var(--border);
+  }
+  /* FRONT */
+  .front { background: #fff; }
+  .tag {
+    font-size: .62rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+    padding: 2px 9px; border-radius: 99px; color: #fff; margin-bottom: 10px;
+  }
+  .tag.phrasal  { background: #b8860b; }
+  .tag.idiom    { background: #8b0000; }
+  .tag.colloc   { background: #1d4ed8; }
+  .tag.vocab    { background: #7c3aed; }
+  .tag.biz      { background: #065f46; }
+
+  .word { font-family: 'DM Serif Display', serif; font-size: 1.18rem; color: var(--ink); line-height: 1.25; }
+  .pron { font-size: .72rem; color: #6b7280; margin-top: 4px; }
+  .dots { display: flex; gap: 4px; margin-top: 10px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #d1d5db; }
+  .dot.on { background: var(--accent); }
+
+  /* BACK */
+  .back {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, #fffef5 0%, #fef9e7 100%);
+  }
+  .ko { font-size: .98rem; font-weight: 600; color: var(--ink); line-height: 1.45; }
+  .en-hint { font-size: .72rem; color: #6b7280; margin-top: 6px; font-style: italic; }
+  .learn-btn {
+    margin-top: 10px; font-size: .68rem; font-weight: 700; letter-spacing: .07em;
+    text-transform: uppercase; border: 1.5px solid var(--accent);
+    color: var(--accent); background: transparent; border-radius: 99px;
+    padding: 3px 12px; cursor: pointer; transition: all .16s;
+  }
+  .learn-btn:hover, .card-wrap.learned .learn-btn { background: var(--accent); color: #fff; }
+  .card-wrap.learned .face { opacity: .72; }
+  .card-wrap.learned .front { background: linear-gradient(135deg, #fffef5 0%, #fef9e7 100%); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>At 250, Sustaining America's Competitive Edge</h1>
+  <div class="badge">McKinsey Global Institute · 2026</div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-bar-track"><div class="progress-bar-fill" id="pbar" style="width:0%"></div></div>
+  <div class="progress-label" id="plabel">0 / 35 learned</div>
+</div>
+
+<div class="filters">
+  <button class="active" data-filter="all">All (35)</button>
+  <button data-filter="phrasal">Phrasal (6)</button>
+  <button data-filter="idiom">Idiom (6)</button>
+  <button data-filter="colloc">Colloc (7)</button>
+  <button data-filter="vocab">고급단어 (10)</button>
+  <button data-filter="biz">비즈니스 (6)</button>
+</div>
+
+<div id="grid">
+
+  <!-- ── PHRASAL VERBS ── -->
+  <div class="card-wrap" data-cat="phrasal" data-id="pv1">
+    <div class="card">
+      <div class="face front">
+        <span class="tag phrasal">Phrasal</span>
+        <span class="word">draw on</span>
+        <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">~을 활용하다<br>기반으로 삼다</span>
+        <span class="en-hint">"draw on its twin foundations"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="phrasal" data-id="pv2">
+    <div class="card">
+      <div class="face front">
+        <span class="tag phrasal">Phrasal</span>
+        <span class="word">fall behind</span>
+        <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">뒤처지다<br>경쟁에서 처지다</span>
+        <span class="en-hint">"risk falling behind in critical tech"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="phrasal" data-id="pv3">
+    <div class="card">
+      <div class="face front">
+        <span class="tag phrasal">Phrasal</span>
+        <span class="word">build out</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">~을 구축·개발하다<br>인프라를 확장하다</span>
+        <span class="en-hint">"build out the infrastructure backbone"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="phrasal" data-id="pv4">
+    <div class="card">
+      <div class="face front">
+        <span class="tag phrasal">Phrasal</span>
+        <span class="word">give way to</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">~에 자리를 내주다<br>~로 대체되다</span>
+        <span class="en-hint">"agrarian era gave way to industrial"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="phrasal" data-id="pv5">
+    <div class="card">
+      <div class="face front">
+        <span class="tag phrasal">Phrasal</span>
+        <span class="word">double down on</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">~에 더욱 집중하다<br>강화하다</span>
+        <span class="en-hint">"double down on innovation"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="phrasal" data-id="pv6">
+    <div class="card">
+      <div class="face front">
+        <span class="tag phrasal">Phrasal</span>
+        <span class="word">come through</span>
+        <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">극복하다<br>어려움을 이겨내다</span>
+        <span class="en-hint">"America has consistently come through"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── IDIOMS ── -->
+  <div class="card-wrap" data-cat="idiom" data-id="id1">
+    <div class="card">
+      <div class="face front">
+        <span class="tag idiom">Idiom</span>
+        <span class="word">competitive edge</span>
+        <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">경쟁 우위<br>경쟁에서 앞서는 강점</span>
+        <span class="en-hint">"sustaining America's competitive edge"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="idiom" data-id="id2">
+    <div class="card">
+      <div class="face front">
+        <span class="tag idiom">Idiom</span>
+        <span class="word">set the frontier</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">최전선을 개척하다<br>기술 경계를 정의하다</span>
+        <span class="en-hint">"gone on to set the global technology frontier"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="idiom" data-id="id3">
+    <div class="card">
+      <div class="face front">
+        <span class="tag idiom">Idiom</span>
+        <span class="word">at a remove of</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">~의 거리에서<br>~가 지난 지금에서</span>
+        <span class="en-hint">"at a remove of 250 years, it's hard to conceive…"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="idiom" data-id="id4">
+    <div class="card">
+      <div class="face front">
+        <span class="tag idiom">Idiom</span>
+        <span class="word">raise the stakes</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">판돈을 높이다<br>위험·경쟁 강도를 높이다</span>
+        <span class="en-hint">"geopolitical contention raises the stakes"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="idiom" data-id="id5">
+    <div class="card">
+      <div class="face front">
+        <span class="tag idiom">Idiom</span>
+        <span class="word">abiding strength</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">항구적 강점<br>시간이 지나도 지속되는 강점</span>
+        <span class="en-hint">"abiding strengths on which to draw"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="idiom" data-id="id6">
+    <div class="card">
+      <div class="face front">
+        <span class="tag idiom">Idiom</span>
+        <span class="word">national project</span>
+        <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">국가적 과제<br>국가 전체가 나서야 할 사업</span>
+        <span class="en-hint">"America's national project"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COLLOCATIONS ── -->
+  <div class="card-wrap" data-cat="colloc" data-id="co1">
+    <div class="card">
+      <div class="face front">
+        <span class="tag colloc">Colloc</span>
+        <span class="word">fiscal health</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">재정 건전성<br>국가 재정의 지속가능성</span>
+        <span class="en-hint">"deteriorating fiscal health"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="colloc" data-id="co2">
+    <div class="card">
+      <div class="face front">
+        <span class="tag colloc">Colloc</span>
+        <span class="word">labor productivity</span>
+        <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">노동생산성<br>노동 단위당 산출량</span>
+        <span class="en-hint">"exceeded peers in labor productivity and growth"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="colloc" data-id="co3">
+    <div class="card">
+      <div class="face front">
+        <span class="tag colloc">Colloc</span>
+        <span class="word">innovation ecosystem</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">혁신 생태계<br>혁신을 지원하는 제도·자원·인재 환경</span>
+        <span class="en-hint">"flourishing US knowledge ecosystems"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="colloc" data-id="co4">
+    <div class="card">
+      <div class="face front">
+        <span class="tag colloc">Colloc</span>
+        <span class="word">purchasing power parity</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">구매력 평가 (PPP)<br>국가 간 실질 생활수준 비교 지표</span>
+        <span class="en-hint">"GDP per capita, purchasing power parity"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="colloc" data-id="co5">
+    <div class="card">
+      <div class="face front">
+        <span class="tag colloc">Colloc</span>
+        <span class="word">greenfield investment</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">그린필드 투자<br>외국 기업의 신규 시설 건설 투자</span>
+        <span class="en-hint">"announced inflows of greenfield FDI roughly doubled"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="colloc" data-id="co6">
+    <div class="card">
+      <div class="face front">
+        <span class="tag colloc">Colloc</span>
+        <span class="word">national debt</span>
+        <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">국가 채무<br>정부의 누적 부채 총액</span>
+        <span class="en-hint">"a mounting national debt"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="colloc" data-id="co7">
+    <div class="card">
+      <div class="face front">
+        <span class="tag colloc">Colloc</span>
+        <span class="word">market capitalization</span>
+        <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">시가총액<br>상장 기업의 주식 총가치</span>
+        <span class="en-hint">"59 of the world's top 100 firms by market capitalization"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── VOCAB ── -->
+  <div class="card-wrap" data-cat="vocab" data-id="vc1">
+    <div class="card">
+      <div class="face front">
+        <span class="tag vocab">고급단어</span>
+        <span class="word">agrarian</span>
+        <span class="pron">/əˈɡrɛriən/</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">농업의<br>농경 중심의</span>
+        <span class="en-hint">"transformed from a small agrarian economy"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="vocab" data-id="vc2">
+    <div class="card">
+      <div class="face front">
+        <span class="tag vocab">고급단어</span>
+        <span class="word">endowment</span>
+        <span class="pron">/ɪnˈdaʊmənt/</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">부존자원<br>타고난 강점·자원</span>
+        <span class="en-hint">"a bountiful natural endowment"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="vocab" data-id="vc3">
+    <div class="card">
+      <div class="face front">
+        <span class="tag vocab">고급단어</span>
+        <span class="word">geopolitical</span>
+        <span class="pron">/ˌdʒiːoʊpəˈlɪtɪkəl/</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">지정학적인<br>지리와 정치가 결합된</span>
+        <span class="en-hint">"geopolitical contention is growing"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="vocab" data-id="vc4">
+    <div class="card">
+      <div class="face front">
+        <span class="tag vocab">고급단어</span>
+        <span class="word">incumbent</span>
+        <span class="pron">/ɪnˈkʌmbənt/</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">현직의<br>(책임이) 의무적인</span>
+        <span class="en-hint">"it is incumbent on this generation"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="vocab" data-id="vc5">
+    <div class="card">
+      <div class="face front">
+        <span class="tag vocab">고급단어</span>
+        <span class="word">fiscal</span>
+        <span class="pron">/ˈfɪskəl/</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">재정의<br>국가 세입·세출에 관한</span>
+        <span class="en-hint">"deteriorating fiscal health"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="vocab" data-id="vc6">
+    <div class="card">
+      <div class="face front">
+        <span class="tag vocab">고급단어</span>
+        <span class="word">contention</span>
+        <span class="pron">/kənˈtenʃən/</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">경합; 주장<br>논쟁, 경쟁</span>
+        <span class="en-hint">"geopolitical contention is growing"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="vocab" data-id="vc7">
+    <div class="card">
+      <div class="face front">
+        <span class="tag vocab">고급단어</span>
+        <span class="word">trajectory</span>
+        <span class="pron">/trəˈdʒektəri/</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">궤도; 발전 경로<br>추세선</span>
+        <span class="en-hint">"showed a downward trajectory in math"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="vocab" data-id="vc8">
+    <div class="card">
+      <div class="face front">
+        <span class="tag vocab">고급단어</span>
+        <span class="word">sovereignty</span>
+        <span class="pron">/ˈsɒvrənti/</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">주권<br>독립적 자기 결정권</span>
+        <span class="en-hint">"economic and technological sovereignty"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="vocab" data-id="vc9">
+    <div class="card">
+      <div class="face front">
+        <span class="tag vocab">고급단어</span>
+        <span class="word">proliferate</span>
+        <span class="pron">/prəˈlɪfəreɪt/</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">급증하다<br>빠르게 확산되다</span>
+        <span class="en-hint">"as AI tools proliferate across industries"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="vocab" data-id="vc10">
+    <div class="card">
+      <div class="face front">
+        <span class="tag vocab">고급단어</span>
+        <span class="word">stewardship</span>
+        <span class="pron">/ˈstjuːərdʃɪp/</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">청지기적 책임<br>자원·사회를 맡아 관리하는 의무</span>
+        <span class="en-hint">"the stewardship of natural resources"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BIZ ── -->
+  <div class="card-wrap" data-cat="biz" data-id="bz1">
+    <div class="card">
+      <div class="face front">
+        <span class="tag biz">비즈니스</span>
+        <span class="word">GDP</span>
+        <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">국내총생산<br>Gross Domestic Product</span>
+        <span class="en-hint">"generates 26 percent of global GDP"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="biz" data-id="bz2">
+    <div class="card">
+      <div class="face front">
+        <span class="tag biz">비즈니스</span>
+        <span class="word">FDI</span>
+        <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">외국인직접투자<br>Foreign Direct Investment</span>
+        <span class="en-hint">"greenfield foreign direct investment (FDI) roughly doubled"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="biz" data-id="bz3">
+    <div class="card">
+      <div class="face front">
+        <span class="tag biz">비즈니스</span>
+        <span class="word">R&D</span>
+        <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">연구개발<br>Research and Development</span>
+        <span class="en-hint">"27 percent of the world's R&D dollars"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="biz" data-id="bz4">
+    <div class="card">
+      <div class="face front">
+        <span class="tag biz">비즈니스</span>
+        <span class="word">PPP</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">구매력 평가<br>Purchasing Power Parity</span>
+        <span class="en-hint">"GDP per capita, PPP — highest among large nations"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="biz" data-id="bz5">
+    <div class="card">
+      <div class="face front">
+        <span class="tag biz">비즈니스</span>
+        <span class="word">TFP</span>
+        <div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">총요소생산성<br>Total Factor Productivity</span>
+        <span class="en-hint">"TFP growth driven by innovation and technology"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-wrap" data-cat="biz" data-id="bz6">
+    <div class="card">
+      <div class="face front">
+        <span class="tag biz">비즈니스</span>
+        <span class="word">MGI</span>
+        <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <div class="face back">
+        <span class="ko">맥킨지 글로벌 인스티튜트<br>McKinsey Global Institute</span>
+        <span class="en-hint">"McKinsey Global Institute (MGI) · 2026"</span>
+        <button class="learn-btn">✓ 외웠어요</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- #grid -->
+
+<script>
+const LS_KEY = 'at_250_americas_competitive_edge_learned';
+let learned = new Set(JSON.parse(localStorage.getItem(LS_KEY) || '[]'));
+
+function saveLS() { localStorage.setItem(LS_KEY, JSON.stringify([...learned])); }
+function updateProgress() {
+  const total = document.querySelectorAll('.card-wrap').length;
+  const n = learned.size;
+  document.getElementById('pbar').style.width = (n/total*100)+'%';
+  document.getElementById('plabel').textContent = n+' / '+total+' learned';
+}
+
+// restore learned state
+document.querySelectorAll('.card-wrap').forEach(wrap => {
+  if (learned.has(wrap.dataset.id)) wrap.classList.add('learned');
+});
+updateProgress();
+
+// flip
+document.querySelectorAll('.card-wrap').forEach(wrap => {
+  wrap.addEventListener('click', e => {
+    if (e.target.classList.contains('learn-btn')) return;
+    wrap.classList.toggle('flipped');
+  });
+});
+
+// learn buttons
+document.querySelectorAll('.learn-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const wrap = btn.closest('.card-wrap');
+    const id = wrap.dataset.id;
+    if (learned.has(id)) { learned.delete(id); wrap.classList.remove('learned'); btn.textContent = '✓ 외웠어요'; }
+    else { learned.add(id); wrap.classList.add('learned'); btn.textContent = '↩ 취소'; }
+    saveLS(); updateProgress();
+  });
+});
+
+// filter
+document.querySelectorAll('.filters button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.card-wrap').forEach(w => {
+      w.classList.toggle('hidden', f !== 'all' && w.dataset.cat !== f);
+    });
+  });
+});
+</script>
+</body>
+</html>
