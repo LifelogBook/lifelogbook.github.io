@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "jekyll",
-      "runtimeExecutable": "bundle",
+      "runtimeExecutable": "/Users/youngtaekpark/.rubies/ruby-3.4.1/bin/bundle",
       "runtimeArgs": ["exec", "jekyll", "serve", "--livereload", "--future"],
       "port": 4000,
       "autoPort": false
