@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulary — A New Way of Thinking About Metabolic Health</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #052e16;
+    --ink2: #14532d;
+    --accent: #16a34a;
+    --accent2: #15803d;
+    --sky: #dcfce7;
+    --bg: #f0fdf4;
+    --border: #86efac;
+    --card-bg: #ffffff;
+    --card-back: #052e16;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+  header {
+    background: linear-gradient(135deg, #052e16 0%, #14532d 50%, #059669 100%);
+    color: #fff;
+    padding: 28px 24px 22px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.1rem, 3.5vw, 1.45rem);
+    letter-spacing: .01em;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .badge {
+    display: inline-block;
+    border: 1.5px solid #86efac;
+    color: #86efac;
+    border-radius: 20px;
+    padding: 3px 14px;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .controls { padding: 16px 16px 0; max-width: 900px; margin: 0 auto; }
+
+  .progress-bar-wrap { height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 6px; }
+  .progress-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #34d399); transition: width .4s; }
+  .progress-label { font-size: .78rem; color: var(--ink2); text-align: right; margin-bottom: 12px; font-weight: 500; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .filter-btn {
+    border: 1.5px solid var(--border);
+    background: var(--card-bg);
+    color: var(--ink2);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: .04em;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    padding: 0 16px 32px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .card-wrap { perspective: 900px; }
+  .card {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.4,0,.2,1);
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute; inset: 0;
+    border-radius: 14px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 18px 14px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,.07);
+  }
+  .card-front { background: var(--card-bg); border: 1.5px solid var(--border); }
+  .card-back { background: var(--card-back); border: 1.5px solid #14532d; transform: rotateY(180deg); color: #dcfce7; }
+  .card-wrap.learned .card-front {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-color: var(--accent);
+    opacity: .75;
+  }
+
+  .tag {
+    font-size: .62rem; font-weight: 700; letter-spacing: .09em;
+    text-transform: uppercase; border-radius: 10px;
+    padding: 2px 9px; margin-bottom: 10px; color: #fff;
+  }
+  .tag-phrasal  { background: #16a34a; }
+  .tag-idiom    { background: #0891b2; }
+  .tag-colloc   { background: #7c3aed; }
+  .tag-vocab    { background: #b45309; }
+  .tag-biz      { background: #9b1c2e; }
+
+  .word { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--ink); margin-bottom: 6px; line-height: 1.25; }
+  .pron { font-size: .72rem; color: #6b8ab0; margin-bottom: 4px; }
+  .dots { display: flex; gap: 4px; margin-top: 6px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .dot.on { background: var(--accent); }
+
+  .back-ko { font-size: .9rem; font-weight: 600; color: #dcfce7; margin-bottom: 8px; line-height: 1.4; }
+  .back-nuance { font-size: .71rem; color: #86efac; line-height: 1.5; }
+  .back-example { font-size: .67rem; color: #4ade80; margin-top: 6px; font-style: italic; line-height: 1.4; }
+
+  .learned-check {
+    position: absolute; top: 10px; right: 10px;
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: .7rem; color: transparent;
+    transition: all .2s; z-index: 10;
+  }
+  .card-wrap.learned .learned-check { background: var(--accent); border-color: var(--accent); color: #fff; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>A New Way of Thinking About Metabolic Health</h1>
+  <div class="badge">McKinsey &amp; Company · 2026</div>
+</header>
+
+<div class="controls">
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="bar" style="width:0%"></div></div>
+  <div class="progress-label"><span id="learned-count">0</span> / 35 learned</div>
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">ALL (35)</button>
+    <button class="filter-btn" data-filter="phrasal">PHRASAL (6)</button>
+    <button class="filter-btn" data-filter="idiom">IDIOM (6)</button>
+    <button class="filter-btn" data-filter="colloc">COLLOC (7)</button>
+    <button class="filter-btn" data-filter="vocab">고급단어 (10)</button>
+    <button class="filter-btn" data-filter="biz">비즈니스 (6)</button>
+  </div>
+</div>
+
+<div id="grid"></div>
+
+<script>
+const STORAGE_KEY = 'metabolic_health_glp1_revolution_learned';
+
+const cards = [
+  // ── PHRASAL VERB (6) ──
+  {
+    id:'pv1', cat:'phrasal', word:'shift away from', pron:'',
+    ko:'~에서 벗어나다; 기존 방식·사고에서 탈피하다',
+    nuance:'shift=이동하다 + away=멀리 + from=~로부터 → 기존 위치에서 다른 방향으로 이동. "shift away from unproductive conversations about everybody being responsible for their weight" = 비만을 개인 책임으로 보는 시각에서 벗어나다.',
+    example:'"GLP-1 has enabled us to shift away from unproductive conversations about everybody being responsible for their weight."',
+    diff:2
+  },
+  {
+    id:'pv2', cat:'phrasal', word:'pick up', pron:'',
+    ko:'발견하다; 파악하다; 알아채다',
+    nuance:'pick=집다 + up=위로 → 무언가를 감지해 \'집어올리다\'. "haven\'t picked up big concerns" = 큰 문제를 발견하지 못했다. 물건을 줍는 것처럼 정보를 \'건져낸다\'는 이미지.',
+    example:'"for now we haven\'t picked up big concerns that would change the picture I\'ve just characterized"',
+    diff:2
+  },
+  {
+    id:'pv3', cat:'phrasal', word:'step up', pron:'',
+    ko:'나서다; 역할을 맡다; 앞으로 나오다',
+    nuance:'step=발걸음 + up=위로 → 앞에 나서다. "a different kind of stakeholder stepping up" = 예상치 못한 이해관계자가 자발적으로 역할을 맡다. "step up to the plate(배팅 자리로 나오다)"에서 유래.',
+    example:'"That\'s a different kind of stakeholder stepping up and doing something in the field of metabolic health."',
+    diff:1
+  },
+  {
+    id:'pv4', cat:'phrasal', word:'follow through', pron:'',
+    ko:'끝까지 실행하다; 일관되게 이행하다',
+    nuance:'follow=따르다 + through=통과해서 → 시작한 것을 끝까지 관철하다. 골프·테니스에서 공을 친 후 스윙을 끝까지 이어가는 동작에서 유래.',
+    example:'"There are things to start with, and then things to follow through."',
+    diff:2
+  },
+  {
+    id:'pv5', cat:'phrasal', word:'open up', pron:'',
+    ko:'열다; 가능성을 확장하다; (대화·기회를) 트다',
+    nuance:'"help open up this conversation about metabolic health" = 억눌려 있던 대화를 활짝 열다. 닫혀 있던 공간을 여는 것처럼 기회나 가능성을 확대하는 이미지.',
+    example:'"These drugs help open up this conversation about metabolic health."',
+    diff:1
+  },
+  {
+    id:'pv6', cat:'phrasal', word:'watch out for', pron:'',
+    ko:'주시하다; 경계하다; 유의하다',
+    nuance:'watch=보다 + out=밖으로 + for=~을 위해 → 눈을 크게 뜨고 무언가를 경계하다. "definitely a thing to watch for" = 반드시 주목해야 할 사항.',
+    example:'"So, we don\'t know what major problems to watch out for."',
+    diff:1
+  },
+
+  // ── IDIOM (6) ──
+  {
+    id:'id1', cat:'idiom', word:'intractable condition', pron:'',
+    ko:'다루기 어려운 상태; 해결 불가능해 보이던 문제',
+    nuance:'intractable=다루기 힘든(in-=아닌 + tractable=다루기 쉬운). 과거 비만은 intractable(어쩔 수 없는)로 여겨졌지만, GLP-1 이후 treatable disease(치료 가능한 질병)로 인식이 전환됨.',
+    example:'"For many years, we\'ve treated obesity as an intractable condition. And now, it is a treatable disease."',
+    diff:3
+  },
+  {
+    id:'id2', cat:'idiom', word:'on track to be', pron:'',
+    ko:'~가 될 것으로 예상되는; 목표를 향해 순항 중인',
+    nuance:'on track=궤도 위에 → 기차가 정해진 선로를 달리듯 목표를 향해 제대로 진행 중. "on track to be the biggest drug class" = 역대 최대 약물 계열이 될 궤도에 있다.',
+    example:'"GLP-1 is on track to be probably the biggest drug class we have ever seen."',
+    diff:2
+  },
+  {
+    id:'id3', cat:'idiom', word:'run before we can walk', pron:'',
+    ko:'기초도 없이 앞서가다; 순서를 무시하고 성급하게 나아가다',
+    nuance:'아직 걷지도 못하는데 달리려 한다 → 준비 없이 성급하게 행동하는 것을 경고. 5가지 변혁 레버가 동시에 필요하지만 순서가 있다는 맥락에서 사용.',
+    example:'"We can\'t run before we can walk. It\'s not like you\'ll pull a switch. It\'s more like a long journey."',
+    diff:2
+  },
+  {
+    id:'id4', cat:'idiom', word:'out of the blue', pron:'',
+    ko:'갑자기; 예고 없이; 뜬금없이',
+    nuance:'blue=맑은 하늘 → "bolt out of the blue"(맑은 하늘에 벼락)에서 유래. "not going to happen automatically out of the blue" = 저절로 갑자기 이루어지지 않는다.',
+    example:'"We know that\'s not going to happen automatically out of the blue."',
+    diff:1
+  },
+  {
+    id:'id5', cat:'idiom', word:'moonshot', pron:'',
+    ko:'달 착륙처럼 야심찬 도전; 극히 어렵지만 가치 있는 목표',
+    nuance:'1969년 아폴로 달 착륙에서 유래. "It is a true moonshot that is cross-sector, cross-society." = 사회 전체가 나서야 할 만큼 어렵고 야심 찬 목표.',
+    example:'"It is a true moonshot that is cross-sector, cross-society, and it is needed if we want to accomplish a metabolic health revolution."',
+    diff:2
+  },
+  {
+    id:'id6', cat:'idiom', word:'food as medicine', pron:'',
+    ko:'식품이 의약품 역할; 영양으로 질병을 예방·치료하는 접근',
+    nuance:'"Let food be thy medicine"(히포크라테스)에서 유래. 현대적 용법: 의사가 약 대신 또는 약과 함께 음식을 처방. 미국에서 보험·식품산업 간 새로운 인센티브 구조로 발전 중.',
+    example:'"What\'s also interesting is the notion of food as medicine...food is being prescribed to people instead of, or in addition to, drugs."',
+    diff:1
+  },
+
+  // ── COLLOCATION (7) ──
+  {
+    id:'co1', cat:'colloc', word:'metabolic health', pron:'',
+    ko:'대사 건강; 혈당·혈압·혈중지질·장기 기능의 복합적 상태',
+    nuance:'metabolism=대사(음식→에너지 변환). 단순히 비만 여부가 아니라 혈당·혈압·혈중지질·신장·간 기능 등 전반적인 신진대사 건강 상태를 포괄.',
+    example:'"metabolic health is a much bigger notion than just obesity"',
+    diff:2
+  },
+  {
+    id:'co2', cat:'colloc', word:'insulin resistance', pron:'',
+    ko:'인슐린 저항성; 세포가 인슐린에 반응하지 않아 혈당이 높아지는 상태',
+    nuance:'insulin=인슐린(혈당 조절 호르몬) + resistance=저항. 당뇨·비만의 핵심 선행 지표. Swiss Re가 포트폴리오 위험 요인으로 주목한 지표.',
+    example:'"Swiss Re...they have identified that ill metabolic health is a major potential risk to their portfolio...in relation to insulin resistance"',
+    diff:2
+  },
+  {
+    id:'co3', cat:'colloc', word:'continuous glucose monitoring', pron:'',
+    ko:'연속혈당모니터링(CGM); 피부 아래 센서로 혈당을 24시간 실시간 추적하는 기술',
+    nuance:'continuous=지속적인 + glucose=포도당 + monitoring=모니터링. 당뇨 환자용이었지만, 이제 건강한 사람도 생체 피드백을 위해 사용.',
+    example:'"for how they continue glucose monitoring...increasingly also used by \'healthy individuals\' as a consumer value proposition"',
+    diff:2
+  },
+  {
+    id:'co4', cat:'colloc', word:'economic uplift', pron:'',
+    ko:'경제적 향상; 건강 개선으로 발생하는 경제적 가치 상승',
+    nuance:'uplift=들어 올림 → 경제 수준을 끌어올리는 것. "trillions in potential economic uplift" = 대사 건강 혁명이 가져올 수조 달러 규모의 경제적 가치.',
+    example:'"representing trillions in potential economic uplift"',
+    diff:2
+  },
+  {
+    id:'co5', cat:'colloc', word:'risk factor', pron:'',
+    ko:'위험 요인; 질병 발생 가능성을 높이는 요소',
+    nuance:'risk=위험 + factor=요인. "too much weight is a risk factor for so many diseases" = 과체중은 수많은 질병의 위험 요인. 역학·의학에서 표준 용어.',
+    example:'"Given how important too much weight is as a risk factor for so many diseases"',
+    diff:1
+  },
+  {
+    id:'co6', cat:'colloc', word:'drug class', pron:'',
+    ko:'약물 계열; 비슷한 작용 기전을 공유하는 약물들의 집합',
+    nuance:'class=종류·범주. 같은 수용체나 메커니즘에 작용하는 약물들을 하나의 class로 묶음. "biggest drug class we have ever seen" = GLP-1이 역대 최대 규모의 약물 계열이 될 것.',
+    example:'"GLP-1 is on track to be probably the biggest drug class we have ever seen."',
+    diff:1
+  },
+  {
+    id:'co7', cat:'colloc', word:'safety profile', pron:'',
+    ko:'안전성 프로파일; 약물의 부작용·위험성에 대한 종합적인 데이터',
+    nuance:'profile=윤곽·특성 → 안전성의 전체적인 특성. "We don\'t know its long-term safety profile in healthy individuals." = 건강한 사람에게 장기 복용 시 어떤 부작용이 있는지 아직 모른다.',
+    example:'"We don\'t fully know its long-term effectiveness. We don\'t know its long-term safety profile in healthy individuals."',
+    diff:2
+  },
+
+  // ── 고급단어 (10) ──
+  {
+    id:'vc1', cat:'vocab', word:'intractable', pron:'/ɪnˈtræktəbl/',
+    ko:'다루기 어려운; 해결하기 힘든; 고집스러운',
+    nuance:'in-(아닌) + tractable(다루기 쉬운, tract=끌다, 라틴어) → 끌고 다닐 수 없을 만큼 다루기 힘든. 비만을 "intractable condition"으로 여기던 시각에서, GLP-1 이후 "treatable disease"로 전환된 것이 핵심.',
+    example:'"For many years, we\'ve treated obesity as an intractable condition."',
+    diff:3
+  },
+  {
+    id:'vc2', cat:'vocab', word:'metabolic', pron:'/ˌmetəˈbɒlɪk/',
+    ko:'대사의; 체내 화학 반응에 관한',
+    nuance:'metabolism(대사)의 형용사형. metabole=변화(그리스어) → 음식→에너지 변환 등 생명 유지에 필요한 모든 화학 반응을 아우름.',
+    example:'"metabolic health is a much bigger notion than just obesity"',
+    diff:2
+  },
+  {
+    id:'vc3', cat:'vocab', word:'sedentary', pron:'/ˈsedənteri/',
+    ko:'앉아서 생활하는; 활동량이 적은',
+    nuance:'sedere=앉다(라틴어) → 계속 앉아 있는 생활 방식. "increasingly sedentary population" = 신체 활동이 줄어든 현대인. Singapore의 step challenge가 이 문제를 해결한 사례.',
+    example:'"Singapore has been successfully doing a step challenge...to increase the activity of an increasingly sedentary population."',
+    diff:2
+  },
+  {
+    id:'vc4', cat:'vocab', word:'conducive', pron:'/kənˈdjuːsɪv/',
+    ko:'~에 도움이 되는; ~을 촉진하는 조건을 제공하는',
+    nuance:'conduce(이끌다, 라틴어) + -ive. "conducive to metabolic health" = 대사 건강에 유리한 조건을 제공하는. 항상 "conducive to ~" 형태로 씀.',
+    example:'"every company provides an ecosystem that can be more or less conducive to metabolic health across industries"',
+    diff:3
+  },
+  {
+    id:'vc5', cat:'vocab', word:'biofeedback', pron:'/ˈbaɪoʊfiːdbæk/',
+    ko:'생체 피드백; 신체 신호를 실시간으로 모니터링하여 행동을 개선하는 기법',
+    nuance:'bio=생체 + feedback=피드백. CGM이 대표적 biofeedback 도구. "emerging evidence that if you know how well your body is functioning...that has implications for how they continue glucose monitoring."',
+    example:'"Since you liked Yuka, I wanted to emphasize something from a consumer perspective, which is about this continuous biofeedback."',
+    diff:2
+  },
+  {
+    id:'vc6', cat:'vocab', word:'satiety', pron:'/səˈtaɪəti/',
+    ko:'포만감; 충족감',
+    nuance:'satis=충분한(라틴어) → 충분히 먹어서 더 이상 먹고 싶지 않은 상태. GLP-1 약물이 뇌에서 satiety 신호를 강화하여 식욕을 억제하는 원리.',
+    example:'"On the upside, these drugs may give you a sense of your own satiety and slow food processing via the brain."',
+    diff:3
+  },
+  {
+    id:'vc7', cat:'vocab', word:'intervention', pron:'/ˌɪntəˈvenʃən/',
+    ko:'개입; 상황을 바꾸기 위한 적극적 조치',
+    nuance:'inter-(사이에) + venire(오다, 라틴어) → 사이에 끼어들다. 의료적 개입(약물·수술), 정책적 개입(교육·법규), 행동 개입(앱·인센티브) 등을 모두 포괄.',
+    example:'"specifically, the potential interventions for sparking a metabolic health revolution"',
+    diff:2
+  },
+  {
+    id:'vc8', cat:'vocab', word:'spectrum', pron:'/ˈspektrəm/',
+    ko:'스펙트럼; 연속적인 범위',
+    nuance:'specere=보다(라틴어) → 빛의 스펙트럼에서 유래. "define it on a spectrum from being metabolically unhealthy to optimal metabolic health" = 건강-불건강을 이분법이 아닌 연속선으로 봄.',
+    example:'"We need to define it on a spectrum from being metabolically unhealthy to optimal metabolic health."',
+    diff:1
+  },
+  {
+    id:'vc9', cat:'vocab', word:'transparency', pron:'/trænsˈpærənsi/',
+    ko:'투명성; 정보가 명확하게 공개되는 상태',
+    nuance:'trans-(통과해서) + parere(보이다, 라틴어) → 통해서 보이는. "Most people do not know how their metabolic health is." = 자신의 대사 건강 상태를 모르는 것이 투명성 부재의 문제.',
+    example:'"Another shift we need is more transparency as individuals. Most people do not know how their metabolic health is."',
+    diff:1
+  },
+  {
+    id:'vc10', cat:'vocab', word:'embed', pron:'/ɪmˈbed/',
+    ko:'내재화하다; 체계 안에 깊숙이 심어놓다',
+    nuance:'em(안에) + bed(자리) → 깊숙이 자리잡게 하다. "embed metabolic health in education" = 교육 과정 안에 대사 건강 개념을 녹여넣다. 표면적 추가가 아닌 구조적 통합.',
+    example:'"there is tremendous opportunity to do more and embed metabolic health in education"',
+    diff:1
+  },
+
+  // ── 비즈니스 전용 (6) ──
+  {
+    id:'bz1', cat:'biz', word:'GLP-1', pron:'',
+    ko:'Glucagon-Like Peptide-1; 혈당 조절·식욕 억제 호르몬 기반 신약 계열. Ozempic·Wegovy 등이 해당',
+    nuance:'소장에서 분비되는 호르몬을 모방한 약물. 혈당 낮추고 포만감 높여 체중 감량. 원래 당뇨 치료제였으나 비만 치료로 적응증 확대. "on track to be the biggest drug class we have ever seen."',
+    example:'"One of the shifts that\'s making headlines is the surge of GLP-1 medications."',
+    diff:2
+  },
+  {
+    id:'bz2', cat:'biz', word:'CGM', pron:'',
+    ko:'Continuous Glucose Monitoring; 연속혈당모니터링. 피부 아래 센서로 혈당 24시간 추적',
+    nuance:'원래 당뇨 환자용이었으나, "healthy individuals"도 자신의 대사 반응을 파악하는 소비자 기기로 확대. 생체 피드백의 대표 사례.',
+    example:'"Measuring how much glucose you have in your blood is originally something for diabetic patients...increasingly also used by \'healthy individuals\'"',
+    diff:2
+  },
+  {
+    id:'bz3', cat:'biz', word:'ROI', pron:'',
+    ko:'Return on Investment; 투자수익률. 투자한 비용 대비 얻는 이익',
+    nuance:'"The return on investment is huge." = 대사 건강 혁명에 투자할 경우 얻는 건강·경제적 이익이 막대함. McKinsey는 Path 2(예방)의 ROI가 Path 1(치료)의 3~4배라고 분석.',
+    example:'"The case we are making in our report at the McKinsey Health Institute is to say it\'s worth it. The return on investment is huge."',
+    diff:1
+  },
+  {
+    id:'bz4', cat:'biz', word:'thought leadership', pron:'',
+    ko:'사고 리더십; 특정 분야에서 통찰력 있는 관점을 발표하며 영향력을 행사하는 전략',
+    nuance:'"Swiss Re publishes and pursues thought leadership on metabolic health" = 재보험사가 단순 상품 판매가 아닌, 전문 지식·관점을 공유하여 업계에서 신뢰와 영향력을 구축하는 전략.',
+    example:'"Swiss Re...publishes and pursues thought leadership on metabolic health and insulin resistance."',
+    diff:2
+  },
+  {
+    id:'bz5', cat:'biz', word:'value proposition', pron:'',
+    ko:'가치 제안; 제품·서비스가 고객에게 제공하는 핵심 혜택',
+    nuance:'"consumer value proposition" = 소비자에게 제공하는 핵심 가치. CGM이 당뇨 의료기기에서 "건강 관리 도구"라는 새로운 가치 제안으로 시장을 확장한 것이 사례.',
+    example:'"increasingly also used by \'healthy individuals,\' as a consumer value proposition, to monitor how they\'re doing"',
+    diff:2
+  },
+  {
+    id:'bz6', cat:'biz', word:'civil society', pron:'',
+    ko:'시민 사회; 정부·기업 외의 비영리·지역사회·시민 조직들의 집합',
+    nuance:'"government and civil society" = 정부와 NGO, 지역사회 단체 등을 함께 아우름. 대사 건강 혁명은 정부·기업뿐 아니라 civil society 전체의 참여가 필요하다는 맥락.',
+    example:'"We need to mobilize investments and leadership across societies, different industries, government, education, and civil societies"',
+    diff:1
+  }
+];
+
+const learnedSet = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+let activeFilter = 'all';
+
+function renderCards() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const visible = activeFilter === 'all' ? cards : cards.filter(c => c.cat === activeFilter);
+  visible.forEach(c => {
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap' + (learnedSet.has(c.id) ? ' learned' : '');
+    wrap.dataset.id = c.id;
+    const dots = [1,2,3].map(i => `<div class="dot${i<=c.diff?' on':''}"></div>`).join('');
+    const pronHtml = c.pron ? `<div class="pron">${c.pron}</div>` : '';
+    wrap.innerHTML = `
+      <div class="card" id="card-${c.id}">
+        <div class="card-face card-front">
+          <button class="learned-check" title="학습 완료">✓</button>
+          <span class="tag tag-${c.cat}">${c.cat==='vocab'?'고급단어':c.cat==='biz'?'비즈니스':c.cat.toUpperCase()}</span>
+          <div class="word">${c.word}</div>
+          ${pronHtml}
+          <div class="dots">${dots}</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-ko">${c.ko}</div>
+          <div class="back-nuance">${c.nuance}</div>
+          <div class="back-example">${c.example}</div>
+        </div>
+      </div>`;
+    wrap.querySelector('.card').addEventListener('click', e => {
+      if (e.target.closest('.learned-check')) return;
+      wrap.querySelector('.card').classList.toggle('flipped');
+    });
+    wrap.querySelector('.learned-check').addEventListener('click', e => {
+      e.stopPropagation();
+      if (learnedSet.has(c.id)) { learnedSet.delete(c.id); wrap.classList.remove('learned'); }
+      else { learnedSet.add(c.id); wrap.classList.add('learned'); }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...learnedSet]));
+      updateProgress();
+    });
+    grid.appendChild(wrap);
+  });
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = learnedSet.size;
+  document.getElementById('learned-count').textContent = done;
+  document.getElementById('bar').style.width = (done/cards.length*100) + '%';
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    renderCards();
+  });
+});
+
+renderCards();
+</script>
+</body>
+</html>

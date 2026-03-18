@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulary — Trust in the Age of Agents</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0c1f2e;
+    --ink2: #1a3a4a;
+    --accent: #0891b2;
+    --accent2: #0e7490;
+    --sky: #cffafe;
+    --bg: #f0fdff;
+    --border: #67e8f9;
+    --card-bg: #ffffff;
+    --card-back: #0c1f2e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+  header {
+    background: linear-gradient(135deg, #0c1f2e 0%, #1a3a4a 50%, #0e7490 100%);
+    color: #fff;
+    padding: 28px 24px 22px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.1rem, 3.5vw, 1.45rem);
+    letter-spacing: .01em;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .badge {
+    display: inline-block;
+    border: 1.5px solid #67e8f9;
+    color: #67e8f9;
+    border-radius: 20px;
+    padding: 3px 14px;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .controls { padding: 16px 16px 0; max-width: 900px; margin: 0 auto; }
+
+  .progress-bar-wrap { height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 6px; }
+  .progress-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #22d3ee); transition: width .4s; }
+  .progress-label { font-size: .78rem; color: var(--ink2); text-align: right; margin-bottom: 12px; font-weight: 500; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .filter-btn {
+    border: 1.5px solid var(--border);
+    background: var(--card-bg);
+    color: var(--ink2);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: .04em;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    padding: 0 16px 32px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .card-wrap { perspective: 900px; }
+  .card {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.4,0,.2,1);
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute; inset: 0;
+    border-radius: 14px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 18px 14px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,.07);
+  }
+  .card-front { background: var(--card-bg); border: 1.5px solid var(--border); }
+  .card-back { background: var(--card-back); border: 1.5px solid #1a3a4a; transform: rotateY(180deg); color: #cffafe; }
+  .card-wrap.learned .card-front {
+    background: linear-gradient(135deg, #f0fdff 0%, #cffafe 100%);
+    border-color: var(--accent);
+    opacity: .75;
+  }
+
+  .tag {
+    font-size: .62rem; font-weight: 700; letter-spacing: .09em;
+    text-transform: uppercase; border-radius: 10px;
+    padding: 2px 9px; margin-bottom: 10px; color: #fff;
+  }
+  .tag-phrasal  { background: #0891b2; }
+  .tag-idiom    { background: #7c3aed; }
+  .tag-colloc   { background: #065f46; }
+  .tag-vocab    { background: #b45309; }
+  .tag-biz      { background: #9b1c2e; }
+
+  .word { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--ink); margin-bottom: 6px; line-height: 1.25; }
+  .pron { font-size: .72rem; color: #6b8ab0; margin-bottom: 4px; }
+  .dots { display: flex; gap: 4px; margin-top: 6px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .dot.on { background: var(--accent); }
+
+  .back-ko { font-size: .9rem; font-weight: 600; color: #cffafe; margin-bottom: 8px; line-height: 1.4; }
+  .back-nuance { font-size: .71rem; color: #67e8f9; line-height: 1.5; }
+  .back-example { font-size: .67rem; color: #22d3ee; margin-top: 6px; font-style: italic; line-height: 1.4; }
+
+  .learned-check {
+    position: absolute; top: 10px; right: 10px;
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: .7rem; color: transparent;
+    transition: all .2s; z-index: 10;
+  }
+  .card-wrap.learned .learned-check { background: var(--accent); border-color: var(--accent); color: #fff; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Trust in the Age of Agents</h1>
+  <div class="badge">McKinsey &amp; Company · March 2026</div>
+</header>
+
+<div class="controls">
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="bar" style="width:0%"></div></div>
+  <div class="progress-label"><span id="learned-count">0</span> / 35 learned</div>
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">ALL (35)</button>
+    <button class="filter-btn" data-filter="phrasal">PHRASAL (6)</button>
+    <button class="filter-btn" data-filter="idiom">IDIOM (6)</button>
+    <button class="filter-btn" data-filter="colloc">COLLOC (7)</button>
+    <button class="filter-btn" data-filter="vocab">고급단어 (10)</button>
+    <button class="filter-btn" data-filter="biz">비즈니스 (6)</button>
+  </div>
+</div>
+
+<div id="grid"></div>
+
+<script>
+const STORAGE_KEY = 'trust_age_of_agents_learned';
+
+const cards = [
+  // ── PHRASAL VERB (6) ──
+  {
+    id:'pv1', cat:'phrasal', word:'up the ante', pron:'',
+    ko:'판돈을 높이다; 위험·경쟁 강도를 대폭 높이다',
+    nuance:'ante=포커에서 게임 시작 전 모두가 내는 기본 판돈. "up the ante" = 그 판돈을 올리다 → 위험과 보상 모두를 키우다. "How does agentic AI up the ante?" = 자율 AI가 기존 대비 리스크를 얼마나 더 크게 만드는가.',
+    example:'"Data security, cybersecurity—these have been leadership priorities for years. How does agentic AI up the ante?"',
+    diff:2
+  },
+  {
+    id:'pv2', cat:'phrasal', word:'go haywire', pron:'',
+    ko:'제멋대로 돌아가다; 통제 불능이 되다',
+    nuance:'haywire=건초 묶는 철사. 구불구불 엉켜 튀어나오는 철사처럼 통제가 안 되는 상태. "Do things go haywire?" = 에이전트들이 통제를 벗어나 제멋대로 행동할 것인가? 1920년대 미국 시골 표현에서 유래.',
+    example:'"What happens if there is open communication between agents? Do things go haywire?"',
+    diff:2
+  },
+  {
+    id:'pv3', cat:'phrasal', word:'go off track', pron:'',
+    ko:'궤도를 벗어나다; 의도한 방향에서 이탈하다',
+    nuance:'track=기찻길·정해진 경로. "go off track" = 레일을 벗어나다 → 설계된 목적이나 방향에서 이탈하다. "if an agent goes off track in some way" = 에이전트가 어떤 식으로든 의도에서 벗어난다면.',
+    example:'"What happens if an agent goes off track in some way, or two agents start getting into it and making some unfortunate decisions?"',
+    diff:1
+  },
+  {
+    id:'pv4', cat:'phrasal', word:'go around', pron:'',
+    ko:'우회하다; 규정·제어를 피해 돌아가다',
+    nuance:'go=가다 + around=둘러서 → 장애물이나 규칙을 정면 돌파가 아닌 우회로 피하다. "allowing anyone to go around them" = 누구든 가드레일을 비껴갈 수 있게 허용하다. 보안에서 bypass와 같은 의미.',
+    example:'"Agentic risk management fails when organizations have an opt-in approach to guardrails, allowing anyone to go around them."',
+    diff:1
+  },
+  {
+    id:'pv5', cat:'phrasal', word:'set and forget', pron:'',
+    ko:'설정하고 방치하다; 초기 설정 후 아무 관리 없이 내버려 두다',
+    nuance:'가전제품의 자동 조리·타이머 기능처럼 "한번 설정하면 알아서 된다"는 발상. "These are not set-it-and-forget-it" = AI 에이전트는 한번 켜놓고 잊어버릴 수 있는 존재가 아니다. 지속적 모니터링이 필요하다.',
+    example:'"These are not set-it-and-forget-it. They need to be consistently monitored and tuned and tweaked and sometimes fired."',
+    diff:2
+  },
+  {
+    id:'pv6', cat:'phrasal', word:'run wild', pron:'',
+    ko:'제멋대로 날뛰다; 통제 없이 자유롭게 행동하다',
+    nuance:'run=달리다 + wild=야생의 → 야생 동물이 인간의 통제를 벗어나 제멋대로 행동하는 것처럼. "You can\'t let them run wild" = 에이전트들이 통제 정책 없이 아무 제약 없이 행동하도록 내버려 둘 수 없다.',
+    example:'"These agents are capable of independent reasoning and problem-solving. You can\'t let them run wild without an enforceable control policy."',
+    diff:2
+  },
+
+  // ── IDIOM (6) ──
+  {
+    id:'id1', cat:'idiom', word:'800-pound gorilla', pron:'',
+    ko:'압도적 핵심 요소; 모두가 알지만 언급 꺼리는 지배적 존재',
+    nuance:'"Where does an 800-pound gorilla sit? Anywhere it wants" → 아무도 막을 수 없는 압도적 존재. 맥락에 따라 "가장 크고 중요한 문제" 또는 "누구도 무시할 수 없는 핵심 사안"을 의미. "the 800-pound gorilla is, if an agent is going to be accessing tools or data, it should be going through an MCP gateway" = 가장 중요한 포인트.',
+    example:'"And the 800-pound gorilla is, if an agent is going to be accessing tools or data, it should be going through an MCP gateway."',
+    diff:3
+  },
+  {
+    id:'id2', cat:'idiom', word:'at stake', pron:'',
+    ko:'걸려 있는; 위험에 처한; 판에 올라온',
+    nuance:'stake=도박·경기에 거는 것. "at stake" = 결과에 따라 얻거나 잃을 것이 걸려 있다. 단순한 위험이 아니라 가치 있는 무언가가 걸려 있다는 뉘앙스. "What\'s at stake in an agentic age" = 에이전틱 AI 시대에 무엇이 위험에 걸려 있는가.',
+    example:'"What\'s at stake in an agentic age"',
+    diff:1
+  },
+  {
+    id:'id3', cat:'idiom', word:'in the offing', pron:'',
+    ko:'임박한; 곧 닥쳐올; 지평선 너머에서 다가오는',
+    nuance:'항해 용어: offing=해안에서 멀지 않은 바다. 배가 보이지만 아직 도착하지 않은 상태. "changes in the offing" = 아직 완전히 도래하지 않았지만 분명히 다가오고 있는 변화들.',
+    example:'"How flexible do I need to be to ensure compliance, given the potential for changes in the offing?"',
+    diff:3
+  },
+  {
+    id:'id4', cat:'idiom', word:'line of sight', pron:'',
+    ko:'시야선; 직접 파악·감독할 수 있는 가시 범위',
+    nuance:'군사·사격 용어에서 유래. 눈에서 목표물까지 막힘 없이 이어지는 직선. 경영에서는 리더가 현황을 직접 파악하고 책임 소재를 추적할 수 있는 투명한 감독 체계. "maintain a line of sight to their agentic efforts" = 에이전틱 이니셔티브를 직접 들여다볼 수 있는 체계.',
+    example:'"How do organizations, particularly big global organizations, maintain a line of sight to their agentic efforts?"',
+    diff:2
+  },
+  {
+    id:'id5', cat:'idiom', word:'face-plant', pron:'',
+    ko:'얼굴부터 쓰러지다; 완전히 넘어져 실패하다',
+    nuance:'face=얼굴 + plant=심다 → 얼굴이 바닥에 박히다. 스케이트보드·스키 등에서 앞으로 고꾸라지는 것에서 유래. "trip and face-plant down the stairs" = 계단에서 넘어져 고꾸라지다. 준비 없이 도입했을 때 일어나는 대참사 비유.',
+    example:'"Without a baby gate in place, they\'ll probably trip and face-plant down the stairs and hurt themselves or somebody else."',
+    diff:3
+  },
+  {
+    id:'id6', cat:'idiom', word:'earn autonomy', pron:'',
+    ko:'자율권을 얻다; 스스로 증명해서 독립적 권한을 획득하다',
+    nuance:'earn=노력으로 얻다 + autonomy=자율성. 자율성은 처음부터 주어지는 것이 아니라 신뢰를 쌓고 능력을 증명함으로써 획득하는 것. "make sure your teams convince you they\'ve earned autonomy. Don\'t grant it just because agents can do it." = 할 수 있다고 해서 자율권을 주는 게 아니라 신뢰를 증명해야 한다.',
+    example:'"Make sure your teams convince you they\'ve earned autonomy. Don\'t grant it just because agents can do it."',
+    diff:2
+  },
+
+  // ── COLLOCATION (7) ──
+  {
+    id:'co1', cat:'colloc', word:'decision rights', pron:'',
+    ko:'의사결정권; 누가 어떤 결정을 내릴 권한을 갖는지 정의한 체계',
+    nuance:'decision(결정) + rights(권리). 조직에서 책임과 권한의 경계를 명확히 하는 개념. "Agency isn\'t a feature—it\'s a transfer of decision rights" = 에이전틱 AI의 본질은 기능 추가가 아니라 의사결정권이 AI로 이전되는 것이다.',
+    example:'"Agency isn\'t a feature—it\'s a transfer of decision rights."',
+    diff:2
+  },
+  {
+    id:'co2', cat:'colloc', word:'shadow agents', pron:'',
+    ko:'섀도 에이전트; IT·보안 승인 없이 무단 개발·배포된 AI 에이전트',
+    nuance:'shadow IT(정식 승인 없이 쓰는 비공식 IT 도구)의 AI 버전. "shadow agents—agents developed or deployed within an organization without appropriate IT or security approvals" = 공식 거버넌스 밖에서 만들어진 AI 에이전트. 큰 리스크를 낳는다.',
+    example:'"That\'s what leads to shadow agents—agents developed or deployed within an organization without appropriate IT or security approvals—and inconsistent standards."',
+    diff:2
+  },
+  {
+    id:'co3', cat:'colloc', word:'kill switch', pron:'',
+    ko:'킬 스위치; 시스템을 즉각 중단시키는 비상 제어 장치',
+    nuance:'kill=종료하다 + switch=스위치. 원자력·항공·제조업에서 쓰던 비상 정지 개념이 AI로 확장. "think about kill switches and in what circumstances you have logs that would automate pulling one" = 어떤 조건에서 자동으로 에이전트를 강제 종료할지 미리 설계해야 한다.',
+    example:'"That\'s why you have to think about kill switches and in what circumstances you have logs that would automate pulling one. They can\'t be manual decisions."',
+    diff:2
+  },
+  {
+    id:'co4', cat:'colloc', word:'bounded autonomy', pron:'',
+    ko:'제한된 자율성; 미리 정의된 경계 안에서만 AI가 자율적으로 행동하는 설계',
+    nuance:'bounded=경계가 설정된 + autonomy=자율성. 완전 자율도 아니고 완전 통제도 아닌 중간 지점. "Start with bounded autonomy" = 제한된 범위에서 먼저 시작하고, 모니터링으로 신뢰를 쌓은 후 자율 범위를 확장하라.',
+    example:'"Design for trust first, speed second. Start with bounded autonomy, but make sure you\'re keeping humans accountable for high-impact decisions."',
+    diff:3
+  },
+  {
+    id:'co5', cat:'colloc', word:'federated execution', pron:'',
+    ko:'분산 실행; 중앙 거버넌스 아래 각 사업부가 독립적으로 실행하는 구조',
+    nuance:'federated=연방제처럼 중앙과 지방이 나눠 갖는 + execution=실행. "centralized governance with federated execution" = 규칙은 중앙에서 통일하되 실행은 각 비즈니스 단위가 자율적으로. 일관성과 유연성을 동시에 달성하는 구조.',
+    example:'"What\'s required is centralized governance with federated execution."',
+    diff:3
+  },
+  {
+    id:'co6', cat:'colloc', word:'data poisoning', pron:'',
+    ko:'데이터 오염 공격; 학습 데이터에 악의적 오류를 심어 AI 행동을 왜곡하는 공격',
+    nuance:'data(데이터) + poisoning(독 넣기). 에이전트의 학습 데이터나 컨텍스트에 악의적 정보를 주입해 오동작을 유발. "One single data poisoning attack could quickly lead to failures across operations, finance, and customers" = 하나의 공격이 전사 시스템에 연쇄 오류를 낼 수 있다.',
+    example:'"One single data poisoning attack could quickly lead to failures across operations, finance, and customers."',
+    diff:2
+  },
+  {
+    id:'co7', cat:'colloc', word:'cross-agent containment', pron:'',
+    ko:'에이전트 간 오류 차단; 한 에이전트의 문제가 다른 에이전트로 전파되지 않도록 격리하는 것',
+    nuance:'cross-agent=에이전트 간 + containment=봉쇄. 하나의 에이전트에서 발생한 결함이나 보안 침해가 다른 에이전트로 연쇄 확산되는 것을 막는 설계. 핵반응의 "봉쇄(containment)" 개념에서 차용.',
+    example:'"The risk taxonomy must be updated around these different risk outputs, including accuracy, bias, and harm, as well as cybersecurity risk and cross-agent containment."',
+    diff:3
+  },
+
+  // ── 고급단어 (10) ──
+  {
+    id:'vc1', cat:'vocab', word:'propagate', pron:'/ˈprɒpəɡeɪt/',
+    ko:'전파되다; 연쇄적으로 퍼지다; 하류로 확산되다',
+    nuance:'라틴어 propagare(식물의 가지를 뻗어 번식시키다). 결함이나 정보가 한 지점에서 시작해 시스템 전반으로 연쇄 확산되는 것. "A flaw in one agent can propagate downstream and massively amplify the impact" = 한 에이전트의 결함이 하류로 퍼지며 증폭된다.',
+    example:'"A flaw in one agent can propagate downstream and massively amplify the impact."',
+    diff:2
+  },
+  {
+    id:'vc2', cat:'vocab', word:'auditable', pron:'/ˈɔːdɪtəbl/',
+    ko:'감사 가능한; 추적·검증할 수 있는',
+    nuance:'audit(감사·회계 검사하다) + -able(가능한). 단순히 "기록이 있다"보다 외부 감사관이나 규제 당국이 실제로 검토·검증할 수 있는 형태임을 강조. "make that auditable" = 그 과정을 감사받을 수 있는 형태로 만들다.',
+    example:'"Your governance must define the scope, inventory, and ownership and make that auditable."',
+    diff:2
+  },
+  {
+    id:'vc3', cat:'vocab', word:'triage', pron:'/ˈtriːɑːʒ/',
+    ko:'우선순위 분류; 긴급도에 따라 처리 순서를 정하다',
+    nuance:'프랑스어 trier(분류하다). 원래 전쟁터·응급실에서 환자를 긴급도에 따라 분류하는 의료 용어. 기술에서는 이슈나 위험을 심각도에 따라 분류해 처리 순서를 정하는 것. "risk-based triage, prove enforcement" = 위험 수준에 따른 우선순위 분류.',
+    example:'"It\'s about being able to do risk-based triage, prove enforcement, and automate evidence."',
+    diff:2
+  },
+  {
+    id:'vc4', cat:'vocab', word:'reckon with', pron:'/ˈrekən/',
+    ko:'~에 정면으로 맞서다; 진지하게 다루다; 피하지 않고 직면하다',
+    nuance:'reck(고려하다, 고어) → reckon(계산하다, 감안하다). "reckon with" = 외면하지 않고 현실로 받아들이고 대처하다. "leaders need to reckon with new risks" = 리더들은 새로운 위험을 회피가 아닌 정면 돌파로 다뤄야 한다.',
+    example:'"To deliver on AI\'s value, leaders need to reckon with new risks."',
+    diff:2
+  },
+  {
+    id:'vc5', cat:'vocab', word:'hallucination', pron:'/həˌluːsɪˈneɪʃən/',
+    ko:'(AI의) 환각; 사실이 아닌 것을 사실처럼 출력하는 오류',
+    nuance:'원래 의학 용어(환각·헛것을 봄). AI에서는 모델이 사실에 근거 없이 그럴듯해 보이는 잘못된 정보를 생성하는 현상. "Are there hallucination controls?" = 모델이 존재하지 않는 사실을 만들어내는 것을 막는 장치가 있는가.',
+    example:'"A very low autonomous agent could be a copilot or a knowledge agent, where the risk is inaccuracy. Is the agent citing the work it sourced? Are there hallucination controls?"',
+    diff:1
+  },
+  {
+    id:'vc6', cat:'vocab', word:'jittery', pron:'/ˈdʒɪtəri/',
+    ko:'불안해하는; 긴장되고 초조한; 안절부절못하는',
+    nuance:'jitters(신경과민, 초조함)의 형용사형. 커피를 너무 많이 마시거나 중요한 발표 전에 손발이 떨리는 느낌. "many folks are jittery about deploying agentic AI" = 자율 AI 배포에 많은 사람들이 불안해한다.',
+    example:'"Many folks are jittery about deploying agentic AI. How can CEOs and tech leaders maintain trust both externally, with their customer base, and internally with their own talent?"',
+    diff:2
+  },
+  {
+    id:'vc7', cat:'vocab', word:'rogue', pron:'/roʊɡ/',
+    ko:'통제를 벗어난; 악의적으로 또는 예측 불가능하게 행동하는',
+    nuance:'원래 "악당, 불량배". 기술에서는 설계된 경계를 무시하고 예측 불가능하게 행동하는 시스템을 지칭. "one rogue agent in the future has the intelligence to take over that operating system" = 하나의 이탈 에이전트가 운영 체계 전체를 장악할 수 있다.',
+    example:'"One rogue agent in the future has the intelligence to take over that operating system, and suddenly it can control all the cars on the road that have self-driving features."',
+    diff:2
+  },
+  {
+    id:'vc8', cat:'vocab', word:'hyperbolic', pron:'/ˌhaɪpərˈbɒlɪk/',
+    ko:'과장된; 실제보다 극단적으로 부풀린',
+    nuance:'그리스어 hyperbolē(초과). 수사법에서 극단적 과장을 뜻하는 "hyperbole"의 형용사형. "This is a little hyperbolic" = 좀 과장된 시나리오이긴 하지만 → 완전 허황된 것은 아니고 극단적 가능성을 경고하는 표현.',
+    example:'"This is a little hyperbolic, but one rogue agent in the future has the intelligence to take over that operating system."',
+    diff:3
+  },
+  {
+    id:'vc9', cat:'vocab', word:'cunning', pron:'/ˈkʌnɪŋ/',
+    ko:'교활한; 영리하게 속이거나 우회하는',
+    nuance:'고대 영어 cunnan(알다)에서 유래. 지식을 이용해 교묘하게 속이거나 원하는 것을 얻는 능력. "humans can be more cunning" = 인간은 의도적으로 시스템을 속이거나 우회할 수 있다. 에이전트는 아직 그런 수준의 의도적 교활함은 없다.',
+    example:'"It\'s easier to manage humans only because we have an enormous history of human behavior to rely on. Even though humans can be more cunning..."',
+    diff:2
+  },
+  {
+    id:'vc10', cat:'vocab', word:'defensible', pron:'/dɪˈfensɪbl/',
+    ko:'방어 가능한; 논리적으로 정당화할 수 있는',
+    nuance:'defend(방어하다) + -ible(가능한). 단순히 옳다는 주장이 아니라, 비판·공격·감사를 받았을 때도 타당성을 입증할 수 있는 상태. "not a defensible posture to take when talking to your board or regulators" = 이사회나 규제 당국 앞에서 설득력 있게 방어할 수 없는 태도.',
+    example:'"If you don\'t redesign those, you\'re not leading a transformation; you\'re hoping the system behaves. And that is not a defensible posture to take when talking to your board or regulators."',
+    diff:3
+  },
+
+  // ── 비즈니스 전용 (6) ──
+  {
+    id:'bz1', cat:'biz', word:'MCP', pron:'',
+    ko:'모델 컨텍스트 프로토콜 (Model Context Protocol); AI 에이전트가 도구·데이터에 표준화된 방식으로 접근하는 프로토콜',
+    nuance:'"Think of it as the USB-C port for AI." USB-C처럼 어떤 장치에도 연결되는 표준 포트. MCP를 통해 에이전트의 도구·데이터 접근을 통제하고 정책 기반 보안을 적용할 수 있다.',
+    example:'"MCP is short for \'model context protocol.\' Think of it as the USB-C port for AI."',
+    diff:2
+  },
+  {
+    id:'bz2', cat:'biz', word:'CHRO', pron:'',
+    ko:'최고 인사 책임자 (Chief Human Resources Officer); HR 전략을 총괄하는 C레벨 임원',
+    nuance:'Chief(최고) + Human Resources(인적 자원) + Officer(책임자). "I would not recommend that a CHRO or an HR department get involved in managing agents" = 에이전트 관리는 HR이 아닌 기술 조직의 책임. 인적 관리 체계와 에이전트 관리 체계는 분리되어야 한다.',
+    example:'"I would not recommend that a CHRO [chief human resources officer] or an HR department get involved in managing agents."',
+    diff:1
+  },
+  {
+    id:'bz3', cat:'biz', word:'EU AI Act', pron:'',
+    ko:'EU 인공지능법; 에이전틱 AI 사용 사례를 위험 수준별로 분류·규제하는 EU 법규',
+    nuance:'European Union AI Act. 세계 최초의 포괄적 AI 규제법. AI 시스템을 위험도에 따라 4단계(금지·고위험·제한·최소위험)로 분류. 고위험 AI에는 강력한 투명성·인간 감독 의무 부과. "It breaks down and classifies different agentic AI use cases into risk levers" = 각 사용 사례를 리스크 레버별로 분류.',
+    example:'"A good example is the EU AI Act. It breaks down and classifies different agentic AI use cases into risk levers, with clear accountability on what you are and aren\'t allowed to do."',
+    diff:2
+  },
+  {
+    id:'bz4', cat:'biz', word:'least privileged access', pron:'',
+    ko:'최소 권한 접근; 필요한 최소한의 권한만 부여하는 보안 원칙',
+    nuance:'principle of least privilege(최소 권한 원칙)에서 유래. 에이전트나 사용자에게 업무에 꼭 필요한 최소한의 접근 권한만 부여 → 침해 발생 시 피해 최소화. "Do agents have verified entities and least privileged access?" = 에이전트가 반드시 필요한 것 이상에 접근하지 않는가.',
+    example:'"Do agents have verified entities and least privileged access? Again, yes or no."',
+    diff:2
+  },
+  {
+    id:'bz5', cat:'biz', word:'nth-party risk', pron:'',
+    ko:'n차 협력사 리스크; 직접 협력사를 넘어 그 협력사의 협력사까지 이어지는 연쇄 리스크',
+    nuance:'1st party(자사) → 2nd party(직접 협력사) → 3rd party(협력사의 협력사) → nth party(끝없이 이어지는 공급망). AI 시스템은 수십 개의 외부 모델·데이터·도구에 의존하므로 nth-party 리스크가 폭발적으로 증가.',
+    example:'"When you think about third-party risk and nth-party risk, agentic AI has finally turned sovereignty from an abstract concept into an operational one."',
+    diff:3
+  },
+  {
+    id:'bz6', cat:'biz', word:'operating model change', pron:'',
+    ko:'운영 모델 변화; 조직이 가치를 창출·전달하는 방식의 근본적 재설계',
+    nuance:'operating model=조직 구조·프로세스·역할·기술이 결합된 운영 방식. 단순 기술 도입(tool upgrade)이 아니라 조직이 일하는 방식 전체를 바꾸는 것. "This is an operating model change. You need clarity on decision rights, accountability, escalation paths, and controls." = 단순 기술 업그레이드가 아닌 조직 운영 방식의 전환.',
+    example:'"Leaders shouldn\'t think of this as just another technology upgrade. This is an operating model change."',
+    diff:2
+  },
+];
+
+// ── render & logic ──
+const learnedSet = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+let activeFilter = 'all';
+
+function dots(n){ return [1,2,3].map(i=>`<span class="dot${i<=n?' on':''}"></span>`).join(''); }
+
+function render(){
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const visible = activeFilter === 'all' ? cards : cards.filter(c => c.cat === activeFilter);
+  visible.forEach(c => {
+    const learned = learnedSet.has(c.id);
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap' + (learned ? ' learned' : '');
+    wrap.dataset.id = c.id;
+    wrap.innerHTML = `
+      <div class="card">
+        <div class="card-face card-front">
+          <button class="learned-check" title="학습 완료">✓</button>
+          <span class="tag tag-${c.cat}">${{phrasal:'Phrasal',idiom:'Idiom',colloc:'Colloc',vocab:'Vocab',biz:'Biz'}[c.cat]}</span>
+          <div class="word">${c.word}</div>
+          ${c.pron ? `<div class="pron">${c.pron}</div>` : ''}
+          <div class="dots">${dots(c.diff)}</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-ko">${c.ko}</div>
+          <div class="back-nuance">${c.nuance}</div>
+          ${c.example ? `<div class="back-example">${c.example}</div>` : ''}
+        </div>
+      </div>`;
+    wrap.querySelector('.card').addEventListener('click', e => {
+      if(e.target.closest('.learned-check')) return;
+      wrap.querySelector('.card').classList.toggle('flipped');
+    });
+    wrap.querySelector('.learned-check').addEventListener('click', e => {
+      e.stopPropagation();
+      if(learnedSet.has(c.id)) learnedSet.delete(c.id);
+      else learnedSet.add(c.id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...learnedSet]));
+      render(); updateProgress();
+    });
+    grid.appendChild(wrap);
+  });
+}
+
+function updateProgress(){
+  const n = learnedSet.size;
+  document.getElementById('learned-count').textContent = n;
+  document.getElementById('bar').style.width = (n/35*100) + '%';
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeFilter = btn.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+  });
+});
+
+render(); updateProgress();
+</script>
+</body>
+</html>

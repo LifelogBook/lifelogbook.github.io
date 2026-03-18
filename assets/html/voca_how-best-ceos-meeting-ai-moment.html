@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulary — How the Best CEOs Are Meeting the AI Moment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0c1a2e;
+    --ink2: #1e3a5f;
+    --accent: #b8860b;
+    --accent2: #8b6700;
+    --sky: #fef9e7;
+    --bg: #fffef8;
+    --border: #f0d988;
+    --card-bg: #ffffff;
+    --card-back: #0c1a2e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+  header {
+    background: linear-gradient(135deg, #0c1a2e 0%, #1e3a5f 50%, #8b6700 100%);
+    color: #fff;
+    padding: 28px 24px 22px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.1rem, 3.5vw, 1.45rem);
+    letter-spacing: .01em;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .badge {
+    display: inline-block;
+    border: 1.5px solid #f0d988;
+    color: #f0d988;
+    border-radius: 20px;
+    padding: 3px 14px;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .controls { padding: 16px 16px 0; max-width: 900px; margin: 0 auto; }
+
+  .progress-bar-wrap { height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 6px; }
+  .progress-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #fbbf24); transition: width .4s; }
+  .progress-label { font-size: .78rem; color: var(--ink2); text-align: right; margin-bottom: 12px; font-weight: 500; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .filter-btn {
+    border: 1.5px solid var(--border);
+    background: var(--card-bg);
+    color: var(--ink2);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: .04em;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    padding: 0 16px 32px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .card-wrap { perspective: 900px; }
+  .card {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.4,0,.2,1);
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute; inset: 0;
+    border-radius: 14px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 18px 14px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,.07);
+  }
+  .card-front { background: var(--card-bg); border: 1.5px solid var(--border); }
+  .card-back { background: var(--card-back); border: 1.5px solid #1e3a5f; transform: rotateY(180deg); color: #fef9e7; }
+  .card-wrap.learned .card-front {
+    background: linear-gradient(135deg, #fffef8 0%, #fef9e7 100%);
+    border-color: var(--accent);
+    opacity: .75;
+  }
+
+  .tag {
+    font-size: .62rem; font-weight: 700; letter-spacing: .09em;
+    text-transform: uppercase; border-radius: 10px;
+    padding: 2px 9px; margin-bottom: 10px; color: #fff;
+  }
+  .tag-phrasal  { background: #b8860b; }
+  .tag-idiom    { background: #8b0000; }
+  .tag-colloc   { background: #1d4ed8; }
+  .tag-vocab    { background: #7c3aed; }
+  .tag-biz      { background: #065f46; }
+
+  .word { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--ink); margin-bottom: 6px; line-height: 1.25; }
+  .pron { font-size: .72rem; color: #6b8ab0; margin-bottom: 4px; }
+  .dots { display: flex; gap: 4px; margin-top: 6px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .dot.on { background: var(--accent); }
+
+  .back-ko { font-size: .9rem; font-weight: 600; color: #fef9e7; margin-bottom: 8px; line-height: 1.4; }
+  .back-nuance { font-size: .71rem; color: #f0d988; line-height: 1.5; }
+  .back-example { font-size: .67rem; color: #fbbf24; margin-top: 6px; font-style: italic; line-height: 1.4; }
+
+  .learned-check {
+    position: absolute; top: 10px; right: 10px;
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: .7rem; color: transparent;
+    transition: all .2s; z-index: 10;
+  }
+  .card-wrap.learned .learned-check { background: var(--accent); border-color: var(--accent); color: #fff; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>How the Best CEOs Are Meeting the AI Moment</h1>
+  <div class="badge">McKinsey &amp; Company · January 2026</div>
+</header>
+
+<div class="controls">
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="bar" style="width:0%"></div></div>
+  <div class="progress-label"><span id="learned-count">0</span> / 35 learned</div>
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">ALL (35)</button>
+    <button class="filter-btn" data-filter="phrasal">PHRASAL (6)</button>
+    <button class="filter-btn" data-filter="idiom">IDIOM (6)</button>
+    <button class="filter-btn" data-filter="colloc">COLLOC (7)</button>
+    <button class="filter-btn" data-filter="vocab">고급단어 (10)</button>
+    <button class="filter-btn" data-filter="biz">비즈니스 (6)</button>
+  </div>
+</div>
+
+<div id="grid"></div>
+
+<script>
+const STORAGE_KEY = 'ceo_ai_moment_learned';
+
+const cards = [
+  // ── PHRASAL VERB (6) ──
+  {
+    id:'pv1', cat:'phrasal', word:'sit and wait', pron:'',
+    ko:'관망하다; 행동 없이 기다리다',
+    nuance:'sit=앉아있다 + wait=기다리다 → 능동적으로 행동하지 않고 사태를 지켜보기만 하다. "CEOs who sit and wait—their companies aren\'t going to exist" = 관망만 하는 CEO의 회사는 살아남지 못한다.',
+    example:'"CEOs who sit and wait—their companies aren\'t going to exist. They\'re not going to thrive."',
+    diff:1
+  },
+  {
+    id:'pv2', cat:'phrasal', word:'step back', pron:'',
+    ko:'한 발 물러서다; 큰 그림을 보기 위해 재고하다',
+    nuance:'step=발걸음 + back=뒤로 → 현재 상황에서 물러나 더 넓은 시야를 갖다. "take a step back and reimagine the process" = 프로세스를 근본부터 재구상하기 위해 한 발 뒤로 물러서다.',
+    example:'"You can\'t just rely on the technology—back to my 80/20. You have to take a step back and reimagine the process."',
+    diff:1
+  },
+  {
+    id:'pv3', cat:'phrasal', word:'bring along', pron:'',
+    ko:'동참시키다; 함께 이끌다; 뒤처지지 않게 데려가다',
+    nuance:'bring=데려오다 + along=함께 → 앞서 나가면서도 나머지를 뒤에 남겨두지 않고 같이 데리고 가다. "bring the whole organization along at once" = 조직 전체를 함께 변화의 흐름으로 이끌다.',
+    example:'"Some say, \'I\'ve got to bring the whole organization along at once.\'"',
+    diff:2
+  },
+  {
+    id:'pv4', cat:'phrasal', word:'go after', pron:'',
+    ko:'추구하다; 목표를 향해 적극적으로 도전하다',
+    nuance:'go=가다 + after=~을 뒤쫓아 → 원하는 것을 향해 능동적으로 나아가다. 단순히 "원하다"보다 훨씬 더 적극적인 행동을 내포. "go after something that no one ever thought possible" = 불가능해 보이는 것에 과감히 도전하다.',
+    example:'"It is so fun to go after something that no one ever thought possible."',
+    diff:1
+  },
+  {
+    id:'pv5', cat:'phrasal', word:'play out', pron:'',
+    ko:'전개되다; 결과가 나타나다; 끝까지 진행되다',
+    nuance:'play=연극이 공연되다 + out=끝까지 → 시나리오나 사건이 어떤 결말로 전개되는지. "I don\'t think it will play out" = 그렇게 전개되지 않을 것 같다. 미래의 불확실한 전개를 이야기할 때 자주 사용.',
+    example:'"That said, I don\'t think it will play out, because the economic impact of not having the best available technology is likely to be much greater."',
+    diff:2
+  },
+  {
+    id:'pv6', cat:'phrasal', word:'run ahead', pron:'',
+    ko:'앞서 달리다; 다른 사람보다 먼저 나가다',
+    nuance:'run=달리다 + ahead=앞으로 → 팀이나 조직의 나머지보다 먼저 나아가다. "I\'ve got a few folks who are running ahead. That\'s not OK" = 일부만 앞서 나가는 것은 조직 전체의 변화가 아니다.',
+    example:'"One leader told me, \'I\'ve got a few folks who are running ahead. That\'s not OK. I need everyone to run at the same pace.\'"',
+    diff:2
+  },
+
+  // ── IDIOM (6) ──
+  {
+    id:'id1', cat:'idiom', word:'make-or-break', pron:'',
+    ko:'성패를 가르는; 운명을 결정짓는 결정적인',
+    nuance:'make=성공 + or + break=실패 → 둘 중 하나밖에 없다. "a make-or-break test of their leadership" = 리더십의 성패를 판가름하는 결정적 시험. 결과가 완전한 성공 또는 완전한 실패로 갈릴 때 쓴다.',
+    example:'"CEOs are confronting a make-or-break test of their leadership."',
+    diff:1
+  },
+  {
+    id:'id2', cat:'idiom', word:'big kahuna', pron:'',
+    ko:'가장 중요한 것; 핵심 중의 핵심',
+    nuance:'하와이어 kahuna(위대한 사제) → 서퍼 문화에서 "가장 큰 파도"를 뜻하다가 "가장 중요한 사람·것"으로 확장. "Let\'s start with the big kahuna: AI" = 모든 것 중에서 가장 핵심인 AI부터 시작하자.',
+    example:'"Let\'s start with the big kahuna: AI."',
+    diff:3
+  },
+  {
+    id:'id3', cat:'idiom', word:'North Star', pron:'',
+    ko:'북극성; 방향을 잡아주는 핵심 목표',
+    nuance:'북극성(Polaris)은 항해에서 항상 북쪽을 가리켜 방향을 잡아주는 기준점. 조직에서는 모든 결정의 기준이 되는 단 하나의 핵심 목표를 의미. "their own North Star" = 조직이 나아갈 방향의 기준점.',
+    example:'"Leaders need to envision what they want this to look like in five years. That may be nothing more than high-level thinking, their own North Star."',
+    diff:2
+  },
+  {
+    id:'id4', cat:'idiom', word:'eye-opening', pron:'',
+    ko:'눈이 번쩍 뜨이는; 인식의 전환을 가져오는',
+    nuance:'eyes + opening → 눈이 열리다. 기존에 당연하게 여겼던 것이 완전히 달리 보이게 되는 순간. "that was my eye-opening moment" = 세상을 보는 방식이 바뀐 그 순간. 충격적이라기보다는 깨달음의 뉘앙스.',
+    example:'"I went to ChatGPT to figure out what shaft to buy. That was my eye-opening moment. That changed how I thought about everything I do at work."',
+    diff:1
+  },
+  {
+    id:'id5', cat:'idiom', word:'Luddite', pron:'/ˈlʌdaɪt/',
+    ko:'기술 혐오자; 신기술을 거부하는 사람',
+    nuance:'19세기 영국 산업혁명 당시 기계화에 반대해 공장 기계를 부순 직공 집단 Luddites에서 유래. 지금은 "기술 변화에 저항하거나 따라가지 못하는 사람"을 가리킨다. "I\'m a Luddite relative to these kids" = 젊은 직원들에 비하면 나는 기술 낙오자다.',
+    example:'"I\'m a tech guy. I was an engineer. But to some degree, I\'m a Luddite relative to these kids."',
+    diff:3
+  },
+  {
+    id:'id6', cat:'idiom', word:'command and control', pron:'',
+    ko:'지시와 통제; 하향식 권위주의적 리더십',
+    nuance:'군사 용어에서 유래. 지휘관이 모든 것을 결정하고 하급자는 명령을 따르는 구조. 현대 경영에서는 이 방식이 한계에 봉착했다고 봄. "you had to be the command and control" = 모든 것을 직접 지시하고 통제해야 한다는 구식 리더십.',
+    example:'"In the past, you might have felt you had to be the command and control, but now I think it\'s OK to say, \'That\'s a great question. I don\'t know the answer to it.\'"',
+    diff:2
+  },
+
+  // ── COLLOCATION (7) ──
+  {
+    id:'co1', cat:'colloc', word:'agentic AI', pron:'',
+    ko:'자율 행동 AI; 목표를 받고 스스로 계획·실행하는 AI',
+    nuance:'agent(행위자) + -ic(형용사) + AI. 단순히 답변하는 gen AI를 넘어, 목표를 부여받으면 스스로 계획을 세우고 도구를 사용해 실행하는 AI. "the advent of agentic AI" = 자율 행동 AI 시대의 도래.',
+    example:'"As leaders start realizing more meaningful productivity gains from agentic AI..."',
+    diff:2
+  },
+  {
+    id:'co2', cat:'colloc', word:'responsible AI', pron:'',
+    ko:'책임 있는 AI; 윤리적·안전하게 개발·운용되는 AI',
+    nuance:'responsible(책임 있는) + AI. 단순히 AI 기술의 성능이 아니라, 사회적 영향·윤리·안전성·거버넌스를 고려하는 AI 운용 원칙. "responsible AI is a very big and potentially loaded term" = 정의와 적용 범위가 광범위한 용어.',
+    example:'"Let\'s talk about AI governance, particularly vis-à-vis agentic. How should leaders be thinking about responsible AI at scale?"',
+    diff:1
+  },
+  {
+    id:'co3', cat:'colloc', word:'sovereign AI', pron:'',
+    ko:'주권 AI; 특정 국가·지역이 독자 개발·통제하는 AI',
+    nuance:'sovereign(주권을 가진) + AI. 글로벌 빅테크 AI에 의존하지 않고 자국의 데이터·기술·규제 틀 안에서 개발·운용하는 AI. 지정학적 긴장이 높아지면서 주목받는 개념.',
+    example:'"There\'s a way in which tech itself has become geopolitical, given increased focus on sovereign AI, data sovereignty."',
+    diff:3
+  },
+  {
+    id:'co4', cat:'colloc', word:'technical debt', pron:'',
+    ko:'기술 부채; 빠른 개발로 나중에 갚아야 할 비효율',
+    nuance:'debt(빚) 은유 → 지금 당장 편의를 위해 불완전한 코드·구조를 채택하면 나중에 더 큰 비용으로 되돌아온다. "15,000 agents today will go to 30,000 agents tomorrow" = 거버넌스 없이 에이전트를 늘리면 기술 부채가 폭발적으로 쌓인다.',
+    example:'"One of which is that we\'re going to create a level of technical debt as a result of this."',
+    diff:2
+  },
+  {
+    id:'co5', cat:'colloc', word:'change management', pron:'',
+    ko:'변화 관리; 조직 변혁을 체계적으로 이끄는 프로세스',
+    nuance:'change(변화) + management(관리). 조직에 새로운 전략·기술·구조를 도입할 때 사람들의 저항을 최소화하고 전환을 원활히 하는 체계적 접근. "most of their time is spent on change management" = CEO의 시간 대부분은 사람을 이끄는 데 쓰인다.',
+    example:'"Most of their time is spent on change management—moving the organization from A to B, versus deciding to go from A to B."',
+    diff:2
+  },
+  {
+    id:'co6', cat:'colloc', word:'intellectual curiosity', pron:'',
+    ko:'지적 호기심; 배우고 탐구하려는 내적 동기',
+    nuance:'intellectual(지적인) + curiosity(호기심). 정보를 수동적으로 받아들이는 것이 아니라 능동적으로 이유를 묻고 깊이 파고드는 태도. "you\'ve got to ask not five whys, but 50 whys" = 표면이 아니라 본질을 파고드는 호기심.',
+    example:'"The mechanism for creating fluency—that intellectual curiosity and willingness to pause and say, \'I want to do this differently.\'"',
+    diff:1
+  },
+  {
+    id:'co7', cat:'colloc', word:'data residency', pron:'',
+    ko:'데이터 거주; 데이터가 물리적으로 저장·처리되어야 하는 지리적 위치',
+    nuance:'data(데이터) + residency(거주지) → 데이터가 "살아야 하는" 곳. 개인정보보호법·주권 규제로 인해 특정 국가 내 서버에만 데이터를 저장해야 하는 요건. "more complicated data residency constructs" = 더 복잡해진 데이터 위치 규제.',
+    example:'"You\'re stuck in a world where, sure, you have more complicated data center constructs, more complicated data residency constructs."',
+    diff:3
+  },
+
+  // ── 고급단어 (10) ──
+  {
+    id:'vc1', cat:'vocab', word:'welter', pron:'/ˈweltər/',
+    ko:'혼란의 소용돌이; 뒤죽박죽 뒤섞인 혼돈',
+    nuance:'중세 영어 welteren(뒤굴다, 파도에 흔들리다)에서 유래 → 파도에 이리저리 휩쓸리듯 혼란스럽게 뒤섞인 상태. "a welter of consequential changes" = 중대한 변화들이 한꺼번에 몰려오는 혼돈의 소용돌이.',
+    example:'"Today\'s CEOs are confronting a welter of consequential changes."',
+    diff:3
+  },
+  {
+    id:'vc2', cat:'vocab', word:'democratized', pron:'/dɪˈmɒkrətaɪzd/',
+    ko:'민주화된; 누구나 이용 가능해진',
+    nuance:'democracy(민주주의) + -ize + -d → 원래 소수 전문가·특권층만 사용하던 것이 모든 사람에게 개방·접근 가능해지다. "the most democratized technology we\'ve ever seen" = 역사상 가장 빠르게 모든 계층에 퍼진 기술.',
+    example:'"It\'s the most democratized technology we\'ve ever seen."',
+    diff:2
+  },
+  {
+    id:'vc3', cat:'vocab', word:'magnitude', pron:'/ˈmæɡnɪtjuːd/',
+    ko:'규모; 크기; 중요성의 차원',
+    nuance:'라틴어 magnitudo(크기) → magnus(크다). 단순한 "크기"가 아니라, 변화·사건이 얼마나 큰 의미와 영향력을 갖는지의 스케일. "the magnitude of this change" = 이 변화가 가진 압도적인 규모와 중요성.',
+    example:'"They all have to figure out how they articulate where they\'re going organizationally to realize the magnitude of this change."',
+    diff:2
+  },
+  {
+    id:'vc4', cat:'vocab', word:'articulate', pron:'/ɑːrˈtɪkjuleɪt/',
+    ko:'명확히 표현하다; 생각을 언어로 분명하게 설명하다',
+    nuance:'라틴어 articulare(관절로 연결하다) → 생각의 각 부분을 분명한 언어로 이어 연결하다. 단순히 "말하다"보다 더 명확하고 설득력 있게 표현한다는 뉘앙스. 명사형으로도 사용: "She is very articulate" = 말을 아주 명확하게 잘 한다.',
+    example:'"How they articulate where they\'re going organizationally to realize the magnitude of this change."',
+    diff:2
+  },
+  {
+    id:'vc5', cat:'vocab', word:'fluency', pron:'/ˈfluːənsi/',
+    ko:'유창함; (기술에서) 능숙하게 다루는 역량',
+    nuance:'라틴어 fluere(흐르다) → 언어가 물처럼 막힘 없이 흐르다. 언어 유창성에서 확장되어, AI 도구를 막힘 없이 능숙하게 활용하는 능력도 fluency라 부름. "the irony is that the youngest employees often know the technology better" = 젊은 직원들의 AI 유창성이 더 높다.',
+    example:'"The other thing I hear about a lot from CEOs is fluency."',
+    diff:1
+  },
+  {
+    id:'vc6', cat:'vocab', word:'decoupling', pron:'/diːˈkʌplɪŋ/',
+    ko:'분리; 상호 의존 관계를 끊어냄',
+    nuance:'de-(반대) + couple(결합하다) + -ing → 서로 연결되어 있던 것을 분리하다. 기술·지정학에서는 미국·중국 기술 생태계가 서로 독립적으로 발전하는 현상. "the question of decoupling. Will we have one stack or multiple?" = 기술 스택이 분리될 것인가의 문제.',
+    example:'"One question I sometimes get relates to decoupling. Will we have one stack or multiple?"',
+    diff:3
+  },
+  {
+    id:'vc7', cat:'vocab', word:'equilibrium', pron:'/ˌiːkwɪˈlɪbriəm/',
+    ko:'균형; 상충하는 힘들 사이의 안정적 평형 상태',
+    nuance:'라틴어 aequilibrium(평형) → aequi(같은) + libra(저울). 두 힘이 저울처럼 균형을 이룬 상태. "found a reasonable equilibrium" = 완벽하지는 않지만 받아들일 만한 균형점을 찾았다.',
+    example:'"If you talk to most CEOs, they will say, \'We have found a reasonable equilibrium.\'"',
+    diff:2
+  },
+  {
+    id:'vc8', cat:'vocab', word:'reimagine', pron:'/ˌriːɪˈmædʒɪn/',
+    ko:'재구상하다; 완전히 새로운 시각으로 다시 상상하다',
+    nuance:'re-(다시) + imagine(상상하다) → 기존의 전제와 틀을 모두 버리고 처음부터 다시 상상하다. "reimagine the process" = 기존 프로세스를 미세 조정하는 것이 아니라 근본부터 다시 설계하다.',
+    example:'"You have to take a step back and reimagine the process."',
+    diff:2
+  },
+  {
+    id:'vc9', cat:'vocab', word:'vulnerable', pron:'/ˈvʌlnərəbl/',
+    ko:'취약한; (리더십에서) 솔직하게 약점을 인정하는',
+    nuance:'라틴어 vulnus(상처) → 상처받을 수 있는 상태. 현대 리더십에서는 모든 것을 아는 척하지 않고 솔직하게 한계를 인정하는 용기 있는 태도를 의미. "great CEOs are willing to be more vulnerable" = 최고의 CEO들은 자신의 약점을 인정한다.',
+    example:'"I also think great CEOs now are willing to be more vulnerable."',
+    diff:1
+  },
+  {
+    id:'vc10', cat:'vocab', word:'apprentice', pron:'/əˈprentɪs/',
+    ko:'수습생; 경험을 통해 배우게 하다',
+    nuance:'고대 프랑스어 aprentiz(배우는 사람). 이 텍스트에서는 동사로 사용: "I\'ve got to apprentice people" = 사람들에게 실전 경험을 통해 배울 기회를 주어야 한다. 단순 교육이 아닌 실무 도제식 학습을 강조.',
+    example:'"As a CEO or leader, I\'m not just thinking about this moment; I know I\'ve got to apprentice people."',
+    diff:1
+  },
+
+  // ── 비즈니스 전용 (6) ──
+  {
+    id:'bz1', cat:'biz', word:'ROI', pron:'',
+    ko:'투자 수익률 (Return on Investment); 투자 대비 실제로 얻은 가치',
+    nuance:'Return(수익) on Investment(투자). "AI has yet to deliver the ROI many leaders expected" = AI가 기대했던 만큼의 재무적 성과를 아직 내지 못하고 있다. AI 시대에 가장 자주 언급되는 경영 지표.',
+    example:'"AI has yet to deliver the ROI many leaders expected."',
+    diff:1
+  },
+  {
+    id:'bz2', cat:'biz', word:'LLM', pron:'',
+    ko:'대규모 언어 모델 (Large Language Model); ChatGPT·Claude 등 대화형 AI의 핵심 기술',
+    nuance:'Large(대규모) + Language(언어) + Model(모델). 수백억~수조 개의 파라미터로 학습된 언어 처리 AI. "everyone have an LLM at their fingertips" = 모든 사람이 손끝에서 AI를 사용할 수 있게 된 시대.',
+    example:'"Watching everyone have an LLM [large language model] at their fingertips—it\'s amazing."',
+    diff:1
+  },
+  {
+    id:'bz3', cat:'biz', word:'AGI', pron:'',
+    ko:'인공 일반 지능 (Artificial General Intelligence); 인간 수준의 범용 추론 능력을 가진 AI',
+    nuance:'Artificial(인공) + General(범용) + Intelligence(지능). 특정 작업만 잘하는 현재의 "Narrow AI"와 달리, 어떤 지적 작업이든 인간처럼 수행할 수 있는 AI. 아직 실현되지 않은 개념으로, 도래 시 사회·경제에 엄청난 충격을 줄 것으로 예상.',
+    example:'"Some level of responsibility relates to thinking about AGI. What will it mean for humans, and for jobs, if all of us can be replaced?"',
+    diff:2
+  },
+  {
+    id:'bz4', cat:'biz', word:'CIO', pron:'',
+    ko:'최고 정보 책임자 (Chief Information Officer); IT 전략을 총괄하는 C레벨 임원',
+    nuance:'Chief(최고) + Information(정보) + Officer(책임자). 기업의 정보기술 시스템·데이터 전략을 총괄. AI 거버넌스 시대에 에이전트 수명주기 관리, 기술 부채 해소 등의 역할이 더욱 커짐.',
+    example:'"This is a real issue that CIOs [chief information officers] will have to deal with in a real way."',
+    diff:1
+  },
+  {
+    id:'bz5', cat:'biz', word:'B2C', pron:'',
+    ko:'기업 대 소비자 (Business-to-Consumer); 최종 소비자를 직접 대상으로 하는 비즈니스',
+    nuance:'Business-to-Consumer. B2B(기업 간 거래)와 대비. "If I\'m a B2C company, can I change something around the customer?" = 소비자를 직접 상대하는 기업이라면, 고객 경험 변화에 AI를 먼저 적용하는 것이 직관적으로 와 닿는다.',
+    example:'"I think about it this way: If I\'m a B2C company, can I change something around the customer?"',
+    diff:1
+  },
+  {
+    id:'bz6', cat:'biz', word:'bottom-line results', pron:'',
+    ko:'실질적 재무 성과; 최종 손익에 반영되는 결과',
+    nuance:'bottom line = 손익계산서의 맨 아래 줄(순이익). "deliver bottom-line results" = 추상적 성과가 아니라 실제로 수익에 반영되는 결과를 만들어내다. AI 투자를 정당화하기 위해 반드시 보여줘야 하는 지표.',
+    example:'"Many companies are experimenting, but few are realizing meaningful ROI. How do you see leaders addressing the value creation challenge—and delivering bottom-line results—successfully?"',
+    diff:2
+  },
+];
+
+// ── render & logic ──
+const learnedSet = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+let activeFilter = 'all';
+
+function dots(n){ return [1,2,3].map(i=>`<span class="dot${i<=n?' on':''}"></span>`).join(''); }
+
+function render(){
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const visible = activeFilter === 'all' ? cards : cards.filter(c => c.cat === activeFilter);
+  visible.forEach(c => {
+    const learned = learnedSet.has(c.id);
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap' + (learned ? ' learned' : '');
+    wrap.dataset.id = c.id;
+    wrap.innerHTML = `
+      <div class="card">
+        <div class="card-face card-front">
+          <button class="learned-check" title="학습 완료">✓</button>
+          <span class="tag tag-${c.cat}">${{phrasal:'Phrasal',idiom:'Idiom',colloc:'Colloc',vocab:'Vocab',biz:'Biz'}[c.cat]}</span>
+          <div class="word">${c.word}</div>
+          ${c.pron ? `<div class="pron">${c.pron}</div>` : ''}
+          <div class="dots">${dots(c.diff)}</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-ko">${c.ko}</div>
+          <div class="back-nuance">${c.nuance}</div>
+          ${c.example ? `<div class="back-example">${c.example}</div>` : ''}
+        </div>
+      </div>`;
+    wrap.querySelector('.card').addEventListener('click', e => {
+      if(e.target.closest('.learned-check')) return;
+      wrap.querySelector('.card').classList.toggle('flipped');
+    });
+    wrap.querySelector('.learned-check').addEventListener('click', e => {
+      e.stopPropagation();
+      if(learnedSet.has(c.id)) learnedSet.delete(c.id);
+      else learnedSet.add(c.id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...learnedSet]));
+      render(); updateProgress();
+    });
+    grid.appendChild(wrap);
+  });
+}
+
+function updateProgress(){
+  const n = learnedSet.size;
+  document.getElementById('learned-count').textContent = n;
+  document.getElementById('bar').style.width = (n/35*100) + '%';
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeFilter = btn.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+  });
+});
+
+render(); updateProgress();
+</script>
+</body>
+</html>

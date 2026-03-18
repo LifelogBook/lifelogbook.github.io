@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulary — Building Next-Horizon AI Experiences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a1628;
+    --ink2: #1a3a6b;
+    --accent: #0055b3;
+    --accent2: #003d8a;
+    --sky: #e8f2ff;
+    --bg: #f8fbff;
+    --border: #c5dcf5;
+    --card-bg: #ffffff;
+    --card-back: #0a1628;
+    --learned-bg1: #f8fbff;
+    --learned-bg2: #e8f2ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+  header {
+    background: linear-gradient(135deg, #0a1628 0%, #1a3a6b 50%, #0055b3 100%);
+    color: #fff;
+    padding: 28px 24px 22px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.15rem, 3.5vw, 1.5rem);
+    letter-spacing: .01em;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .badge {
+    display: inline-block;
+    background: transparent;
+    border: 1.5px solid #c5dcf5;
+    color: #c5dcf5;
+    border-radius: 20px;
+    padding: 3px 14px;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .controls { padding: 16px 16px 0; max-width: 900px; margin: 0 auto; }
+
+  .progress-bar-wrap { height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 6px; }
+  .progress-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #0080ff); transition: width .4s; }
+  .progress-label { font-size: .78rem; color: var(--ink2); text-align: right; margin-bottom: 12px; font-weight: 500; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .filter-btn {
+    border: 1.5px solid var(--border);
+    background: var(--card-bg);
+    color: var(--ink2);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: .04em;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    padding: 0 16px 32px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .card-wrap { perspective: 900px; }
+  .card {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.4,0,.2,1);
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute; inset: 0;
+    border-radius: 14px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 18px 14px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,.07);
+  }
+  .card-front {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+  }
+  .card-back {
+    background: var(--card-back);
+    border: 1.5px solid #1a3a6b;
+    transform: rotateY(180deg);
+    color: #e8f2ff;
+  }
+  .card-wrap.learned .card-front {
+    background: linear-gradient(135deg, var(--learned-bg1) 0%, var(--learned-bg2) 100%);
+    border-color: var(--accent);
+    opacity: .75;
+  }
+
+  .tag {
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    border-radius: 10px;
+    padding: 2px 9px;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+  .tag-phrasal  { background: #0055b3; }
+  .tag-idiom    { background: #7c3aed; }
+  .tag-colloc   { background: #065f46; }
+  .tag-vocab    { background: #b45309; }
+  .tag-biz      { background: #9b1c2e; }
+
+  .word {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.18rem;
+    color: var(--ink);
+    margin-bottom: 6px;
+    line-height: 1.25;
+  }
+  .pron { font-size: .72rem; color: #6b8ab0; margin-bottom: 4px; }
+  .dots { display: flex; gap: 4px; margin-top: 6px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+  .dot.on { background: var(--accent); }
+
+  /* Back face */
+  .back-ko { font-size: .92rem; font-weight: 600; color: #e8f2ff; margin-bottom: 8px; line-height: 1.4; }
+  .back-nuance { font-size: .72rem; color: #93b8de; line-height: 1.5; }
+  .back-example { font-size: .68rem; color: #6b8ab0; margin-top: 6px; font-style: italic; line-height: 1.4; }
+  .learned-check {
+    position: absolute; top: 10px; right: 10px;
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: .7rem; color: transparent;
+    transition: all .2s;
+    z-index: 10;
+  }
+  .card-wrap.learned .learned-check {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Building Next-Horizon AI Experiences</h1>
+  <div class="badge">McKinsey &amp; Company · 2026</div>
+</header>
+
+<div class="controls">
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="bar" style="width:0%"></div></div>
+  <div class="progress-label"><span id="learned-count">0</span> / 35 learned</div>
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">ALL (35)</button>
+    <button class="filter-btn" data-filter="phrasal">PHRASAL (6)</button>
+    <button class="filter-btn" data-filter="idiom">IDIOM (6)</button>
+    <button class="filter-btn" data-filter="colloc">COLLOC (7)</button>
+    <button class="filter-btn" data-filter="vocab">고급단어 (10)</button>
+    <button class="filter-btn" data-filter="biz">비즈니스 (6)</button>
+  </div>
+</div>
+
+<div id="grid"></div>
+
+<script>
+const STORAGE_KEY = 'building_next_horizon_ai_experiences_learned';
+
+const cards = [
+  // ── PHRASAL VERB (6) ──
+  {
+    id:'pv1', cat:'phrasal', word:'bolt onto', pron:'',
+    ko:'~에 억지로 붙이다; 기존 구조에 어설프게 부착하다',
+    nuance:'bolt=볼트로 조이다 → 섬세하지 않게 그냥 나사로 고정하다. 기술을 기존 시스템에 어울리지 않게 붙여넣는 상황에 씀.',
+    example:'"search bars and chat boxes bolted onto legacy paradigms"',
+    diff:2
+  },
+  {
+    id:'pv2', cat:'phrasal', word:'layer onto', pron:'',
+    ko:'~위에 덧씌우다; 기존 것 위에 새 층을 추가하다',
+    nuance:'layer=층 → 위에 쌓다. "layering AI onto legacy systems" = 기존 시스템 위에 AI를 덧칠하듯 올리는 것.',
+    example:'"layering AI onto legacy systems rather than reimagining them"',
+    diff:2
+  },
+  {
+    id:'pv3', cat:'phrasal', word:'build on', pron:'',
+    ko:'~을 기반으로 구축·발전시키다',
+    nuance:'build=짓다 + on=위에 → 기존의 것을 토대 삼아 위로 쌓다. 연속성(continuity) 원칙의 핵심 동사.',
+    example:'"build on prior context—highlighting what is working, what is not"',
+    diff:1
+  },
+  {
+    id:'pv4', cat:'phrasal', word:'break through', pron:'',
+    ko:'돌파하다; 성과를 내다; 한계를 넘어서다',
+    nuance:'break=깨다 + through=통과해서 → 장벽을 뚫고 나오다. "organizations that break through" = AI에서 실질 성과를 내는 조직.',
+    example:'"Organizations that break through will not be ones that chase better models."',
+    diff:1
+  },
+  {
+    id:'pv5', cat:'phrasal', word:'scale across', pron:'',
+    ko:'조직 전반으로 확장하다; 여러 영역에 걸쳐 규모를 키우다',
+    nuance:'scale=규모를 조정하다 + across=가로질러 → 수평적으로 전파. "scaling AI across the organization" = 전사적 확산.',
+    example:'"two-thirds saying they have not yet begun scaling AI across the organization"',
+    diff:2
+  },
+  {
+    id:'pv6', cat:'phrasal', word:'give rise to', pron:'',
+    ko:'~을 초래하다; 야기하다',
+    nuance:'give rise=올라오게 하다 → 문제·결과가 \'솟아오르게\' 만든다는 이미지. "give rise to new design challenges" 형태로 자주 씀.',
+    example:'"Generative AI behaviors give rise to new design challenges."',
+    diff:2
+  },
+
+  // ── IDIOM (6) ──
+  {
+    id:'id1', cat:'idiom', word:'in the loop', pron:'',
+    ko:'의사결정 과정에 포함된; 정보를 공유받는',
+    nuance:'loop=고리 → 정보 흐름의 루프 안에 있다. "human in the loop" = AI가 행동하기 전 인간이 개입하는 설계 구조.',
+    example:'"The goal is not for people to correct the system after the fact, but to design human–AI interactions."',
+    diff:1
+  },
+  {
+    id:'id2', cat:'idiom', word:'in isolation', pron:'',
+    ko:'독립적으로; 맥락 없이; 연결 없이',
+    nuance:'isolation=고립 → 다른 것과 끊어진 채로. "Work rarely happens in isolation" = 업무는 진공 상태에서 일어나지 않는다.',
+    example:'"Work rarely happens in isolation, yet many AI systems behave as if every request is a fresh start."',
+    diff:1
+  },
+  {
+    id:'id3', cat:'idiom', word:'at scale', pron:'',
+    ko:'대규모로; 전사적으로; 광범위하게',
+    nuance:'scale=규모 → 소규모 파일럿이 아닌 실질적 규모에서. "usable at scale" = 조직 전체에서 실제로 쓸 수 있는 수준.',
+    example:'"intelligence understandable, governable, and usable at scale"',
+    diff:2
+  },
+  {
+    id:'id4', cat:'idiom', word:'on the bottom line', pron:'',
+    ko:'수익·재무 성과에; 이익에 영향을 미치는',
+    nuance:'bottom line=손익계산서의 최하단 줄(순이익) → "except on the bottom line" = AI가 어디에나 있지만 재무 성과에는 아직 반영 안 됨.',
+    example:'"The technology can be found nearly everywhere—except on the bottom line."',
+    diff:2
+  },
+  {
+    id:'id5', cat:'idiom', word:'in tandem', pron:'',
+    ko:'나란히; 동시에; 협력하여',
+    nuance:'tandem=두 사람이 앞뒤로 타는 자전거 → 동시에 같은 방향으로. "generate in tandem" = AI와 사람이 함께 생성한다.',
+    example:'"AI and human marketers generate in tandem, bringing distinct strengths."',
+    diff:2
+  },
+  {
+    id:'id6', cat:'idiom', word:'after the fact', pron:'',
+    ko:'사후에; 일이 벌어진 후에',
+    nuance:'fact=사실·사건 → 사건이 일어난 뒤. "correct the system after the fact" = 결과가 나온 뒤에야 수정하는 반응적 접근.',
+    example:'"The goal is not for people to correct the system after the fact."',
+    diff:2
+  },
+
+  // ── COLLOCATION (7) ──
+  {
+    id:'co1', cat:'colloc', word:'interaction paradigm', pron:'',
+    ko:'상호작용 패러다임; AI 시대의 새로운 인터페이스 규범',
+    nuance:'paradigm=패러다임·모범. "pre-AI era interaction paradigms" = AI 이전의 입력→출력 방식. AI는 이 패러다임을 근본적으로 바꾼다.',
+    example:'"stuck using search bars…bolted onto interaction paradigms designed for a pre-AI era"',
+    diff:2
+  },
+  {
+    id:'co2', cat:'colloc', word:'probabilistic reasoning', pron:'',
+    ko:'확률적 추론; 하나의 정답 대신 가능성을 계산하는 방식',
+    nuance:'probabilistic=확률적. 기존 소프트웨어는 deterministic(결정론적)이었으나, LLM은 probabilistic하게 작동함.',
+    example:'"Generative AI introduce…probabilistic reasoning that traditional UX patterns were never built for."',
+    diff:3
+  },
+  {
+    id:'co3', cat:'colloc', word:'cross-functional orchestration', pron:'',
+    ko:'부서 간 협업 조율; 기술·디자인·사업부가 함께 움직이는 체계',
+    nuance:'cross-functional=여러 기능 부서를 가로지르는. orchestration=지휘·조율. AI 시대엔 기술·디자인·PM이 함께 움직여야 함.',
+    example:'"Leaders must create the conditions for cross-functional orchestration."',
+    diff:3
+  },
+  {
+    id:'co4', cat:'colloc', word:'domain-specific workflow', pron:'',
+    ko:'도메인 특화 워크플로우; 특정 분야에 맞춤화된 업무 절차',
+    nuance:'domain=분야(마케팅·법무·금융 등). domain-specific = 범용이 아닌, 그 분야의 전문 맥락을 이해하는.',
+    example:'"rich, multistep, domain-specific workflows that go beyond single interactions"',
+    diff:2
+  },
+  {
+    id:'co5', cat:'colloc', word:'human judgment', pron:'',
+    ko:'인간의 판단력; 맥락·감정·경험을 포함한 인간 고유의 결정 능력',
+    nuance:'judgment=판단. AI는 계산하지만 judgment는 경험·맥락·윤리를 포함. "embed human judgment" = 인간 판단을 AI 흐름 안에 내재화.',
+    example:'"designing systems that embed human judgment directly into the interaction model"',
+    diff:1
+  },
+  {
+    id:'co6', cat:'colloc', word:'clarification loop', pron:'',
+    ko:'명확화 루프; AI가 의도를 파악하기 위해 추가 질문을 주고받는 과정',
+    nuance:'clarification=명확화. loop=반복 순환. AI가 모호한 요청에 곧바로 답하지 않고 질문을 던져 의도를 좁혀가는 과정.',
+    example:'"some AI systems incorporate follow-up questions, many experiences still lack effective clarification loops"',
+    diff:2
+  },
+  {
+    id:'co7', cat:'colloc', word:'incremental market uplift', pron:'',
+    ko:'점진적 시장 성과 향상; AI 도구 적용으로 발생하는 추가 매출 상승분',
+    nuance:'incremental=증분적·추가적. uplift=향상. AI 도구 도입으로 기존 대비 추가로 발생하는 매출·전환율 상승을 측정할 때 씀.',
+    example:'"an incremental market sales uplift of more than 2 percent"',
+    diff:3
+  },
+
+  // ── 고급단어 (10) ──
+  {
+    id:'vc1', cat:'vocab', word:'agentic', pron:'/ˈeɪdʒəntɪk/',
+    ko:'자율적으로 행동하는; 에이전트 기반의',
+    nuance:'agent(행위자) + -ic. AI가 스스로 계획·실행하는 능력. gen AI보다 한 단계 높은 자율성. "agentic AI" = 목표를 받고 스스로 처리.',
+    example:'"Many organizations are struggling to scale gen AI and agentic AI."',
+    diff:2
+  },
+  {
+    id:'vc2', cat:'vocab', word:'elusive', pron:'/ɪˈluːsɪv/',
+    ko:'달성하기 어려운; 파악하기 힘든',
+    nuance:'elude(피하다) + -ive → 잡으려 해도 계속 빠져나가는 느낌. "impact remains elusive" = 성과가 손에 잡히지 않는다.',
+    example:'"meaningful, organization-wide impact remains elusive"',
+    diff:2
+  },
+  {
+    id:'vc3', cat:'vocab', word:'legibility', pron:'/ˌledʒɪˈbɪlɪti/',
+    ko:'가독성; (AI의) 이해 가능성; 논리가 투명하게 보이는 정도',
+    nuance:'legible(읽을 수 있는) + -ity. AI가 왜 그런 결론을 냈는지 사람이 이해할 수 있어야 한다는 원칙.',
+    example:'"platform engineers must design for legibility, auditability, and alignment"',
+    diff:3
+  },
+  {
+    id:'vc4', cat:'vocab', word:'auditability', pron:'/ˌɔːdɪtəˈbɪlɪti/',
+    ko:'감사 가능성; 추적·검증 가능성',
+    nuance:'audit(감사하다) + -ability. AI 결정 과정을 외부에서 추적·검증할 수 있는 능력. AI 거버넌스의 핵심 요건.',
+    example:'"design for legibility, auditability, and alignment with human decision-making"',
+    diff:3
+  },
+  {
+    id:'vc5', cat:'vocab', word:'orchestrate', pron:'/ˈɔːrkɪstreɪt/',
+    ko:'조율하다; 체계적으로 편성하다',
+    nuance:'orchestra(오케스트라) → 지휘자가 여러 악기를 조화롭게 이끌듯, 여러 AI 에이전트·사람을 조율. 4원칙 중 하나의 이름.',
+    example:'"Orchestrate cocreation: Create environments where human expertise and AI agents collaborate fluidly."',
+    diff:2
+  },
+  {
+    id:'vc6', cat:'vocab', word:'deterministic', pron:'/dɪˌtɜːrmɪˈnɪstɪk/',
+    ko:'결정론적인; 같은 입력에 항상 같은 출력이 나오는',
+    nuance:'determine(결정하다) + -istic. AI 이전 소프트웨어는 deterministic(예측 가능), 생성형 AI는 probabilistic(확률적).',
+    example:'"interaction models are more adaptive and less deterministic"',
+    diff:3
+  },
+  {
+    id:'vc7', cat:'vocab', word:'surmount', pron:'/sərˈmaʊnt/',
+    ko:'극복하다; 넘어서다',
+    nuance:'sur(위로, 프랑스어) + mount(오르다) → 장애물 위로 올라가다. "breakdowns that must be surmounted" 형태로 씀.',
+    example:'"leaders encounter four key breakdowns that must be surmounted"',
+    diff:2
+  },
+  {
+    id:'vc8', cat:'vocab', word:'oscillate', pron:'/ˈɒsɪleɪt/',
+    ko:'오락가락하다; 양 극단 사이에서 흔들리다',
+    nuance:'oscillo(흔들다, 라틴어) → 시계추처럼 왔다갔다. 사용자가 AI 결과를 무조건 수용하거나 완전히 버리는 양극단 행동 묘사.',
+    example:'"users tend to oscillate between accepting outputs uncritically or abandoning tools"',
+    diff:3
+  },
+  {
+    id:'vc9', cat:'vocab', word:'embed', pron:'/ɪmˈbed/',
+    ko:'내재시키다; 심어넣다; 자연스럽게 통합하다',
+    nuance:'em(안에) + bed(자리) → 깊숙이 자리잡게 하다. "embed human judgment" = 인간의 판단을 AI 시스템 구조 안에 녹여넣다.',
+    example:'"designing systems that embed human judgment directly into the interaction model"',
+    diff:1
+  },
+  {
+    id:'vc10', cat:'vocab', word:'brim', pron:'/brɪm/',
+    ko:'넘치다; 가득하다',
+    nuance:'brim=그릇의 테두리 → 넘쳐흐를 정도로 가득 찬 상태. "brims with confidence" = AI가 틀렸어도 확신에 차서 말하는 문제를 지적할 때 씀.',
+    example:'"responding to queries in seconds with a voice that brims with confidence"',
+    diff:2
+  },
+
+  // ── 비즈니스 전용 (6) ──
+  {
+    id:'bz1', cat:'biz', word:'gen AI', pron:'',
+    ko:'생성형 AI (Generative AI); 텍스트·이미지·코드를 생성하는 AI',
+    nuance:'"Gen AI" 는 McKinsey 문서에서 Generative AI의 표준 축약어. agentic AI와 구분해서 씀.',
+    example:'"Many organizations are struggling to scale gen AI and agentic AI."',
+    diff:1
+  },
+  {
+    id:'bz2', cat:'biz', word:'agentic AI', pron:'',
+    ko:'자율 AI; 목표를 받고 스스로 계획·실행·수정하는 AI 시스템',
+    nuance:'gen AI(생성)보다 한 단계 진화. 단순히 텍스트를 생성하는 게 아니라 멀티스텝 태스크를 자율 수행함.',
+    example:'"Many organizations are struggling to scale gen AI and agentic AI."',
+    diff:2
+  },
+  {
+    id:'bz3', cat:'biz', word:'UX', pron:'',
+    ko:'사용자 경험 (User Experience); 제품 사용 전 과정에서의 감정·반응·만족도',
+    nuance:'UI(인터페이스)와 다름. UX는 사용자가 느끼는 전체 경험. 이 리포트는 AI 시대에 UX 설계 원칙이 바뀌어야 한다고 주장함.',
+    example:'"AI-native design patterns…a new vocabulary of AI-native design patterns"',
+    diff:1
+  },
+  {
+    id:'bz4', cat:'biz', word:'LLM', pron:'',
+    ko:'대규모 언어 모델 (Large Language Model); GPT·Claude 등 대화형 AI의 핵심 기술',
+    nuance:'Large Language Model. 수천억 개의 파라미터로 학습된 언어 모델. 의도를 완벽히 이해하지 못해 intent ambiguity 문제를 일으킴.',
+    example:'"Large language models can approximate meaning, but they cannot always infer the full intent."',
+    diff:1
+  },
+  {
+    id:'bz5', cat:'biz', word:'pilot', pron:'',
+    ko:'파일럿; 소규모 시험 운영. 전사 확장 전 소수 집단에서 테스트하는 단계',
+    nuance:'pilot=항공기 조종사 → 먼저 시험 비행하다. "most companies remain in the pilot or experimenting phase" = 전사 확산에 못 미침.',
+    example:'"most companies using AI remain in the pilot or experimenting phase"',
+    diff:1
+  },
+  {
+    id:'bz6', cat:'biz', word:'adoption rate', pron:'',
+    ko:'채택률; 도구·기술이 실제로 사용되는 비율',
+    nuance:'adoption=채택. AI 투자 성과를 측정하는 핵심 지표. "AI tools fail to scale" = adoption rate가 낮아 ROI 실현 실패.',
+    example:'"AI tools fail to scale, and meaningful, organization-wide impact remains elusive."',
+    diff:2
+  }
+];
+
+const learnedSet = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+let activeFilter = 'all';
+
+function renderCards() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const visible = activeFilter === 'all' ? cards : cards.filter(c => c.cat === activeFilter);
+  visible.forEach(c => {
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap' + (learnedSet.has(c.id) ? ' learned' : '');
+    wrap.dataset.id = c.id;
+
+    const dots = [1,2,3].map(i => `<div class="dot${i<=c.diff?' on':''}"></div>`).join('');
+    const pronHtml = c.pron ? `<div class="pron">${c.pron}</div>` : '';
+
+    wrap.innerHTML = `
+      <div class="card" id="card-${c.id}">
+        <div class="card-face card-front">
+          <button class="learned-check" title="학습 완료">✓</button>
+          <span class="tag tag-${c.cat}">${c.cat==='vocab'?'고급단어':c.cat==='biz'?'비즈니스':c.cat.toUpperCase()}</span>
+          <div class="word">${c.word}</div>
+          ${pronHtml}
+          <div class="dots">${dots}</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-ko">${c.ko}</div>
+          <div class="back-nuance">${c.nuance}</div>
+          <div class="back-example">${c.example}</div>
+        </div>
+      </div>`;
+
+    wrap.querySelector('.card').addEventListener('click', e => {
+      if (e.target.closest('.learned-check')) return;
+      wrap.querySelector('.card').classList.toggle('flipped');
+    });
+    wrap.querySelector('.learned-check').addEventListener('click', e => {
+      e.stopPropagation();
+      toggleLearned(c.id, wrap);
+    });
+
+    grid.appendChild(wrap);
+  });
+  updateProgress();
+}
+
+function toggleLearned(id, wrap) {
+  if (learnedSet.has(id)) { learnedSet.delete(id); wrap.classList.remove('learned'); }
+  else { learnedSet.add(id); wrap.classList.add('learned'); }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...learnedSet]));
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = cards.length;
+  const done = learnedSet.size;
+  document.getElementById('learned-count').textContent = done;
+  document.getElementById('bar').style.width = (done/total*100) + '%';
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    renderCards();
+  });
+});
+
+renderCards();
+</script>
+</body>
+</html>
