@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The multi-year AI advantage — Vocab</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f172a;
+    --ink2: #1e3a5f;
+    --accent: #06b6d4;
+    --accent2: #0891b2;
+    --sky: #ecfeff;
+    --bg: #f0f9ff;
+    --border: #67e8f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--ink); }
+
+  header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0891b2 100%);
+    color: #fff;
+    padding: 2rem 1.5rem 1.5rem;
+    text-align: center;
+  }
+  header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 4vw, 2rem); margin-bottom: .5rem; }
+  .badge {
+    display: inline-block;
+    border: 1.5px solid rgba(255,255,255,.5);
+    border-radius: 20px;
+    padding: .25rem .9rem;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .progress-wrap { max-width: 700px; margin: 0 auto 1rem; padding: 0 1rem; }
+  .progress-bar-bg { background: rgba(255,255,255,.2); border-radius: 4px; height: 6px; }
+  .progress-bar { background: var(--accent); height: 6px; border-radius: 4px; transition: width .4s; width: 0%; }
+  .progress-label { font-size: .8rem; text-align: right; margin-top: .3rem; color: rgba(255,255,255,.85); }
+
+  .filters { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; padding: 1rem 1rem .5rem; }
+  .filter-btn {
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--ink);
+    padding: .35rem .9rem;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .filter-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .filter-btn:hover:not(.active) { background: var(--sky); }
+
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .card-wrap { perspective: 900px; }
+  .card {
+    position: relative;
+    height: 220px;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.4,0,.2,1);
+    cursor: pointer;
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    display: flex; flex-direction: column;
+    border: 1.5px solid var(--border);
+  }
+  .front { background: #fff; }
+  .back { background: var(--sky); transform: rotateY(180deg); justify-content: space-between; }
+
+  .card.learned .front { background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%); }
+
+  .tag {
+    display: inline-block;
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: .2rem .55rem;
+    border-radius: 10px;
+    color: #fff;
+    margin-bottom: .6rem;
+    width: fit-content;
+  }
+  .tag-phrasal  { background: #06b6d4; }
+  .tag-idiom    { background: #7c3aed; }
+  .tag-colloc   { background: #0f172a; }
+  .tag-vocab    { background: #0ea5e9; }
+  .tag-biz      { background: #dc2626; }
+
+  .word { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: var(--ink); line-height: 1.2; margin-bottom: .3rem; }
+  .pron { font-size: .75rem; color: #666; margin-bottom: .4rem; }
+  .dots { display: flex; gap: 3px; margin-top: auto; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); opacity: .25; }
+  .dot.on { opacity: 1; }
+
+  .ko { font-size: .95rem; font-weight: 600; color: var(--ink); margin-bottom: .4rem; line-height: 1.4; }
+  .nuance { font-size: .78rem; color: #444; line-height: 1.5; flex: 1; }
+  .check-btn {
+    align-self: flex-end;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .3rem .75rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background .2s;
+    margin-top: .5rem;
+  }
+  .check-btn:hover { background: var(--accent2); }
+  .check-btn.done { background: #9ca3af; }
+
+  .learned-badge {
+    position: absolute;
+    top: .6rem; right: .6rem;
+    font-size: .7rem;
+    background: var(--accent);
+    color: #fff;
+    padding: .15rem .45rem;
+    border-radius: 8px;
+    font-weight: 700;
+    display: none;
+  }
+  .card.learned .learned-badge { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Capgemini Research Institute · 2026</div>
+  <h1>The multi-year AI advantage</h1>
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar" id="pbar"></div></div>
+    <div class="progress-label" id="plabel">0 / 35 learned</div>
+  </div>
+</header>
+
+<div class="filters">
+  <button class="filter-btn active" data-cat="all">ALL (35)</button>
+  <button class="filter-btn" data-cat="phrasal">PHRASAL (6)</button>
+  <button class="filter-btn" data-cat="idiom">IDIOM (6)</button>
+  <button class="filter-btn" data-cat="colloc">COLLOC (7)</button>
+  <button class="filter-btn" data-cat="vocab">고급단어 (10)</button>
+  <button class="filter-btn" data-cat="biz">비즈니스 (6)</button>
+</div>
+
+<div id="grid"></div>
+
+<script>
+const STORAGE_KEY = 'multi_year_ai_advantage_2026_learned';
+const learned = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+
+const cards = [
+  // ── PHRASAL (6) ──
+  {id:'pv1', cat:'phrasal', word:'scale up', pron:'', ko:'대규모로 확장하다', nuance:'scale = 규모 + up = 위로 → 파일럿·실험 수준에서 전사적 규모로 키우는 것. "38% of organizations have scaled their Gen AI use cases." 이 보고서의 핵심 화두: 파일럿에서 확장(scale-up)으로의 전환.', diff:1},
+  {id:'pv2', cat:'phrasal', word:'move beyond', pron:'', ko:'~을 넘어서다, 탈피하다', nuance:'move = 이동 + beyond = 저 너머 → 이전 단계나 방식에서 벗어남. "moving beyond make or buy toward blended strategies" / "moving beyond human-in-the-loop." 한 단계 진화했음을 표현하는 핵심 구문.', diff:1},
+  {id:'pv3', cat:'phrasal', word:'keep pace with', pron:'', ko:'~와 보조를 맞추다, 뒤처지지 않다', nuance:'pace = 보폭 → 빠르게 변하는 기술의 속도에 맞춰 나아가는 것. "technology is moving faster than adoption can keep pace with." 경쟁에서 뒤처지지 않으려는 긴박감을 표현.', diff:2},
+  {id:'pv4', cat:'phrasal', word:'step in', pron:'', ko:'개입하다, 나서다', nuance:'step = 발걸음 + in = 안으로 → 문제·위험 상황에 직접 들어가 조치. "AI must have clear triggers for when humans step in." 거버넌스 맥락에서 인간이 AI 결정에 개입하는 순간을 가리킴.', diff:2},
+  {id:'pv5', cat:'phrasal', word:'pair with', pron:'', ko:'~와 짝을 이루다, 병행하다', nuance:'pair = 쌍, 짝 → 두 가지 이니셔티브를 동시에 추진. "enterprises are pairing AI infrastructure expansion with broad-based training efforts." 기술 투자와 인재 개발을 함께 추진하는 전략 표현.', diff:1},
+  {id:'pv6', cat:'phrasal', word:'steer toward', pron:'', ko:'~쪽으로 방향을 틀다, 유도하다', nuance:'steer = 배·차를 조종하다 + toward = 방향 → 전략적으로 특정 방향으로 전환. "organizations are steering their investments toward domains with proven ability to scale." 리더십이 자원 배분 방향을 조율하는 뉘앙스.', diff:2},
+
+  // ── IDIOM (6) ──
+  {id:'id1', cat:'idiom', word:'AI winter', pron:'', ko:'AI 투자 침체기 (관심·자금 급감 시기)', nuance:'컴퓨터 과학 역사에서 AI 연구 자금이 급감한 시기를 "겨울"에 비유. 1970년대, 1980년대 두 차례 발생. 보고서는 차세대 AI winter를 대비해 80%의 조직이 foundational capabilities에 집중하고 있다고 분석.', diff:2},
+  {id:'id2', cat:'idiom', word:'human in the loop', pron:'', ko:'의사결정에 인간이 참여하는 구조', nuance:'loop = 반복 루프 → AI 프로세스 내 인간이 검토·승인·개입하는 역할. "keeping humans in the loop is no longer enough" → 단순 참여를 넘어 인간이 AI를 감독·조율하는 "human-on-the-loop"로 진화해야 한다는 것이 보고서의 핵심 메시지.', diff:2},
+  {id:'id3', cat:'idiom', word:'the playbook', pron:'', ko:'전략 지침서, 행동 방침', nuance:'미식축구 팀의 작전집(playbook)에서 유래 → 어떤 상황에서 어떻게 대응해야 하는지 정리한 표준 전략. "the playbook is still evolving" = 기업 전반 AI 도입을 위한 표준 방법론이 아직 정립되지 않았다는 뜻.', diff:1},
+  {id:'id4', cat:'idiom', word:'make or buy', pron:'', ko:'자체 개발(make) vs 외부 구매(buy) 결정', nuance:'경영 전략 핵심 용어. "organizations are moving beyond make or buy toward blended AI strategies" → 직접 개발과 상용 솔루션 구매를 유연하게 결합하는 방향으로 진화. 44%가 파운데이션 모델 구매 + 커스텀 앱 개발.', diff:2},
+  {id:'id5', cat:'idiom', word:'winners and losers', pron:'', ko:'승자와 패자, AI 격차의 양극화', nuance:'"AI is creating winners and losers. In every sector, a relatively small circle of major players shape the competitive landscape...gains will flow disproportionately to those able to harness AI most effectively." — Gartner. 빠른 채택자와 늦은 채택자 사이의 경쟁 우위 격차를 강조.', diff:1},
+  {id:'id6', cat:'idiom', word:'no process without AI', pron:'', ko:'모든 프로세스에 AI 내재화 전략', nuance:'Volkswagen 경영진 Hauke Stars의 선언: "Our ambition: No process without AI." → 기업 내 모든 프로세스에 AI를 기본값으로 내재화하겠다는 강한 의지. AI 퍼스트 전략의 극단적 표현.', diff:2},
+
+  // ── COLLOC (7) ──
+  {id:'co1', cat:'colloc', word:'agentic AI', pron:'', ko:'에이전틱 AI (자율 목표 달성 AI)', nuance:'agent(행위자) + -ic. 사람 개입 없이 목표를 스스로 계획·실행하는 AI 시스템. "AI agents capable of supporting decision-making, varying levels of autonomy and human oversight." 중국 46% → 미국 41% → 유럽 30% 순으로 도입 선도.', diff:3},
+  {id:'co2', cat:'colloc', word:'data sovereignty', pron:'', ko:'데이터 주권 (자국·자사 데이터 통제권)', nuance:'sovereignty = 주권. 민감·규제 데이터가 외부 AI 플랫폼에 넘어가지 않도록 통제하는 능력. "54% of organizations agree they prioritize data sovereignty." 각국 정부의 독립적 AI 인프라 구축(South Korea $6.8B, EU Mistral+SAP)과 맞닿는 개념.', diff:3},
+  {id:'co3', cat:'colloc', word:'edge AI', pron:'', ko:'에지 AI (현장 단말기에서 실행되는 AI)', nuance:'edge = 가장자리 → 중앙 클라우드 서버 아닌 IoT 센서·스마트폰·공장 기기에서 AI 추론을 직접 수행. 실시간 응답·개인정보 보호에 유리. 글로벌 지출: 2025년 $260B → 2028년 $380B (연 13.8% 성장).', diff:2},
+  {id:'co4', cat:'colloc', word:'center of excellence', pron:'(CoE)', ko:'탁월성 센터 (AI CoE)', nuance:'C-suite 임원이 이끄는 전문 역량 집중 조직. AI 도구 사용 가이드라인·데이터 거버넌스·리스크 관리 프레임워크 수립. "establish dedicated AI centers of excellence led by C-suite executives" — 보고서 권고사항 중 하나. 56%가 설립 계획.', diff:2},
+  {id:'co5', cat:'colloc', word:'guardrails', pron:'', ko:'가드레일 (AI 행동 경계·안전 규칙)', nuance:'고속도로 가드레일에서 유래 → AI가 허용 범위를 넘지 않도록 설정한 규칙·제한. "agentic AI systems span a spectrum operating under defined governance guardrails." 인간 개입 시점, 예외 처리 방법 등을 포함. 거버넌스의 핵심 구성 요소.', diff:2},
+  {id:'co6', cat:'colloc', word:'cognitive agility', pron:'', ko:'인지 민첩성 (AI 환경 적응 사고력)', nuance:'cognition = 인지 + agility = 민첩성. 단순 과업 실행에서 AI 감독·판단·조율 능력으로 전환하는 역량. "enterprises need to shift from task execution to cognitive agility and AI orchestration." 미래 직무의 핵심 역량으로 제시.', diff:3},
+  {id:'co7', cat:'colloc', word:'blended AI strategy', pron:'', ko:'혼합 AI 전략 (구축·구매·조율의 결합)', nuance:'build(자체 개발) + buy(구매) + orchestrate(조율)를 유연하게 결합. "organizations are moving beyond make or buy toward blended AI strategies." 64%가 SLM 또는 파인튜닝 오픈소스 모델 검토, 62%가 오픈소스와 독점 도구를 리스크·확장성 기반으로 균형 있게 사용.', diff:2},
+
+  // ── VOCAB (10) ──
+  {id:'v1', cat:'vocab', word:'imperative', pron:'/ɪmˈperətɪv/', ko:'필수적인; 절대적으로 해야 하는 것', nuance:'라틴어 imperare(명령하다) → 선택이 아닌 필수 과제. "AI is a strategic imperative regardless of market sentiment" = AI는 시장 분위기와 무관하게 반드시 추구해야 할 전략. 명사 "imperative" = 절박한 과제.', diff:2},
+  {id:'v2', cat:'vocab', word:'orchestration', pron:'/ˌɔːrkɪˈstreɪʃn/', ko:'조율; AI 에이전트 오케스트레이션', nuance:'orchestra 지휘에서 유래 → 복수 AI 에이전트를 통합 조율하는 능력. "agent orchestration: the ability to design, govern, and coordinate multiple AI agents as a coherent system, aligning them with business intent." 미래 핵심 역량으로 꼽힘.', diff:3},
+  {id:'v3', cat:'vocab', word:'sovereignty', pron:'/ˈsɒvrənti/', ko:'주권; 자주적 통제권', nuance:'라틴어 superanus(위에 있는) → AI 맥락에서는 AI 모델·데이터·의사결정에 대한 자국·자사의 통제권. "AI sovereignty goes hand in hand with competitive enhancement...no country has a moat in AI engineering anymore." — Etienne Grass, Global CAIO.', diff:3},
+  {id:'v4', cat:'vocab', word:'proprietary', pron:'/prəˈpraɪətri/', ko:'독점적인, 사유의', nuance:'라틴어 proprietas(소유물) → 특정 기업만이 소유·통제하는 기술·데이터. "orchestrating proprietary value over commodity models" → 범용(commodity) 모델 위에서 독점적 가치를 창출하는 전략. 62%가 오픈소스와 proprietary 도구를 균형 있게 사용.', diff:2},
+  {id:'v5', cat:'vocab', word:'foundational', pron:'/faʊnˈdeɪʃənl/', ko:'기초적인, 근본적인', nuance:'foundation + -al. "shift focus to foundational capabilities" = AI winter에 대비해 인프라·데이터·거버넌스 등 기반 역량에 집중. 또한 "foundational model" = GPT 같은 대형 기반 모델. 두 의미 모두 이 보고서에서 핵심.', diff:2},
+  {id:'v6', cat:'vocab', word:'resilient', pron:'/rɪˈzɪliənt/', ko:'회복력 있는, 탄력적인', nuance:'라틴어 resilire(튀어 오르다) → 충격·변화 후 원상태로 돌아오거나 더 강해지는 성질. "ensure AI is secure, resilient, and strategically aligned as adoption accelerates." 보안·거버넌스 맥락에서 시스템의 장애 복구 능력을 가리킴.', diff:2},
+  {id:'v7', cat:'vocab', word:'deterministic', pron:'/dɪˌtɜːrmɪˈnɪstɪk/', ko:'결정론적인 (동일 입력 → 동일 결과)', nuance:'determinism(결정론) + -ic. "Gen AI marks a fundamental shift from deterministic systems to technologies that operate with uncertainty and emergence." 전통 소프트웨어는 동일 입력에 항상 동일 출력 → Gen AI는 확률적·창발적. — Robert Engels, Capgemini.', diff:3},
+  {id:'v8', cat:'vocab', word:'operationalize', pron:'/ˌɒpəˈreɪʃənəlaɪz/', ko:'운영에 실제 적용하다, 실용화하다', nuance:'operation + -alize → 개념·실험을 실제 비즈니스 운영에 통합해 가치를 창출하는 것. "operationalize AI for measurable impact" = AI를 일회성 파일럿이 아닌 지속적 운영 과정으로 내재화. "Transform Now"의 핵심 동사.', diff:2},
+  {id:'v9', cat:'vocab', word:'disproportionate', pron:'/ˌdɪsprəˈpɔːʃənət/', ko:'불균형적인, 비례하지 않는', nuance:'dis- = 부정 + proportionate = 비례하는. "gains will flow disproportionately to those able to harness AI most effectively." → AI 경쟁에서 이익이 소수 강자에게 불균형적으로 집중된다는 경고. 기회와 위기의 비대칭성을 강조.', diff:2},
+  {id:'v10', cat:'vocab', word:'interoperability', pron:'/ˌɪntərˌɒpərəˈbɪlɪti/', ko:'상호운용성 (시스템 간 연동 능력)', nuance:'inter = 사이에 + operability = 운용 가능성. AI 에센셜 전략의 핵심: "reduce fragmentation by connecting internal and external models through common interfaces." 내부·외부 AI 모델들이 공통 인터페이스로 원활하게 연결되는 능력.', diff:3},
+
+  // ── BIZ (6) ──
+  {id:'b1', cat:'biz', word:'SLM', pron:'', ko:'소형 언어 모델 (Small Language Model)', nuance:'GPT 같은 대형 LLM 대신 특정 도메인에 최적화된 경량 모델. 비용·속도·보안 측면에서 유리. "64% of organizations are actively investing in or evaluating SLMs or fine-tuned open-source models as alternatives to large proprietary ones."', diff:2},
+  {id:'b2', cat:'biz', word:'CAIO', pron:'', ko:'최고 AI 책임자 (Chief AI Officer)', nuance:'C-suite에 새로 등장한 AI 전담 임원 역할. AI 전략·거버넌스·리스크 관리 총괄. "Etienne Grass, Global CAIO, Capgemini Invent." 보고서는 AI CoE를 C-suite 임원 주도로 운영할 것을 권고. CAIO 포지션 신설이 리더십 명확성의 신호.', diff:2},
+  {id:'b3', cat:'biz', word:'NPU', pron:'', ko:'신경 처리 장치 (Neural Processing Unit)', nuance:'AI 연산에 특화된 전용 칩. CPU/GPU보다 AI 워크로드에 전력 효율적. "NXP acquires Kinara ($307M NPU specialist) — enhances NXP\'s portfolio with high-performance, Gen AI-capable edge processors for industrial and automotive use cases."', diff:3},
+  {id:'b4', cat:'biz', word:'tinyML', pron:'', ko:'초소형 기기용 머신러닝', nuance:'~5KB 수준의 극소형 ML 모델. 배터리 구동 IoT·에지 디바이스에서 AI 추론 가능. "Nordic acquires Neuton.AI — gaining IP for tinyML model generation. Jumpstarts Nordic\'s strategy for always-on, low-power edge AI deployments."', diff:3},
+  {id:'b5', cat:'biz', word:'Resonance AI Framework', pron:'', ko:'레조넌스 AI 프레임워크 (Capgemini)', nuance:'Capgemini의 AI 변환 프레임워크. 3개 기둥(AI Essentials → AI Readiness → Human-AI Chemistry) × 가치의 파도(ACCESS→ADAPT→ADOPT) → Transform Now + Build Tomorrow. 기업이 AI 증강 기업으로 전환하는 단계적 여정을 구조화.', diff:3},
+  {id:'b6', cat:'biz', word:'Intelligence as a Service', pron:'(IaaS)', ko:'서비스형 인텔리전스 (AI IaaS)', nuance:'AI 모델과 추론을 중앙화해 조직 전체가 일관되게 사용할 수 있도록 제공하는 아키텍처. "Create an Intelligence as a Service engine for the enterprise: centralize access to AI models and inference so teams can use AI consistently." AI 에센셜의 첫 번째 우선순위.', diff:3},
+];
+
+const grid = document.getElementById('grid');
+const pbar = document.getElementById('pbar');
+const plabel = document.getElementById('plabel');
+
+function updateProgress() {
+  const n = learned.size;
+  pbar.style.width = (n / 35 * 100) + '%';
+  plabel.textContent = n + ' / 35 learned';
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...learned]));
+}
+
+function makeDots(diff) {
+  return [1,2,3].map(i => `<div class="dot${i<=diff?' on':''}"></div>`).join('');
+}
+
+function renderCards(cat) {
+  grid.innerHTML = '';
+  const filtered = cat === 'all' ? cards : cards.filter(c => c.cat === cat);
+  filtered.forEach(c => {
+    const isLearned = learned.has(c.id);
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap';
+    wrap.innerHTML = `
+      <div class="card${isLearned?' learned':''}" id="card-${c.id}">
+        <div class="card-face front" onclick="flip('${c.id}')">
+          <span class="tag tag-${c.cat}">${c.cat}</span>
+          <div class="word">${c.word}</div>
+          ${c.pron ? `<div class="pron">${c.pron}</div>` : ''}
+          <div class="dots">${makeDots(c.diff)}</div>
+          <div class="learned-badge">✓ learned</div>
+        </div>
+        <div class="card-face back" onclick="flip('${c.id}')">
+          <div>
+            <div class="ko">${c.ko}</div>
+            <div class="nuance">${c.nuance}</div>
+          </div>
+          <button class="check-btn${isLearned?' done':''}" onclick="event.stopPropagation();toggle('${c.id}')">
+            ${isLearned ? '✓ learned' : 'mark learned'}
+          </button>
+        </div>
+      </div>`;
+    grid.appendChild(wrap);
+  });
+}
+
+function flip(id) {
+  document.getElementById('card-'+id).classList.toggle('flipped');
+}
+
+function toggle(id) {
+  const card = document.getElementById('card-'+id);
+  const btn = card.querySelector('.check-btn');
+  if (learned.has(id)) {
+    learned.delete(id);
+    card.classList.remove('learned');
+    btn.textContent = 'mark learned';
+    btn.classList.remove('done');
+  } else {
+    learned.add(id);
+    card.classList.add('learned');
+    btn.textContent = '✓ learned';
+    btn.classList.add('done');
+  }
+  updateProgress();
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCards(btn.dataset.cat);
+  });
+});
+
+renderCards('all');
+updateProgress();
+</script>
+</body>
+</html>

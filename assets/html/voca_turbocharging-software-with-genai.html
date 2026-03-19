@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turbocharging Software with Gen AI — Vocab</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0c1445;
+    --ink2: #1e2d7a;
+    --accent: #22c55e;
+    --accent2: #16a34a;
+    --sky: #f0fdf4;
+    --bg: #fafffe;
+    --border: #86efac;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--ink); }
+
+  header {
+    background: linear-gradient(135deg, #0c1445 0%, #1e2d7a 50%, #16a34a 100%);
+    color: #fff;
+    padding: 2rem 1.5rem 1.5rem;
+    text-align: center;
+  }
+  header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 4vw, 2rem); margin-bottom: .5rem; }
+  .badge {
+    display: inline-block;
+    border: 1.5px solid rgba(255,255,255,.5);
+    border-radius: 20px;
+    padding: .25rem .9rem;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .progress-wrap { max-width: 700px; margin: 0 auto 1rem; padding: 0 1rem; }
+  .progress-bar-bg { background: rgba(255,255,255,.2); border-radius: 4px; height: 6px; }
+  .progress-bar { background: var(--accent); height: 6px; border-radius: 4px; transition: width .4s; width: 0%; }
+  .progress-label { font-size: .8rem; text-align: right; margin-top: .3rem; color: rgba(255,255,255,.85); }
+
+  .filters { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; padding: 1rem 1rem .5rem; }
+  .filter-btn {
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--ink);
+    padding: .35rem .9rem;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .filter-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .filter-btn:hover:not(.active) { background: var(--sky); }
+
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .card-wrap { perspective: 900px; }
+  .card {
+    position: relative;
+    height: 220px;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.4,0,.2,1);
+    cursor: pointer;
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    display: flex; flex-direction: column;
+    border: 1.5px solid var(--border);
+  }
+  .front { background: #fff; }
+  .back { background: var(--sky); transform: rotateY(180deg); justify-content: space-between; }
+
+  .card.learned .front { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
+
+  .tag {
+    display: inline-block;
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: .2rem .55rem;
+    border-radius: 10px;
+    color: #fff;
+    margin-bottom: .6rem;
+    width: fit-content;
+  }
+  .tag-phrasal  { background: #22c55e; }
+  .tag-idiom    { background: #7c3aed; }
+  .tag-colloc   { background: #0c1445; }
+  .tag-vocab    { background: #0ea5e9; }
+  .tag-biz      { background: #dc2626; }
+
+  .word { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: var(--ink); line-height: 1.2; margin-bottom: .3rem; }
+  .pron { font-size: .75rem; color: #666; margin-bottom: .4rem; }
+  .dots { display: flex; gap: 3px; margin-top: auto; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); opacity: .25; }
+  .dot.on { opacity: 1; }
+
+  .ko { font-size: .95rem; font-weight: 600; color: var(--ink); margin-bottom: .4rem; line-height: 1.4; }
+  .nuance { font-size: .78rem; color: #444; line-height: 1.5; flex: 1; }
+  .check-btn {
+    align-self: flex-end;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .3rem .75rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background .2s;
+    margin-top: .5rem;
+  }
+  .check-btn:hover { background: var(--accent2); }
+  .check-btn.done { background: #9ca3af; }
+
+  .learned-badge {
+    position: absolute;
+    top: .6rem; right: .6rem;
+    font-size: .7rem;
+    background: var(--accent);
+    color: #fff;
+    padding: .15rem .45rem;
+    border-radius: 8px;
+    font-weight: 700;
+    display: none;
+  }
+  .card.learned .learned-badge { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Capgemini Research Institute · 2024</div>
+  <h1>Turbocharging Software with Gen AI</h1>
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar" id="pbar"></div></div>
+    <div class="progress-label" id="plabel">0 / 35 learned</div>
+  </div>
+</header>
+
+<div class="filters">
+  <button class="filter-btn active" data-cat="all">ALL (35)</button>
+  <button class="filter-btn" data-cat="phrasal">PHRASAL (6)</button>
+  <button class="filter-btn" data-cat="idiom">IDIOM (6)</button>
+  <button class="filter-btn" data-cat="colloc">COLLOC (7)</button>
+  <button class="filter-btn" data-cat="vocab">고급단어 (10)</button>
+  <button class="filter-btn" data-cat="biz">비즈니스 (6)</button>
+</div>
+
+<div id="grid"></div>
+
+<script>
+const STORAGE_KEY = 'turbocharging_genai_sw_learned';
+const learned = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+
+const cards = [
+  // ── PHRASAL (6) ──
+  {id:'pv1', cat:'phrasal', word:'ramp up', pron:'', ko:'빠르게 증가/확대하다', nuance:'ramp = 경사로 → 서서히 가속하며 올라가는 이미지. "ramp up Gen AI adoption" 처럼 규모나 속도를 빠르게 늘릴 때. "The company is ramping up its AI investments." 비즈니스 영어 필수 표현.', diff:1},
+  {id:'pv2', cat:'phrasal', word:'roll out', pron:'', ko:'단계적으로 배포/출시하다', nuance:'카펫을 펼치듯(roll) 점진적으로 내보내는 이미지. 제품·기능·정책을 단계적으로 출시할 때 사용. "roll out Gen AI tools to software teams across the organization."', diff:1},
+  {id:'pv3', cat:'phrasal', word:'come up to speed', pron:'', ko:'빠르게 따라잡다, 수준에 맞추다', nuance:'come up to = 도달하다 + speed = 현재 속도 → 뒤처진 상태에서 현재 수준까지 빠르게 따라잡는 것. "helps junior developers come up to speed on new tools and codebase."', diff:2},
+  {id:'pv4', cat:'phrasal', word:'double down on', pron:'', ko:'~에 두 배로 집중/강화하다', nuance:'블랙잭에서 첫 패가 좋을 때 배팅을 두 배로 늘리는 전략에서 유래. 특정 방향에 자원·노력을 두 배로 투입할 때. "double down on data governance and upskilling."', diff:2},
+  {id:'pv5', cat:'phrasal', word:'pile up', pron:'', ko:'쌓이다, 누적되다', nuance:'물건이 쌓이는 이미지 그대로 → 문제·빚이 해결 안 된 채 누적될 때. "technical debt can pile up over years when teams rely on legacy code." 명사형 "a pile-up"도 자주 쓰임.', diff:1},
+  {id:'pv6', cat:'phrasal', word:'guard against', pron:'', ko:'~에 대비하다, ~을 막다', nuance:'guard = 경비원처럼 지키다 + against = 반대 방향 → 예상되는 위험을 미리 방어하는 행위. "guard against risks of hallucinated code and data leakage." 수동적 방어보다 능동적 예방의 뉘앙스.', diff:2},
+
+  // ── IDIOM (6) ──
+  {id:'id1', cat:'idiom', word:'lingua franca', pron:'/ˌlɪŋɡwə ˈfræŋkə/', ko:'공통어, 모든 집단이 사용하는 언어', nuance:'라틴어 유래. 원래 지중해 무역에서 쓰인 혼합어. Andrej Karpathy(OpenAI 창립자): "The hottest new programming language is English." 자연어가 소프트웨어의 lingua franca가 된다는 맥락에서 사용.', diff:3},
+  {id:'id2', cat:'idiom', word:'proof of concept', pron:'(POC)', ko:'개념 증명, 소규모 실현 가능성 테스트', nuance:'아이디어가 실제로 작동하는지 소규모로 검증하는 단계. "run a proof of concept before scaling" → 대규모 투자 전 작게 실험해 유효성을 확인. 기술·비즈니스 세계에서 공식처럼 쓰이는 필수 표현.', diff:2},
+  {id:'id3', cat:'idiom', word:'rings true', pron:'', ko:'공감이 가다, 진실처럼 들리다', nuance:'종(bell)이 맑게 울리면 진품이라는 과거 동전 검증법에서 유래. "this finding rings truer in new AI paradigms" → 무언가가 직관적으로 옳거나 공감될 때. "What gets measured gets managed — this rings truer than ever with AI."', diff:3},
+  {id:'id4', cat:'idiom', word:'the bedrock of', pron:'', ko:'~의 근간, 토대, 기반', nuance:'bedrock = 지질학적 기반암 → 어떤 것의 가장 근본적인 기초. "experimentation is the bedrock of successful Gen AI implementation." 유사: "the cornerstone of", "the foundation of"보다 더 견고하고 불변하는 기반의 뉘앙스.', diff:2},
+  {id:'id5', cat:'idiom', word:'shadow IT', pron:'', ko:'무단 IT 사용 (조직 승인 없이)', nuance:'shadow = 그림자처럼 보이지 않게 → IT 부서 승인 없이 직원들이 개인적으로 사용하는 기술·도구. 보고서에서 63%의 소프트웨어 전문가가 해당. 보안·IP·데이터 유출 위험의 핵심 원인. "shadow AI"로도 확장.', diff:2},
+  {id:'id6', cat:'idiom', word:'low-hanging fruit', pron:'', ko:'쉽게 달성 가능한 성과, 쉬운 목표', nuance:'과수원에서 낮게 달린 과일은 사다리 없이 쉽게 딸 수 있다는 이미지. "select low-hanging fruit use cases for quick wins" → 노력 대비 성과가 큰 기회. 반의어: "stretch goal" (도전적 목표).', diff:1},
+
+  // ── COLLOC (7) ──
+  {id:'co1', cat:'colloc', word:'hallucinated code', pron:'', ko:'AI가 자신 있게 생성했지만 잘못된 코드', nuance:'hallucinate = 환각을 보다 → LLM이 틀린 내용을 사실처럼 생성하는 것. 소프트웨어 맥락에서는 버그·취약점·존재하지 않는 API를 포함한 코드. "unsupervised Gen AI output can lead to hallucinated code and edge cases."', diff:3},
+  {id:'co2', cat:'colloc', word:'test coverage', pron:'', ko:'테스트 적용 범위 (검증된 코드 비율)', nuance:'소프트웨어 품질의 핵심 지표. Goldman Sachs 사례: Gen AI로 legacy code test coverage를 36%에서 72%로 향상, 10%의 시간만에. "improving test coverage and quality" → 더 많은 코드를 자동 테스트로 검증할수록 품질 향상.', diff:2},
+  {id:'co3', cat:'colloc', word:'code provenance', pron:'', ko:'코드의 출처·기원·저작권 이력', nuance:'provenance = 예술품·골동품의 출처와 이력을 추적하는 개념 → AI 생성 코드에 적용. IP 침해·저작권 소송 방지를 위해 코드가 어디서 왔는지 추적하는 것. "key aspects to address include code provenance and reducing bias."', diff:3},
+  {id:'co4', cat:'colloc', word:'boilerplate code', pron:'', ko:'반복적으로 사용되는 표준 템플릿 코드', nuance:'boilerplate = 19세기에 재사용하던 금속 인쇄판에서 유래 → 개발자가 프로젝트마다 반복 작성해야 하는 표준 코드. "reducing the need to manually produce boilerplate code" → Gen AI가 자동화할 수 있는 핵심 영역.', diff:2},
+  {id:'co5', cat:'colloc', word:'regression testing', pron:'', ko:'변경 후 기존 기능 재검증 테스트', nuance:'regression = 이전 상태로의 회귀 → 코드 변경 후 기존에 작동하던 기능이 망가지지 않았는지 다시 테스트하는 것. "unsupervised Gen AI output can lead to complicated debugging, requiring a regression test framework."', diff:2},
+  {id:'co6', cat:'colloc', word:'fine-tuning', pron:'', ko:'LLM을 특정 도메인에 맞게 추가 학습', nuance:'fine = 세밀하게 + tuning = 조율 → 범용 LLM을 특정 조직·도메인 데이터로 추가 학습시키는 것. RAG(검색 증강 생성)와 함께 Gen AI 컨텍스트화의 두 가지 주요 방법. RAG보다 더 깊은 도메인 특화.', diff:3},
+  {id:'co7', cat:'colloc', word:'code churn', pron:'', ko:'코드 변경·삭제 빈도 (코드 안정성 지표)', nuance:'churn = 버터를 만들기 위해 계속 젓는 동작 → 코드가 안정화되지 않고 계속 추가·수정·삭제되는 상태. SPACE metrics의 핵심 KPI 중 하나. 높은 code churn은 불안정한 개발 과정을 나타냄.', diff:3},
+
+  // ── VOCAB (10) ──
+  {id:'v1', cat:'vocab', word:'nascent', pron:'/ˈneɪsnt/', ko:'초기의, 이제 막 시작된', nuance:'라틴어 nasci(태어나다) → 이제 막 형성되거나 시작된 초기 단계. "adoption is at a nascent stage, with 9 in 10 organizations yet to scale." neonatal(신생아의)과 같은 어근. 성장 잠재력을 암시하는 긍정적 뉘앙스.', diff:3},
+  {id:'v2', cat:'vocab', word:'proliferation', pron:'/prəˌlɪfəˈreɪʃn/', ko:'급격한 확산, 증식', nuance:'proliferate = 빠르게 늘어나다. "the increasing proliferation of software in products and services" → 통제하기 어려울 만큼 빠르게 퍼지는 현상. nuclear proliferation(핵 확산)에서도 사용. 부정적 맥락(통제 어려움)에도 자주 쓰임.', diff:3},
+  {id:'v3', cat:'vocab', word:'augment', pron:'/ɔːɡˈment/', ko:'보강하다, 증대시키다', nuance:'라틴어 augmentum(증가) → 기존에 있는 것을 더 크게·강력하게 만들다. "augment software teams with a Gen AI assistant" = AI로 팀을 강화. replace(대체)와 구분: augment는 인간을 대체하지 않고 보강하는 것.', diff:2},
+  {id:'v4', cat:'vocab', word:'contextualize', pron:'/kənˈtekstʃuəlaɪz/', ko:'맥락화하다, 특정 상황에 맞게 적용하다', nuance:'context + -ize → 일반적인 것을 특정 상황·도메인에 맞게 조정하는 것. "privately and safely contextualize Gen AI assistants with organization\'s own content" → 범용 LLM을 기업 내부 데이터로 조정해 관련성 높이기.', diff:3},
+  {id:'v5', cat:'vocab', word:'attrition', pron:'/əˈtrɪʃn/', ko:'(인력) 자연 이탈, 자연 감소', nuance:'라틴어 atterere(마모시키다) → 마찰에 의해 점진적으로 줄어드는 것. HR에서 퇴사·이직으로 인한 인력 감소. "Gen AI has a positive impact on job satisfaction and reduces attrition rates." attrition war(소모전)에서도 사용.', diff:3},
+  {id:'v6', cat:'vocab', word:'iterative', pron:'/ˈɪtərətɪv/', ko:'반복적인, 점진적 개선을 통한', nuance:'iterate = 반복하다 → 한 번에 완성하지 않고 반복적인 피드백을 통해 개선해 나가는 방식. "real experimentation is the bedrock — starting with a few teams, then extending across domains in an iterative way." Agile 개발 방법론의 핵심 개념.', diff:2},
+  {id:'v7', cat:'vocab', word:'traction', pron:'/ˈtrækʃn/', ko:'(수용·채택의) 동력, 자리 잡음', nuance:'마찰력 이미지 → 바퀴가 노면을 잡듯 아이디어·제품이 시장에 받아들여지는 것. "DORA and SPACE metrics are yet to gain traction" = 아직 폭넓게 채택되지 않음. "gain traction" = 점점 더 많이 채택되다.', diff:2},
+  {id:'v8', cat:'vocab', word:'upskill', pron:'/ˈʌpskɪl/', ko:'역량을 향상시키다, 기술 수준을 높이다', nuance:'up + skill → 기존 직원의 기술 수준을 높이는 것. reskill(재교육: 완전히 다른 분야 학습)과 구분: upskill은 현재 역할에서 더 높은 수준의 기술 습득. "upskill software professionals on business skills and advanced technical capabilities."', diff:1},
+  {id:'v9', cat:'vocab', word:'provenance', pron:'/ˈprɒvənəns/', ko:'출처, 기원, 유래', nuance:'프랑스어 provenir(~에서 오다) → 예술품·문서·코드 등의 기원과 이력을 추적하는 개념. "key aspects to address include code provenance" → AI 생성 코드가 저작권이 있는 데이터에서 왔는지 확인하는 것. IP 보호의 핵심.', diff:3},
+  {id:'v10', cat:'vocab', word:'safeguard', pron:'/ˈseɪfɡɑːrd/', ko:'보호 장치, 안전장치; 보호하다', nuance:'safe + guard → 위험으로부터 보호하는 제도적·기술적 장치. "implement safeguards against hallucination and code leakage." 명사·동사 둘 다 사용. "safeguard(v.) against" = ~로부터 보호하다.', diff:2},
+
+  // ── BIZ (6) ──
+  {id:'b1', cat:'biz', word:'SDLC', pron:'', ko:'소프트웨어 개발 생명주기', nuance:'Software Development Lifecycle. 요구분석→설계→코딩→빌드→테스트→릴리즈→배포→운영→모니터링의 전체 사이클. Gen AI는 이 사이클의 모든 단계에 적용 가능하며, 특히 코딩(34% 시간 절감)과 문서화(35%)에서 효과가 큼.', diff:1},
+  {id:'b2', cat:'biz', word:'RAG', pron:'', ko:'검색 증강 생성', nuance:'Retrieval-Augmented Generation. 외부 지식 베이스에서 관련 정보를 검색해 LLM 응답을 보강하는 방식. Fine-tuning과 달리 모델 가중치를 변경하지 않음. "combines a Q&A system with an LLM" → 기업 내부 문서를 실시간으로 참조해 정확도 향상.', diff:2},
+  {id:'b3', cat:'biz', word:'DevSecOps', pron:'', ko:'개발·보안·운영 통합 방법론', nuance:'Development + Security + Operations. DevOps에 보안(Security)을 처음부터 내재화한 것. 기존: 보안을 개발 완료 후 점검 → DevSecOps: 개발 전 단계에서 보안을 함께 고려. Gen AI 도입 시 코드 취약점 방지의 핵심 프레임워크.', diff:2},
+  {id:'b4', cat:'biz', word:'DORA metrics', pron:'', ko:'소프트웨어 팀 성과 지표 (4가지)', nuance:'DevOps Research and Assessment. 4대 지표: 배포 빈도(Deployment Frequency)·변경 리드타임·변경 실패율·서비스 복구 시간. Gen AI 도입 전후 생산성 측정에 적합. "DORA metrics have shown positive impact due to Gen AI usage" (71%).', diff:3},
+  {id:'b5', cat:'biz', word:'SPACE metrics', pron:'', ko:'개발자 생산성 다각도 측정 프레임워크', nuance:'Satisfaction · Performance · Activity · Communication · Efficiency. DORA보다 개발자 경험·협업·만족도까지 포함. "73% of organizations show improvement when measured using SPACE metrics" → Gen AI의 비가시적 이점(직업 만족도 등)까지 포착 가능.', diff:3},
+  {id:'b6', cat:'biz', word:'shadow AI', pron:'', ko:'조직 승인 없이 개인 사용하는 AI 도구', nuance:'Shadow IT의 AI 확장 버전. 보고서 핵심 위험: 63%의 소프트웨어 전문가가 조직 미승인 Gen AI 도구 사용. "using unapproved tools without proper training and safeguards exposes organizations to functional, security, and legal risks." 데이터 유출·IP 침해·환각 코드 위험.', diff:2},
+];
+
+const grid = document.getElementById('grid');
+const pbar = document.getElementById('pbar');
+const plabel = document.getElementById('plabel');
+
+function updateProgress() {
+  const n = learned.size;
+  pbar.style.width = (n / 35 * 100) + '%';
+  plabel.textContent = n + ' / 35 learned';
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...learned]));
+}
+
+function makeDots(diff) {
+  return [1,2,3].map(i => `<div class="dot${i<=diff?' on':''}"></div>`).join('');
+}
+
+function renderCards(cat) {
+  grid.innerHTML = '';
+  const filtered = cat === 'all' ? cards : cards.filter(c => c.cat === cat);
+  filtered.forEach(c => {
+    const isLearned = learned.has(c.id);
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap';
+    wrap.innerHTML = `
+      <div class="card${isLearned ? ' learned' : ''}" id="card-${c.id}">
+        <div class="card-face front">
+          <span class="tag tag-${c.cat}">${c.cat === 'vocab' ? '고급단어' : c.cat === 'biz' ? '비즈니스' : c.cat.toUpperCase()}</span>
+          <div class="word">${c.word}</div>
+          ${c.pron ? `<div class="pron">${c.pron}</div>` : ''}
+          <div class="dots">${makeDots(c.diff)}</div>
+          <div class="learned-badge">✓ Learned</div>
+        </div>
+        <div class="card-face back">
+          <div>
+            <div class="ko">${c.ko}</div>
+            <div class="nuance">${c.nuance}</div>
+          </div>
+          <button class="check-btn${isLearned ? ' done' : ''}" data-id="${c.id}">
+            ${isLearned ? '✓ 완료' : '✓ 외웠어요'}
+          </button>
+        </div>
+      </div>`;
+    grid.appendChild(wrap);
+
+    const cardEl = wrap.querySelector('.card');
+    cardEl.addEventListener('click', e => {
+      if (e.target.classList.contains('check-btn')) return;
+      cardEl.classList.toggle('flipped');
+    });
+
+    const btn = wrap.querySelector('.check-btn');
+    btn.addEventListener('click', () => {
+      if (learned.has(c.id)) {
+        learned.delete(c.id);
+        cardEl.classList.remove('learned');
+        btn.textContent = '✓ 외웠어요';
+        btn.classList.remove('done');
+      } else {
+        learned.add(c.id);
+        cardEl.classList.add('learned');
+        btn.textContent = '✓ 완료';
+        btn.classList.add('done');
+      }
+      updateProgress();
+    });
+  });
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCards(btn.dataset.cat);
+  });
+});
+
+renderCards('all');
+updateProgress();
+</script>
+</body>
+</html>
