@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What does the future hold for India? — Vocab</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f2744;
+    --ink2: #1e4d6e;
+    --accent: #0d9488;
+    --accent2: #0f766e;
+    --sky: #f0fdfa;
+    --bg: #f8fffe;
+    --border: #99f6e4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--ink); }
+
+  header {
+    background: linear-gradient(135deg, #0f2744 0%, #1e4d6e 50%, #0d9488 100%);
+    color: #fff;
+    padding: 2rem 1.5rem 1.5rem;
+    text-align: center;
+  }
+  header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 4vw, 2rem); margin-bottom: .5rem; }
+  .badge {
+    display: inline-block;
+    border: 1.5px solid rgba(255,255,255,.5);
+    border-radius: 20px;
+    padding: .25rem .9rem;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .progress-wrap { max-width: 700px; margin: 0 auto 1rem; padding: 0 1rem; }
+  .progress-bar-bg { background: rgba(255,255,255,.2); border-radius: 4px; height: 6px; }
+  .progress-bar { background: var(--accent); height: 6px; border-radius: 4px; transition: width .4s; width: 0%; }
+  .progress-label { font-size: .8rem; text-align: right; margin-top: .3rem; color: rgba(255,255,255,.85); }
+
+  .filters { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; padding: 1rem 1rem .5rem; }
+  .filter-btn {
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--ink);
+    padding: .35rem .9rem;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .filter-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .filter-btn:hover:not(.active) { background: var(--sky); }
+
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .card-wrap { perspective: 900px; }
+  .card {
+    position: relative;
+    height: 220px;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.4,0,.2,1);
+    cursor: pointer;
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    display: flex; flex-direction: column;
+    border: 1.5px solid var(--border);
+  }
+  .front { background: #fff; }
+  .back { background: var(--sky); transform: rotateY(180deg); justify-content: space-between; }
+
+  .card.learned .front { background: linear-gradient(135deg, #f0fdfa 0%, #99f6e4 100%); }
+
+  .tag {
+    display: inline-block;
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: .2rem .55rem;
+    border-radius: 10px;
+    color: #fff;
+    margin-bottom: .6rem;
+    width: fit-content;
+  }
+  .tag-phrasal  { background: #0d9488; }
+  .tag-idiom    { background: #7c3aed; }
+  .tag-colloc   { background: #0f2744; }
+  .tag-vocab    { background: #f59e0b; }
+  .tag-biz      { background: #dc2626; }
+
+  .word { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: var(--ink); line-height: 1.2; margin-bottom: .3rem; }
+  .pron { font-size: .75rem; color: #666; margin-bottom: .4rem; }
+  .dots { display: flex; gap: 3px; margin-top: auto; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); opacity: .25; }
+  .dot.on { opacity: 1; }
+
+  .ko { font-size: .95rem; font-weight: 600; color: var(--ink); margin-bottom: .4rem; line-height: 1.4; }
+  .nuance { font-size: .78rem; color: #444; line-height: 1.5; flex: 1; }
+  .check-btn {
+    align-self: flex-end;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .3rem .75rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background .2s;
+    margin-top: .5rem;
+  }
+  .check-btn:hover { background: var(--accent2); }
+  .check-btn.done { background: #9ca3af; }
+
+  .learned-badge {
+    position: absolute;
+    top: .6rem; right: .6rem;
+    font-size: .7rem;
+    background: var(--accent);
+    color: #fff;
+    padding: .15rem .45rem;
+    border-radius: 8px;
+    font-weight: 700;
+    display: none;
+  }
+  .card.learned .learned-badge { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">McKinsey &amp; Company · 2024</div>
+  <h1>What does the future hold for India?</h1>
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar" id="pbar"></div></div>
+    <div class="progress-label" id="plabel">0 / 35 learned</div>
+  </div>
+</header>
+
+<div class="filters">
+  <button class="filter-btn active" data-cat="all">ALL (35)</button>
+  <button class="filter-btn" data-cat="phrasal">PHRASAL (6)</button>
+  <button class="filter-btn" data-cat="idiom">IDIOM (6)</button>
+  <button class="filter-btn" data-cat="colloc">COLLOC (7)</button>
+  <button class="filter-btn" data-cat="vocab">고급단어 (10)</button>
+  <button class="filter-btn" data-cat="biz">비즈니스 (6)</button>
+</div>
+
+<div id="grid"></div>
+
+<script>
+const STORAGE_KEY = 'india_future_holds_learned';
+const learned = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+
+const cards = [
+  // ── PHRASAL (6) ──
+  {id:'pv1', cat:'phrasal', word:'lift above', pron:'', ko:'(기준선) 위로 끌어올리다, 탈피시키다', nuance:'lift=들어올리다 + above=~보다 위로 → 빈곤·기준선 아래에서 벗어나게 하는 이미지. "accelerated economic growth could lift about 700 million people above the threshold by 2030." 단순 raise보다 물리적·감정적 무게가 실린 강한 표현.', diff:2},
+  {id:'pv2', cat:'phrasal', word:'break into', pron:'', ko:'(새 시장·분야에) 진입하다, 개척하다', nuance:'break=깨다 + into=안으로 → 장벽을 뚫고 새로운 영역에 들어가는 이미지. "Indian companies breaking into global markets." Freshworks·Dr. Reddy\'s처럼 인도 기업이 글로벌 무대에 진출하는 맥락. enter보다 능동적·도전적 뉘앙스.', diff:2},
+  {id:'pv3', cat:'phrasal', word:'draw on', pron:'', ko:'~을 활용하다, 끌어 쓰다', nuance:'draw=끌어당기다 + on=~으로부터 → 이미 보유한 자원·경험·능력을 끌어내어 쓰는 이미지. "draw on India\'s demographic dividend." tap into보다 추상적 자원(경험·강점)을 활용할 때 더 자연스럽게 쓰임.', diff:2},
+  {id:'pv4', cat:'phrasal', word:'phase out', pron:'', ko:'단계적으로 폐지하다, 서서히 줄이다', nuance:'phase=단계 + out=사라지게 → 갑자기 없애지 않고 점진적으로 줄여나가는 것. "phase out reliance on fossil fuels." Reliance가 먼저 blue hydrogen을 생산하다 green hydrogen으로 전환하는 전략. 반대: phase in(단계적 도입).', diff:2},
+  {id:'pv5', cat:'phrasal', word:'reach out to', pron:'', ko:'~에게 다가가다, 접촉하다, 포용하다', nuance:'reach=손을 뻗다 + out to=~쪽으로 → 거리가 있는 대상에게 먼저 손을 내미는 이미지. "banks reaching out to underserved segments." 금융 포용(financial inclusion) 맥락에서 소외 계층에게 서비스를 확장하는 행위.', diff:1},
+  {id:'pv6', cat:'phrasal', word:'crowd out', pron:'', ko:'(민간 투자를) 밀어내다, 구축 효과를 낳다', nuance:'crowd=군중처럼 몰아내다 + out=밖으로 → 정부 지출이 늘어나면서 민간 자본이 설 자리를 잃는 현상. 경제학에서 crowding out effect. 인도 성장의 구조적 과제 — 공공 지출 의존도가 민간 투자를 억제할 위험.', diff:3},
+
+  // ── IDIOM (6) ──
+  {id:'id1', cat:'idiom', word:'baptism by fire', pron:'', ko:'불세례, 가혹한 시련을 통한 단련', nuance:'전쟁에서 신병이 처음 전투에 투입되어 혹독하게 단련되는 것에서 유래. "The economics of competing in India builds a lot of muscle — it\'s a baptism by fire." — G.V. Prasad, Dr. Reddy\'s. 인도의 극심한 경쟁 환경이 기업을 글로벌 수준으로 단련시키는 역설적 이점.', diff:3},
+  {id:'id2', cat:'idiom', word:'economic-empowerment line', pron:'', ko:'경제적 자립 기준선 (McKinsey 정의 개념)', nuance:'McKinsey가 정의한 개념으로, 필수 욕구를 충족하고 경제적 안정을 시작하기 위한 최소 소득·자산 기준. G20 인구의 절반 이상(약 26억 명)이 이 선 아래에 있으며, 인도는 G20 중 격차가 가장 큰 나라(77%).', diff:3},
+  {id:'id3', cat:'idiom', word:'demographic dividend', pron:'', ko:'인구 배당 효과', nuance:'demographic=인구통계 + dividend=배당금. 생산가능인구(15~64세) 비율이 높아질 때 경제성장에 유리한 인구 구조적 이점. 인도의 중위 연령 27.6세 → 주요 경제국 중 가장 젊음. 이 창이 열려 있는 지금이 투자 적기라는 논거.', diff:3},
+  {id:'id4', cat:'idiom', word:'net-zero emitter', pron:'', ko:'탄소 순배출 제로 주체 (탄소 중립 달성 국가/기업)', nuance:'net-zero=순배출 0 + emitter=배출 주체 → 배출량과 흡수량이 같아져 실질 배출이 0인 상태. "India announced its ambition to become a net-zero emitter by 2070." 현재 세계 3위 배출국(2.9 GtCO2e)이지만 COP26에서 2070 목표 선언.', diff:2},
+  {id:'id5', cat:'idiom', word:'go-to-market', pron:'', ko:'시장 진출 전략·접근법 (제품을 시장에 내놓는 방식)', nuance:'go+to+market. 제품·서비스를 누구에게, 어떤 채널로, 어떻게 판매할지에 대한 전략 전체. "India is unique in that companies can complete an entire initial go-to-market move there." 14억 명 시장에서 전체 GTM을 테스트할 수 있다는 것이 SaaS 기업에 큰 이점.', diff:2},
+  {id:'id6', cat:'idiom', word:'hard-to-abate sectors', pron:'', ko:'탈탄소화가 어려운 산업군', nuance:'hard-to-abate=감축하기 어려운 → 철강·시멘트·화학·항공 등 기술적으로 탄소를 줄이기 어렵고 비용이 큰 산업. "CCUS particularly for hard-to-abate sectors like cement, oil and gas." 넷제로 달성의 마지막 퍼즐 조각.', diff:3},
+
+  // ── COLLOC (7) ──
+  {id:'co1', cat:'colloc', word:'green hydrogen', pron:'', ko:'녹색 수소 (재생에너지로 생산한 수소)', nuance:'재생에너지(태양광·풍력)로 물을 전기분해해 생산. 온실가스 없음. blue hydrogen(천연가스+CCS)과 구별. "adoption of green hydrogen could enable 900 megatons of CO2e abatement by 2050." Reliance는 먼저 blue로 시작해 green으로 전환 계획.', diff:2},
+  {id:'co2', cat:'colloc', word:'carbon capture (CCUS)', pron:'', ko:'탄소 포집·활용·저장', nuance:'Carbon Capture, Utilization, and Storage. 산업 공정에서 배출되는 CO2를 포집해 활용하거나 지하에 저장. "CCUS could help capture 11.4 GtCO2e across hard-to-abate sectors by 2070." 허브 모델(중앙 인프라)로 효율 극대화.', diff:3},
+  {id:'co3', cat:'colloc', word:'natural climate solutions', pron:'', ko:'자연 기반 기후 해법 (NCS)', nuance:'산림 보전·복원·토지 관리·조림 등 자연 생태계를 활용해 탄소를 줄이거나 흡수하는 방법. "India\'s natural resources can sequester 640 MtCO2e annually by 2050 — 85% from forests." 기술적 해법보다 저비용으로 대규모 탄소 흡수 가능.', diff:3},
+  {id:'co4', cat:'colloc', word:'material circularity', pron:'', ko:'물질 순환성 (순환경제, 재활용 경제)', nuance:'material=물질 + circularity=순환. 폐기물을 다시 원료로 활용하는 순환경제 원칙. "India generates 750-800 million tons of waste; recycling rates of 13% → if 80%, could abate 34 MtCO2e by 2070." 선형경제(채취→생산→폐기)에서 순환경제로의 전환.', diff:3},
+  {id:'co5', cat:'colloc', word:'financial inclusion', pron:'', ko:'금융 포용 (소외 계층의 금융 서비스 접근성 확대)', nuance:'financial=금융 + inclusion=포용. 은행 계좌·대출·보험 등 금융 서비스를 받지 못하는 인구를 금융 시스템 안으로 포함시키는 것. Aadhaar+계좌 개설, account aggregator 등 인도 혁신의 핵심 목표.', diff:1},
+  {id:'co6', cat:'colloc', word:'account aggregator', pron:'', ko:'계좌 집계 서비스 (개인 금융 데이터 통합)', nuance:'계좌별로 흩어진 개인의 금융 거래 이력을 하나로 집계해 신용 평가·대출에 활용할 수 있게 하는 인도 혁신 플랫폼. "allows individuals to use their own digital trails to get access to credit or personal finance." 소상공인 운전자금 조달에 활용.', diff:3},
+  {id:'co7', cat:'colloc', word:'clinical development', pron:'', ko:'임상 개발 (신약·치료법의 임상시험 단계)', nuance:'clinical=임상 + development=개발. 신약·치료법이 동물실험 후 사람에게 적용하는 임상시험 단계(Phase I-III). "India is home to a large population of patients who have not previously received treatments — eligible for clinical-trial procedures." 미처치 환자(treatment-naive) 모집이 용이.', diff:3},
+
+  // ── VOCAB (10) ──
+  {id:'v1', cat:'vocab', word:'subsistence', pron:'[səbˈsɪstəns]', ko:'자급자족, 최저 생계', nuance:'라틴어 subsistere(남다, 버티다). 판매용이 아닌 자급 목적의 농업·경제 활동. "subsistence farmers who live far from the nearest medical clinic." 최소한의 생존 유지 수준 — 잉여·저축·투자가 없는 상태. subsistence economy는 화폐경제 이전 단계.', diff:2},
+  {id:'v2', cat:'vocab', word:'sequester', pron:'[sɪˈkwestər]', ko:'(탄소를) 격리하다, 흡수하다', nuance:'라틴어 sequestrare(별도로 두다, 보관하다). 법률(자산 압류)과 기후(탄소 저장) 두 맥락에서 사용. "India\'s natural resources can sequester 640 MtCO2e annually by 2050." 나무·토양·해양이 CO2를 흡수·저장하는 과정.', diff:3},
+  {id:'v3', cat:'vocab', word:'unbanked', pron:'[ʌnˈbæŋkt]', ko:'금융 소외 계층의, 은행 서비스 미이용자의', nuance:'un+banked. 은행 계좌가 없어 기본 금융 서비스(저축·송금·대출)를 이용하지 못하는 상태. "enabling previously unbanked people to open accounts — at very low or no cost." Aadhaar가 해결한 핵심 문제. 인도 농촌에 특히 많음.', diff:2},
+  {id:'v4', cat:'vocab', word:'abatement', pron:'[əˈbeɪtmənt]', ko:'(온실가스·오염) 저감, 감소', nuance:'라틴어 abatere(낮추다). 기후 정책에서 온실가스 배출을 줄이는 행위나 그 양. "annual abatement of 900 megatons of CO2e by 2050." 영국 환경법 맥락에서 소음·오염 저감에도 쓰임. reduction보다 전문적·정책적 뉘앙스.', diff:3},
+  {id:'v5', cat:'vocab', word:'muted', pron:'[ˈmjuːtɪd]', ko:'약화된, 억제된, 가라앉은', nuance:'mute(침묵시키다)의 과거분사. 소리가 줄어든 것처럼 활동·성장이 약해진 상태. "global banking will likely face continuing challenges, given a muted economic-growth outlook." subdued와 유사하지만 muted는 원래 강했던 것이 억눌린 뉘앙스.', diff:2},
+  {id:'v6', cat:'vocab', word:'biometric', pron:'[ˌbaɪoʊˈmetrɪk]', ko:'생체 인식의', nuance:'bio(생명)+metric(측정). 지문·홍채·얼굴 등 신체 특징으로 신원을 인증하는 기술. "Aadhaar is the world\'s largest biometric program — 1.3 billion people had an Aadhaar ID as of 2022." 디지털 신원 경제의 핵심 인프라.', diff:2},
+  {id:'v7', cat:'vocab', word:'holistically', pron:'[hoʊˈlɪstɪkli]', ko:'전체적으로, 통합적으로', nuance:'holism(전체론) → 부분이 아닌 전체를 보는 관점. "Indian banks should assess performance more holistically." 재무성과만이 아닌 사회적 책임·환경·고객 경험까지 포함해 은행 건전성을 평가하는 접근법.', diff:2},
+  {id:'v8', cat:'vocab', word:'breakout', pron:'[ˈbreɪkaʊt]', ko:'획기적인, 돌파구적인 (기존 경계를 넘는)', nuance:'break+out=기존 경계를 깨고 나오다. "creating new breakout businesses to achieve growth via disruptive innovation and new-business categories." 기존 핵심 사업의 연장이 아닌 완전히 새로운 성장 영역으로의 도약을 뜻함.', diff:2},
+  {id:'v9', cat:'vocab', word:'incumbent', pron:'[ɪnˈkʌmbənt]', ko:'현직의, 기존 지위를 점유한 (기업·기관)', nuance:'라틴어 incumbere(기대다). 특정 지위·시장을 이미 차지하고 있는 존재. "incumbent banks" vs fintech challengers. 기존 대형 은행이 핀테크·빅테크의 도전에 직면한 맥락. 명사로도 쓰임: "the incumbent(현직자)."', diff:2},
+  {id:'v10', cat:'vocab', word:'reforestation', pron:'[ˌriːˌfɒrɪˈsteɪʃən]', ko:'산림 재조성, 재조림', nuance:'re+forestation. 벌채되거나 파괴된 산림에 다시 나무를 심는 것. "avoiding deforestation and pursuing reforestation" — NCS의 핵심. deforestation(산림 파괴)의 반대. 인도의 자연 기반 기후 해법에서 가장 큰 탄소 흡수 기여(85%).', diff:2},
+
+  // ── BIZ (6) ──
+  {id:'b1', cat:'biz', word:'SaaS', pron:'', ko:'서비스형 소프트웨어', nuance:'Software as a Service. 소프트웨어를 설치하지 않고 구독·클라우드 방식으로 제공. 인도 SaaS: 2021년 $2.6B → 2030년 $70B 전망. 3백만 명 이상 개발자 + 14억 명 내수 시장이 강점. Freshworks가 대표 성공 사례($300M 매출, Nasdaq 상장).', diff:1},
+  {id:'b2', cat:'biz', word:'Aadhaar', pron:'[ˈɑːdhɑːr]', ko:'아다르 (인도 생체인식 국가 신분증)', nuance:'힌디어로 "foundation(기초)". 2010년 시작된 세계 최대 생체인식 국가 신분 시스템. 2022년 기준 13억 명 등록. 이전에 은행 계좌조차 없던 사람들도 계좌 개설·금융 서비스 이용 가능. Nandan Nilekani(Infosys 공동창업자)가 주도.', diff:2},
+  {id:'b3', cat:'biz', word:'COP26', pron:'', ko:'제26차 유엔기후변화협약 당사국총회', nuance:'Conference of the Parties 26. 2021년 영국 Glasgow 개최. 195개국 참여. 인도는 이 회의에서 2070년 탄소 중립 선언. "India announced its ambition to become a net-zero emitter by 2070." 파리협정 이행점검의 핵심 회의.', diff:2},
+  {id:'b4', cat:'biz', word:'agtech', pron:'', ko:'농업 기술', nuance:'Agricultural Technology. 디지털·AI·IoT 기술을 농업에 적용. "agtech is essential to powering India\'s farming transformation." 세 가지 활용: ①농자재 직거래 채널 ②농민 맞춤 금융상품 ③농산물 공급망 통합. 2030년까지 인도 농민 소득 최대 35% 증가 잠재력.', diff:2},
+  {id:'b5', cat:'biz', word:'fintech', pron:'', ko:'금융 기술 (디지털 금융 혁신 기업)', nuance:'Financial Technology. 기술로 금융 서비스를 혁신하는 스타트업·플랫폼. "Indian banks could build new partnerships with fintechs." 은행의 전통적 역할을 보완하거나 대체. 인도에서 UPI·Paytm 등이 선도적 사례.', diff:1},
+  {id:'b6', cat:'biz', word:'CAR T-cell therapy', pron:'', ko:'CAR-T 세포 치료법 (면역 항암 치료)', nuance:'Chimeric Antigen Receptor T-cell. 환자의 T세포를 유전자 조작해 특정 암세포를 표적 공격하게 만드는 혁신 면역 치료. "India could significantly lower the cost of CAR T-cell therapy, making it available to a much wider market." 현재 미국서 수억 원인 치료비를 인도가 대폭 낮출 잠재력.', diff:3},
+];
+
+function renderCards(filter) {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const filtered = filter === 'all' ? cards : cards.filter(c => c.cat === filter);
+  filtered.forEach(c => {
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap';
+    const isLearned = learned.has(c.id);
+    wrap.innerHTML = `
+      <div class="card${isLearned ? ' learned' : ''}" id="card-${c.id}">
+        <div class="card-face front">
+          <span class="tag tag-${c.cat}">${c.cat.toUpperCase()}</span>
+          <div class="word">${c.word}</div>
+          ${c.pron ? `<div class="pron">${c.pron}</div>` : ''}
+          <div class="dots">
+            <div class="dot${c.diff>=1?' on':''}"></div>
+            <div class="dot${c.diff>=2?' on':''}"></div>
+            <div class="dot${c.diff>=3?' on':''}"></div>
+          </div>
+          <div class="learned-badge">✓ learned</div>
+        </div>
+        <div class="card-face back">
+          <div>
+            <div class="ko">${c.ko}</div>
+            <div class="nuance">${c.nuance}</div>
+          </div>
+          <button class="check-btn${isLearned ? ' done' : ''}" data-id="${c.id}">
+            ${isLearned ? '✓ learned' : 'Mark as learned'}
+          </button>
+        </div>
+      </div>`;
+    wrap.querySelector('.card').addEventListener('click', e => {
+      if (e.target.classList.contains('check-btn')) return;
+      e.currentTarget.classList.toggle('flipped');
+    });
+    wrap.querySelector('.check-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      const id = e.target.dataset.id;
+      if (learned.has(id)) { learned.delete(id); } else { learned.add(id); }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...learned]));
+      renderCards(filter);
+      updateProgress();
+    });
+    grid.appendChild(wrap);
+  });
+}
+
+function updateProgress() {
+  const total = 35;
+  const count = learned.size;
+  const pct = Math.round(count / total * 100);
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('plabel').textContent = `${count} / ${total} learned`;
+}
+
+let currentFilter = 'all';
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.cat;
+    renderCards(currentFilter);
+  });
+});
+
+renderCards('all');
+updateProgress();
+</script>
+</body>
+</html>

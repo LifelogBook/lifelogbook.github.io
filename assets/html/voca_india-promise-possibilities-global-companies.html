@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>India: The promise and possibilities for global companies — Vocab</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --ink2: #16213e;
+    --accent: #ff6b35;
+    --accent2: #f7931e;
+    --sky: #fff8f0;
+    --bg: #fffcf8;
+    --border: #ffd5b8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--ink); }
+
+  header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #ff6b35 100%);
+    color: #fff;
+    padding: 2rem 1.5rem 1.5rem;
+    text-align: center;
+  }
+  header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 4vw, 2rem); margin-bottom: .5rem; }
+  .badge {
+    display: inline-block;
+    border: 1.5px solid rgba(255,255,255,.5);
+    border-radius: 20px;
+    padding: .25rem .9rem;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .progress-wrap { max-width: 700px; margin: 0 auto 1rem; padding: 0 1rem; }
+  .progress-bar-bg { background: rgba(255,255,255,.2); border-radius: 4px; height: 6px; }
+  .progress-bar { background: var(--accent); height: 6px; border-radius: 4px; transition: width .4s; width: 0%; }
+  .progress-label { font-size: .8rem; text-align: right; margin-top: .3rem; color: rgba(255,255,255,.85); }
+
+  .filters { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; padding: 1rem 1rem .5rem; }
+  .filter-btn {
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--ink);
+    padding: .35rem .9rem;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .filter-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .filter-btn:hover:not(.active) { background: var(--sky); }
+
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .card-wrap { perspective: 900px; }
+  .card {
+    position: relative;
+    height: 220px;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.4,0,.2,1);
+    cursor: pointer;
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    display: flex; flex-direction: column;
+    border: 1.5px solid var(--border);
+  }
+  .front { background: #fff; }
+  .back { background: var(--sky); transform: rotateY(180deg); justify-content: space-between; }
+
+  .card.learned .front { background: linear-gradient(135deg, #fff8f0 0%, #ffd5b8 100%); }
+
+  .tag {
+    display: inline-block;
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: .2rem .55rem;
+    border-radius: 10px;
+    color: #fff;
+    margin-bottom: .6rem;
+    width: fit-content;
+  }
+  .tag-phrasal  { background: #ff6b35; }
+  .tag-idiom    { background: #7c3aed; }
+  .tag-colloc   { background: #1a1a2e; }
+  .tag-vocab    { background: #0ea5e9; }
+  .tag-biz      { background: #dc2626; }
+
+  .word { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: var(--ink); line-height: 1.2; margin-bottom: .3rem; }
+  .pron { font-size: .75rem; color: #666; margin-bottom: .4rem; }
+  .dots { display: flex; gap: 3px; margin-top: auto; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); opacity: .25; }
+  .dot.on { opacity: 1; }
+
+  .ko { font-size: .95rem; font-weight: 600; color: var(--ink); margin-bottom: .4rem; line-height: 1.4; }
+  .nuance { font-size: .78rem; color: #444; line-height: 1.5; flex: 1; }
+  .check-btn {
+    align-self: flex-end;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .3rem .75rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background .2s;
+    margin-top: .5rem;
+  }
+  .check-btn:hover { background: var(--accent2); }
+  .check-btn.done { background: #9ca3af; }
+
+  .learned-badge {
+    position: absolute;
+    top: .6rem; right: .6rem;
+    font-size: .7rem;
+    background: var(--accent);
+    color: #fff;
+    padding: .15rem .45rem;
+    border-radius: 8px;
+    font-weight: 700;
+    display: none;
+  }
+  .card.learned .learned-badge { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">McKinsey &amp; Company · 2025</div>
+  <h1>India: The promise and possibilities for global companies</h1>
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar" id="pbar"></div></div>
+    <div class="progress-label" id="plabel">0 / 35 learned</div>
+  </div>
+</header>
+
+<div class="filters">
+  <button class="filter-btn active" data-cat="all">ALL (35)</button>
+  <button class="filter-btn" data-cat="phrasal">PHRASAL (6)</button>
+  <button class="filter-btn" data-cat="idiom">IDIOM (6)</button>
+  <button class="filter-btn" data-cat="colloc">COLLOC (7)</button>
+  <button class="filter-btn" data-cat="vocab">고급단어 (10)</button>
+  <button class="filter-btn" data-cat="biz">비즈니스 (6)</button>
+</div>
+
+<div id="grid"></div>
+
+<script>
+const STORAGE_KEY = 'india_promise_possibilities_learned';
+const learned = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+
+const cards = [
+  // ── PHRASAL (6) ──
+  {id:'pv1', cat:'phrasal', word:'tap into', pron:'', ko:'~을 활용하다, 이용하다', nuance:'tap=수도꼭지 → 이미 있는 자원에 꼭지를 열어 흐르게 하는 이미지. "tap into India\'s vast talent pool." 인도의 STEM 인재·소비자 기반 같은 잠재력을 적극 활용하는 전략적 맥락에서 자주 등장. exploit보다 자연스럽고 긍정적인 뉘앙스.', diff:1},
+  {id:'pv2', cat:'phrasal', word:'scale up', pron:'', ko:'규모를 늘리다, 확장하다', nuance:'scale=규모 + up=위로. 생산량이나 사업을 더 큰 규모로 키우는 것. "scale up manufacturing operations in India." 인도 제조 스케일업의 핵심 과제 — 공급망 역량과 자동화 없이는 10배 확장이 어려움.', diff:1},
+  {id:'pv3', cat:'phrasal', word:'set up', pron:'', ko:'설립하다, 구축하다', nuance:'set+up. 조직이나 시스템을 처음 만드는 것. "set up a global capability center in India." 다국적기업이 인도에 GCC를 세우는 행위를 표현할 때 가장 자연스러운 동사. establish보다 구어적·실무적 뉘앙스.', diff:1},
+  {id:'pv4', cat:'phrasal', word:'iron out', pron:'', ko:'(문제·장애물을) 해결하다, 매끄럽게 처리하다', nuance:'옷의 주름을 다리미로 펴는 이미지 → 거친 부분을 매끄럽게. "iron out regulatory complexities." 인도의 복잡한 규제·노무 환경처럼 번거로운 문제를 하나씩 풀어나갈 때 쓰는 표현. resolve보다 점진적·현실적 뉘앙스.', diff:2},
+  {id:'pv5', cat:'phrasal', word:'pivot', pron:'[ˈpɪvət]', ko:'(전략·방향을) 빠르게 전환하다', nuance:'농구의 피벗 발처럼 한 발을 축으로 방향 전환. "companies that do not pivot quickly may fall behind more agile competitors." 인도처럼 예측 불가한 시장에서 노동 파업·정책 변화 등 돌발 상황에 신속히 대응하는 능력.', diff:2},
+  {id:'pv6', cat:'phrasal', word:'carve out', pron:'', ko:'(틈새 시장을) 개척하다, 독자적 영역을 확보하다', nuance:'조각을 깎아내듯 특별한 영역을 만들어내는 이미지. "carve out a market niche in India." 이미 경쟁이 치열한 시장에서 자신만의 포지션을 능동적으로 만들어내는 전략적 뉘앙스.', diff:2},
+
+  // ── IDIOM (6) ──
+  {id:'id1', cat:'idiom', word:'Indias within India', pron:'', ko:'인도 안의 다양한 인도들 (극도로 다양한 시장)', nuance:'인도의 문화·언어·경제적 다양성을 표현하는 McKinsey 개념어. "There are multiple Indias within India." 문화·언어·소득·소비 패턴이 너무 달라 단일 전략으로는 성공하기 어렵다는 시장 세분화 필수론의 핵심 표현.', diff:3},
+  {id:'id2', cat:'idiom', word:'early entrant advantage', pron:'', ko:'선도 진입자 우위 (먼저 들어간 기업의 경쟁 우위)', nuance:'먼저 들어가 공급업체 선택권·소비자 신뢰·인재풀을 선점. "early entrants gain an edge with consumers, have their choice of suppliers, or enjoy other advantages." first-mover advantage와 같은 개념. 인도 진출 타이밍의 중요성을 강조할 때 사용.', diff:2},
+  {id:'id3', cat:'idiom', word:'long-term view', pron:'', ko:'장기적 관점, 미래를 내다보는 시각', nuance:'short-termism(단기 수익주의)의 반대. "companies should take a long-term view and build resilience rather than quick wins." 인도는 반도체 보조금도 10년 후에야 효과가 나타나는 시장 — 분기 실적보다 5-10년 로드맵이 필요함을 강조.', diff:1},
+  {id:'id4', cat:'idiom', word:'red tape', pron:'', ko:'행정적 관료주의, 규제 장벽', nuance:'영국 관청에서 문서를 묶는 빨간 끈 유래 → 번거롭고 시간 소모적인 행정 절차. "companies may need to grapple with complex regulations, labor strikes, and red tape." 인도 진출의 고질적 도전 요소로 자주 인용됨.', diff:2},
+  {id:'id5', cat:'idiom', word:'trade-flow shifts', pron:'', ko:'무역 흐름 변화, 글로벌 공급망 재편', nuance:'지정학적 변화·관세 정책으로 글로벌 공급망이 특정 국가에서 다른 국가로 이동하는 현상. "India could gain up to $0.8 to $1.2 trillion from trade-flow shifts by 2030." China+1 전략의 수혜국으로 인도가 부상하는 배경 개념.', diff:3},
+  {id:'id6', cat:'idiom', word:'growth engine', pron:'', ko:'성장 동력, 핵심 성장원', nuance:'기업/국가 성장을 이끄는 핵심 원천 이미지. "companies that establish or expand their presence in India could create a new growth engine." 단순 비용 절감 거점이 아닌 혁신·성장의 진원지로 인도를 재정의하는 표현.', diff:2},
+
+  // ── COLLOC (7) ──
+  {id:'co1', cat:'colloc', word:'global capability center', pron:'', ko:'글로벌 역량 센터 (GCC)', nuance:'다국적기업이 인도에 설립하는 IT·BPM·ER&D 허브. 2021~2023년 984개 국제기업 등록, 현재 1,500개+ 운영. "Analysts predict companies will create over 250 new GCCs over the next three to five years." 단순 오프쇼어링이 아닌 전략적 역량 거점으로 진화 중.', diff:2},
+  {id:'co2', cat:'colloc', word:'supply chain ecosystem', pron:'', ko:'공급망 생태계 (원자재~완제품 전체 네트워크)', nuance:'단일 공급업체가 아닌 원자재부터 완제품까지 모든 파트너가 연결된 전체 네트워크. "developing a supply chain ecosystem may take time because many suppliers are MSMEs." 인도의 공급망 구축이 까다로운 이유: 다수 공급업체가 대량 주문 이행 한계를 가진 중소기업.', diff:3},
+  {id:'co3', cat:'colloc', word:'active ingredients', pron:'', ko:'활성 성분, 원료 의약품 (API)', nuance:'의약품의 핵심 화학 성분. Active Pharmaceutical Ingredient의 일반 표현. "India is the main supplier of active ingredients and small-molecule drugs." 전 세계 제네릭 의약품의 약 20%를 인도가 공급 — 글로벌 의약품 공급망에서 인도의 전략적 위치를 보여주는 표현.', diff:3},
+  {id:'co4', cat:'colloc', word:'reciprocal tariffs', pron:'', ko:'상호 관세 (동등 수준으로 부과하는 보복 관세)', nuance:'상대국이 부과한 관세와 동일한 수준을 맞부과하는 무역 정책. "the US government recently announced that it would place reciprocal tariffs on many nations, including India." 2025년 트럼프 행정부의 대인도 상호 관세 발표가 배경. 인도 제조업 투자의 불확실성 요소.', diff:3},
+  {id:'co5', cat:'colloc', word:'market segmentation', pron:'', ko:'시장 세분화 (소비자를 그룹별로 분류하는 전략)', nuance:'소비자를 특성·구매력·니즈에 따라 그룹으로 나누는 마케팅 전략. "Hindustan Unilever uses a consumer model that examines needs, characteristics, and spending capacity of 15 segments." 인도처럼 다양성이 극단적인 시장에서 세분화를 소홀히 하면 광범위한 성장 기회를 놓칠 수 있음.', diff:2},
+  {id:'co6', cat:'colloc', word:'inventory management', pron:'', ko:'재고 관리 (적정 재고 유지·보충 체계)', nuance:'적정 재고 수준 유지, 공급 차질 시 빠른 보충을 위한 공급망 운영. "partnerships with Indian suppliers can streamline inventory management, allowing companies to restock parts more quickly." 현지 공급망 구축의 핵심 실익 중 하나.', diff:2},
+  {id:'co7', cat:'colloc', word:'cross-functional teams', pron:'', ko:'부서 횡단 팀 (여러 기능 부서 통합 협업 조직)', nuance:'R&D·영업·운영·재무 등 여러 기능 부서 인력으로 구성된 협업 조직. "establish cross-functional teams that include staff from both Indian operations and headquarters." 인도팀↔본사 간 신속한 의사결정과 메트릭 검토를 위한 구조적 해법.', diff:2},
+
+  // ── VOCAB (10) ──
+  {id:'v1', cat:'vocab', word:'burgeoning', pron:'[ˈbɜːrdʒənɪŋ]', ko:'급성장하는, 빠르게 번성하는', nuance:'라틴어 burgeon(싹트다)의 현재분사. 새싹처럼 빠르게 자라나는 이미지. "India\'s burgeoning digital economy — smartphone users surpassed one billion in 2024." flourishing보다 성장의 속도감을 강조. 신흥 시장·산업을 묘사할 때 자주 쓰임.', diff:2},
+  {id:'v2', cat:'vocab', word:'contender', pron:'[kənˈtendər]', ko:'경쟁자, 유력 후보', nuance:'contend(경쟁하다)+-er. "India is a leading contender when multinationals are looking for programmers or considering sites for global IT capability centers." 단순 후보가 아닌 상위권의 강력한 후보를 뜻함. candidate보다 경쟁적 맥락이 강함.', diff:2},
+  {id:'v3', cat:'vocab', word:'resilience', pron:'[rɪˈzɪliəns]', ko:'회복력, 탄력성', nuance:'라틴어 resilire(되튀다). 충격·위기 후 원래 상태로 돌아오는 능력. "taking a long-term view and building resilience" — 인도 시장 특유의 불확실성(관세·파업·정책 변화)에 흔들리지 않는 사업 구조를 만드는 것. 전략·조직·공급망 모두에 적용.', diff:2},
+  {id:'v4', cat:'vocab', word:'macroeconomic', pron:'[ˌmækroʊˌiːkəˈnɒmɪk]', ko:'거시경제적', nuance:'macro(크다)+economic. 국가 전체 GDP·인플레이션·고용·무역 등의 경제 현상에 관련된. "A highly diverse customer base and complex macroeconomic fluctuations." 인도 소비자 지출은 도시 중산층의 stagnation과 농촌의 회복이 동시에 나타나는 복잡한 거시 환경.', diff:3},
+  {id:'v5', cat:'vocab', word:'geopolitical', pron:'[ˌdʒiːoʊpəˈlɪtɪkəl]', ko:'지정학적', nuance:'geo(지리)+political. 지리적 위치가 국제 정치·경제에 미치는 영향에 관련된. "Global trade shifts and geopolitical uncertainties." 미중 갈등·상호 관세·지역 분쟁이 인도의 공급망 재편 기회이자 위협으로 동시에 작용하는 맥락.', diff:3},
+  {id:'v6', cat:'vocab', word:'stagnate', pron:'[ˈstæɡneɪt]', ko:'정체하다, 침체하다', nuance:'라틴어 stagnum(고인 물). 성장 없이 멈춰있는 상태. "disposable income is stagnating for the middle class." 인도 도시 중산층의 소비 여력이 줄어드는 아이러니 — 전체 소비 성장은 오히려 농촌 저소득층에서 나타나는 구조.', diff:2},
+  {id:'v7', cat:'vocab', word:'scrutiny', pron:'[ˈskruːtɪni]', ko:'면밀한 검토, 정밀 감시', nuance:'라틴어 scrutari(샅샅이 뒤지다). 세밀하고 비판적으로 들여다보는 행위. "supply chains under greater scrutiny." 지정학적 긴장과 인권·환경 기준 강화로 인도 포함 신흥 시장 공급망이 글로벌 규제·투자자의 집중 검토 대상이 되고 있음.', diff:3},
+  {id:'v8', cat:'vocab', word:'autonomous', pron:'[ɔːˈtɒnəməs]', ko:'자율적인, 독립적인', nuance:'그리스어 autonomos(자기 법을 가진). "local leaders must also have the autonomy to make many critical decisions quickly, without approval from central leadership." 인도처럼 빠른 대응이 필요한 시장에서 본사 승인 절차가 걸림돌이 되지 않도록 현지 리더에게 자율권을 주는 것이 핵심.', diff:2},
+  {id:'v9', cat:'vocab', word:'daunting', pron:'[ˈdɔːntɪŋ]', ko:'위압적인, 엄두가 안 나는', nuance:'고프랑스어 danter(길들이다) → 용기를 꺾는 이미지. "Although the challenges may seem daunting, some multinationals across sectors have overcome the obstacles." 인도 시장의 복잡성이 포기를 유발할 만큼 벅차 보이지만 극복 가능하다는 맥락에서 사용.', diff:2},
+  {id:'v10', cat:'vocab', word:'agile', pron:'[ˈædʒaɪl]', ko:'민첩한, 유연하게 대응하는', nuance:'라틴어 agilis(빠르게 움직이는). "companies that do not pivot quickly may fall behind more agile competitors." 소프트웨어 개발 방법론(Agile)에서 비즈니스 전반으로 확장된 개념 — 변화에 빠르게 적응하는 조직 문화·역량을 뜻함.', diff:2},
+
+  // ── BIZ (6) ──
+  {id:'b1', cat:'biz', word:'GCC', pron:'', ko:'글로벌 역량 센터', nuance:'Global Capability Center. 다국적기업이 인도에 설립하는 IT·BPM·ER&D 통합 허브. 현재 1,500개+, 60%가 IT·BPM·ER&D에 집중. 향후 3-5년 내 250개 추가 설립 전망. 단순 콜센터·IT 아웃소싱을 넘어 혁신·제품개발의 핵심 거점으로 진화 중.', diff:1},
+  {id:'b2', cat:'biz', word:'ONDC', pron:'', ko:'오픈 네트워크 디지털 커머스', nuance:'Open Network for Digital Commerce. 인도 정부가 주도하는 탈중앙화 디지털 상거래 플랫폼 — 온라인 구매자와 기업을 연결. 2022년 $60-70B → 2030년 $320-340B(약 5배 성장) 전망. Amazon·Flipkart 같은 플랫폼 독점 없이 경쟁 촉진을 목표로 함.', diff:2},
+  {id:'b3', cat:'biz', word:'ER&D', pron:'', ko:'엔지니어링 연구개발', nuance:'Engineering Research & Development. 제품 설계·엔지니어링·테스트를 포함하는 R&D의 한 분야. "engineering, research, and development sourcing from India could increase from about $44-45 billion today to over $130-170 billion by 2030." EV·반도체·제약 분야 인도 ER&D 성장의 핵심 드라이버.', diff:2},
+  {id:'b4', cat:'biz', word:'STEM', pron:'', ko:'과학·기술·공학·수학 (인재 풀의 기반)', nuance:'Science, Technology, Engineering, Mathematics. "India is home to about one-third of the world\'s STEM graduates." 전기차·제약·전자 분야 혁신을 가능하게 하는 인도 인재 경쟁력의 핵심. 글로벌 IT 역량 센터 입지 선정의 1순위 기준.', diff:1},
+  {id:'b5', cat:'biz', word:'Make in India', pron:'', ko:'메이크 인 인디아 (인도 제조 육성 정책)', nuance:'인도 정부의 핵심 제조업 육성·외국인 투자 유치 정책. GDP 대비 제조업 비중 16%(2023) → 25%(2030) 목표. 반도체 공장 설립 시 자본 지출의 50% 보조금 지원 포함. National Manufacturing Mission과 함께 기업 환경 개선의 두 축.', diff:2},
+  {id:'b6', cat:'biz', word:'MSME', pron:'', ko:'소기업·중소기업', nuance:'Micro, Small and Medium Enterprise. 인도 공급망의 대부분을 차지하는 기업 형태. "many suppliers in India are MSMEs that are unable to deliver the quantity of components required for large-scale manufacturing." 인도 스케일업의 가장 큰 구조적 장벽 — 부품 대량 공급 이행 능력 한계.', diff:2},
+];
+
+function renderCards(filter) {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const filtered = filter === 'all' ? cards : cards.filter(c => c.cat === filter);
+  filtered.forEach(c => {
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap';
+    const isLearned = learned.has(c.id);
+    wrap.innerHTML = `
+      <div class="card${isLearned ? ' learned' : ''}" id="card-${c.id}">
+        <div class="card-face front">
+          <span class="tag tag-${c.cat}">${c.cat.toUpperCase()}</span>
+          <div class="word">${c.word}</div>
+          ${c.pron ? `<div class="pron">${c.pron}</div>` : ''}
+          <div class="dots">
+            <div class="dot${c.diff>=1?' on':''}"></div>
+            <div class="dot${c.diff>=2?' on':''}"></div>
+            <div class="dot${c.diff>=3?' on':''}"></div>
+          </div>
+          <div class="learned-badge">✓ learned</div>
+        </div>
+        <div class="card-face back">
+          <div>
+            <div class="ko">${c.ko}</div>
+            <div class="nuance">${c.nuance}</div>
+          </div>
+          <button class="check-btn${isLearned ? ' done' : ''}" data-id="${c.id}">
+            ${isLearned ? '✓ learned' : 'Mark as learned'}
+          </button>
+        </div>
+      </div>`;
+    wrap.querySelector('.card').addEventListener('click', e => {
+      if (e.target.classList.contains('check-btn')) return;
+      e.currentTarget.classList.toggle('flipped');
+    });
+    wrap.querySelector('.check-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      const id = e.target.dataset.id;
+      if (learned.has(id)) { learned.delete(id); } else { learned.add(id); }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...learned]));
+      renderCards(filter);
+      updateProgress();
+    });
+    grid.appendChild(wrap);
+  });
+}
+
+function updateProgress() {
+  const total = 35;
+  const count = learned.size;
+  const pct = Math.round(count / total * 100);
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('plabel').textContent = `${count} / ${total} learned`;
+}
+
+let currentFilter = 'all';
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.cat;
+    renderCards(currentFilter);
+  });
+});
+
+renderCards('all');
+updateProgress();
+</script>
+</body>
+</html>
