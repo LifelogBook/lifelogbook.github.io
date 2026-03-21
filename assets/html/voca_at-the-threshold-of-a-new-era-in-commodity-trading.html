@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vocabulary – At the Threshold of a New Era in Commodity Trading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#002060;--ink2:#1a3a6e;
+  --accent:#00a0dc;--accent2:#0078a8;
+  --sky:#e8f5fb;--bg:#f4fafd;--border:#7ec8e3;
+  --r:14px;--shadow:0 4px 24px rgba(0,32,96,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(135deg,#002060 0%,#1a3a6e 50%,#00a0dc 100%);color:#fff;padding:2.2rem 1.5rem 1.8rem;text-align:center}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:.4rem}
+header p{font-size:.92rem;opacity:.85}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:.25rem .9rem;font-size:.78rem;margin-bottom:.7rem;letter-spacing:.04em}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:1.2rem 1rem .6rem;max-width:860px;margin:0 auto}
+.controls button{border:2px solid var(--border);background:#fff;color:var(--ink2);border-radius:30px;padding:.38rem .95rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s}
+.controls button.active,.controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.stats{text-align:center;font-size:.8rem;color:var(--ink2);padding:.2rem 0 .8rem;opacity:.75}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;padding:0 1rem 2rem;max-width:1100px;margin:0 auto}
+.card{perspective:900px;cursor:pointer;height:210px}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:1.1rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.front{background:#fff;border:2px solid var(--border)}
+.back{background:var(--sky);border:2px solid var(--accent);transform:rotateY(180deg)}
+.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.18rem .55rem;border-radius:10px;color:#fff;width:fit-content}
+.tag-phrasal{background:#00a0dc}
+.tag-idiom{background:#7c3aed}
+.tag-colloc{background:#1a3a6e}
+.tag-vocab{background:#f59e0b}
+.tag-biz{background:#dc2626}
+.word{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);line-height:1.2;margin:.35rem 0 .1rem}
+.pron{font-size:.78rem;color:var(--ink2);font-style:italic;margin-bottom:.2rem}
+.ko{font-size:.88rem;color:var(--ink2);font-weight:500}
+.diff{display:flex;gap:3px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.on{background:var(--accent)}
+.back .word{font-size:1.1rem;color:var(--ink)}
+.nuance{font-size:.82rem;color:#374151;line-height:1.55;flex:1;margin:.35rem 0 .2rem;overflow:hidden}
+.learned-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.35rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;align-self:flex-end;transition:background .2s}
+.learned-btn.done{background:#10b981}
+.card.learned .front{border-color:#10b981;background:#f0fff8}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey Global Energy &amp; Materials Practice · February 2026</div>
+  <h1>At the Threshold of a New Era in Commodity Trading</h1>
+  <p>AI, Geopolitics &amp; Value Pools — McKinsey 2026</p>
+</header>
+<div class="controls">
+  <button class="active" onclick="filter('all',this)">All (35)</button>
+  <button onclick="filter('phrasal',this)">Phrasal (6)</button>
+  <button onclick="filter('idiom',this)">Idiom (6)</button>
+  <button onclick="filter('colloc',this)">Colloc (7)</button>
+  <button onclick="filter('vocab',this)">Vocab (10)</button>
+  <button onclick="filter('biz',this)">Biz (6)</button>
+</div>
+<div class="stats" id="stats"></div>
+<div id="grid"></div>
+<script>
+const STORE_KEY='commodity_trading_new_era_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(STORE_KEY)||'[]'));
+const cards=[
+  {id:'pv1',type:'phrasal',word:'scale into',ko:'(기회·혼란에) 적극적으로 진입하다, 투입을 늘리다',pron:'',nuance:'"scale into dislocations" — scale(규모를 키우다)+into(~으로 향해). 시장 혼란이나 기회에 자본·포지션을 적극 투입하며 진입하는 것. "scale up"이 단순 확장이라면 "scale into"는 특정 방향으로 공격적으로 집중하는 전략적 움직임. 유연한 재무를 가진 트레이더만 할 수 있음',diff:3},
+  {id:'pv2',type:'phrasal',word:'unwind',ko:'(포지션을) 청산하다, 되돌리다',pron:'',nuance:'"forced to unwind" — un(되돌리다)+wind(감다). 투자·헤지·거래 포지션을 청산하거나 원래대로 돌리는 것. 헤지펀드·트레이더가 리스크를 줄이기 위해 보유 포지션을 매도하는 행위. 자금이 부족하거나 시장이 악화될 때 "forced to unwind"가 됨. 금융 필수 동사',diff:2},
+  {id:'pv3',type:'phrasal',word:'tilt toward',ko:'~쪽으로 기울다, 우선순위가 이동하다',pron:'',nuance:'"priorities tilted toward security and affordability" — tilt(기울다)+toward(~쪽으로). 균형이 한쪽으로 점진적으로 이동하는 변화. "shift toward"보다 미묘하고 물리적인 기울기 이미지. 에너지 정책에서 환경 우선→안보·저렴함으로 무게중심이 이동하는 것을 표현할 때 딱 맞는 동사',diff:1},
+  {id:'pv4',type:'phrasal',word:'play in',ko:'(어느 분야에서) 경쟁·참여하다',pron:'',nuance:'"which areas to play in" — 스포츠 메타포. 어느 경기장·판에 참여할 것인지를 결정하는 전략적 선택. "compete in"보다 더 전략적이고 자발적인 뉘앙스. "which areas to play in, how to focus on these areas" — 판을 고르는 것이 전략의 시작임을 함축',diff:1},
+  {id:'pv5',type:'phrasal',word:'build up',ko:'(역량·자산을) 점진적으로 구축하다',pron:'',nuance:'"build up trading capabilities" — build(짓다)+up(쌓아올림). 역량·포트폴리오·자산 기반을 반복적·누적적으로 쌓아가는 과정 강조. 한번에 완성되지 않는 지속적 투자의 뉘앙스. "build on"(기존에 더하다)과 달리 처음부터 쌓는 의미도 포함. 긴 호흡의 전략적 투자',diff:1},
+  {id:'pv6',type:'phrasal',word:'price in',ko:'(리스크·기대값을) 가격에 미리 반영하다',pron:'',nuance:'"pricing in uncertainty" — price(가격)+in(안으로 반영). 미래 리스크·이벤트·불확실성을 현재 자산 가격에 이미 반영하는 것. 금융 핵심 개념. "The market has already priced in the geopolitical risk" — 시장은 그 리스크를 이미 반영했다. price out(가격 때문에 배제되다)과 구분',diff:2},
+  {id:'id1',type:'idiom',word:'privileged few',ko:'특권적 소수, (시장을 지배하는) 극소수 강자',pron:'',nuance:'"the so-called privileged few" — 자본·데이터·물리적 흐름 접근이라는 세 가지 핵심 역량을 모두 갖춘 소수 엘리트 트레이더. 업계 재편 후 글로벌 원자재 흐름을 지배하게 될 승자군. privilege(특권)+few(소수). 약간의 아이러니: 이 소수는 "특권"이 아닌 구조적 역량 우위로 만들어짐',diff:2},
+  {id:'id2',type:'idiom',word:'virtuous cycle',ko:'선순환 구조',pron:'',nuance:'"a virtuous cycle of increased returns" — virtue(미덕)+ous+cycle. 좋은 성과→더 많은 자원→더 좋은 성과가 서로 강화하는 자기 증폭 루프. vicious cycle(악순환)의 반대. 강자가 더 강해지는 winner-take-all 시장 구조를 설명할 때 핵심 표현. 경제학에서 복리 효과와 동일한 구조',diff:1},
+  {id:'id3',type:'idiom',word:'a ways to go',ko:'아직 갈 길이 멀다, 상당한 여정이 남아있다',pron:'',nuance:'"AI still has a ways to go before it reaches maturity" — "a long way to go"의 미국 구어체 표현. 목표까지 여전히 상당한 노력·시간이 필요하다는 현실적 인정. "a ways"처럼 ways에 s를 붙이는 것은 미국 영어의 비공식 관용 표현. 비즈니스 현실을 담담히 인정할 때 자주 씀',diff:2},
+  {id:'id4',type:'idiom',word:'value left on the table',ko:'미활용된 가치, 놓친 수익 기회',pron:'',nuance:'"value left on the table in oil and oil products" — 협상이나 거래에서 더 많이 얻을 수 있었지만 그러지 못하고 테이블에 남겨두고 나온 가치. ~$20 billion의 최적화 기회가 현재 미활용 중이라는 강력한 수사. "leave money on the table"도 같은 표현',diff:1},
+  {id:'id5',type:'idiom',word:'first touch',ko:'최초 접점, 첫 번째 접촉 기회',pron:'',nuance:'"repeated \'first touch\' opportunities to package optionality" — 물리적 원자재 흐름에서 상품에 처음으로 손을 대는(touch) 기회. 실물 흐름을 통제하는 자만이 갖는 선점 정보 우위. 첫 접점에서 거래를 구조화하고 부가가치를 창출할 수 있음. CRM에서의 "first touch attribution"과 동일한 개념',diff:3},
+  {id:'id6',type:'idiom',word:'new normal',ko:'새로운 기준, 뉴노멀',pron:'',nuance:'"there is a new normal in commodity trading" — 위기·혼란 이후 기존과 다른 새로운 기준선이 된 상태. 2008 금융위기 후 저성장을 부르던 말에서 시작. 코로나 이후 광범위하게 쓰임. "normal"이지만 이전의 normal과 다르다는 역설. 2022-23 최고점에서 내려온 지금 수준이 새 기준임을 함의',diff:1},
+  {id:'co1',type:'colloc',word:'value pool',ko:'가치 풀, (업계 전체의) 수익 파이',pron:'',nuance:'"total value pools in 2025 decreased by ~5%" — 산업 내 경쟁자 전체가 나눠 갖는 이익 총합. McKinsey의 핵심 분석 프레임워크. pool(고여있는 물)처럼 특정 시장에 모인 수익 총량. 파이의 크기 자체가 업종 매력도를 결정. value pool이 줄면 경쟁은 더 치열해짐',diff:2},
+  {id:'co2',type:'colloc',word:'deal life cycle',ko:'거래 생애주기',pron:'',nuance:'"labor for parts of the deal life cycle reduced by 20-40%" — 거래 성사부터 최종 정산까지 전 과정. 가격 협상→계약→확인→물류 추적→정산→회계 처리. AI 에이전트가 각 단계를 자동화해 비용·시간을 획기적으로 줄이는 것이 핵심. life cycle = 시작에서 끝까지의 전 여정',diff:2},
+  {id:'co3',type:'colloc',word:'bid-ask spread',ko:'매수-매도 스프레드',pron:'',nuance:'"higher liquidity implies narrowing bid-ask spreads" — bid(매수호가)와 ask(매도호가)의 차이. 시장 유동성의 핵심 지표: 좁을수록 유동성 높음. 원자재 트레이더는 이 스프레드에서 수익을 창출하거나 비용으로 부담. 유동성이 높아지면 스프레드가 좁아져 가격 발견이 쉬워짐',diff:2},
+  {id:'co4',type:'colloc',word:'physical flow',ko:'실물 흐름, 원자재 물리적 이동',pron:'',nuance:'"access to physical flow is both an information advantage and a commercial strategy" — 종이 계약(paper trading)이 아닌 실제 원자재의 물리적 이동·공급망. 실물 흐름을 통제하는 것 = 시장 정보 + 반복 수익 기회. 대형 트레이딩하우스의 핵심 경쟁 무기. 헤지펀드가 이 접근을 얻으려 자산 취득에 나서는 이유',diff:2},
+  {id:'co5',type:'colloc',word:'price volatility',ko:'가격 변동성',pron:'',nuance:'"volatility of most products trended downward in 2025" — 일별 로그 수익률의 표준편차로 측정. 원자재 트레이더의 핵심 수익 원천이자 리스크. 높을수록 기회도 크고 리스크도 큼. 지정학 리스크·기후 이변이 price volatility를 높이는 주요 요인. 2025년에는 하락하며 수익 기회도 감소',diff:1},
+  {id:'co6',type:'colloc',word:'supply shock',ko:'공급 충격',pron:'',nuance:'"supply shocks occurring approximately every ten to fifteen years" — 갑작스런 공급 차질로 가격이 급등하는 현상. 2022 러-우 전쟁→유럽 가스 공급 충격이 대표 사례. demand shock(수요 충격)의 반대. 원산지 집중도가 높을수록 supply shock 취약성 증가. 저 demand elasticity가 충격을 증폭시킴',diff:1},
+  {id:'co7',type:'colloc',word:'energy trilemma',ko:'에너지 트릴레마 (세 가지 동시 달성 불가)',pron:'',nuance:'"energy trilemma—energy security, affordability, and decarbonization" — tri(셋)+lemma(문제). 에너지 안보(끊기지 않는 공급)·저렴함·탈탄소화를 동시에 달성하기 어려운 구조적 딜레마. 보고서는 이것이 구조적 에너지 수요 급증으로 energy quadrilemma(사중 딜레마)로 진화 중이라 언급',diff:2},
+  {id:'v1',type:'vocab',word:'volatility',ko:'변동성, 불안정성',pron:'[ˌvɒlətɪlɪti]',nuance:'volatile(휘발성의, 불안정한)+ity. 라틴어 volare(날다)에서 — 가격이 날아다니듯 예측 불가한 특성. "periods of high volatility" — 원자재 트레이딩에서 이익의 원천이자 위험. 변동성 없이는 차익도 없음. 금융·경제·심리 등 다방면에서 사용되는 핵심 어휘',diff:1},
+  {id:'v2',type:'vocab',word:'dislocation',ko:'(시장의) 가격 왜곡, 불균형',pron:'[ˌdɪsləˈkeɪʃən]',nuance:'dis(벗어난)+locate(위치)+ation. "scale into dislocations" — 시장 가격이 정상 균형에서 일시적으로 벗어난 상태. 의학에서는 탈구, 시장에서는 가격 왜곡. 이 왜곡 순간을 포착해 수익을 내는 것이 트레이더의 역할. 유동성·자본이 충분한 플레이어만 이를 공략 가능',diff:3},
+  {id:'v3',type:'vocab',word:'supercycle',ko:'슈퍼사이클, 초장기 원자재 가격 상승 주기',pron:'[ˈsuːpəsaɪkəl]',nuance:'super(초월)+cycle(주기). "supercycles occurring approximately every ten to fifteen years" — 수요가 공급을 장기간 압도해 원자재 가격이 구조적 고점을 유지하는 10-15년 주기. 일반 경기 사이클(3-5년)보다 훨씬 긴 mega-trend. 중국 도시화(2000년대), 에너지 전환이 다음 supercycle 후보',diff:2},
+  {id:'v4',type:'vocab',word:'optionality',ko:'선택권 가치, 유연성의 가치',pron:'[ˌɒpʃəˈnælɪti]',nuance:'option(선택권)+ality. "manage asset-backed optionality at scale" — 미래에 유리한 선택을 할 수 있는 권리·여지의 가치. 재무 옵션 이론에서 유래. 파이프라인·저장시설·계약이 갖는 유연성 가치. "preserve optionality" = 선택지를 열어두는 전략. 불확실할수록 optionality의 가치는 높아짐',diff:3},
+  {id:'v5',type:'vocab',word:'origination',ko:'(거래·딜의) 발굴 및 구조화, 오리지네이션',pron:'[əˌrɪdʒɪˈneɪʃən]',nuance:'originate(시작하다)+ation. "redeploy human expertise toward origination" — 새로운 거래·계약·관계를 처음으로 발굴하고 구조화하는 프론트오피스의 핵심 역할. 은행에서는 대출·증권 발행의 시작 단계. 트레이딩에서는 새로운 딜 소싱. AI가 후선을 대체할수록 origination이 인간의 핵심 부가가치로 부상',diff:3},
+  {id:'v6',type:'vocab',word:'minilateralism',ko:'미니래터럴리즘, 소규모 실용적 다자협력',pron:'[ˌmɪnɪˈlætərəlɪzəm]',nuance:'mini(소규모)+lateral(측면의)+ism. "from stable multilateralism to minilateralism based on common interests" — WTO 같은 글로벌 다자체제(multilateralism)가 작동하지 않을 때, 이해관계를 공유하는 소수 국가 간의 실용적 협력 체제. 지정학적 파편화 시대의 新무역 질서',diff:3},
+  {id:'v7',type:'vocab',word:'reconfigure',ko:'재편하다, 새로운 방식으로 재구성하다',pron:'[ˌriːkənˈfɪɡə]',nuance:'re(다시)+configure(구성하다). "reconfiguring trade flows" — 기존 구조를 해체하고 새로운 방식으로 재편하는 것. IT에서는 시스템 설정 변경이 원래 의미이나 비즈니스에서는 공급망·무역 경로·조직 구조의 재편. geopolitics가 수십 년간 굳어진 무역 루트를 reconfigure 중',diff:2},
+  {id:'v8',type:'vocab',word:'compounding',ko:'복합적으로 증폭되는, 누적 강화되는',pron:'[kəmˈpaʊndɪŋ]',nuance:'"the compounding effect of the trends" — compound(복합)+ing. 복리 이자처럼 여러 요인이 서로 강화하며 시간이 지날수록 효과가 가속화되는 것. 단순 합산이 아닌 상호 증폭 구조. geopolitics + energy transition + AI가 각각 강화하며 만드는 compounding disruption',diff:2},
+  {id:'v9',type:'vocab',word:'elasticity',ko:'탄력성 (가격 변화에 대한 수요·공급의 반응도)',pron:'[ˌɪlæˈstɪsɪti]',nuance:'elastic(탄성의)+ity. "low demand elasticity" — 가격 변화에 수요·공급이 얼마나 반응하는지의 지표. inelastic(비탄력적) = 가격이 올라도 수요가 크게 줄지 않음. 에너지·식료품 등 필수재의 특성. 비탄력적 수요는 공급 충격 시 가격 급등을 증폭시키는 핵심 메커니즘',diff:2},
+  {id:'v10',type:'vocab',word:'monetize',ko:'(가치·기회를) 수익으로 전환하다',pron:'[ˈmɒnɪtaɪz]',nuance:'moneta(화폐 — 로마의 유노 모네타 신전에서 주화 제조)+ize. "fewer opportunities to monetize price movements" — 가치나 기회를 실제 수익·현금으로 전환하는 행위. "monetize volatility" = 가격 변동에서 이익을 뽑아내다. 콘텐츠·플랫폼에서도 광범위하게 쓰이는 현대 비즈니스 핵심 동사',diff:1},
+  {id:'b1',type:'biz',word:'IOC',ko:'국제 석유회사 (International Oil Company)',pron:'',nuance:'"European IOCs reducing investments in green energy, US IOCs doubling down on hydrocarbons" — 정부가 아닌 민간이 소유·운영하는 대형 석유 회사(Shell, BP, TotalEnergies, ExxonMobil 등). NOC(국영석유회사)와 대비. European IOC vs US IOC는 에너지 전환 접근에서 현격한 차이를 보임',diff:2},
+  {id:'b2',type:'biz',word:'NOC',ko:'국영 석유회사 (National Oil Company)',pron:'',nuance:'"NOCs across regions building professional trading capabilities" — 정부 소유의 국영 석유회사(사우디 아람코, ADNOC, 쿠웨이트 석유공사 등). 전 세계 확인 매장량의 약 70-80%를 통제. 최근 자체 트레이딩 역량을 구축하며 기존 트레이딩하우스의 영역에 직접 진입 중',diff:1},
+  {id:'b3',type:'biz',word:'P&L',ko:'손익 (Profit & Loss)',pron:'',nuance:'"as deliberately as they handle P&L" — 특정 기간의 수익과 비용을 나타내는 손익계산서 또는 그 결과. 트레이더·사업부장의 성과를 측정하는 핵심 지표. "manage P&L" = 수익성을 직접 책임지다. 리스크 삼각형(시장·신용·유동성)을 P&L과 동일한 수준으로 관리해야 한다는 것이 보고서의 핵심 주장',diff:1},
+  {id:'b4',type:'biz',word:'KYC',ko:'고객 신원 확인 절차 (Know Your Customer)',pron:'',nuance:'"KYC squads of 100+ microagents processed 12 of 18 onboarding steps" — 금융·트레이딩 업계의 거래 상대방 신원 확인 절차. 자금세탁방지(AML)와 연계. 전통적으로 수작업으로 수 시간~수 일이 걸리던 프로세스. AI 에이전트 군단이 이를 자동화해 counterparty 온보딩 속도를 획기적으로 단축',diff:1},
+  {id:'b5',type:'biz',word:'JV',ko:'합작법인 (Joint Venture)',pron:'',nuance:'"JVs or partnerships are increasingly relevant for asset-backed players" — 두 회사 이상이 특정 프로젝트·사업을 위해 공동 설립하는 법인. M&A(완전 인수)와 달리 양사가 독립성·통제권 유지. 트레이딩 역량이 없는 자산 보유 기업이 경험 있는 트레이더와 빠르게 협력하는 최적 구조. ~$20B 가치 창출 기회',diff:1},
+  {id:'b6',type:'biz',word:'EBIT',ko:'이자·세전 영업이익 (Earnings Before Interest and Taxes)',pron:'',nuance:'"total trading EBIT decreased from $72B to $69B" — 이자비용과 법인세를 차감하기 전의 영업이익. 금융 구조와 세금을 제외한 순수 영업 수익성 지표. EBITDA(감가상각 전 추가)와 함께 기업가치 평가의 핵심. 원자재 트레이딩 업계 전체의 수익 규모를 나타내는 공식 지표로 사용',diff:1},
+];
+function dots(n){return[1,2,3].map(i=>`<span class="dot${i<=n?' on':''}"></span>`).join('')}
+function render(list){
+  const g=document.getElementById('grid');
+  g.innerHTML=list.map(c=>`
+<div class="card${learned.has(c.id)?' learned':''}" id="card-${c.id}" onclick="flip('${c.id}')">
+  <div class="card-inner">
+    <div class="front">
+      <div><span class="tag tag-${c.type}">${c.type}</span>
+      <div class="word">${c.word}</div>
+      ${c.pron?`<div class="pron">${c.pron}</div>`:''}
+      <div class="ko">${c.ko}</div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="diff">${dots(c.diff)}</div>
+        <span style="font-size:.72rem;color:var(--ink2);opacity:.6">tap to flip</span>
+      </div>
+    </div>
+    <div class="back">
+      <div><span class="tag tag-${c.type}">${c.type}</span>
+      <div class="word">${c.word}</div>
+      <div class="nuance">${c.nuance}</div></div>
+      <button class="learned-btn${learned.has(c.id)?' done':''}" onclick="markLearned(event,'${c.id}')">${learned.has(c.id)?'✓ 학습완료':'학습완료'}</button>
+    </div>
+  </div>
+</div>`).join('');
+  document.getElementById('stats').textContent=`${learned.size} / ${cards.length} 학습완료`;
+}
+function flip(id){document.getElementById('card-'+id).classList.toggle('flipped')}
+function markLearned(e,id){
+  e.stopPropagation();
+  if(learned.has(id)){learned.delete(id)}else{learned.add(id)}
+  localStorage.setItem(STORE_KEY,JSON.stringify([...learned]));
+  render(currentList);
+}
+let currentList=cards;
+function filter(type,btn){
+  document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentList=type==='all'?cards:cards.filter(c=>c.type===type);
+  render(currentList);
+}
+render(cards);
+</script>
+</body>
+</html>
