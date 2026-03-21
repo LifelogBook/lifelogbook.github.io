@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vocabulary – Telcos' AI Inflection Point</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d2340;--ink2:#1a4a7a;
+  --accent:#00b4d8;--accent2:#0096c7;
+  --sky:#e0f4fb;--bg:#f3fafd;--border:#7ecae3;
+  --r:14px;--shadow:0 4px 24px rgba(13,35,64,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(135deg,#0d2340 0%,#1a4a7a 50%,#00b4d8 100%);color:#fff;padding:2.2rem 1.5rem 1.8rem;text-align:center}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:.4rem}
+header p{font-size:.92rem;opacity:.85}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:.25rem .9rem;font-size:.78rem;margin-bottom:.7rem;letter-spacing:.04em}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:1.2rem 1rem .6rem;max-width:860px;margin:0 auto}
+.controls button{border:2px solid var(--border);background:#fff;color:var(--ink2);border-radius:30px;padding:.38rem .95rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s}
+.controls button.active,.controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.stats{text-align:center;font-size:.8rem;color:var(--ink2);padding:.2rem 0 .8rem;opacity:.75}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;padding:0 1rem 2rem;max-width:1100px;margin:0 auto}
+.card{perspective:900px;cursor:pointer;height:210px}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:1.1rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.front{background:#fff;border:2px solid var(--border)}
+.back{background:var(--sky);border:2px solid var(--accent);transform:rotateY(180deg)}
+.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.18rem .55rem;border-radius:10px;color:#fff;width:fit-content}
+.tag-phrasal{background:#00b4d8}
+.tag-idiom{background:#7c3aed}
+.tag-colloc{background:#1a4a7a}
+.tag-vocab{background:#f59e0b}
+.tag-biz{background:#dc2626}
+.word{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);line-height:1.2;margin:.35rem 0 .1rem}
+.pron{font-size:.78rem;color:var(--ink2);font-style:italic;margin-bottom:.2rem}
+.ko{font-size:.88rem;color:var(--ink2);font-weight:500}
+.diff{display:flex;gap:3px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.on{background:var(--accent)}
+.back .word{font-size:1.1rem;color:var(--ink)}
+.nuance{font-size:.82rem;color:#374151;line-height:1.55;flex:1;margin:.35rem 0 .2rem;overflow:hidden}
+.learned-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.35rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;align-self:flex-end;transition:background .2s}
+.learned-btn.done{background:#10b981}
+.card.learned .front{border-color:#10b981;background:#f0fff8}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey Technology, Media &amp; Telecommunications · March 2026</div>
+  <h1>Telcos' AI Inflection Point</h1>
+  <p>What Leaders Do to Capture Value — QuantumBlack, AI by McKinsey</p>
+</header>
+<div class="controls">
+  <button class="active" onclick="filter('all',this)">All (35)</button>
+  <button onclick="filter('phrasal',this)">Phrasal (6)</button>
+  <button onclick="filter('idiom',this)">Idiom (6)</button>
+  <button onclick="filter('colloc',this)">Colloc (7)</button>
+  <button onclick="filter('vocab',this)">Vocab (10)</button>
+  <button onclick="filter('biz',this)">Biz (6)</button>
+</div>
+<div class="stats" id="stats"></div>
+<div id="grid"></div>
+<script>
+const STORE_KEY='telcos_ai_inflection_point_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(STORE_KEY)||'[]'));
+const cards=[
+  {id:'pv1',type:'phrasal',word:'free up',ko:'(자원·시간·인력을) 해방시키다, 여유를 만들다',pron:'',nuance:'"free up capacity for higher-value work" — free(해방)+up(완전히). 묶여있던 자원·시간·인력을 해방해 더 가치 있는 일에 쓸 수 있게 만드는 것. "free up capital" = 자본을 유동화하다, "free up headcount" = 인력 여유를 만들다. AI 자동화의 핵심 목적 표현',diff:1},
+  {id:'pv2',type:'phrasal',word:'hardwire',ko:'(행동·습관을) 깊이 고착시키다, 영구 배선하다',pron:'',nuance:'"hardwires new behaviors into daily work" — 전자공학에서 회로에 영구 배선(hard-wire)하는 것에서 유래. 변경 불가능하게 새로운 행동·습관을 조직에 '설치'하는 것. "hard-code"와 비슷한 뉘앙스: 유연하지 않게 고착화. "hardwired into DNA" = 본성에 깊이 내재',diff:2},
+  {id:'pv3',type:'phrasal',word:'stand up',ko:'(시스템·팀을) 처음부터 구축·가동하다',pron:'',nuance:'"standing up an AI factory" — IT·군사 용어에서 새로운 시스템·팀·인프라를 가동 가능한 상태로 처음 구축하는 것. "set up"보다 더 공식적이고 대규모적인 구축 뉘앙스. "spin up"(빠르게 시작)보다 더 영구적·체계적. "stand up a team" = 팀을 새로 창설하다',diff:2},
+  {id:'pv4',type:'phrasal',word:'drill down into',ko:'(데이터·이슈의) 세부 깊이 파고들다',pron:'',nuance:'"drilled down into subintents" — drill(드릴로 파다)+down+into. 표면적 분석을 넘어 데이터·이슈의 깊은 층으로 파고드는 것. "analyze"보다 훨씬 더 깊고 구체적인 탐구 뉘앙스. BI 대시보드에서 "drill down" = 상위 데이터에서 하위 세부 데이터로 클릭해 들어가는 것',diff:1},
+  {id:'pv5',type:'phrasal',word:'roll out',ko:'(서비스·시스템을) 단계적으로 배포·출시하다',pron:'',nuance:'"rolling out too many fragmented AI use cases" — roll(굴리다)+out(밖으로). 새로운 제품·서비스·정책을 단계적으로 배포하는 것. "launch"(한번에 공개)와 달리 점진적·통제된 배포 강조. "roll out globally" = 전 세계적 단계 배포. 반대는 "roll back"(이전 버전으로 되돌리다)',diff:1},
+  {id:'pv6',type:'phrasal',word:'run into',ko:'(예상치 못한 문제에) 부딪히다, 직면하다',pron:'',nuance:'"often run into the same problems" — run(달리다)+into(부딪히다). 달리다가 장애물에 예기치 않게 부딪히는 이미지. "encounter"의 더 구어체·일상적 표현. 능동적으로 초래한 게 아닌 진행 중 나타난 문제에 직면. "run into trouble/obstacles/resistance" 형태로 자주 쓰임',diff:1},
+  {id:'id1',type:'idiom',word:'pilot purgatory',ko:'파일럿 연옥 (시범단계에서 영원히 벗어나지 못하는 상태)',pron:'',nuance:'"handful of pilot purgatory" — 가톨릭의 연옥(purgatory): 천국도 지옥도 아닌 중간 상태. AI 파일럿이 성공적이지도 실패하지도 않고 영원히 시범 단계에 머무는 조직의 딜레마. 실제 비즈니스 임팩트로 전환되지 못하는 상태. McKinsey 보고서에서 자주 쓰이는 강력한 은유',diff:2},
+  {id:'id2',type:'idiom',word:'money step',ko:'돈이 걸린 단계 (투자가 재무성과로 전환되는 관문)',pron:'',nuance:'"caught in the money step" — 보고서의 독자적 표현. AI 투자가 타 지표에는 영향을 미치지만 아직 재무제표상 실제 이익으로 나타나지 않은 중간 단계. 다음 단계로 넘어가기 위해 반드시 통과해야 하는 관문. 대부분의 통신사가 이 단계에 갇혀 있다고 진단',diff:3},
+  {id:'id3',type:'idiom',word:'learn the hard way',ko:'힘들게 배우다, 직접 겪으며 깨닫다',pron:'',nuance:'"learned the hard way that there is no quick way" — "the hard way"는 쉬운 길(easy way)의 반대. 이론이 아닌 실전 실수·고통을 통해 얻은 교훈. 어느 정도 자조적·겸손한 뉘앙스 포함. "We did it the hard way" = 쉽지 않았다는 솔직한 인정. 원어민은 경험으로 얻은 지혜를 강조할 때 씀',diff:1},
+  {id:'id4',type:'idiom',word:'paradigm shift',ko:'패러다임 전환, 근본적 사고방식의 전환',pron:'',nuance:'"a paradigm shift" — Thomas Kuhn의 《과학혁명의 구조》(1962)에서 유래. paradigm(세계관·틀)+shift(전환). 기존 틀로 설명 불가능한 완전히 새로운 접근으로의 전환. "incremental improvement"와 대비. 너무 자주 쓰여 의미가 희석된 경향도 있음 → 진짜 패러다임 전환인지 판단 필요',diff:2},
+  {id:'id5',type:'idiom',word:'early movers',ko:'선도 기업들, 일찍 움직인 선발주자',pron:'',nuance:'"early movers are already showing" — 시장에서 남들보다 먼저 움직인 선두 그룹. "first mover"(최초 진입자)보다 광범위한 개념. first-mover advantage(선점 우위)를 누릴 가능성 높음. "fast follower"(빠른 추종자)와 구분: early mover는 직접 개척, fast follower는 선례를 보고 빠르게 따름',diff:1},
+  {id:'id6',type:'idiom',word:'stumbling block',ko:'걸림돌, 진행을 방해하는 예상치 못한 장애',pron:'',nuance:'"stumbling blocks to unlocking new value" — stumble(비틀거리다)+block(장애물). 실제로 발에 걸려 넘어질 수 있는 돌처럼, 진행을 방해하는 구체적 장애. "obstacle"보다 더 우연적이고 예상치 못한 방해 뉘앙스. 단순 차단이 아닌 진행 중 '걸려 넘어지는' 이미지를 담은 생동감 있는 표현',diff:2},
+  {id:'co1',type:'colloc',word:'operating model',ko:'운영 모델, 조직 운영 방식의 전체 구조',pron:'',nuance:'"coherent agentic operating model" — 조직이 전략을 실행하는 방식 전반. 전략이 "무엇을"이라면 operating model은 "어떻게". 조직 구조·프로세스·기술·인력·거버넌스를 포괄. McKinsey 보고서에서 가장 빈번하게 등장하는 핵심 용어. "redesign the operating model" = 조직 운영 방식을 근본부터 재설계',diff:2},
+  {id:'co2',type:'colloc',word:'frontline team',ko:'일선 팀, 현장·고객과 직접 접하는 팀',pron:'',nuance:'"embedded directly into frontline teams" — front(최전선)+line. 고객·현장과 직접 접하는 일선 직원들. 본사나 관리직과 달리 실제 서비스·판매를 수행. 통신사에서 콜센터 상담원·현장 엔지니어·영업 담당자가 해당. "frontline worker"와 동의어. AI 도입 효과가 가장 직접 체감되는 계층',diff:1},
+  {id:'co3',type:'colloc',word:'digital transformation',ko:'디지털 전환, 디지털 기술로 비즈니스를 근본적으로 재편',pron:'',nuance:'"successive waves of digital transformation" — 디지털 기술을 활용해 비즈니스 모델·프로세스·문화를 근본적으로 재편하는 것. "digitization"(물리→디지털 변환)이나 "digitalization"(디지털 기술 적용)보다 더 포괄적·전략적. 2010년대 중반부터 경영 컨설팅의 최대 화두가 된 용어',diff:1},
+  {id:'co4',type:'colloc',word:'human-agent collaboration',ko:'인간-에이전트 협업, 사람과 AI가 함께 일하는 방식',pron:'',nuance:'"human-agent collaboration" — 인간 직원과 AI 에이전트가 각자의 강점을 발휘하며 협력하는 새로운 근무 방식. 자동화(AI 대체)도 인간 단독도 아닌 제3의 형태. 통신사 직원의 약 50%의 업무가 이러한 협업 방식으로 재정의될 수 있다는 것이 보고서의 핵심 예측',diff:2},
+  {id:'co5',type:'colloc',word:'run rate',ko:'연환산율, 현재 페이스로 계산한 연간 예상 수치',pron:'',nuance:'"reducing the run rate in overall call center spending" — 현재 실행 속도·비율이 1년간 지속된다고 가정한 연환산 수치. 실제 연간 성과가 아닌 현재 페이스의 예상치. SaaS의 ARR(연간 반복 수익) 계산 기반. "run rate savings" = 절감이 지속될 때의 연간 환산 효과',diff:2},
+  {id:'co6',type:'colloc',word:'CEO mandate',ko:'최고경영자 직접 지시 사항, CEO 주도 명령',pron:'',nuance:'"CEO-led mandate" — 최고경영자가 직접 지시하고 지원하는 최우선 과제. 단순 권고가 아닌 CEO의 권위로 부여된 실행 의무. 보고서는 AI 전환에서 CEO mandate 없이는 조직 전체의 협력을 끌어내기 어렵다고 강조. "mandate"는 authorize보다 훨씬 강한 명령·권한 부여의 뉘앙스',diff:2},
+  {id:'co7',type:'colloc',word:'product differentiation',ko:'제품 차별화, 경쟁사 대비 고유한 가치 창출',pron:'',nuance:'"limited product differentiation" — 자사 제품·서비스를 경쟁자와 구별되게 만드는 속성. 통신사들은 수십 년간 제품 차별화에 어려움을 겪어왔음 — 결국 가격 경쟁으로 귀결. AI가 새로운 differentiation 수단이 될 수 있다는 것이 보고서의 핵심 논거. "commoditized"(상품화된)의 반대 방향',diff:1},
+  {id:'v1',type:'vocab',word:'secular',ko:'장기적·구조적 (비경기적, 종교와 무관)',pron:'[ˈsekjʊlə]',nuance:'라틴어 saeculum(시대, 세기)+ar. 원래 "세속적·비종교적" 의미. 경제학에서는 단기 경기 사이클과 무관한 "장기 구조적"의 의미로 전용. "secular stagnation" = 구조적 장기 침체. "secular issues" = 경기보다 깊은 구조적 문제. 원어민이 이 뜻으로 쓸 때 종교와 완전히 무관',diff:3},
+  {id:'v2',type:'vocab',word:'overarching',ko:'모든 것을 아우르는, 최상위의, 포괄적인',pron:'[ˌəʊvərˈɑːtʃɪŋ]',nuance:'over(위에서)+arch(아치)+ing. 아치처럼 여러 것들 위에서 전체를 포괄하는. "overall"보다 더 강하고 지배적인 포괄력 뉘앙스. "overarching goal" = 모든 세부 목표를 아우르는 최상위 목표. "overarching theme/strategy/framework" — 하위 요소들을 통제하는 최상위 구조를 표현할 때',diff:2},
+  {id:'v3',type:'vocab',word:'incremental',ko:'점진적인, 단계별로 조금씩 증가하는',pron:'[ˌɪnkrəˈmentəl]',nuance:'increment(증가분)+al. 큰 도약이 아닌 작고 단계적인 증가. 경영에서는 종종 "충분치 않다"는 뉘앙스 포함 — 혁신이 아닌 점진적 개선을 지적할 때. "incremental vs transformative" 대비 구도가 이 보고서의 핵심 틀. "incremental gains" = 소소한 이득, 획기적 변화 부재',diff:1},
+  {id:'v4',type:'vocab',word:'coherent',ko:'일관성 있는, 논리적으로 통일된',pron:'[kəʊˈhɪərənt]',nuance:'co(함께)+haerere(달라붙다 — 라틴어)+ent. 각 부분이 논리적으로 연결되어 전체적으로 통일성을 갖는 상태. "cohesive"(결속력 있는)와 유사하나 coherent는 논리적 일관성, cohesive는 감성적 결속감 강조. "coherent strategy" = 각 요소가 서로 맞물린 일관된 전략',diff:2},
+  {id:'v5',type:'vocab',word:'composable',ko:'조합 가능한, 모듈처럼 재결합할 수 있는',pron:'[kəmˈpəʊzəbl]',nuance:'compose(구성하다)+able. 레고 블록처럼 표준화된 단위를 자유롭게 조합해 새로운 기능을 만들 수 있는 속성. 소프트웨어 아키텍처의 핵심 트렌드. monolithic(단일 덩어리)의 반대. "composable units" = 독립적으로 기능하면서도 서로 결합 가능한 단위들',diff:3},
+  {id:'v6',type:'vocab',word:'decompose',ko:'(복잡한 것을) 분해하다, 구성 요소로 나누다',pron:'[ˌdiːkəmˈpəʊz]',nuance:'de(분해)+compose(구성하다). 복잡한 프로세스·문제를 관리 가능한 작은 부분으로 나누는 것. 생물학에서는 부패·분해. 비즈니스에서는 가치 사슬·워크플로우를 기본 태스크로 분해하는 분석 기법. AI 엔지니어링에서도 복잡한 작업의 태스크 분해(task decomposition)가 핵심',diff:2},
+  {id:'v7',type:'vocab',word:'reorient',ko:'(방향·전략을) 재설정하다, 새로운 방향을 잡다',pron:'[ˌriːˈɔːrɪent]',nuance:'re(다시)+orient(방향을 잡다 — 동쪽을 향하다). "reorient their recent trajectory" — 사업·전략의 방향성 자체를 다시 설정하는 것. 단순 수정(adjust)이나 개선(improve)이 아닌 방향성의 근본적 재정립. "reorient the business toward growth" = 성장 방향으로 사업 전략을 재설정하다',diff:2},
+  {id:'v8',type:'vocab',word:'standardize',ko:'표준화하다, 통일된 기준을 적용하다',pron:'[ˈstændədaɪz]',nuance:'standard(기준)+ize. 다양하게 흩어진 것들에 통일된 기준을 적용하는 것. AI 맥락에서 각 팀이 제각각 구축하는 AI를 공통 플랫폼·아키텍처로 수렴하는 것. 표준화는 재사용성·거버넌스·비용 효율성의 기반. "standardize or reinvent the wheel" — 표준화 없이는 매번 처음부터 만들게 됨',diff:1},
+  {id:'v9',type:'vocab',word:'modular',ko:'모듈식의, 독립 단위로 조립 가능한',pron:'[ˈmɒdjʊlə]',nuance:'module(단위 — 라틴어 modulus=척도)+ar. 독립적으로 기능하는 표준 단위들로 구성된 구조. 교체·추가·제거가 용이. monolithic(하나로 뭉쳐진) 구조의 반대. LEGO처럼 각 모듈은 독립적이지만 결합 가능. "modular AI platform" = 필요한 기능을 블록처럼 조합해 구성하는 AI 플랫폼',diff:2},
+  {id:'v10',type:'vocab',word:'accountability',ko:'책임, 결과에 대한 설명 책임',pron:'[əˌkaʊntəˈbɪlɪti]',nuance:'account(설명하다)+ability. "responsibility"(책임감, 의무)보다 더 강하게 결과에 대한 측정·평가·보고 의무를 강조. "Hold someone accountable" = 결과에 대해 책임을 묻다. AI 전환에서 누가 어떤 성과에 대해 책임을 지는지 명확히 하는 것이 핵심. "accountability for AI impact"',diff:2},
+  {id:'b1',type:'biz',word:'EBITDA',ko:'이자·세금·감가상각·상각 전 이익 (Earnings Before Interest, Taxes, Depreciation & Amortization)',pron:'',nuance:'"improve EBITDA margins by as much as ten percentage points" — 기업의 순수 영업 현금 창출 능력 지표. 이자(Interest)·세금(Taxes)·유형자산 감가상각(Depreciation)·무형자산 상각(Amortization)을 모두 제거해 국가·세제·자본 구조 차이 없이 기업 간 비교 가능. M&A 가치 평가의 핵심',diff:2},
+  {id:'b2',type:'biz',word:'FTE',ko:'풀타임 환산 직원 수 (Full Time Equivalent)',pron:'',nuance:'"at least 50 FTEs dedicated to AI" — 파트타임 직원을 풀타임 기준으로 환산한 직원 수. 파트타임 2명 = 1 FTE. 헤드카운트(실제 인원)가 인원 수라면 FTE는 근무 시간 기준 환산치. 인건비·생산성·AI 자동화 가능 규모를 측정할 때 표준 단위로 사용',diff:1},
+  {id:'b3',type:'biz',word:'CVM',ko:'고객 가치 관리 (Customer Value Management)',pron:'',nuance:'"optimized CVM" — 고객별 수익 기여도·이탈 위험·성장 잠재력을 분석해 맞춤형 오퍼·개입으로 최적화하는 전략. CRM(관계 관리)보다 더 수익 중심적. 통신사에서 번들 업그레이드·이탈 방지·교차 판매의 핵심 프레임워크. AI가 예측 모델을 통해 CVM을 개인화·자동화',diff:2},
+  {id:'b4',type:'biz',word:'BPO',ko:'비즈니스 프로세스 아웃소싱 (Business Process Outsourcing)',pron:'',nuance:'"the BPO unit of leading South American telco Entel" — 특정 비즈니스 기능(콜센터·백오피스·HR 등)을 외부 전문 업체에 위탁하는 것. 통신사 콜센터가 대표 BPO 사례. 비용 절감이 주목적이었으나, AI로 BPO 업무 자체가 자동화되면서 BPO 산업 자체의 패러다임 전환이 진행 중',diff:2},
+  {id:'b5',type:'biz',word:'COGS',ko:'매출 원가 (Cost of Goods Sold)',pron:'',nuance:'"COGS and bad debt: interconnect, roaming, content" — 제품·서비스 판매에 직접 연결되는 원가. 통신사 COGS = 인터커넥트·로밍·콘텐츠 비용 등. 매출에서 COGS를 빼면 매출총이익(Gross Profit). AI로 연결망 운영 최적화→COGS 절감이 통신사 P&L 개선의 핵심 레버',diff:1},
+  {id:'b6',type:'biz',word:'SG&A',ko:'판매비와 관리비 (Selling, General & Administrative Expenses)',pron:'',nuance:'"SG&A: HR, finance, legal, and cross-function costs" — 매출 원가(COGS) 외의 영업·관리 비용 전반. HR·법무·재무·마케팅·경영진 급여 등 포함. 총비용에서 COGS 제외한 나머지. AI 자동화로 -1~-2%p 절감 가능하다는 것이 보고서의 주요 수치. "lean SG&A" = 군더더기 없는 관리 구조',diff:1},
+];
+function dots(n){return[1,2,3].map(i=>`<span class="dot${i<=n?' on':''}"></span>`).join('')}
+function render(list){
+  const g=document.getElementById('grid');
+  g.innerHTML=list.map(c=>`
+<div class="card${learned.has(c.id)?' learned':''}" id="card-${c.id}" onclick="flip('${c.id}')">
+  <div class="card-inner">
+    <div class="front">
+      <div><span class="tag tag-${c.type}">${c.type}</span>
+      <div class="word">${c.word}</div>
+      ${c.pron?`<div class="pron">${c.pron}</div>`:''}
+      <div class="ko">${c.ko}</div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="diff">${dots(c.diff)}</div>
+        <span style="font-size:.72rem;color:var(--ink2);opacity:.6">tap to flip</span>
+      </div>
+    </div>
+    <div class="back">
+      <div><span class="tag tag-${c.type}">${c.type}</span>
+      <div class="word">${c.word}</div>
+      <div class="nuance">${c.nuance}</div></div>
+      <button class="learned-btn${learned.has(c.id)?' done':''}" onclick="markLearned(event,'${c.id}')">${learned.has(c.id)?'✓ 학습완료':'학습완료'}</button>
+    </div>
+  </div>
+</div>`).join('');
+  document.getElementById('stats').textContent=`${learned.size} / ${cards.length} 학습완료`;
+}
+function flip(id){document.getElementById('card-'+id).classList.toggle('flipped')}
+function markLearned(e,id){
+  e.stopPropagation();
+  if(learned.has(id)){learned.delete(id)}else{learned.add(id)}
+  localStorage.setItem(STORE_KEY,JSON.stringify([...learned]));
+  render(currentList);
+}
+let currentList=cards;
+function filter(type,btn){
+  document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentList=type==='all'?cards:cards.filter(c=>c.type===type);
+  render(currentList);
+}
+render(cards);
+</script>
+</body>
+</html>
