@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UK-India: A 21st-century partnership — Vocab</title>
+<title>UK-India: A 21st-century Partnership — Vocab</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -86,7 +86,7 @@
   .front { background: #fff; }
   .back { background: var(--sky); transform: rotateY(180deg); justify-content: space-between; }
 
-  .card.learned .front { background: linear-gradient(135deg, #fefcf3 0%, #e8d080 100%); }
+  .card.learned .front { background: linear-gradient(135deg, #fefcf3 0%, #f5e06a 30%, #fef9e0 100%); }
 
   .tag {
     display: inline-block;
@@ -148,8 +148,8 @@
 <body>
 
 <header>
-  <div class="badge">McKinsey &amp; Company · 2025</div>
-  <h1>UK-India: A 21st-century partnership</h1>
+  <div class="badge">McKinsey &amp; Company &middot; 2025</div>
+  <h1>UK-India: A 21st-century Partnership</h1>
   <div class="progress-wrap">
     <div class="progress-bar-bg"><div class="progress-bar" id="pbar"></div></div>
     <div class="progress-label" id="plabel">0 / 35 learned</div>
@@ -172,50 +172,50 @@ const STORAGE_KEY = 'uk_india_partnership_learned';
 const learned = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
 
 const cards = [
-  // ── PHRASAL (6) ──
-  {id:'pv1', cat:'phrasal', word:'open up', pron:'', ko:'열다, 개방하다 (새 기회·시장을)', nuance:'open=열다 + up=완전히 → 닫혀 있던 것을 완전히 여는 이미지. "the FTA opens up new growth opportunities for both countries." 관세 장벽 철폐로 접근 불가능하던 시장이 열리는 맥락. enter(진입하다)보다 가능성 자체가 생기는 뉘앙스.', diff:1},
-  {id:'pv2', cat:'phrasal', word:'embed into', pron:'', ko:'깊이 통합되다, 편입되다', nuance:'embed=박아 넣다 + into=안으로. 표면에 붙는 것이 아니라 내부 깊숙이 통합되는 이미지. "embed themselves more deeply in global production networks." 공급망·생태계에 없어서는 안 될 존재가 되는 것.', diff:2},
-  {id:'pv3', cat:'phrasal', word:'capitalize on', pron:'', ko:'~을 최대한 활용하다, 기회로 삼다', nuance:'capital=자본 → 기회를 자본처럼 운용해 수익으로 전환. "companies can capitalize on the opportunities to deliver growth." take advantage of보다 적극적·전략적 뉘앙스. 주어가 능동적으로 기회를 잡는 이미지.', diff:2},
-  {id:'pv4', cat:'phrasal', word:'press ahead', pron:'', ko:'계속 밀고 나가다, 추진하다', nuance:'press=누르다 + ahead=앞으로 → 저항이 있어도 압력을 가하며 전진. "both sides pressing ahead with investment agreement discussions." push forward와 유사하지만 press ahead는 장애물이 있음을 암시하는 강한 의지 표현.', diff:2},
-  {id:'pv5', cat:'phrasal', word:'build on', pron:'', ko:'~을 기반으로 발전시키다', nuance:'build=짓다 + on=~위에 → 이미 있는 토대 위에 새로운 것을 쌓아 올리는 이미지. "build on the existing trading relationship between the two countries." 처음부터 시작하는 것이 아니라 기존 강점을 활용해 더 발전시키는 것.', diff:1},
-  {id:'pv6', cat:'phrasal', word:'work toward', pron:'', ko:'~을 향해 협력하다, 추진하다', nuance:'work=노력하다 + toward=~를 향해 → 목표를 향해 지속적으로 나아가는 과정. "India working toward a $1 trillion goods export target by 2030." 즉각적 달성이 아닌 방향성과 지속적 노력을 강조.', diff:1},
+  // PHRASAL (6)
+  {id:'pv1', cat:'phrasal', word:'open up', pron:'', ko:'(기회·시장을) 열어주다, 가능하게 하다', nuance:'open=열다 + up=완전히 → 닫혀 있던 것이 활짝 열리는 이미지. "the FTA opens up new growth opportunities." 관세 장벽 철폐로 이전에 막혀 있던 시장 접근이 가능해지는 맥락. open the door to와 유사하지만 더 넓은 범위에 쓰임.', diff:1},
+  {id:'pv2', cat:'phrasal', word:'embed into', pron:'', ko:'깊이 통합되다, 단단히 자리 잡다', nuance:'embed=박아 넣다 + into=안으로 → 표면이 아닌 내부 깊이 통합되는 이미지. "embed themselves more deeply in global production networks." 공급망에 피상적으로 참여하는 게 아니라 구조적으로 엮여드는 것. be embedded in으로도 자주 쓰임.', diff:2},
+  {id:'pv3', cat:'phrasal', word:'capitalize on', pron:'', ko:'~을 최대한 활용하다, 기회로 삼다', nuance:'capital=자본 + -ize + on=~을 대상으로 → 기회를 자본처럼 투자해 수익으로 전환하는 이미지. "companies can capitalize on the opportunities." take advantage of보다 능동적·전략적 뉘앙스. 주로 비즈니스·전략 맥락.', diff:2},
+  {id:'pv4', cat:'phrasal', word:'press ahead', pron:'', ko:'계속 밀고 나가다, 강행하다', nuance:'press=누르다, 밀다 + ahead=앞으로 → 어려움이나 저항이 있어도 전진하는 이미지. "both sides press ahead with investment discussions." push forward보다 더 결연한 의지 뉘앙스. 장애물이 존재하는 상황에서 주로 쓰임.', diff:2},
+  {id:'pv5', cat:'phrasal', word:'build on', pron:'', ko:'~을 기반으로 하다, 토대로 발전시키다', nuance:'build=세우다 + on=~위에 → 이미 있는 것 위에 추가로 쌓아올리는 이미지. "build on the existing strong partnership." 처음부터 새로 시작하는 게 아니라 기존 성과·관계를 활용해 더 크게 확장하는 것.', diff:1},
+  {id:'pv6', cat:'phrasal', word:'work toward', pron:'', ko:'~을 향해 함께 나아가다, 노력하다', nuance:'work=일하다 + toward=~방향으로 → 특정 목표를 향해 지속적으로 노력하는 이미지. "working toward a $1 trillion goods export target." strive for보다 협력적이고 점진적인 뉘앙스. 장기 목표에 자주 사용.', diff:1},
 
-  // ── IDIOM (6) ──
-  {id:'id1', cat:'idiom', word:'geopolitical fragmentation', pron:'', ko:'지정학적 파편화 (글로벌 무역 질서 분열)', nuance:'geo(지리)+political(정치)+fragmentation(파편화). 미중 갈등·브렉시트·관세전쟁 등으로 단일했던 글로벌 자유무역 질서가 여러 블록으로 쪼개지는 현상. "working closely in a time of geopolitical fragmentation." UK-India FTA는 이 파편화 속 새로운 파트너십의 모델.', diff:3},
-  {id:'id2', cat:'idiom', word:'operating footprint', pron:'', ko:'운영 거점 범위, 사업 발자국', nuance:'operating=운영 + footprint=발자국 → 기업이 어떤 나라·지역에서 얼마만큼의 규모로 사업을 운영하는지. "revising operating footprints and optimizing supply chains." 공급망 재편 시 중국 비중을 줄이고 인도 비중을 늘리는 것이 operating footprint 조정.', diff:3},
-  {id:'id3', cat:'idiom', word:'trade corridor', pron:'', ko:'무역 회랑, 교역 경로', nuance:'trade=교역 + corridor=복도·통로. 무역이 집중적으로 흐르는 경로(항로·육로·파이프라인). "a shift in current trade corridors." 지정학 변화로 중국을 우회해 인도·동남아로 흐르는 무역 경로가 재편되는 맥락.', diff:3},
-  {id:'id4', cat:'idiom', word:'unicorn landscape', pron:'', ko:'유니콘 생태계 (스타트업 고성장 군상)', nuance:'unicorn=기업가치 $1B+ 스타트업 + landscape=풍경 → 유니콘 기업들이 어떻게 분포·성장하고 있는지에 대한 전체 그림. "furthering both countries\' strong venture capital and unicorn landscape." 인도: 세계 10개 유니콘 중 1개. UK: 유럽 최대 스타트업 생태계.', diff:2},
-  {id:'id5', cat:'idiom', word:'policy unpredictability', pron:'', ko:'정책 불예측성 (규제 환경의 예측 불가능성)', nuance:'policy=정책 + unpredictability=예측 불가능성. 외국인 직접투자(FDI)를 저해하는 핵심 요인. "Among the challenges are legal delays, land laws, tax and compliance processes, and policy unpredictability." 인도 투자의 가장 큰 장벽 중 하나 — 갑작스러운 규제 변화나 해석 불일치.', diff:3},
-  {id:'id6', cat:'idiom', word:'sets the stage for', pron:'', ko:'~을 위한 무대를 마련하다, 기반을 닦다', nuance:'연극에서 무대(stage)를 세팅하는 이미지 → 어떤 중요한 일이 일어날 조건과 환경을 갖추는 것. "global reassessment sets the stage for a shift in current trade corridors." 원인-결과의 중간 단계를 표현하는 공식적·관용적 표현.', diff:2},
+  // IDIOM (6)
+  {id:'id1', cat:'idiom', word:'geopolitical fragmentation', pron:'', ko:'지정학적 파편화 (글로벌 질서 분열)', nuance:'geopolitical=지정학 + fragmentation=파편화. 하나였던 글로벌 무역·동맹 질서가 여러 조각으로 분열되는 현상. "working closely in a time of geopolitical fragmentation." 미-중 갈등, 브렉시트, 러-우 전쟁 등이 촉발한 탈세계화 흐름의 핵심 개념어.', diff:3},
+  {id:'id2', cat:'idiom', word:'operating footprint', pron:'', ko:'운영 거점 범위, 사업 발자국', nuance:'operating=운영 + footprint=발자국 → 기업이 어느 국가·지역에 얼마나 사업 인프라를 두고 있는지의 범위. "revising operating footprints" — 지정학 변화로 공급망을 재편할 때 거점을 줄이거나 이전하는 것. carbon footprint처럼 규모·범위 이미지.', diff:3},
+  {id:'id3', cat:'idiom', word:'trade corridor', pron:'', ko:'무역 회랑 (교역 흐름의 경로)', nuance:'trade=무역 + corridor=복도, 통로 → 복도처럼 지정된 경로로 교역이 흐르는 이미지. "shift in current trade corridors." 중국 중심의 글로벌 공급망이 인도·동남아 등으로 이동하는 것을 표현. 국제 물류·무역 정책 문서에서 자주 등장.', diff:3},
+  {id:'id4', cat:'idiom', word:'unicorn landscape', pron:'', ko:'유니콘 생태계 (스타트업 군상)', nuance:'unicorn=기업가치 $1B+ 스타트업 + landscape=풍경 → 유니콘 기업들이 분포한 전체 생태계 지형. "furthering both countries\' strong VC and unicorn landscape." UK는 유럽 최대, 인도는 글로벌 10개 중 1개 배출.', diff:2},
+  {id:'id5', cat:'idiom', word:'policy unpredictability', pron:'', ko:'정책 불예측성 (규제 환경의 불확실성)', nuance:'policy=정책 + unpredictability=예측 불가능성. 정부 규제·세제·승인 기준이 예고 없이 바뀌어 외국 기업이 장기 계획을 세우기 어려운 상태. 인도 진출 기업들이 꼽는 가장 큰 도전 중 하나. FDI 결정의 핵심 위험 요인.', diff:3},
+  {id:'id6', cat:'idiom', word:'set the stage for', pron:'', ko:'~을 위한 무대를 마련하다, 조건을 갖추다', nuance:'연극 공연 전 무대를 세팅하는 것에서 유래 → 어떤 사건·변화가 일어날 수 있는 조건과 환경을 갖추는 것. "global reassessment sets the stage for a shift in trade corridors." 변화가 아직 일어나지 않았지만 이미 그 준비가 됐음을 암시.', diff:2},
 
-  // ── COLLOC (7) ──
-  {id:'co1', cat:'colloc', word:'free trade agreement', pron:'', ko:'자유무역협정 (FTA)', nuance:'free=자유로운 + trade=무역 + agreement=협정. 양국 간 관세·비관세 장벽을 줄이는 국제협정. "UK-India FTA signed May 6, 2025 — tariffs on 99% of Indian exports and 90% of UK exports eliminated." 브렉시트 이후 영국 최대 무역 협정.', diff:1},
-  {id:'co2', cat:'colloc', word:'bilateral trade', pron:'', ko:'양자 무역, 쌍방 교역', nuance:'bilateral=양면의(bi+lateral) + trade=무역 → 두 국가 간 교역. multilateral(다자)과 구별. "increase bilateral trade by $34 billion a year." 2014년 $14B → 2024년 $22B으로 이미 두 배 증가한 상태에서 FTA로 추가 $34B 기대.', diff:1},
-  {id:'co3', cat:'colloc', word:'offshore wind', pron:'', ko:'해상 풍력', nuance:'offshore=해안에서 떨어진 + wind=바람. 바다 위에 설치하는 풍력발전. 육상 풍력보다 바람이 강하고 부지 제약이 적음. "UK has the world\'s second-largest offshore wind pipeline." UK-India offshore wind task force(2025년 2월 출범)로 협력 강화.', diff:2},
-  {id:'co4', cat:'colloc', word:'nonfossil energy capacity', pron:'', ko:'비화석 에너지 설비 용량', nuance:'nonfossil=화석연료 아닌 + energy capacity=에너지 설비 용량(GW). 태양광·풍력·수력·원자력 등 포함. "India\'s goal of 500 GW nonfossil energy capacity by 2030." 현재 전기 수요의 50%를 재생에너지로 충당하는 것이 목표.', diff:2},
-  {id:'co5', cat:'colloc', word:'engineering R&D sourcing', pron:'', ko:'엔지니어링 R&D 아웃소싱', nuance:'engineering=공학+R&D=연구개발+sourcing=외부 조달. 글로벌 기업이 설계·개발 업무를 인도에서 조달하는 것. "engineering R&D sourcing from India could increase from $44B to $130B by 2030." 단순 IT 아웃소싱에서 고부가가치 R&D로 업그레이드.', diff:3},
-  {id:'co6', cat:'colloc', word:'middle-class consumer', pron:'', ko:'중산층 소비자', nuance:'middle-class=중간 소득 계층 + consumer=소비자. 기본 욕구 충족 이상의 구매력을 가진 소비자. "India could have more than 1 billion middle-class consumers by 2047." 이들이 품질·브랜드에 민감해지면서 프리미엄 시장 성장 → UK 기업 기회.', diff:2},
-  {id:'co7', cat:'colloc', word:'digital trade barrier', pron:'', ko:'디지털 무역 장벽', nuance:'digital=디지털 + trade barrier=무역 장벽. 데이터 현지화 의무·플랫폼 규제·사이버보안 규정 등 디지털 서비스 교역을 제한하는 규제. "reducing digital trade barriers" — UK-India FTA의 기술·AI 협력 장벽 해소 과제.', diff:3},
+  // COLLOC (7)
+  {id:'co1', cat:'colloc', word:'free trade agreement', pron:'', ko:'자유무역협정 (FTA)', nuance:'free=자유로운 + trade=무역 + agreement=협정. 두 국가 간 관세·비관세 장벽을 줄이거나 없애는 공식 협약. UK-India FTA: 인도 수출 99%, 영국 수출 90% 관세 철폐. 영국이 브렉시트 이후 체결한 가장 큰 규모의 협정.', diff:1},
+  {id:'co2', cat:'colloc', word:'bilateral trade', pron:'', ko:'양자 무역, 쌍방 교역', nuance:'bilateral=bi(둘)+lateral(측면) → 두 면(국가)을 동시에 가진. "increase bilateral trade by $34 billion a year." 2014년 $14B → 2024년 $22B → FTA 이후 추가 $34B 증가 예상. multilateral trade(다자 무역)와 구별.', diff:1},
+  {id:'co3', cat:'colloc', word:'offshore wind', pron:'', ko:'해상 풍력', nuance:'offshore=해안에서 떨어진 바다 위 + wind=바람. 육지보다 풍속이 강하고 일정해 발전 효율이 높음. "UK: second-largest offshore wind pipeline globally." 인도는 500GW 비화석 목표 달성을 위해 UK 협력이 필요. UK는 해상풍력 선진국으로 기술 수출 기회.', diff:2},
+  {id:'co4', cat:'colloc', word:'nonfossil energy capacity', pron:'', ko:'비화석 에너지 설비 용량', nuance:'nonfossil=화석연료가 아닌 + energy=에너지 + capacity=용량. 태양광·풍력·수력·원자력 등 탄소 배출 없는 에너지원의 발전 설비 규모. "India\'s goal of 500GW nonfossil energy capacity by 2030." 인도 에너지 전환의 핵심 수치.', diff:2},
+  {id:'co5', cat:'colloc', word:'engineering R&D sourcing', pron:'', ko:'엔지니어링 R&D 아웃소싱 (인도 연구개발 조달)', nuance:'engineering=공학 + R&D=연구개발 + sourcing=조달. 글로벌 기업이 R&D·엔지니어링 업무를 인도 현지 인력에게 아웃소싱하는 것. "$44B today → $130B by 2030." 인도의 STEM 인재 풀과 저비용이 강점. Global Capability Center(GCC) 확산과 연결.', diff:3},
+  {id:'co6', cat:'colloc', word:'middle-class consumer', pron:'', ko:'중산층 소비자', nuance:'middle=중간 + class=계층 + consumer=소비자. 기본 욕구를 충족하고 재량 지출이 가능한 소득 계층. "more than 1 billion middle-class consumers by 2047." 인도 소비 시장이 세계 2위($4.3T)로 성장하는 핵심 동력. 글로벌 소비재 기업의 인도 진출 논거.', diff:2},
+  {id:'co7', cat:'colloc', word:'digital trade barrier', pron:'', ko:'디지털 무역 장벽', nuance:'digital=디지털 + trade=무역 + barrier=장벽. 데이터 현지화 의무, 플랫폼 규제, 알고리즘 공개 요건 등 디지털 서비스의 국경 간 이동을 제한하는 규제. "reducing digital trade barriers." IT·핀테크·AI 협력의 선결 과제. 전통 관세(물리적)의 디지털 버전.', diff:3},
 
-  // ── VOCAB (10) ──
-  {id:'v1', cat:'vocab', word:'bilateral', pron:'[ˌbaɪˈlætərəl]', ko:'양자의, 쌍방의', nuance:'라틴어 bi(둘)+lateralis(측면의). "the biggest and most economically significant bilateral trade deal." two-way와 같은 뜻이지만 bilateral은 정치·외교·법률 문서에서 공식적으로 쓰임. multilateral(다자), unilateral(일방)과 구별.', diff:2},
-  {id:'v2', cat:'vocab', word:'fragmentation', pron:'[ˌfræɡmənˈteɪʃən]', ko:'파편화, 분열', nuance:'라틴어 fragmentum(조각). 통합되어 있던 것이 여러 작은 조각으로 나뉘는 과정. "geopolitical fragmentation" — 단극 자유무역 질서가 진영별 블록으로 분열. 반대: integration(통합).', diff:2},
-  {id:'v3', cat:'vocab', word:'procurement', pron:'[prəˈkjʊərmənt]', ko:'조달, 구매', nuance:'라틴어 procurare(관리하다). 필요한 물품·서비스를 공식 절차를 통해 구매하는 과정. "£38 billion procurement market" — 인도 정부·공공기관 구매 시장. government procurement(정부 조달)은 외국 기업에 매력적인 진입 기회.', diff:2},
-  {id:'v4', cat:'vocab', word:'insurmountable', pron:'[ˌɪnsərˈmaʊntəbl]', ko:'극복할 수 없는, 넘을 수 없는', nuance:'in(부정)+sur(위)+mountain(산)+able → 산을 넘을 수 없는. "Though daunting, these challenges are not insurmountable." 이중 부정으로 긍정 강조 — 도전이 크지만 극복 가능하다는 낙관적 결론. formidable과 달리 주로 부정형(not ~)으로 쓰임.', diff:3},
-  {id:'v5', cat:'vocab', word:'enduring', pron:'[ɪnˈdjʊərɪŋ]', ko:'지속적인, 영속하는', nuance:'endure(견디다, 계속되다)의 분사형. "enduring attractions" — 일시적 유행이 아닌 구조적·역사적 강점. UK의 자본시장·법적 시스템·언어는 enduring advantages. lasting과 유사하지만 enduring은 어려움에도 불구하고 지속되는 뉘앙스.', diff:2},
-  {id:'v6', cat:'vocab', word:'proposition', pron:'[ˌprɒpəˈzɪʃən]', ko:'가치 제안, 명제', nuance:'라틴어 proponere(앞에 내놓다). 비즈니스에서는 "우리 제품이 당신에게 제공하는 가치"를 뜻함. "companies will need to tailor their products to win in each other\'s markets where there are different expectations across quality, price, and proposition." value proposition=가치 제안.', diff:2},
-  {id:'v7', cat:'vocab', word:'constructive', pron:'[kənˈstrʌktɪv]', ko:'건설적인, 생산적인', nuance:'construct(구축하다)+-ive. 비판·파괴와 반대로 실질적 해법과 발전을 지향하는 태도. "United Kingdom and India have a similarly constructive approach to establishing and maintaining global trade ties." destructive(파괴적)의 반대.', diff:2},
-  {id:'v8', cat:'vocab', word:'compliance', pron:'[kəmˈplaɪəns]', ko:'규정 준수, 컴플라이언스', nuance:'comply(따르다)+-ance. 법률·규정·표준을 지키는 것. "land laws, tax and compliance processes" — 인도 진출의 복잡한 규제 준수 과제. non-compliance=위반. compliance cost(컴플라이언스 비용)는 외국 기업 진입 장벽.', diff:2},
-  {id:'v9', cat:'vocab', word:'tariff', pron:'[ˈtærɪf]', ko:'관세', nuance:'아랍어 ta\'rif(통지, 목록) → 수입품에 부과하는 세금. "tariffs on 99 percent of Indian exports to the United Kingdom eliminated." 관세 철폐가 FTA의 핵심 혜택. tariff barrier(관세 장벽) vs non-tariff barrier(비관세 장벽: 기술 규격, 위생 기준 등).', diff:1},
-  {id:'v10', cat:'vocab', word:'transformative', pron:'[trænsˈfɔːrmətɪv]', ko:'변혁적인, 완전히 바꾸는', nuance:'transform(변형시키다)+-ive. 단순 개선이 아닌 근본적 구조 변화를 가져오는. "this transformative technology" — GenAI가 글로벌 생산성과 경제 구조를 근본적으로 재편. disruptive(파괴적)보다 긍정적 뉘앙스가 강함.', diff:2},
+  // VOCAB (10)
+  {id:'v1', cat:'vocab', word:'bilateral', pron:'[ˌbaɪˈlætərəl]', ko:'양자의, 쌍방의', nuance:'bi(둘)+lateral(측면, 옆). 두 당사자(국가·기업·개인)가 모두 관련된 것. "biggest bilateral trade deal." unilateral(일방적) vs multilateral(다자적)의 중간. 외교·무역 문서의 핵심 형용사.', diff:2},
+  {id:'v2', cat:'vocab', word:'fragmentation', pron:'[ˌfræɡmənˈteɪʃən]', ko:'파편화, 분절', nuance:'fragment(조각)+ation(과정). 하나로 통합되어 있던 것이 여러 조각으로 쪼개지는 과정. "geopolitical fragmentation." 글로벌화→탈세계화 흐름 표현에 핵심. de-globalization의 더 강렬한 표현.', diff:2},
+  {id:'v3', cat:'vocab', word:'procurement', pron:'[prəˈkjʊərmənt]', ko:'조달, 구매 (공식적·대규모)', nuance:'라틴어 procurare(획득하다, 관리하다). 단순 구매(purchase)와 달리, 정부·기업이 공식 절차를 통해 물품·서비스를 확보하는 과정 전체. "£38 billion procurement market including clean energy." 공공 입찰이 포함된 맥락.', diff:2},
+  {id:'v4', cat:'vocab', word:'insurmountable', pron:'[ˌɪnsərˈmaʊntəbl]', ko:'극복 불가능한, 넘을 수 없는', nuance:'in(부정)+sur(위)+mount(올라가다)+able. 산을 넘지 못하는 이미지. "these challenges are not insurmountable" — 이중부정으로 "충분히 극복 가능하다"는 낙관적 결론. 비즈니스 문서에서 도전을 인정하면서도 긍정으로 마무리할 때 자주 쓰임.', diff:3},
+  {id:'v5', cat:'vocab', word:'enduring', pron:'[ɪnˈdjʊərɪŋ]', ko:'지속적인, 영속하는', nuance:'endure(견디다, 지속되다)의 현재분사. "enduring attractions" — 트렌드가 아닌 구조적·영구적 강점. lasting과 유사하지만 enduring은 시간의 시험을 견뎌낸 뉘앙스 강조. 오래된 파트너십·전통·가치를 수식.', diff:2},
+  {id:'v6', cat:'vocab', word:'proposition', pron:'[ˌprɒpəˈzɪʃən]', ko:'가치 제안, 명제', nuance:'라틴어 proponere(앞에 내놓다). 비즈니스에서는 "value proposition" — 기업이 고객에게 제시하는 혜택의 조합. "different expectations across quality, price, and proposition." 단순 제품·서비스를 넘어 브랜드 약속 전체.', diff:2},
+  {id:'v7', cat:'vocab', word:'constructive', pron:'[kənˈstrʌktɪv]', ko:'건설적인, 생산적인', nuance:'construct(세우다)+-ive. 비판·파괴가 아닌 해결책을 향한 긍정적 기여를 의미. "constructive approach to establishing global trade ties." destructive(파괴적)의 반대. 협상·외교·피드백 맥락에서 자주 쓰임.', diff:2},
+  {id:'v8', cat:'vocab', word:'compliance', pron:'[kəmˈplaɪəns]', ko:'규정 준수, 컴플라이언스', nuance:'comply(따르다)+-ance. 법률·규정·표준을 지키는 것. "land laws, tax and compliance processes." compliance team=법규 준수 부서. non-compliance=위반. 인도에서는 복잡한 세금·규제 환경으로 인해 컴플라이언스 비용이 높은 것이 FDI 장벽.', diff:2},
+  {id:'v9', cat:'vocab', word:'tariff', pron:'[ˈtærɪf]', ko:'관세', nuance:'아랍어 ta\'rif(공지, 목록)→이탈리아어→영어. 수입품에 부과하는 세금. "tariffs on 99% of Indian exports to UK eliminated." UK-India FTA의 핵심 성과. 관세율이 낮을수록 수출 경쟁력 상승. trade war(무역 전쟁)의 핵심 무기이기도 함.', diff:1},
+  {id:'v10', cat:'vocab', word:'transformative', pron:'[trænsˈfɔːrmətɪv]', ko:'변혁적인, 근본적으로 바꾸는', nuance:'transform(완전히 바꾸다)+-ive. 단순 개선(improvement)이 아닌 구조·성격 자체를 바꾸는 변화. "this transformative technology" — 생성 AI가 $4.4T의 경제 가치를 만들어내는 잠재력. incremental(점진적)의 반대.', diff:2},
 
-  // ── BIZ (6) ──
-  {id:'b1', cat:'biz', word:'FTA', pron:'', ko:'자유무역협정', nuance:'Free Trade Agreement. 2025년 5월 6일 서명된 UK-India FTA는 브렉시트 이후 영국이 체결한 최대 규모 무역 협정. "both governments estimate will increase bilateral trade by $34 billion a year." 양측이 연간 무역 증가에 낙관적인 근거.', diff:1},
-  {id:'b2', cat:'biz', word:'DCC', pron:'', ko:'이중기여협약', nuance:'Double Contributions Convention. 영국에서 단기 근무하는 인도 파견 근로자를 영국 국민보험(National Insurance) 기여금 의무에서 면제하는 협약. 인도 IT·금융·전문 서비스 인력의 영국 파견 비용을 낮춤 → IT/ITES 분야 인력 이동 활성화.', diff:3},
-  {id:'b3', cat:'biz', word:'IT/ITES', pron:'', ko:'정보기술/IT지원서비스', nuance:'Information Technology / IT-Enabled Services. BPO(비즈니스 프로세스 아웃소싱)·콜센터·백오피스·데이터 분석 등 IT 기반 서비스 포함. "especially in IT/ITES, financial, and professional services." 인도의 대영 핵심 수출 서비스 — 영국 내 IT 인력 이동 규정 완화가 FTA 핵심 혜택.', diff:2},
-  {id:'b4', cat:'biz', word:'AUM', pron:'', ko:'운용자산', nuance:'Assets Under Management. 자산운용사·펀드·은행이 고객을 대신해 관리하는 자산 총액. "UK capital markets oversaw £9.1 trillion in assets under management in 2024 — the largest capital market in Europe." 글로벌 금융 허브로서 런던의 위상을 보여주는 핵심 지표.', diff:2},
-  {id:'b5', cat:'biz', word:'ZDZE', pron:'', ko:'무결점·무영향 인증', nuance:'Zero Defect Zero Effect. 인도 정부의 이중 인증 이니셔티브 — 제품 품질(Zero Defect)과 환경 영향(Zero Effect) 동시 달성 목표. "quality being a focus of both government — for example, the Zero Defect Zero Effect certification initiative." 인도 제조업의 글로벌 품질 경쟁력 강화 수단.', diff:3},
-  {id:'b6', cat:'biz', word:'VC', pron:'', ko:'벤처 캐피탈', nuance:'Venture Capital. 고성장 가능성이 있는 초기 스타트업에 지분 투자하는 고위험·고수익 자본. "furthering both countries\' strong venture capital and unicorn landscape." UK: 유럽 최대 스타트업 생태계($1T+). India: 세계 유니콘 10개 중 1개 — 양국 VC 생태계 연계가 FTA 이후 핵심 협력 영역.', diff:1},
+  // BIZ (6)
+  {id:'b1', cat:'biz', word:'FTA', pron:'', ko:'자유무역협정 (Free Trade Agreement)', nuance:'Free Trade Agreement. 두 국가 간 관세·비관세 장벽을 줄이는 공식 협약. UK-India FTA는 2025년 5월 6일 서명 — 영국이 EU를 탈퇴한 이후 체결한 가장 크고 경제적으로 중요한 무역 협정. 연간 $340억 양자 무역 증가 예상.', diff:1},
+  {id:'b2', cat:'biz', word:'DCC', pron:'', ko:'이중기여협약 (Double Contributions Convention)', nuance:'Double Contributions Convention. 영국에서 단기 근무하는 인도 기업 직원을 영국 국민보험(National Insurance) 기여금 납부 의무에서 면제하는 협약. 인도 IT·서비스 기업의 영국 프로젝트 비용 절감에 직접 기여.', diff:3},
+  {id:'b3', cat:'biz', word:'IT/ITES', pron:'', ko:'정보기술 / IT 지원 서비스', nuance:'IT(Information Technology) + ITES(IT-Enabled Services). ITES는 BPO·콜센터·백오피스·데이터 처리 등 IT 인프라를 활용한 서비스 아웃소싱. 인도의 영국 수출 핵심 분야. "engineering, research, and development sourcing from India" 맥락.', diff:2},
+  {id:'b4', cat:'biz', word:'AUM', pron:'', ko:'운용 자산 규모 (Assets Under Management)', nuance:'Assets Under Management. 자산운용사·헤지펀드·연기금 등이 고객 대신 관리·운용하는 자산 총액. "UK capital markets oversaw £9.1 trillion in AUM in 2024 — Europe\'s largest." AUM이 클수록 투자 규모·영향력이 크다.', diff:2},
+  {id:'b5', cat:'biz', word:'ZDZE', pron:'', ko:'무결함·무영향 인증 (Zero Defect Zero Effect)', nuance:'Zero Defect Zero Effect. 인도 정부가 도입한 품질(제품 결함 제로)+환경(환경 영향 제로) 이중 인증 이니셔티브. "quality being a focus — Zero Defect Zero Effect certification." 인도 수출품의 글로벌 경쟁력 강화를 위한 품질 표준화 프로그램.', diff:3},
+  {id:'b6', cat:'biz', word:'VC', pron:'', ko:'벤처 캐피탈 (Venture Capital)', nuance:'Venture Capital. 고성장 잠재력이 있는 스타트업에 지분을 투자하는 고위험·고수익 자본. "furthering both countries\' strong VC and unicorn landscape." UK는 유럽 최대 VC 생태계($1T+), 인도는 글로벌 유니콘 10개 중 1개 배출.', diff:1},
 ];
 
 function renderCards(filter) {
@@ -237,7 +237,7 @@ function renderCards(filter) {
             <div class="dot${c.diff>=2?' on':''}"></div>
             <div class="dot${c.diff>=3?' on':''}"></div>
           </div>
-          <div class="learned-badge">✓ learned</div>
+          <div class="learned-badge">&#10003; learned</div>
         </div>
         <div class="card-face back">
           <div>
@@ -245,7 +245,7 @@ function renderCards(filter) {
             <div class="nuance">${c.nuance}</div>
           </div>
           <button class="check-btn${isLearned ? ' done' : ''}" data-id="${c.id}">
-            ${isLearned ? '✓ learned' : 'Mark as learned'}
+            ${isLearned ? '&#10003; learned' : 'Mark as learned'}
           </button>
         </div>
       </div>`;
@@ -270,7 +270,7 @@ function updateProgress() {
   const count = learned.size;
   const pct = Math.round(count / total * 100);
   document.getElementById('pbar').style.width = pct + '%';
-  document.getElementById('plabel').textContent = `${count} / ${total} learned`;
+  document.getElementById('plabel').textContent = count + ' / ' + total + ' learned';
 }
 
 let currentFilter = 'all';

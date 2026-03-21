@@ -3,333 +3,176 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Multi-agent AI for Enterprise — Vocab Cards</title>
+<title>Agentic AI for Enterprise — Vocab</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1a0a2e;
-    --ink2: #2d1a4f;
-    --accent: #7c3aed;
-    --accent2: #6d28d9;
-    --sky: #ede9fe;
-    --bg: #f5f3ff;
-    --border: #c4b5fd;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
-
-  header {
-    background: linear-gradient(135deg, #1a0a2e 0%, #2d1a4f 50%, #4c1d95 100%);
-    color: #fff;
-    text-align: center;
-    padding: 2rem 1rem 1.5rem;
-  }
-  header h1 { font-family: 'DM Serif Display', serif; font-size: 1.7rem; margin-bottom: .4rem; }
-  .badge {
-    display: inline-block;
-    border: 1.5px solid #c4b5fd;
-    border-radius: 20px;
-    padding: .25rem .9rem;
-    font-size: .75rem;
-    letter-spacing: .08em;
-    color: #ddd6fe;
-    text-transform: uppercase;
-  }
-
-  .progress-bar-wrap { background: #ddd6fe; height: 6px; border-radius: 3px; margin: 1rem 1.2rem .3rem; }
-  .progress-bar { height: 6px; background: var(--accent); border-radius: 3px; transition: width .4s; width: 0%; }
-  .progress-label { text-align: right; font-size: .75rem; color: var(--border); padding: 0 1.2rem .8rem; }
-
-  .filters {
-    display: flex; flex-wrap: wrap; gap: .5rem;
-    padding: .8rem 1rem;
-    background: #fff;
-    border-bottom: 1px solid var(--border);
-    justify-content: center;
-  }
-  .filter-btn {
-    border: 1.5px solid var(--border);
-    background: #fff;
-    border-radius: 20px;
-    padding: .3rem .9rem;
-    font-size: .78rem;
-    font-family: 'DM Sans', sans-serif;
-    cursor: pointer;
-    font-weight: 500;
-    color: var(--ink2);
-    transition: all .2s;
-  }
-  .filter-btn.active, .filter-btn:hover {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
-  }
-
-  #grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .card-wrap { perspective: 800px; height: 200px; cursor: pointer; }
-  .card-inner {
-    position: relative; width: 100%; height: 100%;
-    transform-style: preserve-3d;
-    transition: transform .5s ease;
-  }
-  .card-wrap.flipped .card-inner { transform: rotateY(180deg); }
-
-  .card-front, .card-back {
-    position: absolute; width: 100%; height: 100%;
-    backface-visibility: hidden;
-    border-radius: 12px;
-    padding: 1rem;
-    border: 1.5px solid var(--border);
-    display: flex; flex-direction: column; justify-content: space-between;
-  }
-  .card-front { background: #fff; }
-  .card-back {
-    background: var(--sky);
-    transform: rotateY(180deg);
-  }
-
-  .card-wrap.learned .card-front,
-  .card-wrap.learned .card-back {
-    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
-    border-color: var(--accent);
-  }
-
-  .tag {
-    display: inline-block;
-    font-size: .65rem;
-    font-weight: 600;
-    letter-spacing: .07em;
-    text-transform: uppercase;
-    padding: .15rem .5rem;
-    border-radius: 4px;
-    color: #fff;
-  }
-  .dots { display: flex; gap: 3px; }
-  .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--border);
-  }
-  .dot.filled { background: var(--accent); }
-
-  .word {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.3rem;
-    color: var(--ink);
-    text-align: center;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .pron {
-    font-size: .72rem;
-    color: #888;
-    text-align: center;
-    margin-top: .2rem;
-  }
-
-  .ko-word {
-    font-size: .95rem;
-    font-weight: 600;
-    color: var(--ink2);
-    margin-bottom: .3rem;
-  }
-  .nuance {
-    font-size: .75rem;
-    color: #555;
-    line-height: 1.5;
-  }
-
-  .check-circle {
-    position: absolute;
-    top: .6rem; right: .7rem;
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: .75rem;
-    color: transparent;
-    transition: all .2s;
-  }
-  .card-wrap.learned .check-circle {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
+:root{
+  --ink:#0c1f3d;--ink2:#1e3a5f;--accent:#0ea5e9;--accent2:#0284c7;
+  --sky:#f0f9ff;--bg:#f8fcff;--border:#38bdf8;
+  --phrasal:#0ea5e9;--idiom:#7c3aed;--colloc:#1e3a5f;--vocab:#f59e0b;--biz:#dc2626;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+header{background:linear-gradient(135deg,#0c1f3d 0%,#1e3a5f 50%,#0ea5e9 100%);padding:28px 24px 24px;text-align:center;}
+header h1{font-family:'DM Serif Display',serif;font-size:1.6rem;color:#fff;margin-bottom:6px;}
+header p{font-size:.82rem;color:rgba(255,255,255,.75);letter-spacing:.04em;}
+.badge{display:inline-block;margin-top:10px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:.72rem;padding:3px 12px;border-radius:20px;letter-spacing:.06em;}
+.controls{display:flex;flex-wrap:wrap;gap:8px;padding:18px 16px 10px;justify-content:center;}
+.filter-btn{border:none;border-radius:20px;padding:6px 16px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;background:#e2e8f0;color:#475569;}
+.filter-btn.active,.filter-btn:hover{color:#fff;}
+.filter-btn[data-cat="all"].active{background:var(--accent);}
+.filter-btn[data-cat="phrasal"].active{background:var(--phrasal);}
+.filter-btn[data-cat="idiom"].active{background:var(--idiom);}
+.filter-btn[data-cat="colloc"].active{background:var(--colloc);}
+.filter-btn[data-cat="vocab"].active{background:var(--vocab);}
+.filter-btn[data-cat="biz"].active{background:var(--biz);}
+.stats{text-align:center;font-size:.78rem;color:#64748b;padding:0 16px 12px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:8px 16px 32px;}
+.card{background:#fff;border:1.5px solid var(--border);border-radius:14px;cursor:pointer;perspective:800px;height:200px;transition:opacity .3s;}
+.card.hidden{display:none;}
+.card.learned{opacity:.45;}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s;}
+.card.flipped .card-inner{transform:rotateY(180deg);}
+.front,.back{position:absolute;inset:0;border-radius:13px;padding:18px 16px;backface-visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;}
+.front{background:#fff;}
+.back{background:var(--sky);transform:rotateY(180deg);}
+.cat-tag{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 9px;border-radius:10px;color:#fff;margin-bottom:8px;}
+.cat-tag.phrasal{background:var(--phrasal);}
+.cat-tag.idiom{background:var(--idiom);}
+.cat-tag.colloc{background:var(--colloc);}
+.cat-tag.vocab{background:var(--vocab);}
+.cat-tag.biz{background:var(--biz);}
+.word{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--ink);line-height:1.3;}
+.pron{font-size:.75rem;color:var(--accent2);margin-top:3px;font-style:italic;}
+.diff{display:flex;gap:3px;margin-top:auto;}
+.dot{width:7px;height:7px;border-radius:50%;background:#e2e8f0;}
+.dot.on{background:var(--accent);}
+.ko{font-size:.95rem;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.nuance{font-size:.75rem;color:#475569;line-height:1.55;flex:1;overflow-y:auto;}
+.learn-btn{margin-top:10px;border:none;background:var(--accent);color:#fff;font-size:.72rem;padding:4px 12px;border-radius:10px;cursor:pointer;align-self:flex-end;}
+.learn-btn:hover{background:var(--accent2);}
+.reset-wrap{text-align:center;padding-bottom:24px;}
+.reset-btn{border:1.5px solid var(--border);background:#fff;color:var(--ink2);padding:8px 24px;border-radius:20px;cursor:pointer;font-size:.82rem;}
+.reset-btn:hover{background:var(--sky);}
 </style>
 </head>
 <body>
-
 <header>
-  <h1>Multi-agent AI for Enterprise</h1>
-  <div class="badge">Capgemini · 2025</div>
-  <div class="progress-bar-wrap"><div class="progress-bar" id="bar"></div></div>
-  <div class="progress-label" id="plabel">0 / 35 learned</div>
+  <h1>Agentic AI for Enterprise</h1>
+  <p>Multi-agent AI — 21st century automation revolution</p>
+  <span class="badge">Capgemini · 2025</span>
 </header>
-
-<div class="filters">
-  <button class="filter-btn active" onclick="filter('all',this)">ALL (35)</button>
-  <button class="filter-btn" onclick="filter('phrasal',this)">PHRASAL (6)</button>
-  <button class="filter-btn" onclick="filter('idiom',this)">IDIOM (6)</button>
-  <button class="filter-btn" onclick="filter('colloc',this)">COLLOC (7)</button>
-  <button class="filter-btn" onclick="filter('vocab',this)">고급단어 (10)</button>
-  <button class="filter-btn" onclick="filter('biz',this)">비즈니스 (6)</button>
+<div class="controls">
+  <button class="filter-btn active" data-cat="all">All <span id="cnt-all"></span></button>
+  <button class="filter-btn" data-cat="phrasal">Phrasal <span id="cnt-phrasal"></span></button>
+  <button class="filter-btn" data-cat="idiom">Idiom <span id="cnt-idiom"></span></button>
+  <button class="filter-btn" data-cat="colloc">Colloc <span id="cnt-colloc"></span></button>
+  <button class="filter-btn" data-cat="vocab">Vocab <span id="cnt-vocab"></span></button>
+  <button class="filter-btn" data-cat="biz">Biz <span id="cnt-biz"></span></button>
 </div>
-
-<div id="grid"></div>
-
+<div class="stats" id="stats"></div>
+<div class="grid" id="grid"></div>
+<div class="reset-wrap"><button class="reset-btn" onclick="resetAll()">Reset learned</button></div>
 <script>
-const STORAGE_KEY = 'agentic_ai_enterprise_learned';
-const learned = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
-
-const TAG_COLORS = {
-  phrasal: '#7c3aed',
-  idiom:   '#9b1c2e',
-  colloc:  '#0891b2',
-  vocab:   '#065f46',
-  biz:     '#b45309'
-};
-
+const LSKEY = 'agentic_ai_enterprise_learned';
 const cards = [
-  /* ── PHRASAL (6) ── */
-  { id:'pv1', cat:'phrasal', word:'rush to', ko:'앞다투어 ~하다; 서둘러 달려들다', nuance:'rush=돌진 + to=목적 → "companies rushed to create" 너도나도 경쟁적으로 뛰어들다. 선점 심리가 만드는 과열 행동을 표현.', diff:1 },
-  { id:'pv2', cat:'phrasal', word:'take ownership', ko:'주도적으로 책임지다; 떠맡아 처리하다', nuance:'ownership=소유권 → 문제를 내 것처럼 책임지다. "agent can take ownership of a client issue" — AI 에이전트가 고객 문제를 스스로 해결한다는 뜻.', diff:2 },
-  { id:'pv3', cat:'phrasal', word:'scale up', ko:'규모를 확대하다; 더 큰 단위로 키우다', nuance:'scale=규모 + up=위로 → 소규모 파일럿을 전사 규모로 확장. 스타트업에서 엔터프라이즈로, 파일럿에서 프로덕션으로.', diff:1 },
-  { id:'pv4', cat:'phrasal', word:'narrow down', ko:'범위를 좁히다; 후보를 추려내다', nuance:'narrow=좁다 + down=아래로 → 넓은 가능성에서 핵심만 남기다. 에이전트가 수많은 옵션을 평가해 최적 해결책을 선택하는 과정.', diff:2 },
-  { id:'pv5', cat:'phrasal', word:'hand off', ko:'인계하다; 다음 담당자에게 넘기다', nuance:'hand=손 + off=분리 → 손에서 손으로 넘기는 릴레이 이미지. 챗봇이 복잡한 이슈를 AI 에이전트에게, 에이전트가 인간에게 넘기는 워크플로우.', diff:2 },
-  { id:'pv6', cat:'phrasal', word:'phase in', ko:'단계적으로 도입하다', nuance:'phase=단계 + in=안으로 → 한꺼번에가 아니라 단계별로 집어넣다. RPA→Agentic AI→Gen AI 순서로 단계적으로 자동화를 확장하는 전략.', diff:2 },
-
-  /* ── IDIOM (6) ── */
-  { id:'id1', cat:'idiom', word:'solution in search of a problem', ko:'문제도 없는데 만든 해결책; 실용 없는 도입', nuance:'"a solution in search of a problem" — 해결책이 먼저 나오고 문제를 찾아 헤매는 본말전도 상황. Agentic AI를 무조건 도입하는 것의 함정을 경고할 때 사용.', diff:3 },
-  { id:'id2', cat:'idiom', word:'in short', ko:'한마디로; 요컨대; 간략히 말하면', nuance:'in=안에 + short=짧은 → 긴 말을 짧게 압축해서. "In short, because it will soon be in every business function" — 명확한 결론을 끌어낼 때 사용하는 고급 전환어.', diff:1 },
-  { id:'id3', cat:'idiom', word:'akin to', ko:'~와 유사한; ~와 다를 바 없는', nuance:'akin=친족(kin)과 같은 → 본질적으로 비슷한 종류. "akin to creating a solution in search of a problem" — similar to보다 격식체이고 강조력이 강함.', diff:2 },
-  { id:'id4', cat:'idiom', word:'in the loop', ko:'정보 공유 체계 안에; 의사결정 고리 안에', nuance:'loop=순환 고리 → 정보·결정이 순환하는 흐름 안에 포함된 상태. "human in the loop" = AI가 행동하기 전 인간이 개입하는 거버넌스 구조.', diff:2 },
-  { id:'id5', cat:'idiom', word:'left to them', ko:'그들의 재량에 맡겨진; 알아서 결정하도록', nuance:'left=남겨진 + to them=그들에게 → 상위에서 지시하지 않고 에이전트 스스로 판단하게 두다. "How they reach them is largely left to them" — 에이전트 자율성의 핵심.', diff:2 },
-  { id:'id6', cat:'idiom', word:'a step ahead', ko:'한발 앞서 있는; 남보다 먼저 나아간', nuance:'step=발걸음 + ahead=앞에 → 경쟁자보다 한 걸음 앞에 있다. "sectors already a step ahead" — 먼저 도입해 선점 효과를 누리는 산업들을 묘사.', diff:1 },
-
-  /* ── COLLOC (7) ── */
-  { id:'co1', cat:'colloc', word:'retrieval-augmented generation', ko:'검색 증강 생성 (RAG); LLM이 외부 DB를 검색해 더 정확한 답을 생성하는 방식', nuance:'LLM의 환각(hallucination)을 줄이는 핵심 기술. 단순 LLM이 시냅스 기억에 의존한다면, RAG는 실시간으로 외부 지식을 참조한다.', diff:3 },
-  { id:'co2', cat:'colloc', word:'robotic process automation', ko:'로봇 프로세스 자동화 (RPA); 규칙 기반 반복 업무를 소프트웨어 봇이 자동화', nuance:'Agentic AI의 전신. 입력·처리가 고정된 작업에 적합. 입력 변수가 생기면 RPA는 실패하고 그때 Agentic AI가 필요해진다.', diff:2 },
-  { id:'co3', cat:'colloc', word:'natural language processing', ko:'자연어 처리 (NLP); 컴퓨터가 인간 언어를 이해·생성하는 기술', nuance:'AI 에이전트가 사람과 자연스럽게 소통할 수 있게 하는 핵심 기반. NLP 없이는 에이전트와 인간의 인터랙션이 불가능하다.', diff:2 },
-  { id:'co4', cat:'colloc', word:'multi-agent system', ko:'멀티 에이전트 시스템; 각자 전문 역할을 맡은 여러 AI 에이전트가 협력하는 구조', nuance:'단일 LLM과의 핵심 차이: 분산 협업으로 더 복잡한 작업 처리 가능. 보험 청구 사례처럼 검증·평가·지불을 각 에이전트가 분담.', diff:2 },
-  { id:'co5', cat:'colloc', word:'proof-of-concept', ko:'개념 증명 (PoC); 아이디어가 실제로 작동하는지 소규모로 먼저 검증하는 단계', nuance:'전사 도입 전 리스크를 줄이는 단계. "defined and tested in the proof-of-concept stage" — 실패 포인트를 미리 파악하는 것이 목적.', diff:2 },
-  { id:'co6', cat:'colloc', word:'feedback loop', ko:'피드백 루프; 출력 결과가 다시 입력으로 들어가 지속적으로 개선되는 순환 구조', nuance:'AI 에이전트의 데이터 최적화 핵심 메커니즘. 에이전트가 행동하고 → 결과를 받고 → 다음 행동을 개선하는 학습 사이클.', diff:1 },
-  { id:'co7', cat:'colloc', word:'change management', ko:'변화 관리; 조직이 새로운 기술·프로세스 도입 시 사람과 문화를 이끄는 과정', nuance:'기술 도입보다 사람의 저항을 관리하는 것이 더 어렵다. AI 에이전트 도입의 실패 원인 1위는 기술이 아니라 변화 관리 부재.', diff:2 },
-
-  /* ── VOCAB (10) ── */
-  { id:'vc1', cat:'vocab', word:'autonomous', pron:'/ɔːˈtɒnəməs/', ko:'자율적인; 스스로 결정하고 행동하는', nuance:'auto(스스로) + nomos(법/규칙) → 자기 규칙으로 움직이는. 에이전트의 첫 번째 특성. reactive(반응적)와 반대 개념.', diff:2 },
-  { id:'vc2', cat:'vocab', word:'orchestration', pron:'/ˌɔːkɪˈstreɪʃən/', ko:'조율; 여러 에이전트를 총지휘하는 것', nuance:'orchestra(오케스트라) → 지휘자가 여러 악기를 조화롭게 이끌듯. 멀티 에이전트 시스템에서 누가 어떤 에이전트를 언제 실행할지 결정하는 메커니즘.', diff:2 },
-  { id:'vc3', cat:'vocab', word:'governance', pron:'/ˈɡʌvənəns/', ko:'거버넌스; 통제·관리 체계', nuance:'govern(통치하다) + -ance → 규칙·책임·감독의 전체 프레임워크. AI 에이전트에서는 언제 인간이 개입하고 무엇을 로그하며 실패 시 어떻게 대응하는지의 체계.', diff:2 },
-  { id:'vc4', cat:'vocab', word:'guardrail', pron:'/ˈɡɑːrdreɪl/', ko:'가드레일; 안전장치; 일탈을 막는 경계 규칙', nuance:'guard(보호) + rail(레일) → 도로 가드레일처럼 AI가 위험 구역으로 벗어나지 못하게. 에이전트가 편향, 오류, 윤리 위반 없이 작동하도록 설정하는 제한.', diff:1 },
-  { id:'vc5', cat:'vocab', word:'decentralized', pron:'/ˌdiːˈsentrəlaɪzd/', ko:'분산된; 중앙 통제 없이 각자 자율적으로 움직이는', nuance:'de(반대) + central(중앙) → 중앙화의 반대. 각 에이전트가 독립적으로 자신의 역할을 수행하는 구조. 조직의 기존 계층 구조와 충돌할 수 있음.', diff:2 },
-  { id:'vc6', cat:'vocab', word:'augment', pron:'/ɔːɡˈment/', ko:'증강하다; 인간 능력을 AI로 보완·강화하다', nuance:'augere(라틴어: 늘리다) → 대체가 아니라 인간의 능력을 더 크게 만드는 것. "augment human workers with AI assistants" — replace가 아닌 augment.', diff:2 },
-  { id:'vc7', cat:'vocab', word:'iteratively', pron:'/ˈɪtərətɪvli/', ko:'반복적으로; 단계적으로 개선하며', nuance:'iterate(반복하다) → 한 번에 완성하지 않고 조금씩 개선하는 방식. "LLMs are improving iteratively" — 매 버전이 이전보다 나아지는 점진적 발전 과정.', diff:2 },
-  { id:'vc8', cat:'vocab', word:'disruptive', pron:'/dɪsˈrʌptɪv/', ko:'혼란을 야기하는; 기존 질서를 뒤흔드는', nuance:'disrupt(방해하다) → integrating AI can be "complex, disruptive, and destabilizing". 긍정·부정 양면 의미 모두 가능. 혁신적이지만 기존 운영을 불안정하게 할 수 있음.', diff:2 },
-  { id:'vc9', cat:'vocab', word:'fragmentation', pron:'/ˌfræɡmənˈteɪʃən/', ko:'단편화; 데이터가 여러 곳에 흩어진 상태', nuance:'fragment(조각) → 80%의 조직이 데이터의 50% 이상을 하이브리드·멀티클라우드에 분산 저장. AI 에이전트가 효과적으로 작동하려면 이 단편화를 해결해야 함.', diff:2 },
-  { id:'vc10', cat:'vocab', word:'proactive', pron:'/ˌproʊˈæktɪv/', ko:'선제적인; 지시 없이 먼저 행동하는', nuance:'pro(앞서) + active(행동하는) → 반응하는(reactive)의 반대. 에이전트의 핵심 특성: "Proactive, initiating action independently without user prompts."', diff:1 },
-
-  /* ── BIZ (6) ── */
-  { id:'bz1', cat:'biz', word:'LLM', ko:'대규모 언어 모델 (Large Language Model); AI 에이전트의 주요 인터페이스. GPT·Claude·Gemini 등', nuance:'방대한 텍스트 데이터로 훈련된 기반 모델. 패턴 인식을 통해 추론·의사결정·소통 능력을 갖춤. 에이전트의 "뇌" 역할.', diff:1 },
-  { id:'bz2', cat:'biz', word:'RPA', ko:'로봇 프로세스 자동화 (Robotic Process Automation); 고정 입력·고정 처리 반복 작업 자동화', nuance:'Agentic AI의 전신. 변수 없는 규칙 기반 작업에 최적. 인간이 클릭하는 것을 그대로 따라하는 수준의 자동화.', diff:1 },
-  { id:'bz3', cat:'biz', word:'RAG', ko:'검색 증강 생성 (Retrieval-Augmented Generation); 외부 DB 검색으로 LLM 정확도 향상', nuance:'LLM 단독보다 훨씬 최신·정확한 답변 가능. 기업 내부 문서·정책을 연결해 도메인 특화 에이전트를 만드는 핵심 기술.', diff:2 },
-  { id:'bz4', cat:'biz', word:'hyper-automation', ko:'초자동화; RPA를 넘어 AI로 가변 입력·가변 처리 작업까지 자동화하는 고도화된 자동화', nuance:'Capgemini 프레임워크의 Level 2. RPA로 커버 못하는 복잡한 판단·예외 처리를 Agentic AI로 자동화. 진정한 자동화의 다음 단계.', diff:2 },
-  { id:'bz5', cat:'biz', word:'GDPR', ko:'유럽 일반 데이터 보호 규정 (General Data Protection Regulation); AI 에이전트 컴플라이언스 핵심', nuance:'에이전트가 고객 데이터를 처리할 때 반드시 준수해야 하는 EU 규정. 위반 시 전 세계 연간 매출의 4% 또는 2천만 유로 중 더 큰 금액의 과징금.', diff:2 },
-  { id:'bz6', cat:'biz', word:'EU AI Act', ko:'EU 인공지능법; AI 시스템의 리스크 등급별 규제 프레임워크. 에이전트 거버넌스 필수 준수', nuance:'Unacceptable/High/Limited/Minimal 4등급 리스크 체계. 고위험 AI 에이전트는 투명성·인간 감독·데이터 거버넌스 요건을 충족해야 함.', diff:2 },
+  {id:'pv1',cat:'phrasal',word:'take off',ko:'급성장하다, 폭발적으로 퍼지다',nuance:'"generative AI took off as a popular phenomenon" — 비행기가 이륙하는 순간처럼 갑자기 빠르게 성장하거나 유행이 시작되는 이미지. 비슷한 표현: blow up, go viral',diff:1},
+  {id:'pv2',cat:'phrasal',word:'rush to',ko:'앞다퉈 ~하다, 서둘러 뛰어들다',nuance:'"companies have rushed to create their own versions" — rush(돌진하다)+to(방향). 경쟁에 뒤처질까 봐 조급하게 움직이는 집단적 행동. 부정적 뉘앙스(섣부름)를 내포하기도 함',diff:1},
+  {id:'pv3',cat:'phrasal',word:'map out',ko:'체계적으로 정리하다, 단계를 그려내다',nuance:'"map the processes" — 지도(map)를 그리듯 복잡한 과정을 시각화·구조화하는 이미지. plan out보다 더 세밀한 분해·시각화 뉘앙스. map out a strategy, map out a workflow',diff:2},
+  {id:'pv4',cat:'phrasal',word:'scale up',ko:'규모를 키우다, 확대하다',nuance:'작은 성공을 더 큰 규모로 복제하는 과정. scale down(축소)의 반대. "as expertise in adoption spreads" 맥락에서 확장 이미지. 스타트업·기술 업계에서 필수 표현',diff:2},
+  {id:'pv5',cat:'phrasal',word:'build in',ko:'(기능·규칙을) 내장하다, 처음부터 포함시키다',nuance:'"setting boundaries with guardrails built in" — 나중에 덧붙이는 게 아니라 설계 단계에서 처음부터 포함시키는 것. built-in safeguards, built-in compliance처럼 형용사로도 자주 사용',diff:2},
+  {id:'pv6',cat:'phrasal',word:'hand off',ko:'(업무를) 넘기다, 인계하다',nuance:'릴레이 선수가 바통을 건네는 이미지 → 책임·작업을 다음 담당자에게 매끄럽게 이양. "chatbot would escalate the issue to a human representative" 맥락. hand over보다 더 의도된 이양 뉘앙스',diff:2},
+  {id:'id1',cat:'idiom',word:'solution in search of a problem',ko:'문제 없는 해결책, 불필요한 기술 도입',nuance:'"leaping into agentic AI is akin to creating a solution in search of a problem" — 보통은 문제 먼저, 해결책 나중인데 순서가 역전된 상황. 실제 필요 없는 곳에 기술을 억지로 적용하는 실수를 꼬집는 표현',diff:3},
+  {id:'id2',cat:'idiom',word:'proof of concept',ko:'개념 증명, 실현 가능성 검증',nuance:'"defined and tested in the proof-of-concept stage" — 아이디어가 실제로 작동하는지 소규모로 먼저 검증하는 단계. PoC로 약칭. 투자 결정 전 리스크를 줄이는 기업 관행',diff:2},
+  {id:'id3',cat:'idiom',word:'feedback loop',ko:'피드백 루프, 결과가 다시 입력에 영향을 미치는 순환',nuance:'"ongoing improvement using feedback loops" — 출력(output)이 다시 입력(input)으로 돌아와 시스템을 지속적으로 개선하는 순환 구조. 긍정적(virtuous cycle)·부정적(vicious cycle) 두 방향 모두 존재',diff:2},
+  {id:'id4',cat:'idiom',word:'root cause',ko:'근본 원인',nuance:'"trace errors and determine their root causes" — 표면적 증상이 아닌 문제의 진짜 원인. root cause analysis(RCA)는 품질관리·IT의 핵심 방법론. 임시방편(band-aid fix)의 반대',diff:2},
+  {id:'id5',cat:'idiom',word:'a step ahead',ko:'한발 앞서다, 선도하다',nuance:'"sectors already a step ahead" — 경쟁자보다 딱 한 걸음 먼저 움직인 상태. 완전히 멀리 앞서있다기보다 지금 당장 우위에 있다는 뉘앙스. stay a step ahead(계속 앞서다)로도 자주 활용',diff:1},
+  {id:'id6',cat:'idiom',word:'human-in-the-loop',ko:'인간 감독 포함 루프, 인간 개입 설계',nuance:'"agents are monitored while trusted to act independently, with selective use of human oversight" — AI가 완전 자율로 작동하지 않고 특정 지점에서 인간이 확인·승인하는 설계 원칙. AI 안전성의 핵심 개념',diff:3},
+  {id:'co1',cat:'colloc',word:'agentic AI',ko:'에이전틱 AI, 자율 목표 수행 AI',nuance:'agent(행위자)+-ic. 단순 답변 생성을 넘어 환경을 인식하고 도구를 사용해 목표를 스스로 달성하는 AI. RPA·ML에서 진화한 차세대 자동화 기술. 2024년 이후 기업 AI 담론의 핵심 키워드',diff:2},
+  {id:'co2',cat:'colloc',word:'multi-agent system',ko:'멀티에이전트 시스템',nuance:'여러 전문화된 AI 에이전트가 분산 구조에서 협력하는 시스템. 단일 LLM 대비: 각 에이전트가 특화 역할을 가지며 외부 도구·API·DB와 연동해 더 복잡한 과제 수행 가능',diff:2},
+  {id:'co3',cat:'colloc',word:'retrieval-augmented generation',ko:'검색 증강 생성 (RAG)',nuance:'retrieval(검색)+augmented(증강)+generation(생성). LLM이 외부 DB를 실시간 검색해 더 정확하고 최신 정보를 반영한 답변 생성. 환각(hallucination)을 줄이는 핵심 기법',diff:3},
+  {id:'co4',cat:'colloc',word:'robotic process automation',ko:'로봇 프로세스 자동화 (RPA)',nuance:'규칙 기반 반복 디지털 업무를 소프트웨어 로봇이 자동으로 처리하는 기술. 에이전틱 AI의 전신. 정해진 입력·처리 방식에 강하지만 가변 상황에는 에이전틱 AI가 필요',diff:2},
+  {id:'co5',cat:'colloc',word:'large language model',ko:'대형 언어 모델 (LLM)',nuance:'방대한 텍스트 데이터로 학습된 기반 모델(foundation model). 패턴 인식으로 지식을 인코딩해 AI 에이전트의 추론·의사결정·소통 능력을 제공. AI 에이전트의 핵심 두뇌',diff:1},
+  {id:'co6',cat:'colloc',word:'natural language processing',ko:'자연어 처리 (NLP)',nuance:'컴퓨터가 인간 언어를 이해·해석·생성하는 AI 기술 분야. "making human-AI interactions more natural and efficient" — 에이전트가 인간처럼 소통할 수 있게 하는 기반 기술',diff:1},
+  {id:'co7',cat:'colloc',word:'hyper-automation',ko:'하이퍼 자동화',nuance:'hyper(초월)+automation. RPA를 넘어 AI가 판단까지 포함한 고급 자동화. "advanced, next-generation automation for tasks with variable inputs and variable types of treatment" — 에이전틱 AI의 핵심 가치 제안',diff:3},
+  {id:'v1',cat:'vocab',word:'agentic',pron:'[eɪˈdʒentɪk]',ko:'자율 행동하는, 에이전트적인',nuance:'agent(행위자)+-ic(형용사 접미사). 스스로 환경을 인식하고 도구를 선택해 목표를 향해 행동하는 특성. AI 분야에서 2023년 이후 급부상한 신조어. agentic behavior, agentic workflow',diff:2},
+  {id:'v2',cat:'vocab',word:'autonomous',pron:'[ɔːˈtɒnəməs]',ko:'자율적인, 독자적으로 작동하는',nuance:'그리스어 autos(자신)+nomos(법칙). 외부 지시 없이 스스로 결정하는 특성. "act autonomously and effectively" — AI 에이전트의 핵심 속성. autonomy(자율성), autonomously(부사)',diff:2},
+  {id:'v3',cat:'vocab',word:'orchestration',pron:'[ˌɔːkɪˈstreɪʃən]',ko:'오케스트레이션, 시스템 조율',nuance:'orchestra(오케스트라)+tion. 지휘자가 다양한 악기를 조화롭게 이끌듯, 수천 개 자율 디지털 워커를 체계적으로 조율·관리하는 것. "careful orchestration" — 없으면 breakdown 위험',diff:2},
+  {id:'v4',cat:'vocab',word:'guardrail',pron:'[ˈɡɑːrdreɪl]',ko:'가드레일, AI 행동 안전 경계',nuance:'도로 가드레일 이미지 → AI가 허용된 범위를 벗어나지 않도록 설정한 규칙·제한. "setting boundaries with guardrails" — AI 거버넌스의 핵심 메커니즘. ethical guardrails, safety guardrails',diff:2},
+  {id:'v5',cat:'vocab',word:'governance',pron:'[ˈɡʌvənəns]',ko:'거버넌스, 지배·관리 체계',nuance:'govern(다스리다)+-ance. AI 에이전트의 행동을 규정하는 정책·규칙·프로세스·책임 구조의 총체. government(정부)와 어근 같지만 조직 내부의 자율 규제 체계를 가리킴',diff:2},
+  {id:'v6',cat:'vocab',word:'augment',pron:'[ɔːɡˈment]',ko:'보강하다, 능력을 확장하다',nuance:'라틴어 augmentare(늘리다). "augmenting human workers with AI agents" — 대체(replace)가 아닌 확장(enhance). augmented reality(AR)의 augment와 같은 어근. augmentation(명사)',diff:2},
+  {id:'v7',cat:'vocab',word:'decentralized',pron:'[ˌdiːˈsentrəlaɪzd]',ko:'분산된, 탈중앙화된',nuance:'de(제거)+centralized(중앙화된). "decentralized structure" — 하나의 중앙 통제 없이 각 에이전트가 자율적으로 역할을 수행하는 구조. 블록체인·멀티에이전트 시스템의 공통 키워드',diff:2},
+  {id:'v8',cat:'vocab',word:'proliferation',pron:'[prəˌlɪfəˈreɪʃən]',ko:'급증, 빠른 확산',nuance:'라틴어 proles(자손)+ferre(나르다). 세포분열처럼 수가 빠르게 늘어나는 이미지. 핵 확산(nuclear proliferation)에서 자주 쓰이며 기술 확산 맥락에서도 광범위하게 사용',diff:3},
+  {id:'v9',cat:'vocab',word:'interoperability',pron:'[ˌɪntərˌɒpərəˈbɪlɪti]',ko:'상호 운용성',nuance:'inter(사이)+operate(작동하다)+ability. 서로 다른 시스템·에이전트·플랫폼이 데이터와 기능을 교환하며 함께 작동하는 능력. 멀티에이전트 시스템 통합의 핵심 과제',diff:3},
+  {id:'v10',cat:'vocab',word:'predefined',pron:'[ˌpriːdɪˈfaɪnd]',ko:'사전에 정의된, 미리 설정된',nuance:'pre(미리)+defined(정의된). "autonomously perform tasks to meet predetermined goals" — AI 에이전트는 인간이 사전에 설정한 목표 범위 내에서만 자율적으로 작동함을 강조',diff:1},
+  {id:'b1',cat:'biz',word:'RPA',ko:'로봇 프로세스 자동화',nuance:'Robotic Process Automation. 규칙 기반 반복 디지털 업무를 소프트웨어 로봇이 처리. 에이전틱 AI의 전신. 정해진 입력·처리 방식에 강하지만 가변 상황 판단 불가. 에이전틱 AI로 보완',diff:1},
+  {id:'b2',cat:'biz',word:'LLM',ko:'대형 언어 모델',nuance:'Large Language Model. GPT·Claude·Gemini 등. 방대한 텍스트로 학습해 언어 이해·생성. AI 에이전트의 핵심 두뇌 역할. 패턴 인식으로 지식을 인코딩해 추론·의사결정 지원',diff:1},
+  {id:'b3',cat:'biz',word:'RAG',ko:'검색 증강 생성',nuance:'Retrieval-Augmented Generation. LLM이 외부 DB를 실시간 검색해 최신·정확 정보를 반영한 답변 생성. 환각(hallucination) 감소 효과. 단독 LLM보다 신뢰성 높은 출력 가능',diff:2},
+  {id:'b4',cat:'biz',word:'NLP',ko:'자연어 처리',nuance:'Natural Language Processing. 컴퓨터가 인간 언어를 이해·해석·생성하는 AI 기술 분야. "making human-AI interactions more natural and efficient" — 에이전트의 소통 능력 기반 기술',diff:1},
+  {id:'b5',cat:'biz',word:'SKU',ko:'재고 관리 단위',nuance:'Stock-Keeping Unit. 개별 상품을 식별하는 고유 코드. 리테일·공급망 관리의 기본 단위. "trigger stock replenishment using SKU codes" — AI 에이전트가 SKU별 재고를 모니터링해 자동 발주',diff:2},
+  {id:'b6',cat:'biz',word:'GDPR',ko:'EU 일반 개인정보보호법',nuance:'General Data Protection Regulation. EU의 핵심 개인정보 보호 규정(2018년 시행). AI 에이전트 시스템도 반드시 준수 필요. 위반 시 전 세계 매출의 최대 4% 과징금 부과 가능',diff:2}
 ];
 
-function renderDots(diff) {
-  return [1,2,3].map(i => `<div class="dot${i<=diff?' filled':''}"></div>`).join('');
-}
+const learned = new Set(JSON.parse(localStorage.getItem(LSKEY)||'[]'));
+let activeCat = 'all';
 
-function render(filtered) {
+function dots(n){return [1,2,3].map(i=>'<span class="dot'+(i<=n?' on':'')+'"></span>').join('');}
+
+function render(){
   const grid = document.getElementById('grid');
   grid.innerHTML = '';
-  filtered.forEach(c => {
+  const cats = ['phrasal','idiom','colloc','vocab','biz'];
+  cats.forEach(c=>{
+    const cnt = cards.filter(x=>x.cat===c).length;
+    document.getElementById('cnt-'+c).textContent = '('+cnt+')';
+  });
+  document.getElementById('cnt-all').textContent = '('+cards.length+')';
+  let shown = 0;
+  cards.forEach(c=>{
+    const hide = activeCat!=='all' && c.cat!==activeCat;
     const isLearned = learned.has(c.id);
     const div = document.createElement('div');
-    div.className = 'card-wrap' + (isLearned ? ' learned' : '');
+    div.className = 'card'+(hide?' hidden':'')+(isLearned?' learned':'');
     div.dataset.id = c.id;
-    div.dataset.cat = c.cat;
-    div.innerHTML = `
-      <div class="card-inner">
-        <div class="card-front">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <span class="tag" style="background:${TAG_COLORS[c.cat]}">${c.cat.toUpperCase()}</span>
-            <div class="dots">${renderDots(c.diff)}</div>
-          </div>
-          <div>
-            <div class="word">${c.word}</div>
-            ${c.pron ? `<div class="pron">${c.pron}</div>` : ''}
-          </div>
-          <div style="font-size:.7rem;color:#aaa;text-align:center">탭하여 뒤집기</div>
-          <div class="check-circle">✓</div>
-        </div>
-        <div class="card-back">
-          <div>
-            <div class="ko-word">${c.ko}</div>
-            <div class="nuance">${c.nuance}</div>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem">
-            <div class="dots">${renderDots(c.diff)}</div>
-            <button onclick="toggleLearned(event,'${c.id}')" style="font-size:.7rem;padding:.2rem .6rem;border-radius:10px;border:1px solid var(--accent);background:${isLearned?'var(--accent)':'#fff'};color:${isLearned?'#fff':'var(--accent)'};cursor:pointer;font-family:'DM Sans',sans-serif">
-              ${isLearned ? '✓ 완료' : '완료'}
-            </button>
-          </div>
-          <div class="check-circle">✓</div>
-        </div>
-      </div>`;
-    div.addEventListener('click', function(e) {
-      if (e.target.tagName === 'BUTTON') return;
-      this.classList.toggle('flipped');
-    });
+    div.innerHTML = '<div class="card-inner">'
+      +'<div class="front"><div><span class="cat-tag '+c.cat+'">'+c.cat+'</span>'
+      +'<div class="word">'+c.word+'</div>'+(c.pron?'<div class="pron">'+c.pron+'</div>':'')+'</div>'
+      +'<div class="diff">'+dots(c.diff)+'</div></div>'
+      +'<div class="back"><div class="ko">'+c.ko+'</div>'
+      +'<div class="nuance">'+c.nuance+'</div>'
+      +'<button class="learn-btn" onclick="toggleLearn(event,\''+c.id+'\')">'+(isLearned?'✓ 완료':'학습 완료')+'</button>'
+      +'</div></div>';
+    div.addEventListener('click',function(e){if(!e.target.classList.contains('learn-btn'))this.classList.toggle('flipped');});
     grid.appendChild(div);
+    if(!hide) shown++;
   });
+  const learnedShown = cards.filter(c=>(activeCat==='all'||c.cat===activeCat)&&learned.has(c.id)).length;
+  document.getElementById('stats').textContent = shown+'개 표시 중 · '+learnedShown+'개 학습 완료';
 }
 
-function toggleLearned(e, id) {
+function toggleLearn(e,id){
   e.stopPropagation();
-  if (learned.has(id)) learned.delete(id);
-  else learned.add(id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify([...learned]));
-  updateProgress();
-  const wrap = document.querySelector(`.card-wrap[data-id="${id}"]`);
-  if (wrap) {
-    wrap.classList.toggle('learned', learned.has(id));
-    const btn = wrap.querySelector('button');
-    if (btn) {
-      btn.textContent = learned.has(id) ? '✓ 완료' : '완료';
-      btn.style.background = learned.has(id) ? 'var(--accent)' : '#fff';
-      btn.style.color = learned.has(id) ? '#fff' : 'var(--accent)';
-    }
-  }
+  if(learned.has(id)) learned.delete(id); else learned.add(id);
+  localStorage.setItem(LSKEY,JSON.stringify([...learned]));
+  render();
 }
 
-function updateProgress() {
-  const total = cards.length;
-  const done = cards.filter(c => learned.has(c.id)).length;
-  const pct = total ? (done/total*100) : 0;
-  document.getElementById('bar').style.width = pct + '%';
-  document.getElementById('plabel').textContent = `${done} / ${total} learned`;
+function resetAll(){
+  learned.clear();
+  localStorage.removeItem(LSKEY);
+  render();
 }
 
-let currentFilter = 'all';
-function filter(cat, btn) {
-  currentFilter = cat;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  render(cat === 'all' ? cards : cards.filter(c => c.cat === cat));
-}
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+    activeCat = this.dataset.cat;
+    render();
+  });
+});
 
-render(cards);
-updateProgress();
+render();
 </script>
 </body>
 </html>
