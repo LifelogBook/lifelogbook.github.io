@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vocabulary – Geopolitics and the Geometry of Global Trade 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1a4e;--ink2:#2d2d8a;
+  --accent:#d4a017;--accent2:#b8860b;
+  --sky:#fffdf0;--bg:#fefcf3;--border:#e8c96a;
+  --r:14px;--shadow:0 4px 24px rgba(26,26,78,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(135deg,#1a1a4e 0%,#2d2d8a 50%,#d4a017 100%);color:#fff;padding:2.2rem 1.5rem 1.8rem;text-align:center}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:.4rem}
+header p{font-size:.92rem;opacity:.85}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:.25rem .9rem;font-size:.78rem;margin-bottom:.7rem;letter-spacing:.04em}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:1.2rem 1rem .6rem;max-width:860px;margin:0 auto}
+.controls button{border:2px solid var(--border);background:#fff;color:var(--ink2);border-radius:30px;padding:.38rem .95rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s}
+.controls button.active,.controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.stats{text-align:center;font-size:.8rem;color:var(--ink2);padding:.2rem 0 .8rem;opacity:.75}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;padding:0 1rem 2rem;max-width:1100px;margin:0 auto}
+.card{perspective:900px;cursor:pointer;height:210px}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:1.1rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.front{background:#fff;border:2px solid var(--border)}
+.back{background:var(--sky);border:2px solid var(--accent);transform:rotateY(180deg)}
+.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.18rem .55rem;border-radius:10px;color:#fff;width:fit-content}
+.tag-phrasal{background:#d4a017}
+.tag-idiom{background:#7c3aed}
+.tag-colloc{background:#1a1a4e}
+.tag-vocab{background:#c0392b}
+.tag-biz{background:#2d6a4f}
+.word{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);line-height:1.2;margin:.35rem 0 .1rem}
+.pron{font-size:.78rem;color:var(--ink2);font-style:italic;margin-bottom:.2rem}
+.ko{font-size:.88rem;color:var(--ink2);font-weight:500}
+.diff{display:flex;gap:3px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.on{background:var(--accent)}
+.back .word{font-size:1.1rem;color:var(--ink)}
+.nuance{font-size:.82rem;color:#374151;line-height:1.55;flex:1;margin:.35rem 0 .2rem;overflow:hidden}
+.learned-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.35rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;align-self:flex-end;transition:background .2s}
+.learned-btn.done{background:#10b981}
+.card.learned .front{border-color:#10b981;background:#f0fff8}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey Global Institute · March 2026</div>
+  <h1>Geopolitics and the Geometry of Global Trade</h1>
+  <p>2026 Update — Trade Routes Vocabulary</p>
+</header>
+<div class="controls">
+  <button class="active" onclick="filter('all',this)">All (35)</button>
+  <button onclick="filter('phrasal',this)">Phrasal (6)</button>
+  <button onclick="filter('idiom',this)">Idiom (6)</button>
+  <button onclick="filter('colloc',this)">Colloc (7)</button>
+  <button onclick="filter('vocab',this)">Vocab (10)</button>
+  <button onclick="filter('biz',this)">Biz (6)</button>
+</div>
+<div class="stats" id="stats"></div>
+<div id="grid"></div>
+<script>
+const STORE_KEY='geopolitics_global_trade_2026_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(STORE_KEY)||'[]'));
+const cards=[
+  {id:'pv1',type:'phrasal',word:'front-load',ko:'(비용·수입을) 앞당기다, 선제적으로 쌓다',pron:'',nuance:'"firms front-loaded purchases ahead of tariffs" — 예상되는 가격 인상·관세 부과 전에 미리 대량 구매하거나 비용을 앞당겨 집행하는 것. 위험 헤지(risk hedge)의 핵심 전술. "front-load R&D spending" = 초반에 R&D 집중 투자. 이 보고서에서 미국 기업들이 관세 전 약 $130B를 front-load했다고 분석',diff:2},
+  {id:'pv2',type:'phrasal',word:'break ground',ko:'(새 시설·프로젝트의) 착공하다, 첫 삽을 뜨다',pron:'',nuance:'"new large data centers and semiconductor fabs break ground" — 건물 착공 시 땅을 처음 파는 것에서 유래. 새로운 시설의 공식적 건설 시작. "groundbreaking" = 착공식, "groundbreaking idea" = 혁신적 아이디어. AI 붐으로 미국과 아시아에서 대규모 반도체 팹·데이터센터가 착공되는 것이 무역 성장의 핵심 동력',diff:1},
+  {id:'pv3',type:'phrasal',word:'spill over',ko:'(영향이) 번지다, 파급되다, 넘쳐흐르다',pron:'',nuance:'"tariff shifts rippled across and spilled over into" — 원래 범위를 넘어 인접 영역으로 확산되는 것. "overflow"보다 더 자연스럽게 퍼져나가는 뉘앙스. "spillover effect" = 파급 효과. 미·중 무역 분쟁의 여파가 EU·ASEAN 등 제3국 경제에 spill over하는 구조가 보고서의 핵심 분석',diff:1},
+  {id:'pv4',type:'phrasal',word:'shore up',ko:'(약해진 것을) 보강하다, 떠받치다',pron:'',nuance:'"measures to shore up domestic industry" — 무너지려는 건물을 버팀목(shore)으로 지지하는 이미지. 경쟁력이 약화된 산업·통화·경제를 정책·투자로 지지하는 것. "prop up"(인위적 지지)보다 더 구조적 보강 뉘앙스. EU의 자동차 산업 보호 정책이 대표 사례',diff:2},
+  {id:'pv5',type:'phrasal',word:'lock out',ko:'(시장·기술에서) 배제하다, 접근을 차단하다',pron:'',nuance:'"trade restrictions locked China out of advanced chips" — lock(잠그다)+out(밖으로 배제). 물리적으로 문을 잠가 들어오지 못하게 하는 이미지. 수출 통제·관세로 특정 국가를 첨단 기술·시장에서 배제하는 것. 반도체 분야에서 미국이 동맹국과 협력해 중국을 첨단 칩 수입에서 lock out하는 구조',diff:2},
+  {id:'pv6',type:'phrasal',word:'take hold',ko:'(추세·변화가) 자리잡다, 뿌리내리다',pron:'',nuance:'"as new trade patterns take hold" — 새로운 습관·추세·구조가 확고히 자리를 잡는 것. "take root"(뿌리내리다)와 유사하나 take hold는 더 빠르고 강력한 정착 뉘앙스. "the trend is starting to take hold globally" = 추세가 전 세계적으로 자리잡기 시작하다. 일시적 현상이 아닌 구조적 변화로 굳어진 것을 표현',diff:1},
+  {id:'id1',type:'idiom',word:'double squeeze',ko:'이중 압박 (두 방향에서 동시에 받는 경쟁 압력)',pron:'',nuance:'"Europe caught in a double squeeze" — 양쪽에서 동시에 가해지는 압박. EU가 중국産 저가 수입 급증 + 미국의 고관세로 인한 수출 감소로 동시에 압박받는 구조. 과일을 짜는(squeeze) 이미지: 양측에서 눌리면 중간에 있는 것은 극도의 압박을 받음. 보고서의 EU 챕터를 관통하는 핵심 은유',diff:2},
+  {id:'id2',type:'idiom',word:'factory to the factories',ko:'공장들의 공장 (완제품이 아닌 생산 설비를 공급하는 역할)',pron:'',nuance:'"China increasingly serves as a factory to the factories" — 기존 "factory of the world"(완제품 생산)를 넘어, 다른 나라의 제조공장에 기계·부품·중간재를 공급하는 역할로 진화. 중국의 산업 고도화 전략의 핵심 표현. 가전제품을 만드는 게 아니라 가전제품을 만드는 기계를 만드는 단계로 이동',diff:2},
+  {id:'id3',type:'idiom',word:'flash in the pan',ko:'반짝 효과, 일시적 열풍 (지속성 없는 초기의 반짝임)',pron:'',nuance:'"AI and emerging market growth are not flashes in the pan" — 17세기 머스킷 총에서 화약통(pan)에서 불꽃이 번쩍이지만 총알이 발사되지 않는 현상에서 유래. 초반에 주목받지만 실질적 결과가 없는 것. 보고서는 AI 무역 붐·신흥국 성장이 flash in the pan이 아닌 구조적 트렌드라고 강조',diff:2},
+  {id:'id4',type:'idiom',word:'in flux',ko:'유동적인, 변화 중인, 불확실한 상태에 있는',pron:'',nuance:'"the global tariff landscape shifted substantially — developments remain in flux" — flux(흐름 — 라틴어 fluxus). 물처럼 계속 흘러 형태가 고정되지 않은 상태. "in a state of flux" = 불확실하고 끊임없이 변하는 상태. "everything is in flux" = 아무것도 확정된 것이 없다. 무역 정책처럼 빠르게 변하는 환경을 묘사할 때 가장 적합',diff:1},
+  {id:'id5',type:'idiom',word:'gain ground',ko:'(경쟁에서) 입지를 넓히다, 우위를 점하다',pron:'',nuance:'"India gained ground in selected sectors" — 군사 전술에서 전진해 영토(ground)를 확보하는 것에서 유래. 시장·경쟁에서 점유율·영향력·우위를 확대하는 것. 단순 성장이 아닌 경쟁 상대 대비 상대적 진전. 반대는 "lose ground"(입지 잃다). "gaining ground rapidly" = 빠르게 경쟁 우위를 확보해 나가다',diff:1},
+  {id:'id6',type:'idiom',word:'safe bet',ko:'안전한 베팅, 불확실성에도 지속될 전략적 선택',pron:'',nuance:'"safe bets, cautious bets, and uncertain bets" — 보고서의 시나리오 분석 프레임워크. 지정학적 긴장이 심화되든 완화되든 내재적 경제논리로 지속될 무역 경로. 단기 충격에 덜 취약한 구조적 무역 흐름. "bet on" = ~에 베팅하다. 경영자들이 자본·역량·상업적 포커스를 "safe bet" 경로에 먼저 배분해야 한다는 것이 핵심 시사점',diff:2},
+  {id:'co1',type:'colloc',word:'trade surplus',ko:'무역 흑자, 수출이 수입을 초과하는 상태',pron:'',nuance:'"China\'s goods trade surplus reached a record high in 2025" — 특정 기간 수출액이 수입액을 초과하는 규모. 반대는 trade deficit(무역 적자). 흑자는 일반적으로 긍정적이나, 지나친 흑자는 교역국과의 마찰을 초래. 중국의 무역흑자 확대가 미국·EU와의 무역 긴장을 심화시킨 구조적 배경',diff:1},
+  {id:'co2',type:'colloc',word:'geopolitical alignment',ko:'지정학적 정렬, 국가 간 가치·이해관계 공유의 정도',pron:'',nuance:'"trade increasingly flowed between geopolitically aligned economies" — 국가들이 유엔 총회 투표 패턴 등으로 측정되는 공유 가치·이해관계의 정도. MGI가 0-10 척도로 수치화. 지정학적 거리(geopolitical distance)가 가까울수록 무역이 증가하는 추세가 보고서의 핵심 발견. NATO·Quad·IPEF 같은 동맹 구조가 무역 패턴을 결정',diff:2},
+  {id:'co3',type:'colloc',word:'data center',ko:'데이터센터, AI·클라우드 서비스의 물리적 인프라',pron:'',nuance:'"The United States added roughly half of the world\'s new data center capacity in 2025" — 서버·네트워크 장비·냉각 시스템 등을 집약한 대형 컴퓨팅 시설. AI 붐의 물리적 기반. 데이터센터 건설이 반도체·서버·케이블·터빈 수요를 폭발적으로 늘려 글로벌 무역 성장의 1/3을 차지했다는 것이 보고서의 핵심 발견',diff:1},
+  {id:'co4',type:'colloc',word:'rules of origin',ko:'원산지 규정, 상품의 국적을 결정하는 무역 기준',pron:'',nuance:'"scrutiny of rules-of-origin compliance and local value-added requirements" — 상품이 어느 나라에서 만들어졌는지를 결정하는 기준. 관세 적용·특혜 무역협정 혜택 여부를 판단하는 핵심 규정. ASEAN을 통한 중국 수출의 transshipment 의혹이 rules of origin 논쟁의 중심. "comply with rules of origin" = 원산지 기준을 충족하다',diff:2},
+  {id:'co5',type:'colloc',word:'trade balance',ko:'무역 수지, 수출과 수입의 차액',pron:'',nuance:'"the EU\'s manufacturing trade surplus shrank by $70 billion" — 특정 국가의 수출 총액과 수입 총액의 차이. 흑자(surplus)이거나 적자(deficit)일 수 있음. 전체 교역국 합산 또는 양자(bilateral) 기준 모두 사용. 보고서는 산업별·지역별 trade balance 변화를 추적해 경쟁력 변화를 측정하는 핵심 지표로 활용',diff:1},
+  {id:'co6',type:'colloc',word:'supply gap',ko:'공급 부족, 수요와 공급 사이의 차이',pron:'',nuance:'"supply gaps in the US forced firms to seek new suppliers" — 시장에서 기존 공급원이 사라지거나 줄어들어 수요를 채우지 못하는 상태. 관세·제재·재해로 인해 발생하는 공급 공백. "fill the supply gap" = 공급 부족분을 채우다. 미·중 분쟁으로 미국의 중국産 수입이 급감하자 인도·베트남·ASEAN이 이 supply gap을 메우는 역할을 담당',diff:1},
+  {id:'co7',type:'colloc',word:'transshipment',ko:'환적, 제3국을 경유한 우회 수출',pron:'',nuance:'"scrutiny over transshipment — passing goods through ASEAN to skirt US tariffs" — 원산지 국가에서 최종 목적지로 직접 가지 않고 제3국 항구를 경유하는 것. 정당한 물류 효율화 목적도 있지만, 관세 회피 수단으로 악용되기도 함. 미국은 ASEAN을 통한 중국 물품의 transshipment 여부를 집중 조사. 원산지 규정(rules of origin)과 직결',diff:3},
+  {id:'v1',type:'vocab',word:'retrenchment',ko:'(무역·경제의) 후퇴, 긴축, 축소',pron:'[rɪˈtrentʃmənt]',nuance:'"trade did not retrench despite dire predictions" — retrench(참호를 파다 — 군사 용어)+ment. 원래 방어선을 물리는 후퇴. 경제에서는 생산·무역·투자의 전략적 축소. 예측과 달리 글로벌 무역이 오히려 성장했다는 반전을 설명할 때 핵심 대비어. "economic retrenchment" = 경제 수축, "corporate retrenchment" = 기업 구조조정',diff:2},
+  {id:'v2',type:'vocab',word:'realignment',ko:'(지정학적·무역) 재편, 새로운 축을 중심으로의 재정렬',pron:'[ˌriːəˈlaɪnmənt]',nuance:'"three years of McKinsey research documenting the emerging realignment of trade" — re(다시)+align(줄 맞추다)+ment. 기존 질서가 해체되고 새로운 기준(지정학적 거리)으로 재편되는 과정. 단순 변화가 아닌 시스템 전반의 구조적 재배열. 2017년 이후 진행된 미·중 분리가 전 세계 무역 realignment의 시발점',diff:2},
+  {id:'v3',type:'vocab',word:'protectionism',ko:'보호무역주의, 관세·규제로 자국 산업을 보호하는 정책',pron:'[prəˈtekʃənɪzəm]',nuance:'"broader protectionist trends have emerged worldwide" — protect(보호하다)+ion+ism. 외국 상품의 수입을 관세·수입 쿼터·보조금·비관세 장벽으로 제한해 자국 산업을 보호하는 경제 정책. 자유무역(free trade)의 반대 개념. 세계화 역풍 속에 각국의 protectionism이 확산되며 무역 마찰의 주요 원인이 되는 중',diff:1},
+  {id:'v4',type:'vocab',word:'displacement',ko:'(무역 흐름의) 이동, 대체, 밀려남',pron:'[dɪsˈpleɪsmənt]',nuance:'"displaced Chinese exports found demand elsewhere" — 원래 자리에서 밀려나 다른 곳으로 이동하는 것. 미국 시장에서 밀려난(displaced) 중국 수출품이 유럽·신흥국 시장으로 전환. 물리학에서 물체가 이동해 생기는 부피 변화와 같은 맥락. "displacement of workers" = 노동자 대체, "trade displacement" = 무역 흐름의 강제 이동',diff:2},
+  {id:'v5',type:'vocab',word:'stockpile',ko:'비축, 미리 쌓아두는 대량 재고',pron:'[ˈstɒkpaɪl]',nuance:'"firms stockpiling imports ahead of tariffs" — stock(재고)+pile(쌓다). 미래의 가격 인상·공급 차질에 대비해 현재 대량 구매해 쌓아두는 것. 관세 발효 전 기업들이 방어적으로 재고를 쌓는 것이 미국 무역 통계를 왜곡한 주요 원인. "stockpile semiconductors" = 반도체 비축. 군사·국가 안보 맥락에서도 빈번히 사용',diff:1},
+  {id:'v6',type:'vocab',word:'upstream',ko:'(공급망의) 상류, 원자재·부품에 가까운 단계',pron:'[ˈʌpstriːm]',nuance:'"China moved upstream in production networks" — 강의 상류(upstream)처럼 공급망에서 원자재·기초 부품에 더 가까운 이전 단계. 완제품 제조(downstream)에서 중간재·기계 생산(upstream)으로 이동. 중국이 단순 완제품 조립에서 벗어나 제조 생태계 전체의 기초를 공급하는 역할로 진화한 것을 표현하는 핵심 단어',diff:2},
+  {id:'v7',type:'vocab',word:'reshoring',ko:'리쇼어링, 해외 생산을 본국으로 되가져오는 것',pron:'[ˈriːʃɔːrɪŋ]',nuance:'"limited evidence that reshoring replaced a meaningful share of imports" — re(다시)+shore(해안·국내). 해외에 이전했던 생산·서비스를 본국으로 다시 가져오는 것. 공급망 리스크 해소·국가 안보 목적으로 주목. 그러나 보고서는 미국에서 reshoring이 실제로 meaningful하게 일어났다는 증거는 제한적이라고 분석. 반대: offshoring(해외 이전)',diff:2},
+  {id:'v8',type:'vocab',word:'nearshoring',ko:'니어쇼어링, 인접국으로 생산을 이전하는 것',pron:'[ˈnɪəʃɔːrɪŋ]',nuance:'"Canada\'s and Mexico\'s shares of US trade declined" — near(가까운)+shore(해안). 지리적·문화적으로 가까운 국가로 생산을 이전해 리스크를 줄이는 것. 멀리 있는 저비용 국가 대신 인근 국가를 선택. 미국의 경우 Mexico·Canada가 대상이나 보고서는 실제로는 nearshoring보다 far-shore ASEAN으로의 이전이 두드러졌다고 분석. 반대: offshoring',diff:2},
+  {id:'v9',type:'vocab',word:'non-tariff barrier',ko:'비관세 장벽, 관세 외의 수입 억제 수단',pron:'',nuance:'"non-tariff trade barriers are also on the rise globally" — 관세(tariff)가 아닌 다른 수단으로 수입을 제한하는 모든 조치. 보조금·쿼터·기술 규제·위생 검역 기준·현지 조달 요건 등 포함. 관세가 WTO를 통해 규율되자 각국이 비관세 장벽을 확대. "NTB"로도 약칭. 자유무역협정(FTA)에서 비관세 장벽 철폐가 핵심 쟁점',diff:2},
+  {id:'v10',type:'vocab',word:'semiconductor',ko:'반도체, AI·전자기기의 핵심 부품',pron:'[ˌsemɪkənˈdʌktə]',nuance:'"semiconductors and data center equipment accounted for one-third of global trade growth" — semi(반)+conductor(전도체). 실리콘처럼 금속과 절연체의 중간 전기 전도성을 갖는 소재·부품. CPU·GPU·메모리칩 등 모든 전자기기의 핵심. AI 붐의 물적 기반. 반도체 수출 통제가 지정학적 무기화의 핵심 수단. 대만·한국·ASEAN이 주요 공급 허브',diff:1},
+  {id:'b1',type:'biz',word:'IEEPA',ko:'국제비상경제권한법 (International Emergency Economic Powers Act)',pron:'',nuance:'"IEEPA grants the US president authority, upon declaring a national emergency, to regulate trade" — 미국 대통령이 국가비상사태 선포 시 외국과의 경제 거래를 규제·제한·금지할 수 있는 권한 부여 법률. 2025년 대규모 관세 부과의 법적 근거. 2026년 미 연방대법원이 IEEPA 기반 국별 관세를 위헌 판결함으로써 관세 체계가 다시 개편됨',diff:3},
+  {id:'b2',type:'biz',word:'HS6',ko:'6자리 HS 코드, 국제 상품 분류 체계',pron:'',nuance:'"we measure goods trade using national customs data at the HS6 level" — Harmonized System(국제통일상품분류체계)의 6자리 코드. 약 6,000개의 상품 카테고리를 국제적으로 통일된 기준으로 분류. HS2(대분류)→HS4→HS6(세분류). AI 관련 상품·반도체 무역을 구체적으로 추적할 수 있는 가장 세밀한 단위. WTO·관세청이 공통으로 사용',diff:3},
+  {id:'b3',type:'biz',word:'FDI',ko:'외국인직접투자 (Foreign Direct Investment)',pron:'',nuance:'"MGI research on FDI announcements indicates the AI infrastructure buildout will continue" — 외국 기업·투자자가 다른 나라에서 경영권·영향력을 획득하기 위해 하는 장기 투자. 단순 주식 취득(포트폴리오 투자)이 아닌 실질적 경영 참여. 반도체 팹·데이터센터·배터리 기가팩토리 건설 발표 등이 FDI의 대표 지표. 무역 패턴 예측의 선행지표',diff:1},
+  {id:'b4',type:'biz',word:'Section 232',ko:'무역확장법 232조, 국가안보 근거 관세 조항',pron:'',nuance:'"steel, aluminum, and automobiles faced targeted Section 232 tariffs" — 1962년 미국 무역확장법(Trade Expansion Act) 232조. 특정 수입품이 국가 안보를 위협한다는 조사 결과를 근거로 대통령이 관세 또는 수입 제한을 부과할 수 있는 조항. 철강·알루미늄·자동차에 적용. IEEPA와 달리 2026년 대법원 판결에서도 유지된 관세 근거',diff:3},
+  {id:'b5',type:'biz',word:'EUV',ko:'극자외선 리소그래피 (Extreme Ultraviolet lithography)',pron:'',nuance:'"EU exports of extreme ultraviolet lithography machines remained critical to leading-edge chipmaking" — 극단적으로 짧은 파장(13.5nm)의 빛을 이용해 반도체 회로를 나노미터 수준으로 새기는 최첨단 공정 장비. 네덜란드 ASML이 사실상 독점 공급. 최첨단 칩(7nm 이하) 제조의 필수 장비. 미국·네덜란드의 수출 통제 핵심 품목으로 중국의 첨단 칩 개발을 제한하는 핵심 수단',diff:3},
+  {id:'b6',type:'biz',word:'Mercosur',ko:'남미공동시장 (아르헨티나·브라질·파라과이·우루과이)',pron:'[merˈkɒsʊr]',nuance:'"the EU signed an agreement with the Latin American bloc Mercosur in January 2026" — Mercado Común del Sur(남쪽의 공동시장)의 약자. 1991년 아순시온 조약으로 설립된 남미 관세동맹. 역내 무역 자유화 및 공동 대외 관세 적용. 2026년 EU-Mercosur 협정 체결로 아르헨티나·브라질·파라과이·우루과이의 對EU 자동차·제약 수출에 대폭 관세 인하 예정',diff:2},
+];
+function dots(n){return[1,2,3].map(i=>`<span class="dot${i<=n?' on':''}"></span>`).join('')}
+function render(list){
+  const g=document.getElementById('grid');
+  g.innerHTML=list.map(c=>`
+<div class="card${learned.has(c.id)?' learned':''}" id="card-${c.id}" onclick="flip('${c.id}')">
+  <div class="card-inner">
+    <div class="front">
+      <div><span class="tag tag-${c.type}">${c.type}</span>
+      <div class="word">${c.word}</div>
+      ${c.pron?`<div class="pron">${c.pron}</div>`:''}
+      <div class="ko">${c.ko}</div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="diff">${dots(c.diff)}</div>
+        <span style="font-size:.72rem;color:var(--ink2);opacity:.6">tap to flip</span>
+      </div>
+    </div>
+    <div class="back">
+      <div><span class="tag tag-${c.type}">${c.type}</span>
+      <div class="word">${c.word}</div>
+      <div class="nuance">${c.nuance}</div></div>
+      <button class="learned-btn${learned.has(c.id)?' done':''}" onclick="markLearned(event,'${c.id}')">${learned.has(c.id)?'✓ Learned':'Mark Learned'}</button>
+    </div>
+  </div>
+</div>`).join('');
+  updateStats();
+}
+function flip(id){document.getElementById('card-'+id).classList.toggle('flipped')}
+function markLearned(e,id){
+  e.stopPropagation();
+  if(learned.has(id)){learned.delete(id)}else{learned.add(id)}
+  localStorage.setItem(STORE_KEY,JSON.stringify([...learned]));
+  render(currentList);
+}
+let currentList=cards;
+function filter(type,btn){
+  document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentList=type==='all'?cards:cards.filter(c=>c.type===type);
+  render(currentList);
+}
+function updateStats(){
+  const total=currentList.length;
+  const done=[...learned].filter(id=>currentList.find(c=>c.id===id)).length;
+  document.getElementById('stats').textContent=`${done} / ${total} learned`;
+}
+render(cards);
+</script>
+</body>
+</html>
