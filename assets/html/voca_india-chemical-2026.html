@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vocabulary – India Chemical Industry 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#003d36;--ink2:#006d5b;
+  --accent:#f59e0b;--accent2:#d97706;
+  --sky:#fffbeb;--bg:#fefdf5;--border:#fcd34d;
+  --r:14px;--shadow:0 4px 24px rgba(0,61,54,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(135deg,#003d36 0%,#006d5b 50%,#f59e0b 100%);color:#fff;padding:2.2rem 1.5rem 1.8rem;text-align:center}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:.4rem}
+header p{font-size:.92rem;opacity:.85}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:.25rem .9rem;font-size:.78rem;margin-bottom:.7rem;letter-spacing:.04em}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:1.2rem 1rem .6rem;max-width:860px;margin:0 auto}
+.controls button{border:2px solid var(--border);background:#fff;color:var(--ink2);border-radius:30px;padding:.38rem .95rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s}
+.controls button.active,.controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.stats{text-align:center;font-size:.8rem;color:var(--ink2);padding:.2rem 0 .8rem;opacity:.75}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;padding:0 1rem 2rem;max-width:1100px;margin:0 auto}
+.card{perspective:900px;cursor:pointer;height:210px}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:1.1rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.front{background:#fff;border:2px solid var(--border)}
+.back{background:var(--sky);border:2px solid var(--accent);transform:rotateY(180deg)}
+.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.18rem .55rem;border-radius:10px;color:#fff;width:fit-content}
+.tag-phrasal{background:#00c8e0}
+.tag-idiom{background:#7c3aed}
+.tag-colloc{background:#1b5e96}
+.tag-vocab{background:#f59e0b}
+.tag-biz{background:#dc2626}
+.word{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);line-height:1.2;margin:.35rem 0 .1rem}
+.pron{font-size:.78rem;color:var(--ink2);font-style:italic;margin-bottom:.2rem}
+.ko{font-size:.88rem;color:var(--ink2);font-weight:500}
+.diff{display:flex;gap:3px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.on{background:var(--accent)}
+.back .word{font-size:1.1rem;color:var(--ink)}
+.nuance{font-size:.82rem;color:#374151;line-height:1.55;flex:1;margin:.35rem 0 .2rem;overflow:hidden}
+.learned-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.35rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;align-self:flex-end;transition:background .2s}
+.learned-btn.done{background:#10b981}
+.card.learned .front{border-color:#10b981;background:#f0fff8}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey &amp; Company · 2026</div>
+  <h1>India Chemical Industry 2026</h1>
+  <p>From Challenges to Possibilities — Global Headwinds &amp; Growth Strategy</p>
+</header>
+<div class="controls">
+  <button class="active" onclick="filter('all',this)">All (35)</button>
+  <button onclick="filter('phrasal',this)">Phrasal (6)</button>
+  <button onclick="filter('idiom',this)">Idiom (6)</button>
+  <button onclick="filter('colloc',this)">Colloc (7)</button>
+  <button onclick="filter('vocab',this)">Vocab (10)</button>
+  <button onclick="filter('biz',this)">Biz (6)</button>
+</div>
+<div class="stats" id="stats"></div>
+<div id="grid"></div>
+<script>
+const STORE_KEY='india_chemical_2026_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(STORE_KEY)||'[]'));
+const cards=[
+  {id:'pv1',type:'phrasal',word:'break into',ko:'새 시장·분야에 진입하다',pron:'',nuance:'"Indian companies could break into high-value specialty segments" — 닫혀 있던 시장에 처음으로 뚫고 들어가는 이미지. enter보다 강하고 어렵게 개척하는 뉘앙스. break into a market, break into an industry 형태로 자주 쓰임',diff:1},
+  {id:'pv2',type:'phrasal',word:'wind down',ko:'단계적으로 축소·종료하다',pron:'',nuance:'"wind down uncompetitive assets" — 태엽(wind)이 서서히 풀리듯 천천히 멈추는 이미지. shut down의 갑작스런 중단과 달리 질서 있게 감속→정지하는 과정 강조. 사업 정리나 설비 폐쇄에 자주 쓰임',diff:2},
+  {id:'pv3',type:'phrasal',word:'move beyond',ko:'~을 넘어서다, 탈피하다',pron:'',nuance:'"move beyond cyclical performance toward resilient business-building" — 기존 틀이나 한계에서 의식적으로 벗어나는 전략적 전환. 단순 개선이 아닌 패러다임 이동의 뉘앙스. go beyond와 유사하나 점진적 전진의 느낌이 더 강함',diff:1},
+  {id:'pv4',type:'phrasal',word:'lock in',ko:'~을 확보하다, 유리한 조건을 고정하다',pron:'',nuance:'"lock in expected long-term demand growth" — 자물쇠처럼 유리한 조건(가격·계약·공급처)을 미리 확정해 변동 리스크 제거. India Private의 lock up(자금 동결)과 구분 — lock in은 유리한 상태를 지키는 것',diff:2},
+  {id:'pv5',type:'phrasal',word:'lean into',ko:'(전략적으로) ~에 집중하다, 적극 나아가다',pron:'',nuance:'"lean into specialty segments" — 몸을 앞으로 기울이듯 방향을 잡는 이미지. 어려운 상황에서도 포기하지 않고 더 적극적으로 방향을 잡는 뉘앙스. 단순 집중이 아닌 의지를 갖고 기울어지는 것',diff:2},
+  {id:'pv6',type:'phrasal',word:'ring-fence',ko:'별도로 보호하다, 격리하다',pron:'',nuance:'"ring-fence the people who create value" — 울타리(fence)로 빙 둘러싸듯 외부 영향으로부터 자산·인재를 보호. M&A 후 핵심 인재 이탈 방지. 재무에서는 특정 자금을 다른 목적에 쓸 수 없도록 격리하는 의미로도 사용',diff:3},
+  {id:'id1',type:'idiom',word:'capacity overhang',ko:'과잉 설비 부담, 공급 과잉 압박',pron:'',nuance:'"persistent capacity overhang erodes margins" — overhang=절벽에서 위협적으로 튀어나온 바위. 소화되지 않은 과잉 생산능력이 계속 가격을 눌러 수익을 갉아먹는 상태. 부동산(매물 과잉), M&A(주식 오버행)에서도 같은 구조',diff:3},
+  {id:'id2',type:'idiom',word:'China+1',ko:'차이나 플러스 원 전략',pron:'',nuance:'"global OEMs pursue China+1" — 중국 단일 의존 리스크 분산을 위해 인도·베트남 등 1개국 이상 추가 소싱처로 활용하는 공급망 다변화 전략. COVID·미중 무역 갈등 이후 인도 제조업 부흥의 핵심 배경',diff:2},
+  {id:'id3',type:'idiom',word:'take a leaf out of someone\'s playbook',ko:'~의 전략을 본받다, ~의 방식을 따르다',pron:'',nuance:'"take a leaf out of China\'s playbook" — playbook=미식축구 전략서. leaf=책의 한 페이지. 경쟁자의 검증된 전략서에서 한 페이지를 빌려오라는 표현. 단순 모방이 아닌 선택적 학습의 뉘앙스',diff:3},
+  {id:'id4',type:'idiom',word:'shots on goal',ko:'시도 횟수, 골을 향한 슈팅',pron:'',nuance:'"AI increases shots on goal" — 축구에서 골문을 향한 슈팅. R&D에서 더 많은 후보물질을 실험에 올려 성공 확률을 높이는 포트폴리오 전략. "하나에 올인" vs "다수 시도" 접근의 차이를 표현',diff:2},
+  {id:'id5',type:'idiom',word:'special sauce',ko:'핵심 경쟁력, 남다른 비결',pron:'',nuance:'"protect the target\'s special sauce" — 맥도날드 비법 소스처럼 흉내 내기 어려운 고유 강점. M&A 후 인수 대상의 독특한 기술·문화·고객 관계를 잃지 않도록 하라는 경고. Silicon Valley에서 특히 자주 쓰이는 표현',diff:2},
+  {id:'id6',type:'idiom',word:'leapfrog',ko:'단계를 건너뛰고 앞서다',pron:'',nuance:'"leapfrog global peers" — 개구리 뛰어넘기 놀이에서 유래. 후발주자가 중간 발전 단계를 건너뛰고 선진국 수준을 단번에 추월하는 전략. 아프리카의 유선전화 없이 바로 모바일로 도약한 것이 대표 사례',diff:2},
+  {id:'co1',type:'colloc',word:'overcapacity',ko:'과잉 설비, 초과 공급 능력',pron:'',nuance:'"overcapacity is the defining challenge" — over(초과)+capacity(생산능력). 업계 전체 공급이 수요를 구조적으로 초과해 가격·마진이 지속 압박받는 상태. 단기 조정이 아닌 구조적 문제. 가동률 70% 이하가 신호',diff:1},
+  {id:'co2',type:'colloc',word:'operating rate',ko:'가동률, 조업률',pron:'',nuance:'"operating rates fell to ~70%" — 총 설비 대비 실제 가동 비율. 80% 이상이 업계 수익성의 기준선. 낮을수록 고정비 분산 불가로 적자 위험. utilization rate와 동의어로 쓰임',diff:1},
+  {id:'co3',type:'colloc',word:'trade deficit',ko:'무역 적자',pron:'',nuance:'"chemical trade deficit of ~$31 billion" — 수입이 수출을 초과할 때 발생. 인도 화학 산업이 수입에 의존하는 분야(무기화학·폴리머)를 국내 생산으로 대체할 수 있는 기회 규모를 나타내는 지표',diff:1},
+  {id:'co4',type:'colloc',word:'import substitution',ko:'수입 대체',pron:'',nuance:'"import substitution as a growth accelerator" — 기존에 수입하던 품목을 국내 생산으로 대체하는 산업 전략. 인도 정부의 Atmanirbhar(자립) 정책과 연계. 화학 수입의 약 10%를 국내 생산으로 대체 가능',diff:2},
+  {id:'co5',type:'colloc',word:'programmatic M&A',ko:'프로그래매틱 인수합병',pron:'',nuance:'"institutionalize programmatic partnerships" — 단건 대형 딜보다 소규모·반복적으로 일관된 전략 아래 지속 집행하는 체계적 M&A. McKinsey 연구: 소규모 딜을 꾸준히 반복하는 기업의 TSR이 대형 단발 딜 기업보다 높음',diff:3},
+  {id:'co6',type:'colloc',word:'working capital',ko:'운전 자본',pron:'',nuance:'"active management of working capital" — 유동자산 - 유동부채 = 단기 영업에 필요한 자금. 재고·매출채권·매입채무 최적화로 현금 흐름 개선. 화학처럼 원자재 가격 변동이 심한 업종에서 특히 중요',diff:2},
+  {id:'co7',type:'colloc',word:'feedstock',ko:'원료, 투입 원자재',pron:'',nuance:'"secure bulk feedstock supply" — feed(공급하다)+stock(재고). 화학 공정에 투입되는 기초 원료(나프타·에탄·메탄올 등)를 지칭하는 업계 전문어. 원료 확보가 원가 경쟁력의 핵심',diff:2},
+  {id:'v1',type:'vocab',word:'utilization',ko:'가동률, 활용도',pron:'[ˌjuːtɪlaɪˈzeɪʃən]',nuance:'utilize(활용하다)+ation. "operating rate and utilization" — 설비나 자원이 실제 얼마나 쓰이는지의 비율. 낮을수록 고정비 부담 증가. 화학에서 80% 이상이 수익성 기준선. low utilization = margin pressure의 직접 원인',diff:1},
+  {id:'v2',type:'vocab',word:'destocking',ko:'재고 소진, 재고 조정',pron:'[diːˈstɒkɪŋ]',nuance:'de(제거)+stock(재고)+ing. "prolonged destocking" — 기업들이 과잉 재고를 줄이기 위해 새 구매를 줄이는 현상. 실제 최종 수요 하락과 달리, 재고 정상화 후 구매가 회복될 수 있음. 경기 침체처럼 보이지만 일시적인 재고 사이클',diff:2},
+  {id:'v3',type:'vocab',word:'commoditized',ko:'상품화된, 차별성 없는',pron:'[kəˈmɒdɪtaɪzd]',nuance:'commodity(일반 상품)+ize+d. "commoditized segments face intense price competition" — 기술·브랜드·서비스로 차별화되지 못해 가격만으로 경쟁하게 된 상태. 기업이 가장 피하고 싶은 상황. specialty↔commodity의 핵심 구분',diff:3},
+  {id:'v4',type:'vocab',word:'bifurcated',ko:'양분된, 두 갈래로 나뉜',pron:'[ˈbaɪfərkeɪtɪd]',nuance:'bi(둘)+furca(포크, 갈퀴)+ate+d. "value creation has become bifurcated" — 소수 승자와 다수 낙오자로 극명하게 나뉘는 시장 구조. 중간이 없어지는 양극화. bi+furcate에서 포크 두 갈래처럼 갈라지는 이미지',diff:3},
+  {id:'v5',type:'vocab',word:'divestment',ko:'(사업) 매각, 자산 처분',pron:'[daɪˈvestmənt]',nuance:'dis+vest(옷 벗다, 투자하다의 반대)+ment. "accelerated divestments in non-core businesses" — 비핵심 사업을 매각해 포트폴리오를 재편하는 전략적 행위. investment(투자)의 반대. divestiture와 동의어',diff:2},
+  {id:'v6',type:'vocab',word:'adjacency',ko:'인접 사업, 인접 시장',pron:'[əˈdʒeɪsənsi]',nuance:'adjacent(인접한)+cy. "enter high-value adjacencies" — 기존 핵심 사업과 역량·고객·기술을 공유할 수 있는 바로 옆 시장으로의 확장. 완전히 새로운 시장 진입보다 리스크가 낮고 시너지가 높음',diff:3},
+  {id:'v7',type:'vocab',word:'incumbent',ko:'기존 업체, 현직자',pron:'[ɪnˈkʌmbənt]',nuance:'in(위에)+cumbere(눕다, 자리잡다)+ant. "incumbent players face disruption" — 이미 시장을 점유한 기존 강자. 정치에서는 현직자, 비즈니스에서는 기존 지배 기업. challenger(도전자)·disruptor(파괴자)와 대비',diff:2},
+  {id:'v8',type:'vocab',word:'consolidation',ko:'통합, 합병, 업계 재편',pron:'[kənˌsɒlɪˈdeɪʃən]',nuance:'con(함께)+solidare(단단하게 하다)+ation. "strategic consolidation to tackle overcapacity" — 과잉 공급 시장에서 경쟁자들이 합쳐 규모를 키우고 중복 설비를 줄이는 구조조정. 업계 성숙기·불황기의 전형적 현상',diff:2},
+  {id:'v9',type:'vocab',word:'offtake',ko:'구매 약정, 장기 공급 계약',pron:'[ˈɒfteɪk]',nuance:'"binding customer offtake" — 생산자로부터 일정량을 미래에 구매하기로 사전 약속한 계약. 대규모 공장 건설 시 투자 정당화를 위해 필수. 프로젝트 파이낸싱의 핵심 담보 역할. 화학·에너지·광업에서 자주 쓰이는 전문어',diff:3},
+  {id:'v10',type:'vocab',word:'differentiated',ko:'차별화된, 고부가가치의',pron:'[ˌdɪfəˈrenʃieɪtɪd]',nuance:'differ(다르다)+entiate+d. "differentiated products command premium pricing" — 가격이 아닌 기술·성능·서비스로 경쟁하는 제품을 형용하는 핵심 전략 용어. specialty chemicals의 정체성을 나타내는 핵심 단어',diff:1},
+  {id:'b1',type:'biz',word:'ROIC',ko:'투하자본수익률 (Return on Invested Capital)',pron:'',nuance:'"ROIC declined from 18–20% to 13.6%" — 투자된 자본 대비 세후 영업이익 비율. WACC(자본비용)보다 높아야 실질 가치 창출. capex 대비 수익성을 평가하는 핵심 지표. ROE(자기자본수익률)와 달리 부채 포함',diff:2},
+  {id:'b2',type:'biz',word:'TSR',ko:'총주주수익률 (Total Shareholder Return)',pron:'',nuance:'"TSR turning negative since late 2022" — 주가 상승분 + 배당금을 합산한 주주 입장의 총 수익률. 화학 산업 성과를 MSCI World Index와 비교하는 기준. 경영진 장기 성과 평가 지표로도 활용',diff:2},
+  {id:'b3',type:'biz',word:'REACH',ko:'화학물질 등록·평가·인가·제한 규정 (Registration, Evaluation, Authorization and Restriction of Chemicals)',pron:'',nuance:'"must meet REACH, CLP, and CBAM" — EU 화학물질 관리 핵심 프레임워크(2007년 발효). 유럽에 화학 수출 시 REACH 등록 필수. 인도 기업의 유럽 진출 핵심 컴플라이언스 장벽',diff:3},
+  {id:'b4',type:'biz',word:'CBAM',ko:'탄소국경조정제도 (Carbon Border Adjustment Mechanism)',pron:'',nuance:'"meet REACH, CLP, and CBAM" — EU에서 탄소 규제가 약한 국가로부터 수입 시 탄소 비용을 부과하는 정책(2023년 시행). 인도 화학 수출의 새로운 탄소 장벽. 탄소집약적 화학 제품에 직격탄',diff:3},
+  {id:'b5',type:'biz',word:'PLI',ko:'생산연계인센티브 (Production Linked Incentive)',pron:'',nuance:'"PLI support for fabs, ATMP/OSAT" — 인도 정부가 자국 제조업 육성을 위해 목표 생산량 달성 시 보조금을 지급하는 정책. 반도체·EV·태양광·의약품 등 14개 전략 산업에 집중 지원하는 인도 핵심 산업 정책',diff:2},
+  {id:'b6',type:'biz',word:'PFAS',ko:'과불화화합물 (Per- and Polyfluoroalkyl Substances)',pron:'',nuance:'"EU regulations against PFAS" — 탄소-불소 결합이 극도로 강해 자연 분해되지 않아 "영원한 화학물질(forever chemicals)"로 불림. EU의 광범위한 PFAS 사용 금지로 대체 소재 수요 폭증 → 인도 화학 기업에게 혁신 기회',diff:3},
+];
+function dots(n){return[1,2,3].map(i=>`<span class="dot${i<=n?' on':''}"></span>`).join('')}
+function render(list){
+  const g=document.getElementById('grid');
+  g.innerHTML=list.map(c=>`
+<div class="card${learned.has(c.id)?' learned':''}" id="card-${c.id}" onclick="flip('${c.id}')">
+  <div class="card-inner">
+    <div class="front">
+      <div><span class="tag tag-${c.type}">${c.type}</span>
+      <div class="word">${c.word}</div>
+      ${c.pron?`<div class="pron">${c.pron}</div>`:''}
+      <div class="ko">${c.ko}</div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="diff">${dots(c.diff)}</div>
+        <span style="font-size:.72rem;color:var(--ink2);opacity:.6">tap to flip</span>
+      </div>
+    </div>
+    <div class="back">
+      <div><div class="word">${c.word}</div>
+      <div class="nuance">${c.nuance}</div></div>
+      <button class="learned-btn${learned.has(c.id)?' done':''}" onclick="markLearned(event,'${c.id}')">${learned.has(c.id)?'✓ Learned':'Mark Learned'}</button>
+    </div>
+  </div>
+</div>`).join('');
+  updateStats();
+}
+function flip(id){document.getElementById('card-'+id).classList.toggle('flipped')}
+function markLearned(e,id){
+  e.stopPropagation();
+  learned.has(id)?learned.delete(id):learned.add(id);
+  localStorage.setItem(STORE_KEY,JSON.stringify([...learned]));
+  const card=document.getElementById('card-'+id);
+  card.classList.toggle('learned',learned.has(id));
+  card.querySelector('.learned-btn').textContent=learned.has(id)?'✓ Learned':'Mark Learned';
+  card.querySelector('.learned-btn').classList.toggle('done',learned.has(id));
+  updateStats();
+}
+let currentFilter='all';
+function filter(type,btn){
+  currentFilter=type;
+  document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render(type==='all'?cards:cards.filter(c=>c.type===type));
+}
+function updateStats(){
+  const total=document.getElementById('grid').children.length;
+  const done=[...document.getElementById('grid').querySelectorAll('.card.learned')].length;
+  document.getElementById('stats').textContent=`${done} / ${total} learned`;
+}
+render(cards);
+</script>
+</body>
+</html>

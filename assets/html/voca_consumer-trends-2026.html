@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vocabulary – Consumer Trends 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0a2463;--ink2:#1b5e96;
+  --accent:#00c8e0;--accent2:#009ab0;
+  --sky:#f0fbff;--bg:#f5fdff;--border:#7fdbe8;
+  --r:14px;--shadow:0 4px 24px rgba(10,36,99,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(135deg,#0a2463 0%,#1b5e96 50%,#00c8e0 100%);color:#fff;padding:2.2rem 1.5rem 1.8rem;text-align:center}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:.4rem}
+header p{font-size:.92rem;opacity:.85}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:.25rem .9rem;font-size:.78rem;margin-bottom:.7rem;letter-spacing:.04em}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:1.2rem 1rem .6rem;max-width:860px;margin:0 auto}
+.controls button{border:2px solid var(--border);background:#fff;color:var(--ink2);border-radius:30px;padding:.38rem .95rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s}
+.controls button.active,.controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.stats{text-align:center;font-size:.8rem;color:var(--ink2);padding:.2rem 0 .8rem;opacity:.75}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;padding:0 1rem 2rem;max-width:1100px;margin:0 auto}
+.card{perspective:900px;cursor:pointer;height:210px}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:1.1rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.front{background:#fff;border:2px solid var(--border)}
+.back{background:var(--sky);border:2px solid var(--accent);transform:rotateY(180deg)}
+.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.18rem .55rem;border-radius:10px;color:#fff;width:fit-content}
+.tag-phrasal{background:#00c8e0}
+.tag-idiom{background:#7c3aed}
+.tag-colloc{background:#1b5e96}
+.tag-vocab{background:#f59e0b}
+.tag-biz{background:#dc2626}
+.word{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);line-height:1.2;margin:.35rem 0 .1rem}
+.pron{font-size:.78rem;color:var(--ink2);font-style:italic;margin-bottom:.2rem}
+.ko{font-size:.88rem;color:var(--ink2);font-weight:500}
+.diff{display:flex;gap:3px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.on{background:var(--accent)}
+.back .word{font-size:1.1rem;color:var(--ink)}
+.nuance{font-size:.82rem;color:#374151;line-height:1.55;flex:1;margin:.35rem 0 .2rem;overflow:hidden}
+.learned-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.35rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;align-self:flex-end;transition:background .2s}
+.learned-btn.done{background:#10b981}
+.card.learned .front{border-color:#10b981;background:#f0fff8}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">Capgemini Research Institute · 2026</div>
+  <h1>Consumer Trends 2026</h1>
+  <p>What matters to today's consumer — AI, Value &amp; Loyalty</p>
+</header>
+<div class="controls">
+  <button class="active" onclick="filter('all',this)">All (35)</button>
+  <button onclick="filter('phrasal',this)">Phrasal (6)</button>
+  <button onclick="filter('idiom',this)">Idiom (6)</button>
+  <button onclick="filter('colloc',this)">Colloc (7)</button>
+  <button onclick="filter('vocab',this)">Vocab (10)</button>
+  <button onclick="filter('biz',this)">Biz (6)</button>
+</div>
+<div class="stats" id="stats"></div>
+<div id="grid"></div>
+<script>
+const STORE_KEY='consumer_trends_2026_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(STORE_KEY)||'[]'));
+const cards=[
+  {id:'pv1',type:'phrasal',word:'trade down',ko:'저가 대안으로 전환하다, 다운그레이드하다',pron:'',nuance:'"consumers trade down to private labels" — trade up(프리미엄 전환)의 반대. 경제적 압박 시 기존보다 싼 것을 선택하는 소비 패턴. 절약과 타협의 의미를 동시에 담음',diff:2},
+  {id:'pv2',type:'phrasal',word:'trade up',ko:'프리미엄으로 전환하다, 업그레이드하다',pron:'',nuance:'"willing to trade up for trusted brands" — trade down의 반대. 신뢰·품질을 위해 더 비싼 것을 의도적으로 선택. "trade up to quality" 형태로 자주 쓰임',diff:2},
+  {id:'pv3',type:'phrasal',word:'opt for',ko:'~을 선택하다, ~을 택하다',pron:'',nuance:'"consumers opt for cheaper alternatives" — 라틴어 optare(선택하다). 여러 옵션 중 의도적으로 하나를 고르는 것. choose보다 격식적이고 deliberate한 뉘앙스',diff:1},
+  {id:'pv4',type:'phrasal',word:'switch to',ko:'~으로 전환하다, 갈아타다',pron:'',nuance:'"74% would switch to a competitor offering lower prices" — 기존 브랜드를 완전히 떠나 경쟁사로 이동하는 결정적 행동. switch brands도 동일 의미',diff:1},
+  {id:'pv5',type:'phrasal',word:'tap into',ko:'(기회·감정을) 활용하다, 접근하다',pron:'',nuance:'"brands tap into the desire for indulgence" — 수도꼭지(tap)를 열어 이미 흐르는 물에 접근하는 이미지. 잠재된 욕구나 미개척 시장에 처음 접근할 때 사용',diff:2},
+  {id:'pv6',type:'phrasal',word:'pull back from',ko:'~에서 물러나다, 지출을 줄이다',pron:'',nuance:'"consumers pull back from non-essentials" — 앞으로 나아가던 것이 뒤로 당겨지는 이미지. cut back on과 유사하지만 심리적 거리감·소극적 후퇴를 더 강조',diff:2},
+  {id:'id1',type:'idiom',word:'inflation fatigue',ko:'인플레이션 피로감',pron:'',nuance:'지속적인 물가 상승으로 소비자가 심리·경제적으로 지쳐가는 현상. "inflation fatigue is driving a behavioral shift" — fatigue가 붙으면 만성적 누적 피로 상태. compassion fatigue, pandemic fatigue도 동일 구조',diff:2},
+  {id:'id2',type:'idiom',word:'guilt-free joy',ko:'죄책감 없는 즐거움, 떳떳한 소소한 사치',pron:'',nuance:'"retailers respond to the desire for guilt-free joy" — 절약하면서도 소소한 소비를 정당화하는 심리. guilt-free는 소비자에게 허락(permission)의 감각을 부여하는 마케팅 언어',diff:2},
+  {id:'id3',type:'idiom',word:'smart downshifting',ko:'스마트 다운시프팅, 전략적 소비 낮추기',pron:'',nuance:'"we are entering an era of smart downshifting" — downshift=기어를 낮추다. 무조건 절약이 아니라 카테고리별로 전략적으로 지출 수준을 낮추는 것. 하이·로우 믹싱이 핵심',diff:3},
+  {id:'id4',type:'idiom',word:'human off-ramp',ko:'사람 연결 탈출구, 상담원 전환 경로',pron:'',nuance:'"chatbots should include a human off-ramp" — off-ramp는 고속도로 출구. AI·챗봇 흐름에서 실제 상담원으로 전환되는 경로. 자동화가 막힐 때 소비자가 빠져나갈 수 있는 안전 출구',diff:3},
+  {id:'id5',type:'idiom',word:'phygital parity',ko:'피지털 동등성, 온·오프라인 경험 균형',pron:'',nuance:'"phygital parity is achieved when technology seamlessly enhances human interaction" — phygital=physical+digital 합성어. 디지털 편의와 오프라인 감성이 균등하게 조화를 이루는 이상적 쇼핑 환경',diff:3},
+  {id:'id6',type:'idiom',word:'anticipatory commerce',ko:'예측적 커머스, 선제적 상거래',pron:'',nuance:'"anticipatory commerce is gaining traction" — 소비자 요청 전 AI가 필요를 예측해 자동 주문·보충하는 상거래 모델. Amazon Subscribe & Save가 대표 사례. 신뢰와 통제권이 성공 조건',diff:3},
+  {id:'co1',type:'colloc',word:'shrinkflation',ko:'슈링크플레이션',pron:'',nuance:'shrink(줄다)+inflation 합성어. 가격은 유지하거나 올리면서 제품 용량·크기를 줄이는 관행. "64% consider shrinkflation an unfair practice" — 프랑스는 소매업체에 법적 표시 의무화',diff:2},
+  {id:'co2',type:'colloc',word:'private label',ko:'PB상품, 자체 브랜드',pron:'',nuance:'유통업체가 직접 기획·판매하는 자체 브랜드. "preference for private labels dropped 21pp from 65% to 44%" — 가격 안정 후 품질 우려로 선호 급감. 전자·베이비 카테고리에서 특히 기피',diff:1},
+  {id:'co3',type:'colloc',word:'deal hierarchy',ko:'프로모션 위계, 할인 선호 순위',pron:'',nuance:'소비자가 가장 효과적이라 느끼는 판촉 유형의 우선순위. "deal hierarchy is well defined: money-off(75%) > %off(74%) > BOGOF(73%)" — 직관적·단순할수록 순위 높음',diff:2},
+  {id:'co4',type:'colloc',word:'social commerce',ko:'소셜 커머스',pron:'',nuance:'SNS 플랫폼(Instagram·YouTube·TikTok)에서 직접 구매가 이루어지는 상거래. "35% purchased via social media in 2025, up from 24% in 2023" — India(66%)가 압도적 1위',diff:1},
+  {id:'co5',type:'colloc',word:'clean label',ko:'클린 라벨',pron:'',nuance:'인공 첨가물·방부제·합성 성분이 없음을 강조하는 식품 라벨링 전략. "clean label ingredients matter to two-thirds of shoppers" — 성분표 직접 확인 트렌드와 연결. The Whole Truth Foods 대표 사례',diff:2},
+  {id:'co6',type:'colloc',word:'loyalty program',ko:'로열티 프로그램, 고객 보상 제도',pron:'',nuance:'구매·참여를 포인트·혜택으로 보상해 재방문을 유도하는 마케팅 제도. "65% say loyalty programs influence switching decisions" — Ulta Beauty 44M 회원이 전체 매출의 약 95% 창출',diff:1},
+  {id:'co7',type:'colloc',word:'revenue growth management',ko:'매출 성장 관리 (RGM)',pron:'',nuance:'가격·프로모션 빈도·팩 아키텍처·채널을 통합 관리해 수익성을 극대화하는 CPG 핵심 전략. "embed RGM into everyday activation decisions" — 단순 할인이 아닌 포트폴리오 최적화 관점',diff:3},
+  {id:'v1',type:'vocab',word:'deliberate',ko:'의도적인, 신중한',pron:'[dɪˈlɪbərət]',nuance:'de(강조)+liberate(자유롭게 행동)+ate. "consumers are becoming more deliberate about how they save" — 충동이 아닌 계획에서 나오는 행동. deliberation(숙고), deliberately(의도적으로) 파생',diff:2},
+  {id:'v2',type:'vocab',word:'discerning',ko:'안목 있는, 눈이 높은',pron:'[dɪˈsɜːrnɪŋ]',nuance:'discern(식별하다)의 현재분사. "customers are more discerning" — 좋고 나쁜 것을 구별하는 안목을 가진. 비판적(critical)과 달리 긍정적 뉘앙스. 고급 마케팅에서 소비자를 칭찬할 때 자주 쓰임',diff:2},
+  {id:'v3',type:'vocab',word:'erode',ko:'침식하다, 서서히 약화시키다',pron:'[ɪˈroʊd]',nuance:'라틴어 erodere(갉아먹다). "lack of transparency can erode brand credibility" — 파도가 바위를 천천히 깎아내듯 신뢰가 서서히 사라지는 이미지. erosion(침식), eroding trust 형태로 자주 쓰임',diff:2},
+  {id:'v4',type:'vocab',word:'transparent',ko:'투명한, 명확한',pron:'[trænsˈpærənt]',nuance:'trans(통과)+parent(보이다, 라틴어). 숨김없이 정보를 공개하는 것. "transparent pricing builds trust" — 비즈니스에서는 가격·정책·AI 사용 여부를 공개하는 맥락에서 핵심 키워드',diff:1},
+  {id:'v5',type:'vocab',word:'pervasive',ko:'만연한, 도처에 퍼진',pron:'[pərˈveɪsɪv]',nuance:'per(완전히)+vade(가다)+ive. "AI is becoming pervasive in shopping" — 구석구석 스며들어 없는 곳이 없는 상태. 중립적이지만 종종 통제 불가한 확산에 부정적 뉘앙스 포함',diff:3},
+  {id:'v6',type:'vocab',word:'frictionless',ko:'마찰 없는, 번거로움 없는',pron:'[ˈfrɪkʃənləs]',nuance:'friction(마찰)+less. "frictionless tools drive adoption" — 결제·검색·배달 등에서 장애물을 제거한 매끄러운 경험. 물리학 은유를 테크·비즈니스에 적용한 핵심 UX 용어',diff:2},
+  {id:'v7',type:'vocab',word:'reciprocal',ko:'상호적인, 서로 주고받는',pron:'[rɪˈsɪprəkəl]',nuance:'라틴어 reciprocus(왔다갔다). "loyalty as a reciprocal two-way relationship" — 한쪽만이 아닌 양쪽이 모두 가치를 주고받는 관계. 수학에서 역수(倒數)도 reciprocal',diff:3},
+  {id:'v8',type:'vocab',word:'augment',ko:'증강하다, 보완하다',pron:'[ɔːɡˈment]',nuance:'라틴어 augere(키우다). "AI augments rather than replaces human staff" — 기존 것을 대체하지 않고 더 강하게 만들다. augmented reality(AR), augmented intelligence도 같은 어근',diff:2},
+  {id:'v9',type:'vocab',word:'empowered',ko:'권한을 가진, 주체적인',pron:'[ɪmˈpaʊərd]',nuance:'em(안에)+power+ed. "a new era of empowered consumer decision making" — 정보·도구를 충분히 갖춰 스스로 결정하는 소비자. empower(역량 강화하다), empowerment(권한 부여) 파생',diff:1},
+  {id:'v10',type:'vocab',word:'credibility',ko:'신뢰성, 공신력',pron:'[ˌkredəˈbɪlɪti]',nuance:'cred(믿다, 라틴어 credere)+ibility. "fair pricing builds brand credibility" — 브랜드가 일관된 행동으로 쌓아온 믿음의 총량. credible(신뢰할 수 있는), incredible(믿을 수 없는)도 같은 어근',diff:2},
+  {id:'b1',type:'biz',word:'CPR',ko:'소비재·리테일 (Consumer Products and Retail)',pron:'',nuance:'Capgemini의 산업 분류. 소비재 제조업체(FMCG)와 소매업체를 통칭. "What should CPR organizations do differently?" — 본 보고서의 핵심 대상 산업군. 제조~유통~소매 전 가치사슬 포괄',diff:2},
+  {id:'b2',type:'biz',word:'BOGOF',ko:'1+1 행사 (Buy One Get One Free)',pron:'',nuance:'Buy One Get One Free의 약자. 영국·유럽에서 가장 보편적인 프로모션 형태. 효과 순위 3위(73%). 미국에서는 BOGO라고도 함. 인지 부담 없이 즉각적 가치를 전달하는 것이 강점',diff:1},
+  {id:'b3',type:'biz',word:'GEO',ko:'생성 엔진 최적화 (Generative Engine Optimization)',pron:'',nuance:'SEO의 AI 버전. LLM 기반 검색·추천 엔진에서 브랜드가 더 잘 선택되도록 콘텐츠·데이터를 최적화하는 신규 마케팅 전략. "brands must shift from SEO to GEO" — 알고리즘이 선택하는 시대의 브랜딩',diff:3},
+  {id:'b4',type:'biz',word:'CDP',ko:'고객 데이터 플랫폼 (Customer Data Platform)',pron:'',nuance:'온·오프라인 다양한 채널의 고객 데이터를 통합·관리하는 플랫폼. "Ulta Beauty uses Adobe\'s real-time CDP to personalize offers" — 44M 회원 데이터를 실시간 개인화에 활용하는 핵심 인프라',diff:3},
+  {id:'b5',type:'biz',word:'RGM',ko:'매출 성장 관리 (Revenue Growth Management)',pron:'',nuance:'가격·프로모션·팩 아키텍처·유통 채널을 통합 관리해 수익성을 극대화하는 CPG 전략 프레임워크. "embed RGM into everyday activation decisions" — 단순 가격 인상이 아닌 포트폴리오 최적화',diff:3},
+  {id:'b6',type:'biz',word:'FMCG',ko:'일상 소비재 (Fast-Moving Consumer Goods)',pron:'',nuance:'저가·고빈도로 소비되는 식품·음료·생활용품·화장품. "pricing challenges for FMCG" — 마진 압박이 크고 가격 경쟁이 치열한 카테고리. 미국에서는 CPG(Consumer Packaged Goods)와 혼용',diff:2}
+];
+let current='all';
+function filter(type,btn){
+  current=type;
+  document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+function render(){
+  const list=current==='all'?cards:cards.filter(c=>c.type===current);
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  list.forEach(c=>{
+    const div=document.createElement('div');
+    div.className='card'+(learned.has(c.id)?' learned':'');
+    div.dataset.id=c.id;
+    const dots=[1,2,3].map(i=>`<span class="dot${i<=c.diff?' on':''}"></span>`).join('');
+    div.innerHTML=`
+      <div class="card-inner">
+        <div class="front">
+          <div>
+            <span class="tag tag-${c.type}">${c.type}</span>
+            <div class="word">${c.word}</div>
+            ${c.pron?`<div class="pron">${c.pron}</div>`:''}
+            <div class="ko">${c.ko}</div>
+          </div>
+          <div class="diff">${dots}</div>
+        </div>
+        <div class="back">
+          <div>
+            <span class="tag tag-${c.type}">${c.type}</span>
+            <div class="word">${c.word}</div>
+            <div class="nuance">${c.nuance}</div>
+          </div>
+          <button class="learned-btn${learned.has(c.id)?' done':''}" onclick="markLearned('${c.id}',event)">${learned.has(c.id)?'✓ 학습완료':'학습완료'}</button>
+        </div>
+      </div>`;
+    div.addEventListener('click',()=>div.classList.toggle('flipped'));
+    grid.appendChild(div);
+  });
+  updateStats();
+}
+function markLearned(id,e){
+  e.stopPropagation();
+  learned.has(id)?learned.delete(id):learned.add(id);
+  localStorage.setItem(STORE_KEY,JSON.stringify([...learned]));
+  render();
+}
+function updateStats(){
+  const list=current==='all'?cards:cards.filter(c=>c.type===current);
+  const done=list.filter(c=>learned.has(c.id)).length;
+  document.getElementById('stats').textContent=`${done} / ${list.length} 학습완료`;
+}
+render();
+</script>
+</body>
+</html>

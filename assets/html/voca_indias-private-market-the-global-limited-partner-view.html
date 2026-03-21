@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>India's Private Markets: The Global LP View — Vocab</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c2b1e;
+    --ink2: #1e3a5f;
+    --accent: #10b981;
+    --accent2: #059669;
+    --sky: #ecfdf5;
+    --bg: #f7fffe;
+    --border: #6ee7b7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--ink); }
+
+  header {
+    background: linear-gradient(135deg, #1c2b1e 0%, #1e3a5f 50%, #10b981 100%);
+    color: #fff;
+    padding: 2rem 1.5rem 1.5rem;
+    text-align: center;
+  }
+  header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 4vw, 2rem); margin-bottom: .5rem; }
+  .badge {
+    display: inline-block;
+    border: 1.5px solid rgba(255,255,255,.5);
+    border-radius: 20px;
+    padding: .25rem .9rem;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .progress-wrap { max-width: 700px; margin: 0 auto 1rem; padding: 0 1rem; }
+  .progress-bar-bg { background: rgba(255,255,255,.2); border-radius: 4px; height: 6px; }
+  .progress-bar { background: var(--accent); height: 6px; border-radius: 4px; transition: width .4s; width: 0%; }
+  .progress-label { font-size: .8rem; text-align: right; margin-top: .3rem; color: rgba(255,255,255,.85); }
+
+  .filters { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; padding: 1rem 1rem .5rem; }
+  .filter-btn {
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--ink);
+    padding: .35rem .9rem;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .filter-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .filter-btn:hover:not(.active) { background: var(--sky); }
+
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .card-wrap { perspective: 900px; }
+  .card {
+    position: relative;
+    height: 220px;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.4,0,.2,1);
+    cursor: pointer;
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    display: flex; flex-direction: column;
+    border: 1.5px solid var(--border);
+  }
+  .front { background: #fff; }
+  .back { background: var(--sky); transform: rotateY(180deg); justify-content: space-between; }
+
+  .card.learned .front { background: linear-gradient(135deg, #ecfdf5 0%, #6ee7b7 30%, #d1fae5 100%); }
+
+  .tag {
+    display: inline-block;
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: .2rem .55rem;
+    border-radius: 10px;
+    color: #fff;
+    margin-bottom: .6rem;
+    width: fit-content;
+  }
+  .tag-phrasal  { background: #10b981; }
+  .tag-idiom    { background: #7c3aed; }
+  .tag-colloc   { background: #1e3a5f; }
+  .tag-vocab    { background: #f59e0b; }
+  .tag-biz      { background: #dc2626; }
+
+  .word { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: var(--ink); line-height: 1.2; margin-bottom: .3rem; }
+  .pron { font-size: .75rem; color: #666; margin-bottom: .4rem; }
+  .dots { display: flex; gap: 3px; margin-top: auto; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); opacity: .25; }
+  .dot.on { opacity: 1; }
+
+  .ko { font-size: .95rem; font-weight: 600; color: var(--ink); margin-bottom: .4rem; line-height: 1.4; }
+  .nuance { font-size: .78rem; color: #444; line-height: 1.5; flex: 1; }
+  .check-btn {
+    align-self: flex-end;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .3rem .75rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background .2s;
+    margin-top: .5rem;
+  }
+  .check-btn:hover { background: var(--accent2); }
+  .check-btn.done { background: #9ca3af; }
+
+  .learned-badge {
+    position: absolute;
+    top: .6rem; right: .6rem;
+    font-size: .7rem;
+    background: var(--accent);
+    color: #fff;
+    padding: .15rem .45rem;
+    border-radius: 8px;
+    font-weight: 700;
+    display: none;
+  }
+  .card.learned .learned-badge { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">McKinsey Private Capital Practice &middot; 2026</div>
+  <h1>India&#39;s Private Markets: The Global LP View</h1>
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar" id="pbar"></div></div>
+    <div class="progress-label" id="plabel">0 / 35 learned</div>
+  </div>
+</header>
+
+<div class="filters">
+  <button class="filter-btn active" data-cat="all">ALL (35)</button>
+  <button class="filter-btn" data-cat="phrasal">PHRASAL (6)</button>
+  <button class="filter-btn" data-cat="idiom">IDIOM (6)</button>
+  <button class="filter-btn" data-cat="colloc">COLLOC (7)</button>
+  <button class="filter-btn" data-cat="vocab">고급단어 (10)</button>
+  <button class="filter-btn" data-cat="biz">비즈니스 (6)</button>
+</div>
+
+<div id="grid"></div>
+
+<script>
+const STORAGE_KEY = 'india_private_market_lp_learned';
+const learned = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+
+const cards = [
+  // PHRASAL (6)
+  {id:'pv1', cat:'phrasal', word:'double down on', pron:'', ko:'~에 더욱 집중하다, 베팅을 두 배로 키우다', nuance:'블랙잭에서 패가 좋을 때 베팅을 두 배로 올리는 것에서 유래 → 이미 투자하거나 결정한 것에 더 큰 자원을 쏟아붓는 것. "banks could double down on AI, incorporating generative AI and machine learning." 단순 유지가 아닌 적극적 확대 의지.', diff:2},
+  {id:'pv2', cat:'phrasal', word:'lock up', pron:'', ko:'(자금을) 묶어두다, 유동화 불가 상태로 만들다', nuance:'lock=잠그다 + up=완전히 → 돈이나 자산이 장기간 빠져나올 수 없는 상태. "capital locked up in closed-end funds" — PE·VC 투자의 핵심 특징. 투자자는 펀드 만기까지 자금 회수 불가. 유동성 프리미엄(liquidity premium)을 요구하는 이유.', diff:2},
+  {id:'pv3', cat:'phrasal', word:'crowd in', pron:'', ko:'(민간 자본을) 끌어들이다, 유인하다', nuance:'crowd=군중처럼 몰다 + in=안으로 → 정책·인프라 개선이 민간 투자를 시장으로 끌어들이는 것. crowd out(밀어내다)의 반대. "measures that crowd in institutional capital" — 규제 완화·세제 개선이 외국 자본을 유인하는 맥락.', diff:3},
+  {id:'pv4', cat:'phrasal', word:'hold back', pron:'', ko:'~을 억제하다, 발목을 잡다, 가로막다', nuance:'hold=붙잡다 + back=뒤로 → 전진하려는 힘을 뒤에서 잡아당기는 이미지. "factors holding back broader LP participation." 인도 사모시장의 성장을 가로막는 구조적 제약 — 세금, 규제, 자본 통제 등. restrain보다 물리적·능동적 뉘앙스.', diff:1},
+  {id:'pv5', cat:'phrasal', word:'ramp up', pron:'', ko:'빠르게 늘리다, 확대하다, 가속하다', nuance:'ramp=경사로 → 경사로를 타고 빠르게 올라가는 이미지. "LPs ramping up their India allocations." 점진적 증가가 아닌 빠른 확대. 생산·투자·규모를 단기간에 늘릴 때 사용. scale up과 유사하나 속도감 강조.', diff:1},
+  {id:'pv6', cat:'phrasal', word:'write off', pron:'', ko:'손실 처리하다, 상각하다, 회수 불가로 처리하다', nuance:'write=쓰다 + off=제거하다 → 장부에서 지워버리는 이미지. "writing off underperforming investments." 회계에서 자산 가치를 0으로 처리하는 것. "write off a loss" — 세금 목적으로 손실을 공제하는 것도 포함. PE에서는 포트폴리오 회사 실패 시 사용.', diff:2},
+
+  // IDIOM (6)
+  {id:'id1', cat:'idiom', word:'winner-take-all dynamic', pron:'', ko:'승자독식 구도', nuance:'winner=승자 + take-all=전부 가져가다 + dynamic=역학. 시장에서 1~2개의 주도 기업이 대부분의 이익을 독점하는 구조. "capital remains skewed, akin to a winner-take-all dynamic: the six largest GPs accounted for 64% of total fundraising." 인도 PE 자금 조달의 집중 현상을 설명.', diff:3},
+  {id:'id2', cat:'idiom', word:'high allocator', pron:'', ko:'고배분자 (인도 사모시장에 70-100% 배분하는 LP)', nuance:'high=높은 + allocator=자본 배분자. 본 보고서에서 정의한 개념: 인도 대안 투자 배분의 70~100%를 사모시장에 투자하는 LP. moderate allocator(0~30%)와 대비. 두 그룹은 리스크·수익 평가와 GP 선택 기준이 근본적으로 다름.', diff:3},
+  {id:'id3', cat:'idiom', word:'power law returns', pron:'', ko:'멱법칙 수익 (소수 투자가 전체 수익 지배)', nuance:'power law=멱법칙 → 소수의 극단적 성공(유니콘)이 나머지 전체의 수익을 압도하는 현상. "seed-stage strategies reflecting perceptions of difficulty in achieving power law returns." VC에서 1개 대박이 99개 실패를 커버하는 구조. 정규분포가 아닌 치우친 분포.', diff:3},
+  {id:'id4', cat:'idiom', word:'blind pool', pron:'', ko:'블라인드 풀 (투자 전 자산 미확정 펀드)', nuance:'blind=눈 먼, 모르는 + pool=자금 모음 → 투자자가 어떤 자산에 투자될지 사전에 알 수 없는 펀드. PE·VC의 전통적 구조. LP는 GP를 신뢰해 자금을 맡김. 투명성 부족이 moderate allocator들의 우려 요인.', diff:3},
+  {id:'id5', cat:'idiom', word:'carried interest', pron:'', ko:'캐리드 인터레스트 (GP 성과 보수)', nuance:'carry=운반하다, 부담하다. 일정 수익률(hurdle rate) 초과분에 대해 GP(운용사)가 가져가는 성과 보수. 통상 초과 수익의 20%. 인도에서 세금 처리 방식이 불명확한 것이 LP 우려 사항. "including carried interest taxation" — 세제 불확실성의 핵심.', diff:3},
+  {id:'id6', cat:'idiom', word:'dry powder', pron:'', ko:'드라이 파우더 (투자 대기 중인 미집행 자본)', nuance:'18세기 화약(gunpowder)을 건조하게 보관해야 쏠 수 있다는 것에서 유래 → 투자할 준비가 된 아직 집행되지 않은 자본. "building up dry powder ahead of anticipated India opportunities." 펀드가 조성됐지만 아직 투자처를 찾지 못한 자본. 과도한 dry powder는 경쟁 과열의 신호.', diff:3},
+
+  // COLLOC (7)
+  {id:'co1', cat:'colloc', word:'limited partner (LP)', pron:'', ko:'유한책임 투자자 (펀드 출자자)', nuance:'limited=제한된, 유한한 + partner=파트너. PE·VC 펀드에 자본을 제공하지만 경영에 참여하지 않고 출자금 한도 내에서만 책임지는 투자자. 연기금·보험·대학기금·패밀리오피스 등. GP(운용사)와 대비. "surveyed more than 50 global LPs."', diff:2},
+  {id:'co2', cat:'colloc', word:'general partner (GP)', pron:'', ko:'무한책임 운용사 (펀드 운용자)', nuance:'general=일반적인 → 모든 책임을 지는. PE·VC 펀드를 실제로 운용하고 투자를 집행하는 주체. LP의 자본을 위탁받아 운용 수수료(management fee) + 성과 보수(carried interest)를 수취. "six largest GPs accounted for 64% of fundraising."', diff:2},
+  {id:'co3', cat:'colloc', word:'private equity', pron:'', ko:'사모펀드 (비상장 기업 지분 투자)', nuance:'private=비공개 + equity=지분. 상장되지 않은 기업의 지분에 투자하는 자산 클래스. buyout·growth equity·venture capital 포함. 공개 시장(public market)과 달리 유동성이 낮고 장기 보유가 특징. "PE deployment in India: $207B between 2021-25."', diff:1},
+  {id:'co4', cat:'colloc', word:'risk-adjusted return', pron:'', ko:'위험 조정 수익률', nuance:'risk=위험 + adjusted=조정된 + return=수익률. 단순 절대 수익이 아닌, 감수한 위험에 비례해 수익을 평가하는 지표. "risk-adjusted IRR" — 인도의 높은 잠재 수익도 통화 위험·규제 위험과 함께 평가해야. 샤프 비율(Sharpe Ratio)이 대표적 측정치.', diff:2},
+  {id:'co5', cat:'colloc', word:'capital deployment', pron:'', ko:'자본 집행 (모은 자금을 실제 투자에 투입)', nuance:'capital=자본 + deployment=배치, 집행. 조성된 펀드 자금을 실제 투자처에 투입하는 것. "Private-capital deployment was $44B in 2025." fundraising(자금 조성)과 구별 — 자금을 모으는 것과 실제 투자하는 것은 다른 단계. deployment pace는 GP 역량의 지표.', diff:2},
+  {id:'co6', cat:'colloc', word:'exit pathway', pron:'', ko:'투자 회수 경로 (출구 전략)', nuance:'exit=나가다 + pathway=경로. PE 투자 후 수익을 실현하는 방법. 주요 경로: IPO(상장), 전략적 매각(strategic sale), 2차 매각(secondary), 바이백(buyback). "strengthening liquidity and exit pathways will be critical." 인도에서 IPO 시장 성숙도와 M&A 활성화가 관건.', diff:2},
+  {id:'co7', cat:'colloc', word:'alternative investment fund', pron:'', ko:'대안 투자 펀드 (AIF)', nuance:'alternative=대안적인 + investment=투자 + fund=펀드. 전통적인 주식·채권 외의 자산(PE, VC, 헤지펀드, 부동산, 인프라 등)에 투자하는 펀드. 인도에서 AIF는 SEBI 규제 하에 Category I/II/III로 분류. "next-generation reforms for alternative investment funds."', diff:2},
+
+  // VOCAB (10)
+  {id:'v1', cat:'vocab', word:'allocator', pron:'[ˈæləkeɪtər]', ko:'자본 배분자 (투자 자산을 배분하는 기관·개인)', nuance:'allocate(배분하다)+-or(행위자). 자산을 어느 시장·자산군·전략에 얼마나 배분할지 결정하는 투자자. "high allocators vs moderate allocators." LP를 지칭할 때 그들의 역할(배분 결정자)을 강조하는 표현. capital allocator라고도 함.', diff:2},
+  {id:'v2', cat:'vocab', word:'vintage year', pron:'[ˈvɪntɪdʒ jɪər]', ko:'빈티지 연도 (펀드 첫 투자 집행 연도)', nuance:'wine vintage(포도주 생산 연도)에서 유래 → PE/VC 펀드가 처음으로 자본을 집행한 연도. "median IRR rising from 18% for 2008 vintage to 33.1% for 2019 vintage." 같은 연도에 시작한 펀드끼리 비교하는 것이 의미 있음. 경제 사이클에 따라 빈티지별 성과가 크게 다름.', diff:3},
+  {id:'v3', cat:'vocab', word:'investable', pron:'[ɪnˈvestəbl]', ko:'투자 가능한, 투자 적합한', nuance:'invest(투자하다)+-able(가능한). 유동성, 규모, 투명성, 법적 구조 등 기관 투자자의 기준을 충족해 실제로 투자할 수 있는 상태. "create additional investable opportunities." 인도의 구조적 한계로 많은 기업이 "investable"하지 않아 자본 풀이 좁아지는 문제.', diff:2},
+  {id:'v4', cat:'vocab', word:'liquidity', pron:'[lɪˈkwɪdɪti]', ko:'유동성 (자산을 현금으로 빠르게 전환할 수 있는 정도)', nuance:'라틴어 liquidus(액체의) → 자산이 얼마나 빠르고 쉽게 현금으로 바뀔 수 있는지. PE는 inherently illiquid(본질적으로 비유동적). "improving liquidity across India\'s real estate and infrastructure investment trusts." 유동성 부족이 일부 LP의 인도 투자 주저 이유.', diff:1},
+  {id:'v5', cat:'vocab', word:'diligence', pron:'[ˈdɪlɪdʒəns]', ko:'실사, 면밀한 검토 (due diligence)', nuance:'라틴어 diligentia(근면함, 주의). 투자 전 대상 기업·펀드를 철저히 조사하는 과정. "LP diligence emphasis." PE에서 due diligence는 재무·법무·세무·운영 전반을 커버. 인도에서 정보 접근성과 투명성 부족이 diligence를 어렵게 함.', diff:2},
+  {id:'v6', cat:'vocab', word:'granular', pron:'[ˈɡrænjʊlər]', ko:'세분화된, 세밀한 (입자 단위의)', nuance:'grain(곡물, 입자)+-ular. 작은 입자처럼 매우 세부적인 수준의 분석·정보. "granular opportunity identification often matters far more than macro bets." 인도는 거시 지표보다 개별 회사·섹터 수준의 정밀 분석이 중요하다는 맥락. macro view의 반대.', diff:3},
+  {id:'v7', cat:'vocab', word:'episodic', pron:'[ˌepɪˈsɒdɪk]', ko:'단편적인, 간헐적인 (에피소드처럼 드문드문)', nuance:'episode(독립된 사건)+-ic. 지속적이지 않고 불규칙하게 발생하는 것. "moderate allocators with episodic exposure and muted allocation intent." 인도에 대해 지속적·전략적 투자가 아닌 기회가 보일 때만 간헐적으로 참여하는 방식. 반대: systematic(체계적).', diff:3},
+  {id:'v8', cat:'vocab', word:'nascent', pron:'[ˈneɪsənt]', ko:'초기의, 막 태동하는', nuance:'라틴어 nasci(태어나다). 이제 막 생겨나서 아직 성숙하지 않은 상태. "nascent private credit market." 인도의 private credit은 $36B가 2020-24년 집행되었지만 여전히 글로벌 기준으로 초기 단계. 높은 성장 잠재력과 함께 높은 위험도 내포.', diff:2},
+  {id:'v9', cat:'vocab', word:'underwrite', pron:'[ˌʌndərˈraɪt]', ko:'인수하다, 위험을 부담하다', nuance:'under=아래 + write=쓰다 → 옛날 해상보험에서 계약서 아래에 서명해 손실을 책임지겠다는 것에서 유래. 금융에서는 증권 발행·대출·보험의 위험을 인수하는 것. "LPs account for annual Indian rupee depreciation of 2-3% in their underwriting." 투자 수익 계산 시 환율 위험을 미리 반영.', diff:3},
+  {id:'v10', cat:'vocab', word:'polarized', pron:'[ˈpoʊləraɪzd]', ko:'양극화된, 의견이 극단으로 나뉜', nuance:'polar=극(極)+-ized. 자석의 N극/S극처럼 두 극단으로 갈라진 상태. "China\'s ranking was polarized: 17% ranked it first, but 66% placed it fifth or sixth." 중간 의견이 없이 극단적 찬성과 반대로 나뉘는 것. 시장 평가에서 높은 불확실성의 신호.', diff:2},
+
+  // BIZ (6)
+  {id:'b1', cat:'biz', word:'IRR', pron:'', ko:'내부 수익률 (Internal Rate of Return)', nuance:'Internal Rate of Return. 투자의 순현재가치(NPV)를 0으로 만드는 할인율. PE 성과 측정의 핵심 지표. "median IRR rising from 18% for 2008 vintage to 33.1% for 2019 vintage." 단순 배수(multiple)와 달리 투자 기간을 반영. 높은 IRR = 빠른 자본 회수 + 높은 절대 수익.', diff:2},
+  {id:'b2', cat:'biz', word:'DPI', pron:'', ko:'납입 자본 대비 분배 비율 (Distributed to Paid-In Capital)', nuance:'Distributed=분배된 + Paid-In=납입된. 투자자가 납입한 자본 대비 실제로 돌려받은 현금의 비율. DPI 1.0x = 원금 회수. "exit record as measured by distributed to paid-in capital (DPI)." IRR과 달리 실제 현금 회수를 보여줌. moderate allocators가 중시하는 지표.', diff:3},
+  {id:'b3', cat:'biz', word:'REIT', pron:'', ko:'부동산투자신탁 (Real Estate Investment Trust)', nuance:'Real Estate Investment Trust. 다수 투자자의 자금을 모아 부동산에 투자하고 임대 수익·매각 차익을 배분하는 상장 투자 구조. "real estate has gained momentum, ~$25B deployed from 2021 to 2025." 인도에서 최근 SEBI 규정 완화로 유연성·접근성 확대. "REIT listings" — 상장으로 유동성 확보.', diff:2},
+  {id:'b4', cat:'biz', word:'InvIT', pron:'', ko:'인프라 투자 신탁 (Infrastructure Investment Trust)', nuance:'Infrastructure Investment Trust. 도로·전력·통신 등 인프라 자산에 투자하고 현금 흐름을 투자자에게 배분하는 신탁 구조. REIT의 인프라 버전. "InvITs regulations — expanded investment flexibility, streamlined issuance pathways." 안정적인 장기 현금 흐름을 원하는 연기금·보험사에게 매력적.', diff:3},
+  {id:'b5', cat:'biz', word:'AIF', pron:'', ko:'대안 투자 펀드 (Alternative Investment Fund)', nuance:'Alternative Investment Fund. SEBI가 규정하는 인도의 사모 투자 구조. Category I(VC·SME·사회적 기업), Category II(PE·부채 펀드), Category III(헤지펀드·복잡한 전략). "next-generation reforms for alternative investment funds." 인도 국내 기관 투자자의 AIF 접근성 확대가 LP 기반 다양화의 열쇠.', diff:3},
+  {id:'b6', cat:'biz', word:'IVCA', pron:'', ko:'인도 벤처·대안투자협회 (Indian Venture and Alternate Capital Association)', nuance:'Indian Venture and Alternate Capital Association. 인도 VC·PE·대안 투자 업계의 주요 협회. "McKinsey collaborated with IVCA to conduct a survey of limited partners." IVCA LP Council 네트워크를 통해 50개 이상 글로벌 LP를 조사. 업계 표준화·정책 대화·투자자 교육 역할.', diff:2},
+];
+
+function renderCards(filter) {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const filtered = filter === 'all' ? cards : cards.filter(c => c.cat === filter);
+  filtered.forEach(c => {
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap';
+    const isLearned = learned.has(c.id);
+    wrap.innerHTML = `
+      <div class="card${isLearned ? ' learned' : ''}" id="card-${c.id}">
+        <div class="card-face front">
+          <span class="tag tag-${c.cat}">${c.cat.toUpperCase()}</span>
+          <div class="word">${c.word}</div>
+          ${c.pron ? `<div class="pron">${c.pron}</div>` : ''}
+          <div class="dots">
+            <div class="dot${c.diff>=1?' on':''}"></div>
+            <div class="dot${c.diff>=2?' on':''}"></div>
+            <div class="dot${c.diff>=3?' on':''}"></div>
+          </div>
+          <div class="learned-badge">&#10003; learned</div>
+        </div>
+        <div class="card-face back">
+          <div>
+            <div class="ko">${c.ko}</div>
+            <div class="nuance">${c.nuance}</div>
+          </div>
+          <button class="check-btn${isLearned ? ' done' : ''}" data-id="${c.id}">
+            ${isLearned ? '&#10003; learned' : 'Mark as learned'}
+          </button>
+        </div>
+      </div>`;
+    wrap.querySelector('.card').addEventListener('click', e => {
+      if (e.target.classList.contains('check-btn')) return;
+      e.currentTarget.classList.toggle('flipped');
+    });
+    wrap.querySelector('.check-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      const id = e.target.dataset.id;
+      if (learned.has(id)) { learned.delete(id); } else { learned.add(id); }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...learned]));
+      renderCards(filter);
+      updateProgress();
+    });
+    grid.appendChild(wrap);
+  });
+}
+
+function updateProgress() {
+  const total = 35;
+  const count = learned.size;
+  const pct = Math.round(count / total * 100);
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('plabel').textContent = count + ' / ' + total + ' learned';
+}
+
+let currentFilter = 'all';
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.cat;
+    renderCards(currentFilter);
+  });
+});
+
+renderCards('all');
+updateProgress();
+</script>
+</body>
+</html>

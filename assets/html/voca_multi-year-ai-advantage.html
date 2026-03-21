@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vocabulary — The Multi-Year AI Advantage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink:#0d1f3c; --ink2:#1a3a5c; --accent:#00d4aa; --accent2:#00b090;
+      --sky:#f0fffe; --bg:#f8fffd; --border:#7ff0d8;
+      --phrasal:#00d4aa; --idiom:#7c3aed; --colloc:#1a3a5c; --vocab:#f59e0b; --biz:#dc2626;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--ink); }
+    header { background:linear-gradient(135deg,#0d1f3c 0%,#1a3a5c 50%,#00d4aa 100%); padding:2rem 1.5rem 1.5rem; color:#fff; }
+    header h1 { font-family:'DM Serif Display',serif; font-size:1.6rem; line-height:1.3; margin-bottom:.4rem; }
+    header p { font-size:.85rem; opacity:.85; }
+    .badge { display:inline-block; background:rgba(255,255,255,.2); border-radius:20px; padding:.25rem .75rem; font-size:.75rem; margin-top:.6rem; }
+    .stats { display:flex; gap:1rem; padding:1rem 1.5rem; background:var(--sky); border-bottom:1px solid var(--border); flex-wrap:wrap; }
+    .stat { font-size:.82rem; color:var(--ink2); }
+    .stat strong { color:var(--accent2); }
+    .filters { display:flex; gap:.5rem; padding:.75rem 1.5rem; flex-wrap:wrap; background:#fff; border-bottom:1px solid var(--border); }
+    .filter-btn { border:none; padding:.35rem .9rem; border-radius:20px; font-size:.78rem; font-family:inherit; cursor:pointer; background:#f0f0f0; color:var(--ink2); transition:all .2s; }
+    .filter-btn.active, .filter-btn:hover { color:#fff; }
+    .filter-btn[data-cat="all"].active { background:var(--ink2); }
+    .filter-btn[data-cat="phrasal"].active { background:var(--phrasal); }
+    .filter-btn[data-cat="idiom"].active { background:var(--idiom); }
+    .filter-btn[data-cat="colloc"].active { background:var(--colloc); }
+    .filter-btn[data-cat="vocab"].active { background:var(--vocab); }
+    .filter-btn[data-cat="biz"].active { background:var(--biz); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; padding:1.25rem 1.5rem; }
+    .card { perspective:700px; cursor:pointer; min-height:165px; }
+    .card-inner { position:relative; width:100%; height:100%; min-height:165px; transform-style:preserve-3d; transition:transform .45s; }
+    .card.flipped .card-inner { transform:rotateY(180deg); }
+    .card-front, .card-back { position:absolute; inset:0; border-radius:14px; padding:1.1rem; backface-visibility:hidden; display:flex; flex-direction:column; }
+    .card-front { background:#fff; border:1.5px solid var(--border); }
+    .card-back { background:var(--sky); border:1.5px solid var(--accent); transform:rotateY(180deg); font-size:.82rem; line-height:1.65; overflow-y:auto; }
+    .cat-tag { font-size:.68rem; font-weight:600; text-transform:uppercase; letter-spacing:.05em; padding:.2rem .6rem; border-radius:20px; color:#fff; display:inline-block; width:fit-content; margin-bottom:.6rem; }
+    .cat-phrasal { background:var(--phrasal); }
+    .cat-idiom { background:var(--idiom); }
+    .cat-colloc { background:var(--colloc); }
+    .cat-vocab { background:var(--vocab); }
+    .cat-biz { background:var(--biz); }
+    .card-word { font-family:'DM Serif Display',serif; font-size:1.2rem; color:var(--ink); margin-bottom:.3rem; }
+    .card-pron { font-size:.78rem; color:var(--ink2); margin-bottom:.4rem; }
+    .card-ko { font-size:.9rem; color:var(--ink2); }
+    .diff { display:flex; gap:2px; margin-top:auto; padding-top:.6rem; }
+    .dot { width:8px; height:8px; border-radius:50%; background:#ddd; }
+    .dot.on { background:var(--accent2); }
+    .learned-btn { margin-top:.8rem; border:1px solid var(--accent2); background:transparent; color:var(--accent2); border-radius:20px; padding:.3rem .8rem; font-size:.75rem; font-family:inherit; cursor:pointer; align-self:flex-start; }
+    .learned-btn.done { background:var(--accent2); color:#fff; }
+    .card-back p { color:var(--ink); margin-bottom:.4rem; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>The Multi-Year AI Advantage</h1>
+  <p>Building the enterprise of tomorrow — Vocabulary</p>
+  <span class="badge">Capgemini Research Institute · 2026</span>
+</header>
+<div class="stats">
+  <span class="stat">총 카드 <strong id="totalCount">35</strong>장</span>
+  <span class="stat">학습 완료 <strong id="learnedCount">0</strong>장</span>
+  <span class="stat">남은 카드 <strong id="remainCount">35</strong>장</span>
+</div>
+<div class="filters">
+  <button class="filter-btn active" data-cat="all">All 35</button>
+  <button class="filter-btn" data-cat="phrasal">Phrasal 6</button>
+  <button class="filter-btn" data-cat="idiom">Idiom 6</button>
+  <button class="filter-btn" data-cat="colloc">Colloc 7</button>
+  <button class="filter-btn" data-cat="vocab">Vocab 10</button>
+  <button class="filter-btn" data-cat="biz">Biz 6</button>
+</div>
+<div class="grid" id="grid"></div>
+<script>
+const STORAGE_KEY = 'multi_year_ai_advantage_learned';
+const learned = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+const cards = [
+  {id:'pv1',cat:'phrasal',word:'roll out',ko:'배포하다, 출시하다',diff:1,note:'roll(굴리다)+out → 서비스·시스템을 서서히 펼쳐내는 이미지. "roll out AI tools across departments" — launch보다 점진적이고 계획적인 느낌. 단계별로 내보낸다는 뉘앙스.'},
+  {id:'pv2',cat:'phrasal',word:'buy into',ko:'(개념·전략을) 받아들이다, 동조하다',diff:2,note:'"employees need to buy into the AI transformation" — 주식을 사듯 가치를 인정하고 참여한다는 이미지. 논리적 동의가 아닌 내면적 수용·헌신을 강조.'},
+  {id:'pv3',cat:'phrasal',word:'phase out',ko:'단계적으로 폐지하다',diff:2,note:'"phase out legacy systems as AI scales" — phase(단계)+out → 한꺼번에 없애지 않고 단계별로 줄여가는 것. "phase in"(단계적 도입)의 반대.'},
+  {id:'pv4',cat:'phrasal',word:'keep up with',ko:'따라가다, 보조를 맞추다',diff:1,note:'"technology is moving faster than adoption can follow" — 빠르게 달리는 대상과 나란히 달리려는 이미지. 뒤처지지 않으려는 노력의 뉘앙스. "keep up with the Joneses"(남과 어깨를 나란히 하다)에서도 쓰임.'},
+  {id:'pv5',cat:'phrasal',word:'spin off',ko:'분사하다, 독립 조직을 만들다',diff:2,note:'"spin off an AI subsidiary" — spin(회전)+off → 원래 조직에서 새 독립체가 빠져나가는 이미지. Lockheed Martin이 Astris AI를 분사한 것처럼 모기업 자원을 활용해 새 법인을 설립.'},
+  {id:'pv6',cat:'phrasal',word:'carve out',ko:'개척하다, (틈새를) 만들어내다',diff:3,note:'"carve out a niche in AI-enabled services" — 조각(carve)하듯 공간을 파내는 이미지. 경쟁이 치열한 시장에서 자신만의 영역을 의도적으로 확보한다는 뉘앙스.'},
+  {id:'id1',cat:'idiom',word:'competitive moat',ko:'경쟁 해자, 방어적 경쟁 우위',diff:3,note:'중세 성(castle) 주위의 해자(moat) → 경쟁자가 쉽게 침입할 수 없는 방어막. "no country has a moat in AI engineering anymore" — 과거의 독점적 우위가 사라졌다는 의미. Warren Buffett이 즐겨 쓰는 비즈니스 용어.'},
+  {id:'id2',cat:'idiom',word:'AI winter',ko:'AI 겨울, AI 투자·관심 냉각기',diff:2,note:'겨울처럼 모든 것이 얼어붙는 이미지 → AI에 대한 기대가 꺾이고 투자가 줄어드는 시기. "preparing to navigate a potential AI winter" — 과거 1970s, 1980s에 실제 AI winters가 있었다.'},
+  {id:'id3',cat:'idiom',word:'fear of missing out',ko:'기회를 놓칠지도 모른다는 두려움 (FOMO)',diff:2,note:'FOMO. "explains the fear of missing out among organizations" — 경쟁사가 AI로 앞서나갈 때 자신만 뒤처질 것 같은 불안감. 투자 결정을 감정적으로 이끄는 심리적 요인.'},
+  {id:'id4',cat:'idiom',word:'cognitive agility',ko:'인지적 민첩성',diff:3,note:'cognitive(인지의)+agility(민첩성) → AI 환경 변화에 빠르게 적응하여 판단·의사결정하는 능력. "shift from task execution to cognitive agility and AI orchestration" — 단순 작업 수행을 넘어 AI를 감독·지시하는 고차원적 능력.'},
+  {id:'id5',cat:'idiom',word:'make or buy',ko:'자체 개발 vs. 외부 구매 의사결정',diff:2,note:'제조업에서 온 표현 — 부품을 직접 만들 것인가(make), 외부에서 살 것인가(buy). AI 전략에서는 AI 모델을 인하우스로 개발할지, 상용 솔루션을 구매할지 결정하는 것. "moving beyond make or buy toward blended AI strategies"'},
+  {id:'id6',cat:'idiom',word:'talent ecosystem',ko:'인재 생태계',diff:2,note:'ecosystem(생태계) → 인재들이 서로 연결·상호작용하며 성장하는 환경. "AI-enabled talent ecosystems" — 단순 채용을 넘어 스킬 개발, 리스킬링, AI 협업 역량까지 포함하는 넓은 개념.'},
+  {id:'co1',cat:'colloc',word:'data sovereignty',ko:'데이터 주권',diff:2,note:'sovereignty(주권) → 데이터를 외부 플랫폼에 넘기지 않고 자국/자사가 통제·관리하는 권리. "54% prioritize data sovereignty" — 지정학적 불확실성 속에서 데이터 통제권이 전략적 자산이 됨.'},
+  {id:'co2',cat:'colloc',word:'executive sponsorship',ko:'경영진 스폰서십, 고위급 지원',diff:2,note:'프로젝트가 성공하려면 CEO/CXO급의 적극적 지지가 필요하다는 개념. "strong executive sponsorship is the most effective catalyst (67%)" — AI 전환의 1순위 성공 요인.'},
+  {id:'co3',cat:'colloc',word:'AI center of excellence',ko:'AI 우수성 센터 (AI COE)',diff:2,note:'특정 영역에서 최고 수준의 역량·방법론·모범 사례를 집중시킨 전담 조직. "COEs led by C-suite executives" — AI 도구 사용 가이드라인, 데이터 거버넌스, 위험 관리 프레임워크를 수립하고 전사 AI 확산을 주도.'},
+  {id:'co4',cat:'colloc',word:'small language model',ko:'소형 언어 모델 (SLM)',diff:2,note:'LLM(대형 언어 모델)에 비해 파라미터 수가 적고 경량화된 언어 모델. "64% are investing in SLMs or fine-tuned open-source models" — 비용, 속도, 데이터 주권 측면에서 대형 독점 모델의 대안.'},
+  {id:'co5',cat:'colloc',word:'edge AI',ko:'엣지 AI',diff:1,note:'클라우드 서버가 아닌 기기(IoT 센서, 카메라, 스마트폰, 산업용 기계) 자체에서 AI를 처리하는 방식. "global spending on edge AI to top $260 billion in 2025" — 실시간 처리와 지연 최소화가 핵심 강점.'},
+  {id:'co6',cat:'colloc',word:'physical AI',ko:'피지컬 AI, 물리적 AI',diff:2,note:'디지털 공간을 넘어 로봇, 드론, 코봇 등 물리적 세계에서 작동하는 AI. "61% expect Gen AI to create major impact, followed by physical AI (43%)" — 제조·물류·의료 분야에서 인간과 협력하는 AI 시스템.'},
+  {id:'co7',cat:'colloc',word:'sovereign AI',ko:'소버린 AI, 주권 AI',diff:3,note:'국가나 기업이 외부 AI에 의존하지 않고 자체적으로 통제하는 AI 역량. "AI sovereignty is moving from policy intent to national execution" — 지정학적 리스크와 데이터 보안 우려로 각국 정부가 추진 중.'},
+  {id:'v1',cat:'vocab',word:'sentiment',pron:'[ˈsentɪmənt]',ko:'감정, 여론, 심리',diff:2,note:'라틴어 sentire(느끼다)에서 유래. "market sentiment" — 시장 참여자들의 집합적 심리·분위기. "regardless of market sentiment" — 단기 시장 분위기와 무관하게 AI 투자를 지속하겠다는 의지.'},
+  {id:'v2',cat:'vocab',word:'imperative',pron:'[ɪmˈperətɪv]',ko:'필수적인; 필수 사항',diff:2,note:'라틴어 imperare(명령하다)에서 유래. "AI is a strategic imperative" — 선택이 아닌 반드시 해야 하는 것. 명사로도 쓰임: "an imperative" = 반드시 수행해야 할 사항.'},
+  {id:'v3',cat:'vocab',word:'discretionary',pron:'[dɪˈskreʃənəri]',ko:'재량적인, 선택적인',diff:3,note:'discretion(재량)+ary. "view AI as a discretionary technology" — 꼭 해야 하는 것이 아닌, 상황에 따라 선택할 수 있는 것. 소비경제에서 "discretionary spending"은 식품·주거비 외의 선택적 지출.'},
+  {id:'v4',cat:'vocab',word:'resilience',pron:'[rɪˈzɪliəns]',ko:'회복탄력성, 복원력',diff:2,note:'라틴어 resilire(되튀다)에서 유래. 충격을 받아도 원래 상태로 되돌아오는 능력. "AI is secure, resilient, and strategically aligned" — 장애나 공격에도 AI 시스템이 기능을 유지하는 특성.'},
+  {id:'v5',cat:'vocab',word:'rationalize',pron:'[ˈræʃənəlaɪz]',ko:'합리화하다; 정리·통합하다',diff:3,note:'비즈니스에서 두 가지 의미: 1) 비용 절감을 위해 중복·저가치 항목을 통합/폐지하다. "63% expect to rationalize AI initiatives" — 저가치 프로젝트를 정리하고 고임팩트 영역에 집중. 2) 심리적으로 행동을 그럴듯하게 설명하다.'},
+  {id:'v6',cat:'vocab',word:'tailwind',pron:'[ˈteɪlwɪnd]',ko:'순풍, 유리한 환경',diff:2,note:'항공·해양 용어: 뒤에서 밀어주는 바람. "productivity gains create a good tailwind" — 앞으로 나아가는 데 도움이 되는 유리한 조건. 반대는 headwind(역풍 = 불리한 조건).'},
+  {id:'v7',cat:'vocab',word:'paradigm',pron:'[ˈpærədaɪm]',ko:'패러다임, 사고 체계',diff:2,note:'그리스어 paradeigma(모범, 예시). "a paradigm change that challenges how leaders think" — 단순한 기술 업그레이드가 아닌, 사고방식 자체를 바꾸는 근본적인 변화. 토마스 쿤의 "과학 혁명의 구조"에서 유명해진 개념.'},
+  {id:'v8',cat:'vocab',word:'operationalize',pron:'[ˌɒpəˈreɪʃənəlaɪz]',ko:'운영화하다, 실행 가능하게 만들다',diff:3,note:'operation+al+ize → 아이디어나 전략을 실제로 작동하는 프로세스/시스템으로 전환하는 것. "operationalize this human-led model" — POC나 파일럿 단계를 넘어 실제 비즈니스 운영에 통합하는 것.'},
+  {id:'v9',cat:'vocab',word:'deterministic',pron:'[dɪˌtɜːmɪˈnɪstɪk]',ko:'결정론적인',diff:3,note:'determinism(결정론) → 같은 입력에 항상 같은 출력이 나오는 예측 가능한 시스템. "shift from deterministic systems" — 전통 소프트웨어는 결정론적. Gen AI는 확률적(probabilistic) — 같은 질문에도 다른 답변이 나올 수 있음.'},
+  {id:'v10',cat:'vocab',word:'multimodal',pron:'[ˌmʌltiˈmoʊdəl]',ko:'멀티모달의, 다양한 형식을 처리하는',diff:2,note:'multi(여러)+modal(양식의) → 텍스트·이미지·음성·영상·코드 등 여러 데이터 형식을 통합 처리하는 AI 능력. "Microsoft\'s aggressive bet on multimodal AI" — GPT-4o처럼 텍스트와 이미지를 동시에 이해·생성하는 것.'},
+  {id:'b1',cat:'biz',word:'COE',ko:'우수성 센터 (Center of Excellence)',diff:2,note:'조직 내에서 특정 분야의 최고 수준 역량·프로세스·베스트 프랙티스를 집중시킨 전담 팀. AI COE는 AI 도구 사용 지침, 거버넌스, 위험 관리를 수립하고 전사 AI 확산을 주도. C-suite 임원이 이끄는 크로스펑셔널 팀.'},
+  {id:'b2',cat:'biz',word:'KPI',ko:'핵심성과지표 (Key Performance Indicator)',diff:1,note:'목표 달성 여부를 측정하는 정량적 지표. "Top 5 KPIs to measure AI strategy success" — ROI, AI 유스케이스 수, 매출 증가율, 시장점유율, 직원 만족도 등. OKR(Objectives and Key Results)과 함께 경영 목표 관리에 핵심적으로 사용.'},
+  {id:'b3',cat:'biz',word:'SLM',ko:'소형 언어 모델 (Small Language Model)',diff:2,note:'LLM보다 파라미터 수가 작은 경량화된 언어 모델. Microsoft Phi, Google Gemma 등. 엣지 기기 배포, 비용 절감, 데이터 주권 확보에 유리. "64% investing in SLMs as alternatives to large proprietary ones"'},
+  {id:'b4',cat:'biz',word:'GenAI',ko:'생성형 AI (Generative AI)',diff:1,note:'텍스트·이미지·영상·코드 등 새로운 콘텐츠를 생성하는 AI. GPT, Gemini, Claude 등. "Gen AI crosses the threshold from pilots to scaled use (38%)" — 이미 파일럿을 넘어 전사 확장 단계에 진입한 기술.'},
+  {id:'b5',cat:'biz',word:'CAIO',ko:'최고 AI 책임자 (Chief AI Officer)',diff:3,note:'AI 전략 전반을 총괄하는 C레벨 임원. "Etienne Grass, Global CAIO, Capgemini Invent" — CTO/CIO와 달리 AI 거버넌스·윤리·ROI·인재 전략까지 담당. 생성AI 확산과 함께 급부상한 직책.'},
+  {id:'b6',cat:'biz',word:'ML',ko:'머신러닝 (Machine Learning)',diff:1,note:'데이터를 통해 패턴을 학습하고 예측하는 AI의 핵심 기법. "ML leads with 72% expected major impact" — GenAI나 Agentic AI보다 더 성숙하고 높은 ROI를 보임. 지도학습·비지도학습·강화학습으로 나뉨.'}
+];
+
+function renderCards(filter) {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const filtered = filter === 'all' ? cards : cards.filter(c => c.cat === filter);
+  filtered.forEach(card => {
+    const isLearned = learned.has(card.id);
+    const div = document.createElement('div');
+    div.className = 'card' + (isLearned ? ' flipped' : '');
+    div.dataset.id = card.id;
+    const dots = [1,2,3].map(n => `<span class="dot${n<=card.diff?' on':''}"></span>`).join('');
+    div.innerHTML = `
+      <div class="card-inner">
+        <div class="card-front">
+          <span class="cat-tag cat-${card.cat}">${card.cat}</span>
+          <div class="card-word">${card.word}</div>
+          ${card.pron ? `<div class="card-pron">${card.pron}</div>` : ''}
+          <div class="card-ko">${card.ko}</div>
+          <div class="diff">${dots}</div>
+        </div>
+        <div class="card-back">
+          <span class="cat-tag cat-${card.cat}">${card.cat}</span>
+          <div class="card-word" style="font-size:1rem;">${card.word}</div>
+          <p>${card.note}</p>
+          <button class="learned-btn${isLearned?' done':''}" data-id="${card.id}">${isLearned?'✓ 학습완료':'학습 완료'}</button>
+        </div>
+      </div>`;
+    div.addEventListener('click', e => {
+      if (e.target.classList.contains('learned-btn')) return;
+      div.classList.toggle('flipped');
+    });
+    div.querySelector('.learned-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      if (learned.has(card.id)) { learned.delete(card.id); } else { learned.add(card.id); }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...learned]));
+      renderCards(filter);
+      updateStats();
+    });
+    grid.appendChild(div);
+  });
+}
+
+function updateStats() {
+  document.getElementById('learnedCount').textContent = learned.size;
+  document.getElementById('remainCount').textContent = cards.length - learned.size;
+}
+
+let currentFilter = 'all';
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.cat;
+    renderCards(currentFilter);
+  });
+});
+
+renderCards('all');
+updateStats();
+</script>
+</body>
+</html>
