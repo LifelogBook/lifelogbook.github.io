@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vocabulary – The AI Antidote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a3a2e;--ink2:#2d6a4f;
+  --accent:#3a7d44;--accent2:#2d6a4f;
+  --sky:#f0f7f4;--bg:#f4fbf7;--border:#7dba8f;
+  --r:14px;--shadow:0 4px 24px rgba(26,58,46,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(135deg,#1a3a2e 0%,#2d6a4f 55%,#3a7d44 100%);color:#fff;padding:2.2rem 1.5rem 1.8rem;text-align:center}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:.4rem}
+header p{font-size:.92rem;opacity:.85}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:.25rem .9rem;font-size:.78rem;margin-bottom:.7rem;letter-spacing:.04em}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:1.2rem 1rem .6rem;max-width:860px;margin:0 auto}
+.controls button{border:2px solid var(--border);background:#fff;color:var(--ink2);border-radius:30px;padding:.38rem .95rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s}
+.controls button.active,.controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.stats{text-align:center;font-size:.8rem;color:var(--ink2);padding:.2rem 0 .8rem;opacity:.75}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;padding:0 1rem 2rem;max-width:1100px;margin:0 auto}
+.card{perspective:900px;cursor:pointer;height:210px}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:1.1rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.front{background:#fff;border:2px solid var(--border)}
+.back{background:var(--sky);border:2px solid var(--accent);transform:rotateY(180deg)}
+.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.18rem .55rem;border-radius:10px;color:#fff;width:fit-content}
+.tag-phrasal{background:#3a7d44}
+.tag-idiom{background:#7c3aed}
+.tag-colloc{background:#1a3a2e}
+.tag-vocab{background:#c0392b}
+.tag-biz{background:#2d6a4f}
+.word{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);line-height:1.2;margin:.35rem 0 .1rem}
+.pron{font-size:.78rem;color:var(--ink2);font-style:italic;margin-bottom:.2rem}
+.ko{font-size:.88rem;color:var(--ink2);font-weight:500}
+.diff{display:flex;gap:3px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.on{background:var(--accent)}
+.back .word{font-size:1.1rem;color:var(--ink)}
+.nuance{font-size:.82rem;color:#374151;line-height:1.55;flex:1;margin:.35rem 0 .2rem;overflow:hidden}
+.learned-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.35rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;align-self:flex-end;transition:background .2s}
+.learned-btn.done{background:#10b981}
+.card.learned .front{border-color:#10b981;background:#f0fff8}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey Quarterly · March 2026</div>
+  <h1>The AI Antidote</h1>
+  <p>Meditation, Leadership &amp; AI — Vocabulary</p>
+</header>
+<div class="controls">
+  <button class="active" onclick="filter('all',this)">All (32)</button>
+  <button onclick="filter('phrasal',this)">Phrasal (6)</button>
+  <button onclick="filter('idiom',this)">Idiom (5)</button>
+  <button onclick="filter('colloc',this)">Colloc (6)</button>
+  <button onclick="filter('vocab',this)">Vocab (10)</button>
+  <button onclick="filter('biz',this)">Biz (5)</button>
+</div>
+<div class="stats" id="stats"></div>
+<div id="grid"></div>
+<script>
+const STORE_KEY='the_ai_antidote_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(STORE_KEY)||'[]'));
+const cards=[
+  {id:'pv1',type:'phrasal',word:'chisel out',ko:'(시간을) 조각내듯 만들어내다, 어렵게 확보하다',pron:'',nuance:'"chisel out time with my family" — chisel(끌, 조각칼)로 딱딱한 돌을 깎아 형태를 만들듯, 빡빡한 일정에서 시간을 어렵게 떼어내는 것. "carve out time"과 유사하나 더 힘겹고 고된 뉘앙스. 바쁜 리더가 가족·휴식을 위한 시간을 억지로 만들어야 하는 현실을 표현. "chisel out a space" = 공간을 만들어내다',diff:2},
+  {id:'pv2',type:'phrasal',word:'ran out of steam',ko:'기력이 다하다, 힘을 잃다, 동력이 떨어지다',pron:'',nuance:'"Then I ran out of steam" — 19세기 증기기관차가 석탄·물이 떨어져 멈추는 장면에서 유래. 초반의 에너지·동력·열정이 소진되어 더 이상 나아갈 수 없는 상태. "burn out"(번아웃)보다 더 점진적으로 힘이 빠지는 뉘앙스. "the project ran out of steam" = 프로젝트가 동력을 잃었다. 지속 불가능한 고속 질주 후 필연적 정체',diff:1},
+  {id:'pv3',type:'phrasal',word:'grapple with',ko:'~와 씨름하다, 힘겹게 대처하다',pron:'',nuance:'"grappling with the frenetic age of AI" — grapple(격투하다, 붙잡다). 레슬링에서 상대방을 잡아 싸우는 행위. 단순히 "deal with"(다루다)보다 훨씬 더 힘겹고 지속적인 분투를 표현. 문제가 크고 복잡해 명확한 해결책이 없을 때 사용. "grapple with uncertainty" = 불확실성과 씨름하다. AI 시대의 복잡한 변화에 리더들이 겪는 고투를 정확히 표현',diff:1},
+  {id:'pv4',type:'phrasal',word:'rally behind',ko:'~를 중심으로 결집하다, ~를 지지해 뭉치다',pron:'',nuance:'"rally a workforce behind a technology that makes employees fear" — rally(집결하다, 응집하다). 공통의 목표·리더·대의 뒤에 사람들을 모아 힘을 하나로 모으는 것. 군사·정치에서 흩어진 병사들을 다시 집결시키는 이미지. "rally around" = ~를 중심으로 뭉치다. 부정적 반응이 예상되는 변화(AI 도입)에 구성원을 납득시키고 이끄는 리더의 과제',diff:2},
+  {id:'pv5',type:'phrasal',word:'cut through',ko:'(혼란·과장을) 꿰뚫다, 핵심을 파악하다',pron:'',nuance:'"leaders must cut through the hype" — 안개·숲·복잡한 상황을 칼로 베어 길을 내는 이미지. 과장·소음·복잡성을 걷어내고 본질을 파악하는 것. "cut through the noise" = 소음을 제거하고 핵심을 보다. AI 분야에서는 과대 광고(hype)가 넘쳐나는데, 평정심을 갖춘 리더만이 진짜 가치 있는 것을 식별할 수 있다는 것이 핵심 메시지',diff:1},
+  {id:'pv6',type:'phrasal',word:'center oneself',ko:'자신을 중심에 돌아오다, 평정을 찾다',pron:'',nuance:'"Meditation can help leaders center themselves" — center(중심). 외부의 혼란과 압박에 의해 흔들린 내면을 다시 자신의 중심으로 되돌리는 것. 요가·명상에서 자주 사용하는 표현. "find your center" = 자신의 중심을 찾다. 단순히 "calm down"(진정하다)보다 더 근본적인 내면의 안정과 자기 인식을 포함하는 개념',diff:1},
+  {id:'id1',type:'idiom',word:'on the fly',ko:'즉흥적으로, 미리 준비 없이 그 자리에서',pron:'',nuance:'"reacting on the fly to the sense of urgency" — 새가 날면서(on the fly) 먹이를 잡는 것에서 유래. 미리 준비·계획 없이 상황이 전개되는 도중에 즉각적으로 대응하는 것. "impromptu"보다 덜 격식체. "make decisions on the fly" = 즉흥적으로 결정하다. 데이터의 급류에 떠밀려 충동적으로 반응하는 것 vs 명상으로 주의를 통제해 의도적으로 행동하는 것의 대비',diff:1},
+  {id:'id2',type:'idiom',word:'inflection point',ko:'변곡점, 방향이 바뀌는 결정적 전환점',pron:'',nuance:'"I felt I was at an inflection point in my life" — 수학에서 곡선의 오목/볼록이 바뀌는 점(inflection point). 경영·인생에서 지금까지의 방향과 속도가 근본적으로 바뀌는 전환 시점. 앤디 그로브(Intel CEO)의 "Only the Paranoid Survive"에서 경영 용어로 대중화. 저자에게는 명상 시작 전, AI 시대 리더에게는 지금이 inflection point',diff:2},
+  {id:'id3',type:'idiom',word:'infant by comparison',ko:'비교해보면 유아 수준인, 역사가 훨씬 짧은',pron:'',nuance:'"Meditation has been around for over two millennia, so AI is an infant by comparison" — infant(유아). 수천 년의 역사를 가진 명상에 비해 수십 년 된 AI는 역사적으로 갓 태어난 아기에 불과하다는 비유. 나이·경험·성숙도의 격차를 강조하는 표현. "by comparison"(비교해보면)으로 상대적 판단임을 명확히 함. AI 과대평가에 대한 겸손한 시각 제공',diff:1},
+  {id:'id4',type:'idiom',word:'powerful unlocks',ko:'강력한 돌파구, 막혔던 가능성이 열리는 순간',pron:'',nuance:'"they have experienced powerful unlocks in their personal and professional lives" — unlock(잠금 해제). 잠겨 있던 문이 열리듯, 그동안 발현되지 못했던 능력·통찰·관계의 잠재력이 풀리는 것. 원래는 소프트웨어·게임의 "기능 해제" 개념이 일상 언어로 확장. 명상이 리더의 리더십·인간 관계에서 예상치 못한 돌파구를 열어준다는 것을 생생하게 표현',diff:2},
+  {id:'id5',type:'idiom',word:'from the inside out',ko:'안에서부터 밖으로, 내면에서 비롯되는',pron:'',nuance:'"a dimension of personal growth from the inside out" — 옷을 뒤집어 입을 때 안감이 밖으로 나오는 것에서 유래. 외부의 자극·훈련이 아닌 내면의 변화에서 시작해 외부로 발현되는 성장을 의미. 코칭·심리학에서 지속 가능한 변화는 "inside out"이어야 한다는 철학. "outside in" (외부 환경이 내면을 바꾸는 것)의 반대 개념',diff:1},
+  {id:'co1',type:'colloc',word:'black box',ko:'블랙박스, 내부 작동 원리를 알 수 없는 시스템',pron:'',nuance:'"Instant outputs from black boxes processing all kinds of data" — 항공기 비행기록장치(black box)에서 유래. 입력(input)과 출력(output)만 보이고 내부 처리 과정이 불투명한 시스템. AI 모델, 특히 딥러닝이 대표적. "black box AI" = 의사결정 근거를 설명할 수 없는 AI. AI 거버넌스·윤리 논쟁에서 가장 중요한 개념 중 하나',diff:1},
+  {id:'co2',type:'colloc',word:'working memory',ko:'작업 기억, 정보를 일시적으로 유지·처리하는 인지 능력',pron:'',nuance:'"Meditation enhances working memory, mental agility, creativity" — 정보를 잠깐 머릿속에 유지하면서 동시에 처리하는 능력. 장기기억(long-term memory)과 달리 수초~수십 초의 단기 정보 처리. 멀티태스킹·복잡한 의사결정·언어 이해에 핵심. 명상이 전두엽 기능을 강화해 working memory를 개선한다는 신경과학 연구가 다수 존재',diff:2},
+  {id:'co3',type:'colloc',word:'stimulus and response',ko:'자극과 반응, 외부 사건에 대한 즉각적 반응 패턴',pron:'',nuance:'"create space between stimulus and response" — 행동주의 심리학(Behaviorism)의 핵심 개념. Viktor Frankl의 "자극과 반응 사이에는 공간이 있다"는 명언과 연결. 자극을 받는 순간과 반응하는 순간 사이에 의식적 선택의 공간을 만드는 것이 명상의 핵심 효과. 충동적 반응(reaction)이 아닌 의도적 대응(response)을 가능하게 함',diff:2},
+  {id:'co4',type:'colloc',word:'operating model',ko:'운영 모델, 조직이 가치를 창출하는 방식의 구조',pron:'',nuance:'"What is the right operating model?" — 전략(strategy)을 실행하기 위해 조직이 구조화되는 방식. 프로세스·역할·기술·거버넌스의 총체적 설계. "business model" (가치 창출·획득 방식)과 달리 operating model은 내부 실행 메커니즘에 초점. AI 도입 시 사람·로봇·에이전트가 협업하는 새로운 운영 구조가 필요하다는 맥락',diff:2},
+  {id:'co5',type:'colloc',word:'inner calm',ko:'내면의 고요함, 외부 혼란에 흔들리지 않는 내적 평온',pron:'',nuance:'"creating the inner calm that encourages the confidence needed to navigate disruption" — inner(내면)+calm(고요). 외부 환경(시장 혼란·AI 변화)이 아무리 격동적이어도 흔들리지 않는 내면의 안정 상태. 고요함이 자신감의 토대가 되고, 자신감이 올바른 판단으로 이어지는 인과관계. 명상의 핵심 효과이자 리더십의 기반',diff:1},
+  {id:'co6',type:'colloc',word:'personal working model',ko:'개인적 업무 방식, 자신만의 일하는 원칙과 구조',pron:'',nuance:'"The adjustments he made to his personal working model" — 각 개인이 업무·생활을 조직하는 방식. 우선순위·루틴·경계선(boundaries)의 총체. "work style"보다 더 체계적이고 의식적으로 설계된 개인의 운영 방식. CEO가 명상 후 업무·가정 배분을 의식적으로 재조정한 것이 사례. McKinsey 컨설턴트들이 자주 사용하는 자기관리 개념',diff:2},
+  {id:'v1',type:'vocab',word:'frenetic',ko:'열광적으로 바쁜, 광적으로 분주한',pron:'[frəˈnetɪk]',nuance:'"grappling with the frenetic age of AI" — 그리스어 phrenitis(뇌 염증·광기)에서 유래. 통제 불능 상태처럼 극도로 빠르고 혼란스러운 상태. "hectic"(매우 바쁜)보다 더 혼란스럽고 광적인 뉘앙스. "frantic"과 어원 같음. "frenetic pace" = 광적인 속도, "frenetic energy" = 폭발적이고 무질서한 에너지. AI 시대의 가속화된 변화를 묘사하는 핵심어',diff:2},
+  {id:'v2',type:'vocab',word:'ascendant',ko:'부상하는, 상승 중인, 영향력이 커지는',pron:'[əˈsendənt]',nuance:'"In the age of ascendant AI" — ascend(오르다)+ant. 별자리에서 동쪽 지평선 위로 떠오르는 천체를 "ascendant"라 함. 점성술에서 운명을 지배하는 힘을 뜻하다가 "부상하여 영향력을 키우는" 의미로 확장. "on the ascendant" = 상승세에 있는. AI가 단순히 성장하는 것이 아니라 사회·경제를 지배하는 힘이 되어가고 있음을 함축',diff:2},
+  {id:'v3',type:'vocab',word:'equanimity',ko:'평정심, 어떤 상황에도 흔들리지 않는 내적 균형',pron:'[ˌekwəˈnɪmɪti]',nuance:'"Developing equanimity" — 라틴어 aequus(고른)+animus(마음). 어려운 상황에서도 마음이 고르게 유지되는 상태. "calmness"(고요함)보다 더 능동적이고 훈련된 균형 상태. 수동적 체념이나 무관심(passivity/ambivalence)이 아닌, 상황을 명확히 보면서도 흔들리지 않는 "균형 잡힌 행동"(poised action). 명상의 궁극적 열매이자 리더십의 핵심',diff:3},
+  {id:'v4',type:'vocab',word:'equanimous',ko:'평정심을 지닌, 침착하고 균형 잡힌',pron:'[ɪˈkwænɪməs]',nuance:'"they need an equanimous CEO" — equanimity의 형용사형. 일반적인 사전에도 잘 나오지 않는 고급 어휘. "calm"(침착한)보다 더 깊은 내적 균형을 함의. 단순히 감정을 억누르는 것이 아니라 훈련된 평정의 상태. 저자가 리더에게 요구하는 가장 핵심적인 내적 자질을 표현하기 위해 선택한 단어',diff:3},
+  {id:'v5',type:'vocab',word:'panacea',ko:'만병통치약, 모든 문제를 해결하는 수단',pron:'[ˌpænəˈsiːə]',nuance:'"Meditation is no panacea" — 그리스 신화의 치유의 여신 Panakeia에서 유래. pan(모든)+akos(치료). 어떤 질병이든 고칠 수 있는 전설의 약. 현실에는 존재하지 않는 이상적 해결책. 저자가 명상을 과도하게 포장하지 않으려는 지적 정직함의 표현. "There is no panacea for social inequality" = 사회 불평등의 만병통치약은 없다',diff:2},
+  {id:'v6',type:'vocab',word:'discernment',ko:'분별력, 본질을 꿰뚫어 보는 통찰력',pron:'[dɪˈsɜːnmənt]',nuance:'"greater inner peace and discernment" — discern(식별하다, 분별하다)+ment. 겉모습 너머의 본질·진실·차이를 파악하는 능력. "judgment"(판단력)보다 더 깊은 통찰과 영적 차원을 내포. AI의 수많은 과대광고 속에서 진짜 가치를 가려내는 것, 또는 리더로서 무엇이 진짜 중요한지를 아는 것이 discernment. 명상의 핵심 결실 중 하나',diff:3},
+  {id:'v7',type:'vocab',word:'evenhanded',ko:'공정한, 편향 없이 균형 잡힌',pron:'[ˌiːvənˈhændɪd]',nuance:'"remain evenhanded in the face of challenges" — even(균등한)+handed(손으로). 천칭처럼 한쪽으로 기울지 않고 균형 잡힌 판단·대우를 하는 것. "fair"(공정한)보다 더 의식적이고 훈련된 균형의 뉘앙스. 감정이 격해지는 상황(도전·위기)에서도 한쪽에 치우치지 않는 리더의 자질. equanimity가 실제 행동으로 나타나는 것이 evenhanded',diff:2},
+  {id:'v8',type:'vocab',word:'introspective',ko:'내성적인, 자신의 내면을 살피는',pron:'[ˌɪntrəˈspektɪv]',nuance:'"other introspective practices such as journaling and reflective walks" — introspect(내면을 들여다보다). intro(안으로)+spectare(보다). 자신의 생각·감정·동기를 의식적으로 들여다보는 것. "self-reflective"와 유사. 명상만이 아니라 일기 쓰기·자연 산책 등 다양한 내면 탐구 활동을 포괄. 외부 세계에 집중하는 AI 시대에 더욱 희귀해지는 능력',diff:2},
+  {id:'v9',type:'vocab',word:'openhearted',ko:'열린 마음의, 편견 없이 따뜻하고 수용적인',pron:'[ˌoʊpənˈhɑːrtɪd]',nuance:'"a realistic and openhearted perspective" — open(열린)+hearted(마음의). 마음(heart)이 열려 있어 새로운 아이디어·사람·관점을 수용하는 태도. "open-minded"(열린 사고)가 인지적 차원이라면, openhearted는 감정·공감·따뜻함의 차원. AI 시대에 불안해하는 직원들에게 공감하고 수용하는 리더의 자질로서 특히 중요',diff:2},
+  {id:'v10',type:'vocab',word:'millennia',ko:'수천 년, 밀레니아 (millennium의 복수형)',pron:'[mɪˈleniə]',nuance:'"Meditation has been around for over two millennia" — millennium(1,000년)의 복수형. 라틴어 mille(1,000)+annum(년). "centuries"(수백 년)보다 훨씬 긴 시간 단위. 명상이 AI와 비교할 수 없이 오랜 역사와 검증을 가진 관행임을 강조. "over two millennia" = 2,000년 이상. 수천 년의 인류 지혜 vs 수십 년의 AI 기술이라는 대비',diff:1},
+  {id:'b1',type:'biz',word:'LLM',ko:'대형 언어 모델 (Large Language Model)',pron:'',nuance:'"As LLMs develop, they are likely to present new opportunities and risks" — GPT·Claude·Gemini 같이 방대한 텍스트 데이터로 학습된 대규모 신경망 기반 AI 모델. 자연어 이해·생성·번역·요약·코딩 등 광범위한 작업 수행. "large"는 매개변수(parameter) 수가 수십억~수조 개임을 의미. 생성형 AI(Generative AI)의 핵심 기반 기술. 빠르게 발전하고 있어 기회와 리스크가 동시에 존재',diff:1},
+  {id:'b2',type:'biz',word:'agentic AI',ko:'에이전틱 AI, 스스로 목표를 설정하고 다단계 작업을 실행하는 AI',pron:'',nuance:'"generative and agentic AI have the potential to transform corporations" — agent(자율 행위자)+ic. 단순히 질문에 답하는 생성형 AI를 넘어, 목표를 받으면 계획을 세우고 도구를 사용하며 스스로 다단계 작업을 수행하는 AI. "AutoGPT" 개념의 고도화. 사람·로봇·AI 에이전트가 함께 일하는 "agentic organization"이 미래 기업 모델',diff:2},
+  {id:'b3',type:'biz',word:'upskilling',ko:'업스킬링, 기존 직원의 역량을 향상시키는 교육·훈련',pron:'',nuance:'"The next wave of upskilling will help people exploit these fundamental aspects of being human" — up(향상)+skilling(기술 습득). 기존 직원이 새로운 기술·역할에 필요한 역량을 습득하도록 지원하는 것. "reskilling"(완전히 다른 직무로 재훈련)과 달리 기존 역할의 고도화에 초점. AI 시대에는 단순 기술이 아닌 판단력·창의력 등 인간 고유의 능력을 개발하는 upskilling이 핵심',diff:1},
+  {id:'b4',type:'biz',word:'Vipassana',ko:'위빠사나, 불교 명상 수행법 (통찰 명상)',pron:'[vɪˈpæsənə]',nuance:'"I practice a form of meditation called Vipassana" — 팔리어로 "사물을 있는 그대로 보다"는 뜻. 인도에서 기원한 가장 오래된 명상법 중 하나. 10일간의 묵언 수련(silent retreat)이 대표적. 호흡과 신체 감각을 관찰해 무상(無常)·고(苦)·무아(無我)를 직접 경험. McKinsey 파트너가 CEO들에게 추천할 정도로 실리콘밸리·경영계에서 주목받는 마음챙김 수련',diff:2},
+  {id:'b5',type:'biz',word:'differentiator',ko:'차별화 요소, 경쟁 우위를 만드는 핵심 요인',pron:'[dɪˈferənʃieɪtər]',nuance:'"humans can be a key differentiator in who will generate value from AI" — differentiate(차별화하다)+or. 경쟁자 대비 자신만의 독보적 강점을 만드는 요소·능력·특성. "competitive advantage"(경쟁 우위)의 구체적 원천. AI가 일반화되는 시대에 인간의 판단력·창의성·공감이 AI 가치 창출의 핵심 differentiator가 된다는 것이 McKinsey의 핵심 주장',diff:2},
+];
+
+function render(){
+  const grid=document.getElementById('grid');
+  const filtered=grid.dataset.filter||'all';
+  const visible=filtered==='all'?cards:cards.filter(c=>c.type===filtered);
+  const learnedCount=[...learned].filter(id=>visible.some(c=>c.id===id)).length;
+  document.getElementById('stats').textContent=`${learnedCount} / ${visible.length} learned`;
+  grid.innerHTML='';
+  visible.forEach(c=>{
+    const isLearned=learned.has(c.id);
+    const dots=[1,2,3].map(i=>`<span class="dot${i<=c.diff?' on':''}"></span>`).join('');
+    const div=document.createElement('div');
+    div.className='card'+(isLearned?' learned':'');
+    div.dataset.id=c.id;
+    div.innerHTML=`<div class="card-inner">
+      <div class="front">
+        <div><span class="tag tag-${c.type}">${c.type}</span>
+        <div class="word">${c.word}</div>
+        ${c.pron?`<div class="pron">${c.pron}</div>`:''}
+        <div class="ko">${c.ko}</div></div>
+        <div class="diff">${dots}</div>
+      </div>
+      <div class="back">
+        <div><div class="word">${c.word}</div>
+        <div class="nuance">${c.nuance}</div></div>
+        <button class="learned-btn${isLearned?' done':''}" onclick="toggleLearned(event,'${c.id}')">${isLearned?'✓ Learned':'Mark learned'}</button>
+      </div>
+    </div>`;
+    div.addEventListener('click',function(e){if(!e.target.classList.contains('learned-btn'))this.classList.toggle('flipped')});
+    grid.appendChild(div);
+  });
+}
+
+function filter(type,btn){
+  document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('grid').dataset.filter=type;
+  render();
+}
+
+function toggleLearned(e,id){
+  e.stopPropagation();
+  if(learned.has(id))learned.delete(id);else learned.add(id);
+  localStorage.setItem(STORE_KEY,JSON.stringify([...learned]));
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
