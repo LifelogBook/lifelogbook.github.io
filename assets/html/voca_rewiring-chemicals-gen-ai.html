@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vocabulary – Rewiring for Growth in Chemicals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f2037;--ink2:#1a4060;
+  --accent:#059669;--accent2:#047857;
+  --sky:#f0fdf4;--bg:#f8fffe;--border:#6ee7b7;
+  --r:14px;--shadow:0 4px 24px rgba(15,32,55,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(135deg,#0f2037 0%,#1a4060 55%,#059669 100%);color:#fff;padding:2.2rem 1.5rem 1.8rem;text-align:center}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:.4rem}
+header p{font-size:.92rem;opacity:.85}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:.25rem .9rem;font-size:.78rem;margin-bottom:.7rem;letter-spacing:.04em}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:1.2rem 1rem .6rem;max-width:860px;margin:0 auto}
+.controls button{border:2px solid var(--border);background:#fff;color:var(--ink2);border-radius:30px;padding:.38rem .95rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s}
+.controls button.active,.controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.stats{text-align:center;font-size:.8rem;color:var(--ink2);padding:.2rem 0 .8rem;opacity:.75}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;padding:0 1rem 2rem;max-width:1100px;margin:0 auto}
+.card{perspective:900px;cursor:pointer;height:210px}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:1.1rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.front{background:#fff;border:2px solid var(--border)}
+.back{background:var(--sky);border:2px solid var(--accent);transform:rotateY(180deg)}
+.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.18rem .55rem;border-radius:10px;color:#fff;width:fit-content}
+.tag-phrasal{background:#0891b2}
+.tag-idiom{background:#7c3aed}
+.tag-colloc{background:#0f2037}
+.tag-vocab{background:#c0392b}
+.tag-biz{background:#059669}
+.word{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);line-height:1.2;margin:.35rem 0 .1rem}
+.pron{font-size:.78rem;color:var(--ink2);font-style:italic;margin-bottom:.2rem}
+.ko{font-size:.88rem;color:var(--ink2);font-weight:500}
+.diff{display:flex;gap:3px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.on{background:var(--accent)}
+.back .word{font-size:1.1rem;color:var(--ink)}
+.nuance{font-size:.82rem;color:#374151;line-height:1.55;flex:1;margin:.35rem 0 .2rem;overflow:hidden}
+.learned-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.35rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;align-self:flex-end;transition:background .2s}
+.learned-btn.done{background:#10b981;color:#fff}
+.card.learned .front{border-color:#10b981;background:#f0fff8}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey &amp; Company · Chemicals Practice · March 2026</div>
+  <h1>Rewiring for Growth in Chemicals</h1>
+  <p>Advanced Analytics &amp; Gen AI — Vocabulary</p>
+</header>
+<div class="controls">
+  <button class="active" onclick="filter('all',this)">All (35)</button>
+  <button onclick="filter('phrasal',this)">Phrasal (6)</button>
+  <button onclick="filter('idiom',this)">Idiom (6)</button>
+  <button onclick="filter('colloc',this)">Colloc (7)</button>
+  <button onclick="filter('vocab',this)">Vocab (10)</button>
+  <button onclick="filter('biz',this)">Biz (6)</button>
+</div>
+<div class="stats" id="stats"></div>
+<div id="grid"></div>
+<script>
+const STORE_KEY='chemicals_gen_ai_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(STORE_KEY)||'[]'));
+const cards=[
+  {id:'pv1',type:'phrasal',word:'rewire',ko:'(조직·프로세스를) 근본적으로 재설계하다',pron:'[ˌriːˈwaɪər]',nuance:'전기 배선(wiring)을 완전히 교체하는 작업에서 유래한 비유적 표현. 기존의 작동 방식을 표면적으로 수정하는 것이 아니라 조직·프로세스·기술의 연결 구조 자체를 근본적으로 뜯어고치는 것. "rewire the commercial function" = 영업 기능의 운영 방식을 처음부터 다시 설계하다. 단순한 개선(improvement)이 아니라 변환(transformation)의 뉘앙스.',diff:2,ex:'Leading chemical companies are <b>rewiring</b> their commercial functions with AI and gen AI to identify and convert the best opportunities.'},
+  {id:'pv2',type:'phrasal',word:'debottleneck',ko:'병목을 제거하다, 제약 요소를 해소하다',pron:'[ˌdiːˈbɒtlˌnek]',nuance:'제조업에서 생산 흐름을 막는 병목(bottleneck)을 제거하여 전체 처리량을 늘리는 공정 최적화 기법. 이 기사에서는 영업(sales) 기능에 같은 개념을 적용하여 영업 프로세스의 장애물을 찾아 제거하는 것을 의미. "debottlenecking the sales function" = 영업 병목 해소. 화학·제조 배경의 임원들에게 직관적으로 와닿는 표현.',diff:2,ex:'Applying the same methodical <b>debottlenecking</b> approach used in manufacturing requires identifying key factors hindering sales teams.'},
+  {id:'pv3',type:'phrasal',word:'scale up',ko:'(파일럿에서) 전사 규모로 확장하다',pron:'[skeɪl ʌp]',nuance:'"scale"은 규모를, "up"은 증가를 나타낸다. 소규모 파일럿(pilot)에서 검증된 모델을 전 사업부·전 지역으로 확장하는 것. "scale up plans" = 확장 계획. 반대는 "scale back" (축소). "crawl-walk-run"의 마지막 단계에서 이루어지며, 충분한 검증 없이 섣불리 하면 실패한다는 맥락에서 자주 경고됨.',diff:1,ex:'Companies can implement early quick wins to create momentum, then build and execute <b>scale-up</b> plans for these and other initiatives.'},
+  {id:'pv4',type:'phrasal',word:'keep pace with',ko:'~에 뒤처지지 않다, ~와 같은 속도로 따라가다',pron:'[kiːp peɪs wɪð]',nuance:'"pace" = 걸음 속도. 달리기에서 선두와 같은 속도를 유지하는 이미지. 빠르게 변하는 고객 수요, 기술, 경쟁 환경에 뒤처지지 않기 위해 조직이 스스로를 지속적으로 발전시켜야 한다는 맥락. "keep up with"와 유사하지만 "keep pace"는 지속적인 속도 유지에 초점. "struggle to keep pace" = 따라가기 벅차다.',diff:1,ex:'Sales representatives became order takers, and companies underinvested in sales capabilities and the customer experience, unable to <b>keep pace with</b> demand.'},
+  {id:'pv5',type:'phrasal',word:'act on',ko:'~에 기반하여 행동하다, ~을 실행에 옮기다',pron:'[ækt ɒn]',nuance:'"act on insights" = 인사이트를 단순히 파악하는 데 그치지 않고 실제 행동으로 연결하다. AI·분석 도구가 제공하는 데이터를 실제 영업 의사결정과 행동으로 전환하는 것이 핵심. "act on data" / "act on recommendations" - 분석 결과를 실행으로 옮기다. AI 도입 실패 원인 중 하나가 바로 인사이트 도출 후 그것을 act on하지 못하는 것임을 이 기사가 강조.',diff:1,ex:'Simply building analytical tools is not enough—sales teams need to <b>act on</b> the insights these tools provide to create real impact.'},
+  {id:'pv6',type:'phrasal',word:'build out',ko:'(역량·인프라를) 구축하고 확충하다',pron:'[bɪld aʊt]',nuance:'"build"(구축)와 "out"(바깥으로 확장)의 조합. 새로운 역량·인프라·팀을 처음부터 또는 기존 기반 위에서 확장 구축하는 것. "build out capabilities" = 역량을 쌓아나가다. "build out the sales team" = 영업팀을 확충하다. "build up"은 규모를 키우는 것이고, "build out"은 범위·커버리지를 넓히는 뉘앙스.',diff:2,ex:'Growth champions <b>build out</b> a customer-backed commercial strategy and a sales-team-forward operating model to rewire for growth.'},
+
+  {id:'id1',type:'idiom',word:'order taker',ko:'오더 테이커 — 수동적으로 주문만 처리하는 영업사원',pron:'',nuance:'"order taker" vs "hunter" (또는 "rainmaker"). 오더 테이커는 고객이 먼저 연락하면 주문을 처리하는 수동적 역할. 반면 hunter는 능동적으로 새 고객·기회를 발굴한다. 코로나19 호황기에 화학사의 영업 담당자들이 주문이 몰려오면서 오더 테이커로 전락한 것이 이 기사의 핵심 진단. 조직 내에서 역할 재정의가 필요하다는 뉘앙스를 내포.',diff:1,ex:'To keep up with demand, sales representatives became <b>order takers</b>, and companies underinvested in sales capabilities and the customer experience.'},
+  {id:'id2',type:'idiom',word:'feel the pinch',ko:'(경제적) 압박을 느끼다, 어려움에 직면하다',pron:'',nuance:'"pinch" = 손가락으로 꼬집는 것. 경제적 어려움이나 비용 압박이 실질적으로 느껴지는 상황. 매출 감소, 마진 압박, 시장 침체 등의 영향이 구체적으로 나타나기 시작할 때 사용. "specialty chemical companies are now feeling the pinch" = 수요 둔화의 여파가 이제 특수화학 기업들에게도 직접적으로 나타나기 시작했다.',diff:1,ex:'As a result of slower demand since 2023, specialty chemical companies are now <b>feeling the pinch</b>, with valuations down as much as 50 percent.'},
+  {id:'id3',type:'idiom',word:'crawl, walk, run',ko:'기어가기, 걷기, 뛰기 — 단계적 역량 구축 접근법',pron:'',nuance:'아기의 발달 단계(기기→걷기→달리기)에서 유래한 변화 관리·기술 도입 비유. 처음부터 완성된 시스템을 구축하려 하지 않고, 작은 파일럿(crawl)으로 시작해 검증(walk)하고 전사 확장(run)하는 점진적 접근. 리스크를 줄이고, 조직의 변화 수용도를 높이며, 초기 성공으로 모멘텀을 만드는 전략. 디지털 전환·AI 도입에서 권장되는 방법론.',diff:1,ex:'With a carefully planned "<b>crawl, walk, run</b>" approach, companies can progressively deploy technology and build capabilities.'},
+  {id:'id4',type:'idiom',word:'table stakes',ko:'테이블 스테이크 — 경쟁 참가 최소 요건; 기본 중의 기본',pron:'',nuance:'포커에서 게임에 참가하기 위해 테이블에 올려놓아야 하는 최소 베팅 금액에서 유래. 비즈니스에서는 경쟁 자격을 갖추기 위한 최소한의 요건·기능을 의미. "exceptional customer support and sustainable offerings as table stakes" = 탁월한 고객 지원과 지속가능한 제품이 이제는 차별화 요소가 아니라 기본 요건이라는 뜻. 업계 표준이 올라가면서 기존 차별점이 table stakes화되는 경향.',diff:2,ex:'Chemical companies will be evaluated on ease of doing business and pricing transparency—with exceptional support as <b>table stakes</b>.'},
+  {id:'id5',type:'idiom',word:'first mover',ko:'퍼스트 무버 — 경쟁자보다 먼저 움직여 선점 우위를 확보하는 기업',pron:'',nuance:'"first-mover advantage" = 선도자 이점. 새로운 기술·시장·운영 방식을 먼저 채택함으로써 브랜드 인지도·고객 기반·역량·비용 우위를 선점하는 전략적 포지션. 반대는 "fast follower"(빠른 추격자) 또는 "laggard". 이 기사에서는 재배선(rewiring)을 먼저 실행한 기업이 경쟁에서 앞서갈 것이라는 경고로 사용.',diff:1,ex:'<b>First movers</b> will have the advantage in this new opportunity landscape—the distance between adopters and laggards is only expected to grow.'},
+  {id:'id6',type:'idiom',word:'quick win',ko:'퀵 윈 — 빠른 소규모 성공; 변화의 모멘텀을 만드는 초기 성과',pron:'',nuance:'대규모 전환(transformation) 초기에 구성원들의 회의감과 변화 저항을 극복하기 위해 의도적으로 확보하는 작은 성공. "deliver quick wins" = 초기 가시적 성과를 만들다. "early quick wins create momentum" = 초기 성과가 이후 대규모 변화의 추진력이 된다. 변화 관리(change management)에서 핵심 전술. 너무 빠른 성과 압박이 오히려 장기 전략을 해칠 수 있다는 경고도 존재.',diff:1,ex:'Companies can implement early <b>quick wins</b> to create momentum, then build and execute scale-up plans for broader initiatives.'},
+
+  {id:'cl1',type:'colloc',word:'share of wallet',ko:'지갑 점유율 — 고객 총 지출 중 특정 공급사가 차지하는 비율',pron:'',nuance:'"wallet"(지갑) = 고객이 특정 제품·서비스 카테고리에 쓰는 총 예산. "share of wallet" = 그 예산 중 우리 회사가 차지하는 몫. "market share"가 전체 시장에서의 점유율이라면, "share of wallet"은 개별 고객 단위에서의 점유율. 기존 고객에서 추가 매출을 올리는 핵심 지표로 교차판매·업셀링 전략의 목표가 된다.',diff:2,ex:'The company faced stagnating growth due to underpenetrated <b>share of wallet</b>, and believed it had an untapped opportunity in holistic solution selling.'},
+  {id:'cl2',type:'colloc',word:'speed to quote',ko:'견적 속도 — 고객 문의에서 가격 제안까지의 소요 시간',pron:'',nuance:'"speed to quote"는 고객이 가격을 문의한 시점부터 정식 견적서를 받기까지의 시간. 화학 산업에서 이 과정이 느리고 수작업 의존적이라는 것이 영업 병목의 주요 원인. "increase speed to quote" = 견적 소요 시간을 단축하다. AI와 ERP 연동을 통해 microsegmented discount guidance를 자동화하여 단축하는 것이 이 기사의 핵심 솔루션 중 하나.',diff:2,ex:'The company deployed tech-enabled pricing tools to increase <b>speed to quote</b>, shifting from manual, fragmented processes to AI-driven automation.'},
+  {id:'cl3',type:'colloc',word:'pipeline management',ko:'파이프라인 관리 — 영업 기회를 단계별로 체계적으로 관리하는 프로세스',pron:'',nuance:'석유 파이프라인에서 유래. 영업에서 "pipeline"은 리드(lead)에서 계약 체결(closed deal)까지 이어지는 영업 기회의 흐름. "pipeline management" = 각 단계에 있는 기회의 수·질·전환율을 모니터링하고 최적화하는 것. "poor pipeline health" = 파이프라인에 질 나쁜 기회만 가득하거나 전환이 안 되는 상태. AI는 어떤 기회에 집중할지 우선순위를 잡아준다.',diff:2,ex:'Teams may lack clarity on which opportunities to focus on, spending excessive time sorting through low-quality leads—<b>pipeline management</b> becomes a critical bottleneck.'},
+  {id:'cl4',type:'colloc',word:'valuation multiple',ko:'밸류에이션 멀티플 — 기업 가치를 이익 지표로 나눈 배수',pron:'',nuance:'EV/EBITDA, P/E(PER), EV/Revenue 등의 배수(multiple)를 총칭. 시장이 해당 기업의 미래 성장성을 얼마나 높이 평가하는지를 반영. "two to three turns in valuation multiple expansion" = 멀티플이 2~3배 포인트 상승한다는 의미. 성장이 가치평가에 미치는 영향을 설명할 때 핵심 지표. "multiple contraction" = 멀티플 하락 = 시장 신뢰 감소.',diff:3,ex:'When successful, rewired chemical companies deliver revenue growth while expanding margins—resulting in two to three turns in <b>valuation multiple</b> expansion.'},
+  {id:'cl5',type:'colloc',word:'change management',ko:'변화 관리 — 조직 변화를 성공적으로 이끌기 위한 체계적 접근',pron:'',nuance:'기술 도입이나 프로세스 개편은 기술적 구현만으로 성공하지 않는다. "change management" = 사람과 조직이 변화를 받아들이고 새로운 방식으로 일하도록 유도하는 일련의 활동. 리더십의 롤 모델링, 양방향 소통, 역량 구축, 인센티브 설계 등이 포함. "change management is critical to sustain growth" = 변화 관리 없이는 기술 투자가 성과로 이어지지 않는다.',diff:2,ex:'<b>Change management</b> is critical to sustain growth and allow new commercial capabilities to take hold—active role modeling by leadership is crucial.'},
+  {id:'cl6',type:'colloc',word:'commercial enablement',ko:'상업적 역량 지원 — 영업팀이 효과적으로 일할 수 있도록 도구·데이터·교육을 제공하는 것',pron:'',nuance:'"enablement" = 가능하게 해주는 것. "commercial enablement" = 영업·마케팅·가격 등 상업 기능이 최고의 성과를 낼 수 있도록 IT 도구, 데이터, 교육, 프로세스를 제공하는 기능. "insufficient commercial enablement" = 도구와 교육이 부족해 영업팀이 잠재력을 발휘하지 못하는 상태. 영업 성과 부진의 5대 원인 중 하나로 이 기사에서 명시.',diff:2,ex:'Teams may have suboptimal sales execution rigor caused by limited visibility into performance—a sign of insufficient <b>commercial enablement</b>.'},
+  {id:'cl7',type:'colloc',word:'churn prevention',ko:'이탈 방지 — 기존 고객의 거래 중단을 막는 전략',pron:'',nuance:'"churn" = 고객이 공급사를 바꾸거나 구매를 중단하는 것. 통신업에서는 가입 해지율. "churn prevention" = 고객 이탈을 조기에 탐지하고 예방하는 활동. AI와 데이터 분석을 통해 이탈 신호를 포착하고 선제적으로 대응하는 것이 핵심. 이 기사에서 "중기(medium-term) 가치 창출"의 핵심 레버로 분류됨. 신규 고객 확보보다 비용이 5~7배 저렴하다는 것이 일반적 통설.',diff:2,ex:'Growth champions drive value creation over multiple horizons: share of wallet near-term, <b>churn prevention</b> in the medium term, and new customer growth longer term.'},
+
+  {id:'vc1',type:'vocab',word:'rewiring',ko:'재배선; (조직·역량의) 근본적 재설계',pron:'[ˈriːˌwaɪərɪŋ]',nuance:'명사형. 전기 배선을 완전히 교체한다는 물리적 행위에서 유래한 McKinsey 용어. 단순한 "개선"이나 "디지털화"와 달리 상업 전략, 프로세스, 조직 구조, 역량, 기술을 동시에 근본적으로 재설계하는 포괄적 변환을 의미. 이 기사의 핵심 개념어. "rewired company" = 이미 상업 기능을 재설계 완료한 기업.',diff:2,ex:'When fully <b>rewired</b> for growth, chemical companies integrate technology into everything they do to identify and convert new opportunities systematically.'},
+  {id:'vc2',type:'vocab',word:'underpenetrated',ko:'저침투된; 잠재력 대비 충분히 공략되지 않은',pron:'[ˌʌndəˈpenɪtreɪtɪd]',nuance:'"penetrate"(침투·진입) + "under"(불충분). 시장·고객·제품 라인에서 현재 점유율이 달성 가능한 잠재력에 비해 낮은 상태. "underpenetrated share of wallet" = 기존 고객의 지출 중 아직 확보하지 못한 비중이 크다는 뜻. 시장·고객 분석에서 성장 기회를 포착할 때 자주 사용. "underpenetrated markets" = 아직 충분히 개척되지 않은 시장.',diff:3,ex:'The $15 billion revenue company faced stagnating growth due to <b>underpenetrated</b> share of wallet—it had an untapped growth opportunity in cross-selling.'},
+  {id:'vc3',type:'vocab',word:'holistic',ko:'총체적인; 전체를 하나의 연결된 시스템으로 바라보는',pron:'[həˈlɪstɪk]',nuance:'"whole"(전체)를 뜻하는 그리스어 "holos"에서 유래. 부분들을 개별적으로 다루는 것이 아니라 전체를 상호연결된 시스템으로 바라보는 관점. "holistic approach" = 어느 한 기능이나 단계만 개선하는 것이 아니라 영업 전략, 프로세스, 역량, 기술 모두를 함께 재설계하는 전사적 접근. 반대말: "siloed approach" = 각 기능이 고립되어 작동하는 방식.',diff:2,ex:'Unlocking growth requires a <b>holistic</b> rewiring—building a customer-backed commercial strategy and a sales-team-forward operating model simultaneously.'},
+  {id:'vc4',type:'vocab',word:'modular',ko:'모듈식의; 독립적으로 구현 가능한 단위로 구성된',pron:'[ˈmɒdjʊlər]',nuance:'"module"(독립적 기능 단위)에서 유래. 전체 시스템을 한꺼번에 구현하지 않고 독립적인 모듈(리드 생성, 가격 책정, GTM 전략 등)로 나누어 순서 없이 선택적으로 구현할 수 있는 설계 방식. "modular rewiring" = 기업이 전체 end-to-end 재설계 대신 특정 영역만 선택적으로 개선할 수 있다는 유연성. 리스크를 낮추고 빠른 가치 실현을 가능하게 함.',diff:2,ex:'Rewiring does not have to be linear—it can be <b>modular</b>, with chemical companies focusing on specific elements like pricing or lead generation.'},
+  {id:'vc5',type:'vocab',word:'microsegmented',ko:'초세분화된; 고객·시장을 매우 세밀한 기준으로 분류한',pron:'[ˌmaɪkrəʊˈsɛɡmɛntɪd]',nuance:'"micro"(매우 작은) + "segmented"(세분화된). 전통적인 고객 세그먼트(대기업/중소기업, 산업별)보다 훨씬 세밀하게 고객을 분류하는 것. 예: 원자재 가격 민감도, 구매 이력, 이탈 리스크, 계절성 등을 결합하여 고객별 최적 할인율을 설정. "microsegmented discount guidance" = AI가 고객 특성에 따라 개별화된 할인 지침을 제공하는 것.',diff:3,ex:'The midsize specialty chemical company deployed AI featuring <b>microsegmented</b> discount guidance to increase overall margin performance.'},
+  {id:'vc6',type:'vocab',word:'laggard',ko:'낙오자; (산업 내) 뒤처진 기업·행위자',pron:'[ˈlæɡərd]',nuance:'"lag"(뒤처지다) + "-ard"(사람·경향을 나타내는 접미사). 기술 혁신 확산 모델(Everett Rogers)에서 가장 마지막에 채택하는 집단. 비즈니스 맥락에서는 업계 평균이나 경쟁사 대비 성과가 낮거나 변화 적응이 느린 기업. "laggard"는 단순히 느린 것을 넘어 구조적 뒤처짐을 함의. 반대: "early adopter", "growth champion", "first mover".',diff:1,ex:'As the industry evolves, the distance between rewiring adopters and <b>laggards</b> is only expected to grow—competitive advantage will compound over time.'},
+  {id:'vc7',type:'vocab',word:'upskilling',ko:'업스킬링; 기존 직원의 역량을 업그레이드하는 교육',pron:'[ˈʌpˌskɪlɪŋ]',nuance:'"up"(향상) + "skill"(기술). 자동화·AI 도입으로 기존 업무가 변화할 때 직원들이 새로운 도구와 역할에 적응하도록 훈련하는 것. "reskilling"(완전히 다른 역할로 전환)과 달리 "upskilling"은 현재 직무에서 더 고도화된 역량을 추가로 개발하는 것. "multimodal learning journeys"(강의, 실습, 코칭 등 다양한 방식 결합) + "upskilling"이 이 기사에서 함께 언급됨.',diff:1,ex:'Build capabilities as a priority: leverage technology to reduce administrative burden and empower talent to succeed with <b>upskilling</b>.'},
+  {id:'vc8',type:'vocab',word:'tailored',ko:'맞춤화된; 특정 고객·요구에 맞게 조정된',pron:'[ˈteɪlərd]',nuance:'양복을 한 사람의 체형에 맞게 재단하는 "tailor"(재단사)에서 유래. 고객마다 상이한 니즈, 가치 사슬 위치, 구매 기준에 맞춰 제품·제안·소통 방식을 개별화하는 것. "tailored solutions" = 맞춤형 솔루션. "tailored offerings and value propositions" = 고객별 차별화된 가치 제안. 대량 생산·표준화와 대비되는 개념으로 고부가가치 영업의 핵심.',diff:1,ex:'Customers are expressing growing preferences for <b>tailored</b> offerings and value propositions, including differentiated pricing strategies.'},
+  {id:'vc9',type:'vocab',word:'postsale',ko:'판매 후; 구매 완료 이후의 단계',pron:'[ˈpəʊstˌseɪl]',nuance:'"post"(이후) + "sale"(판매). 제품 구매·계약 체결 이후의 서비스·지원·관계 유지 활동 전반을 포괄하는 용어. "postsale service and support" = 기술 지원, 교육, 성과 모니터링, 재계약 관리 등. 화학 산업에서 postsale 단계의 경험이 재구매 결정과 share of wallet 확대에 직접적 영향. gen AI를 통해 자동화된 postsale 지원이 가능해지고 있음.',diff:2,ex:'Customers expect seamless <b>postsale</b> service and support enabled by automation and gen AI, not just a good product at the point of sale.'},
+  {id:'vc10',type:'vocab',word:'organic growth',ko:'유기적 성장; 인수합병 없이 자체 역량으로 이루는 성장',pron:'[ɔːrˈɡænɪk ɡrəʊθ]',nuance:'"organic"(생물이 자연적으로 성장하듯이). 신규 고객 확보, 기존 고객 내 점유율 확대, 신제품 개발 등 자체 영업·마케팅·혁신으로 이루는 성장. 반대는 "inorganic growth" = M&A(인수합병)를 통한 성장. 이 기사의 출발점: 고금리와 M&A 위축으로 "inorganic growth"가 어려워진 상황에서 "organic growth"를 AI로 달성하는 것이 핵심 과제.',diff:2,ex:'High interest rates and volatile financial markets affected merger activity, and achieving <b>organic growth</b> has been difficult—making rewiring even more urgent.'},
+
+  {id:'bz1',type:'biz',word:'EBITDA',ko:'에비타 — 이자·세금·감가상각 차감 전 영업이익',pron:'[iːˈbɪtdə]',nuance:'Earnings Before Interest, Taxes, Depreciation, and Amortization. 기업의 순수한 영업 현금 창출 능력을 나타내는 지표. 재무 구조나 회계 처리 방식에 따른 왜곡 없이 영업 성과를 비교할 때 사용. "EBITDA margin expansion" = EBITDA 마진 개선 = 매출 대비 영업 수익성 향상. 이 기사에서 재배선 성공 기업은 250~400 basis points의 EBITDA margin expansion을 달성했다고 제시.',diff:2,ex:'Rewired companies achieve 10–20% above-market growth within 12–24 months and see 250–400 basis points in <b>EBITDA</b> margin expansion.'},
+  {id:'bz2',type:'biz',word:'CRM',ko:'고객 관계 관리 — 영업·마케팅 활동을 통합 관리하는 시스템',pron:'[ˌsiː ɑːr ˈɛm]',nuance:'Customer Relationship Management. 고객 정보, 상호작용 이력, 영업 기회, 파이프라인 상태를 중앙에서 관리하는 소프트웨어 플랫폼(Salesforce, SAP CRM 등). "suboptimal CRM usage" = CRM을 충분히 활용하지 않아 데이터 품질이 낮고 영업 인사이트가 부족한 상태. 이 기사에서 CRM 내 AI 어시스턴트를 통해 고객 아웃리치를 가속화한 사례 소개.',diff:1,ex:'Suboptimal <b>CRM</b> usage and poor pipeline health prevent effective sales interventions—one of five key bottlenecks in the chemicals commercial function.'},
+  {id:'bz3',type:'biz',word:'ROS',ko:'매출 이익률 — 매출 대비 순이익 비율',pron:'[ˌɑːr əʊ ˈɛs]',nuance:'Return on Sales. 순이익 ÷ 매출액 × 100. 영업 효율성을 나타내는 핵심 수익성 지표. "return on sales by 3 to 5 percent" = ROS가 3~5%포인트 향상 = 동일 매출에서 더 많은 이익을 낸다는 뜻. 화학 산업에서 가격 최적화(pricing optimization)의 효과를 측정하는 주요 KPI. "net profit margin"과 유사하나 영업 레벨의 수익성에 초점.',diff:2,ex:'The targeted pricing rewiring effort increased <b>return on sales (ROS)</b> by 3 to 5 percent and created capacity for teams to shift to strategic price execution.'},
+  {id:'bz4',type:'biz',word:'bps (basis points)',ko:'베이시스 포인트 — 1/100 퍼센트 단위',pron:'[ˈbeɪsɪs pɔɪnts]',nuance:'1 basis point = 0.01% = 0.0001. 금리, 마진, 수익률 등 비율 변화를 표현할 때 소수점 혼란 없이 정확하게 나타내기 위해 사용. "250 to 400 basis points in EBITDA margin expansion" = EBITDA 마진이 2.5~4%포인트 향상. "25 bps rate cut" = 금리 0.25%포인트 인하. 금융·투자·전략 문서에서 마진 변화를 논할 때 퍼센트 대신 bps를 사용하면 전문성이 높아 보인다.',diff:3,ex:'Rewired chemical companies see 250 to 400 <b>basis points</b> in EBITDA margin expansion and accelerate their sales cycle by 1.5 to 2.0 times.'},
+  {id:'bz5',type:'biz',word:'gen AI',ko:'생성형 AI — 새로운 콘텐츠·인사이트·코드를 생성하는 인공지능',pron:'[dʒen eɪ aɪ]',nuance:'"Generative AI"의 약칭. 학습 데이터의 패턴을 바탕으로 텍스트, 이미지, 코드, 분석 등을 새롭게 생성하는 AI. ChatGPT, Claude, Gemini 등이 대표적. 화학 영업에서는 고객 맞춤형 가치 제안 생성, 견적 자동화, 리드 분석, 영업 이메일 초안 작성 등에 활용. "advanced analytics"(예측·최적화 중심)와 결합할 때 상업적 성과가 극대화된다는 것이 이 기사의 핵심 주장.',diff:1,ex:'<b>Gen AI</b> can help accelerate digitalization and data-structuring efforts, enabling actionable insights sooner—even with low-quality data as a starting point.'},
+  {id:'bz6',type:'biz',word:'ERP',ko:'전사적 자원 관리 — 재무·구매·생산·영업을 통합 관리하는 기업용 소프트웨어',pron:'[ˌiː ɑːr ˈpiː]',nuance:'Enterprise Resource Planning. SAP, Oracle 등이 대표적. 기업 내 모든 핵심 업무 프로세스(주문, 재고, 생산, 재무, 인사 등)를 하나의 통합 시스템에서 관리. "tech-enabled suite of pricing tools embedded within their ERP system" = 가격 책정 AI 도구를 ERP 내에 직접 탑재하여 영업 담당자가 별도 시스템으로 이동하지 않고 바로 사용할 수 있도록 함. 통합의 핵심은 현장 사용자의 마찰 최소화.',diff:2,ex:'The company deployed a tech-enabled suite of pricing tools embedded within their <b>ERP</b> system to increase speed to quote and improve margin performance.'}
+];
+function render(type){
+  const grid=document.getElementById('grid');
+  const filtered=type==='all'?cards:cards.filter(c=>c.type===type);
+  grid.innerHTML=filtered.map(c=>`
+  <div class="card${learned.has(c.id)?' learned':''}" id="card-${c.id}" onclick="flip('${c.id}')">
+    <div class="card-inner">
+      <div class="front">
+        <div>
+          <span class="tag tag-${c.type}">${c.type}</span>
+          <div class="word">${c.word}</div>
+          <div class="pron">${c.pron}</div>
+          <div class="ko">${c.ko}</div>
+        </div>
+        <div class="diff">${[1,2,3].map(i=>`<div class="dot${i<=c.diff?' on':''}"></div>`).join('')}</div>
+      </div>
+      <div class="back">
+        <div>
+          <div class="word">${c.word}</div>
+          <div class="nuance">${c.nuance}</div>
+        </div>
+        <button class="learned-btn${learned.has(c.id)?' done':''}" onclick="markLearned(event,'${c.id}')">${learned.has(c.id)?'✓ Learned':'Mark Learned'}</button>
+      </div>
+    </div>
+  </div>`).join('');
+  updateStats();
+}
+function flip(id){
+  document.getElementById('card-'+id).classList.toggle('flipped');
+}
+function markLearned(e,id){
+  e.stopPropagation();
+  if(learned.has(id)){learned.delete(id);}else{learned.add(id);}
+  localStorage.setItem(STORE_KEY,JSON.stringify([...learned]));
+  render(currentFilter);
+}
+function filter(type,btn){
+  currentFilter=type;
+  document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render(type);
+}
+function updateStats(){
+  const total=cards.length;
+  const done=learned.size;
+  document.getElementById('stats').textContent=`${done} / ${total} learned`;
+}
+let currentFilter='all';
+render('all');
+</script>
+</body>
+</html>
