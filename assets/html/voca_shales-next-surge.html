@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vocabulary – Shale's Next Surge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1c2833;--ink2:#2c3e50;
+  --accent:#d4ac0d;--accent2:#b8960b;
+  --sky:#fffdf0;--bg:#fefcf3;--border:#e8c84a;
+  --r:14px;--shadow:0 4px 24px rgba(28,40,51,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(135deg,#1c2833 0%,#2c3e50 55%,#d4ac0d 100%);color:#fff;padding:2.2rem 1.5rem 1.8rem;text-align:center}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:.4rem}
+header p{font-size:.92rem;opacity:.85}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:.25rem .9rem;font-size:.78rem;margin-bottom:.7rem;letter-spacing:.04em}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:1.2rem 1rem .6rem;max-width:860px;margin:0 auto}
+.controls button{border:2px solid var(--border);background:#fff;color:var(--ink2);border-radius:30px;padding:.38rem .95rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s}
+.controls button.active,.controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.stats{text-align:center;font-size:.8rem;color:var(--ink2);padding:.2rem 0 .8rem;opacity:.75}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;padding:0 1rem 2rem;max-width:1100px;margin:0 auto}
+.card{perspective:900px;cursor:pointer;height:210px}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:1.1rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.front{background:#fff;border:2px solid var(--border)}
+.back{background:var(--sky);border:2px solid var(--accent);transform:rotateY(180deg)}
+.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.18rem .55rem;border-radius:10px;color:#fff;width:fit-content}
+.tag-phrasal{background:#d4ac0d;color:#1c2833}
+.tag-idiom{background:#7c3aed}
+.tag-colloc{background:#1c2833}
+.tag-vocab{background:#c0392b}
+.tag-biz{background:#2c6e49}
+.word{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);line-height:1.2;margin:.35rem 0 .1rem}
+.pron{font-size:.78rem;color:var(--ink2);font-style:italic;margin-bottom:.2rem}
+.ko{font-size:.88rem;color:var(--ink2);font-weight:500}
+.diff{display:flex;gap:3px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.on{background:var(--accent)}
+.back .word{font-size:1.1rem;color:var(--ink)}
+.nuance{font-size:.82rem;color:#374151;line-height:1.55;flex:1;margin:.35rem 0 .2rem;overflow:hidden}
+.learned-btn{background:var(--accent);color:#1c2833;border:none;border-radius:8px;padding:.35rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;align-self:flex-end;transition:background .2s}
+.learned-btn.done{background:#10b981;color:#fff}
+.card.learned .front{border-color:#10b981;background:#f0fff8}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey &amp; Company · Oil &amp; Gas Practice · March 2026</div>
+  <h1>Shale's Next Surge</h1>
+  <p>How 27 Innovations Could Unlock a New Growth Era — Vocabulary</p>
+</header>
+<div class="controls">
+  <button class="active" onclick="filter('all',this)">All (35)</button>
+  <button onclick="filter('phrasal',this)">Phrasal (6)</button>
+  <button onclick="filter('idiom',this)">Idiom (6)</button>
+  <button onclick="filter('colloc',this)">Colloc (7)</button>
+  <button onclick="filter('vocab',this)">Vocab (10)</button>
+  <button onclick="filter('biz',this)">Biz (6)</button>
+</div>
+<div class="stats" id="stats"></div>
+<div id="grid"></div>
+<script>
+const STORE_KEY='shales_next_surge_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(STORE_KEY)||'[]'));
+const cards=[
+  {id:'pv1',type:'phrasal',word:'run out',ko:'(자원·재고가) 바닥나다, 고갈되다',pron:'',nuance:'"Tier 1 drilling locations are running out" — run(달리다)+out(다 소진되어). 공급이 완전히 소진되어 더 이상 없는 상태. "deplete"보다 더 구어적이고 긴박한 뉘앙스. "run out of steam"(동력 소진)과 어원 공유. Tier 1 우량 시추 구역이 빠르게 고갈되고 있다는 것이 이 보고서 전체의 출발점이 되는 위기 상황을 표현',diff:1},
+  {id:'pv2',type:'phrasal',word:'push the envelope',ko:'(기술·한계의) 경계를 밀어붙이다, 한계를 뛰어넘다',pron:'',nuance:'"shortlisted technologies that are pushing the envelope" — 항공 시험 비행에서 비행 봉투(flight envelope: 안전 비행 가능 조건의 범위)의 가장자리를 밀어붙이는 데서 유래. 기술·성능의 현재 한계를 적극적으로 초월하려는 시도. "state of the art"를 한 단계 더 밀어붙이는 것. 4마일 횡단 굴착, 혁신적 프로판트 등이 셰일 기술의 envelope을 밀어붙이는 사례',diff:2},
+  {id:'pv3',type:'phrasal',word:'play out',ko:'(상황이) 전개되다, 결과가 드러나다',pron:'',nuance:'"how the next era of shale plays out" — play(연극이 펼쳐지다)+out(끝까지). 상황·사건이 어떻게 진행되어 최종 결과에 이르는지를 표현. "unfold"와 유사하나 더 자연스러운 구어체. "how things play out" = 일이 어떻게 전개될지. 셰일의 다음 시대가 어떻게 전개되느냐에 따라 에너지 밸류체인 전체에 연쇄적 영향이 있다는 맥락',diff:1},
+  {id:'pv4',type:'phrasal',word:'put pressure on',ko:'~에 압박을 가하다, 경쟁을 심화시키다',pron:'',nuance:'"improved shale economics put pressure on other marginal supply sources" — 비용 경쟁력이 높아진 셰일이 심해·오일샌드 등 고비용 공급원을 경제적으로 압박하는 것. 기업 맥락에서 "put pressure on margins" = 마진을 압박하다. 가격·경쟁·규제 등 다양한 원인으로 대상이 존재를 위협받는 상황. "competitive pressure" = 경쟁 압박',diff:1},
+  {id:'pv5',type:'phrasal',word:'come down',ko:'(가격·비용이) 하락하다, 내려오다',pron:'',nuance:'"as costs come down" / "breakevens come down" — 비용·가격·수준이 이전보다 낮아지는 것. "fall"보다 더 점진적이고 자연스러운 하락 뉘앙스. "come down in price" = 가격이 내려오다. 2014~2017년 셰일 손익분기점이 30~40% 하락한 역사적 전례처럼, 27개 혁신으로 비용이 다시 come down할 수 있다는 것이 보고서의 핵심 주장',diff:1},
+  {id:'pv6',type:'phrasal',word:'unlock',ko:'(잠긴 가능성·가치를) 열다, 해방하다',pron:'',nuance:'"27 innovations could unlock a new growth era" — 잠긴 자물쇠를 여는 것처럼, 잠재적 가치나 가능성이 실현될 수 있도록 장벽을 제거하는 것. "unlock value" = 잠재 가치를 실현하다. 보고서 전체를 관통하는 핵심 동사: 혁신이 Tier 2 구역을 경제성 있게 만들어 셰일의 새로운 시대를 잠금 해제한다는 비유. "unlock potential" = 잠재력을 꽃피우다',diff:1},
+  {id:'id1',type:'idiom',word:'peak shale',ko:'셰일 정점, 셰일 생산이 최대치에 도달한 후 감소하는 시점',pron:'',nuance:'"despite predictions of peak shale" — "peak oil"(석유 생산 정점) 개념을 셰일에 적용. 지질학적 최적 구역(Tier 1)이 고갈되면서 셰일 생산이 정점에 달했다가 감소하는 시점. 일부 전문가들은 이미 $65/bbl 이하에서 peak shale이 도래했다고 주장. 그러나 McKinsey는 27개 혁신으로 2030년대까지 정점을 늦출 수 있다고 분석',diff:2},
+  {id:'id2',type:'idiom',word:'moonshot',ko:'문샷, 극도로 야심차고 달성 가능성 불확실한 혁신적 도전',pron:'',nuance:'"potential moonshot innovations—those that could meaningfully enhance recovery factors" — 1960년대 달 착륙 프로젝트처럼 달성 가능성이 불확실하지만 성공 시 게임체인저가 되는 과감한 혁신. Google X의 moonshot factory처럼 기업 혁신 전략에서 광범위하게 사용. 경량 프로판트처럼 회수율을 획기적으로 향상시킬 수 있는 혁신이 셰일의 moonshot 후보',diff:1},
+  {id:'id3',type:'idiom',word:'knock-on effect',ko:'연쇄 효과, 한 곳의 변화가 다른 곳으로 퍼지는 파급 효과',pron:'',nuance:'"the knock-on effect of shale\'s next era" — 도미노처럼 한 사건이 다음 사건을 일으키는 연쇄 반응. 영국식 표현으로 미국식 "ripple effect"(파급 효과)와 동의. 셰일 생산 증가가 OFSE·미드스트림·정제·화학·오프쇼어 등 에너지 밸류체인 전반에 걸쳐 knock-on effects를 일으킨다는 것이 보고서 후반부의 핵심',diff:1},
+  {id:'id4',type:'idiom',word:'extend the runway',ko:'(성장·활동의) 지속 가능 기간을 늘리다',pron:'',nuance:'"extending the drilling runway by five to eight years" — 스타트업 용어에서 차용. 비행기가 이륙하려면 충분한 활주로(runway)가 필요한 것처럼, 사업이나 프로젝트가 지속 가능하도록 시간·자원의 여유를 늘리는 것. 혁신을 통해 Tier 2 구역이 경제성을 갖추면 셰일 생산의 runway가 5~8년 더 연장된다는 맥락. "runway" = 스타트업에서는 소진율(burn rate) 대비 남은 자금',diff:2},
+  {id:'id5',type:'idiom',word:'at the frontlines',ko:'최전선에서, 가장 앞서 현장에서 직접 실행하며',pron:'',nuance:'"our experience with clients at the frontlines of technology deployment" — 군사 용어에서 가장 위험하고 중요한 전투가 벌어지는 최전방. 비즈니스에서는 기술·혁신·경쟁이 가장 치열하게 전개되는 현장 최선두. "on the front lines" = 최전선에. McKinsey가 단순 컨설턴트가 아닌 기술 배포 현장 최전방에서 함께 일한 실전 경험을 가지고 있음을 강조',diff:1},
+  {id:'id6',type:'idiom',word:'never static',ko:'결코 정적이지 않다, 끊임없이 변화한다',pron:'',nuance:'"increased production levels are never static—they require additional breakthroughs" — static(정적인, 변하지 않는). 한번 달성한 성과도 추가 혁신과 투자 없이는 유지되지 않는다는 경고. 셰일 생산이 증가한 상태를 유지하려면 지속적인 R&D와 현장 실행이 필요. "nothing is static" = 아무것도 고정되어 있지 않다. 혁신에 안주하지 말라는 핵심 메시지',diff:2},
+  {id:'co1',type:'colloc',word:'breakeven price',ko:'손익분기 가격, 수익과 비용이 정확히 일치하는 유가',pron:'',nuance:'"reducing breakevens by $7 to $13 per BOE" — 유전 개발에서 드릴링·완공·운영 비용 전체를 회수하기 위해 필요한 최소 유가. 이 가격 이상이면 수익, 이하면 손실. Tier 1 = 손익분기 $40/bbl 이하. 27개 혁신이 손익분기를 $7~13 낮추면 Tier 2 구역이 Tier 1으로 상승. "cash flow breakeven"(현금흐름 기준)과 "full-cycle breakeven"(전체 사이클 기준)으로 세분화',diff:2},
+  {id:'co2',type:'colloc',word:'recovery factor',ko:'회수율, 매장량 중 실제로 생산 가능한 비율',pron:'',nuance:'"innovations that could unlock higher recovery factors" — 지하에 매장된 원유·가스 중 현재 기술로 생산 가능한 비율. 전통 유전은 30~40%, 셰일은 5~15% 수준으로 상당히 낮음. 이 수치를 올리는 것이 "recovery improvement" 혁신의 핵심 목표. 매장량은 고정이지만 recovery factor를 높이면 동일 구역에서 훨씬 많은 생산 가능. 경량 프로판트 같은 moonshot 혁신이 게임체인저가 될 수 있는 영역',diff:2},
+  {id:'co3',type:'colloc',word:'lateral length',ko:'수평 구간 길이, 수평 시추 정에서 수평으로 연장된 거리',pron:'',nuance:'"lateral lengths have risen from two to three miles on average, to four miles" — 수직으로 시추 후 지층을 따라 수평으로 연장하는 구간의 길이. 길수록 접촉하는 암석 면적이 늘어 생산량 증가. 2~3마일에서 4마일로 연장이 새로운 표준화 중. 4마일 laterals = "4-milers". 리스 경계(lease boundary) 제약이 없는 경우에만 가능. 기술 발전과 비용 절감의 핵심 동인 중 하나',diff:2},
+  {id:'co4',type:'colloc',word:'remote operations center',ko:'원격 운영 센터, 분산된 유정을 중앙에서 원격 모니터링·제어하는 시설',pron:'',nuance:'"remote operating centers (ROCs) are reshaping how companies monitor and manage their assets" — 수천 개의 유정과 시설을 현장에 직원 없이 중앙 센터에서 실시간으로 모니터링·제어·최적화하는 시스템. AI·SCADA와 결합해 운영 비용 절감 및 비상 대응 속도 향상. 대규모 운영 풋프린트를 가진 기업일수록 ROC의 효과가 극대화됨. "command center" = 같은 개념의 다른 표현',diff:2},
+  {id:'co5',type:'colloc',word:'capital discipline',ko:'자본 규율, 수익성 없는 투자를 배제하는 엄격한 자본 배분',pron:'',nuance:'"operators will need to pursue disciplined capital allocation" — 과거 셰일 업계가 생산량 성장을 위해 현금흐름을 초과하는 과도한 투자로 파산한 교훈에서 비롯. 현금흐름 내에서 수익성 있는 프로젝트만 선택적으로 투자하는 규율. 월스트리트 투자자들이 셰일 기업에 가장 강조하는 요구사항. "capital allocation" = 자본 배분, "capex discipline" = 설비투자 규율',diff:2},
+  {id:'co6',type:'colloc',word:'frac spread',ko:'수압파쇄 장비 세트, 유정 완공에 투입되는 장비 일체',pron:'',nuance:'"fewer rigs and frac spreads in the field" — hydraulic fracturing(수압파쇄) 작업에 필요한 장비 일체를 하나의 단위로 묶은 것. 펌프 트럭·믹서·탱크·제어 장비 등으로 구성. "frac fleet"이라고도 함. 시추 리그(rig)와 달리 완공 단계에 사용. 효율화로 개당 처리 능력이 높아져 총 frac spread 수는 줄어드는 추세. OFSE 산업의 핵심 장비',diff:3},
+  {id:'co7',type:'colloc',word:'type curve',ko:'타입 커브, 유정의 생산량 감소 패턴을 나타내는 표준 곡선',pron:'',nuance:'"a bottom-up, type-curve-based model across shale basins" — 같은 지역·지층에서 드릴링된 유정들의 평균적인 생산량 감소 패턴(decline curve)을 하나의 대표 곡선으로 정의한 것. 유전 경제성 평가·생산 예측·투자 결정의 핵심 도구. 각 서브 배신(sub-basin)마다 고유한 type curve가 있음. Tier 1과 Tier 2를 구분하는 기준도 type curve에 기반',diff:3},
+  {id:'v1',type:'vocab',word:'unconventional',ko:'비전통적인 (유전), 셰일·타이트 오일 등 수압파쇄 필요 자원',pron:'[ˌʌnkənˈvenʃənəl]',nuance:'"unlocking a new level of operational scale in unconventional basins" — 전통적(conventional) 유전·가스전은 자연 압력으로 흘러나오지만, unconventional은 셰일·타이트 샌드처럼 암석 내 갇혀있어 수압파쇄(fracking) 등 특수 기술이 필요한 자원. 북미 셰일 혁명이 unconventional 자원 개발의 대표 사례. "unconventional oil and gas" = 비전통 석유가스',diff:2},
+  {id:'v2',type:'vocab',word:'geological',ko:'지질학적인, 지구 암석·지층의 특성에 관한',pron:'[ˌdʒiːəˈlɒdʒɪkəl]',nuance:'"despite geological uncertainty and macroeconomic volatility" — geology(지질학)+ical. 지구의 암석·지층·광물의 형성과 특성을 연구하는 학문. 셰일 개발에서 geological uncertainty = 지하 암석의 품질·두께·공극률을 지표면에서 완벽히 알 수 없는 불확실성. "geological survey" = 지질 조사, "geological formation" = 지질층. Tier 1 vs Tier 2 구분의 근거가 되는 지질학적 조건',diff:1},
+  {id:'v3',type:'vocab',word:'retrofit',ko:'(기존 설비에) 최신 기술을 추가하다, 개조하다',pron:'[ˈretrəʊfɪt]',nuance:'"the feasibility of retrofitting them" — retro(기존)+fit(맞추다). 새로 제작하지 않고 기존 장비·시설에 새로운 기술·부품·시스템을 추가로 설치하는 것. 수천 개의 기존 레거시 유정에 ROC·SCADA·AI 시스템을 추가 적용하는 것이 셰일의 핵심 과제. 새로운 기기를 처음부터 설계하는 것보다 비용이 저렴하나 호환성 문제 존재. 건물·자동차·항공기 분야에서도 광범위 사용',diff:2},
+  {id:'v4',type:'vocab',word:'hypercompetitive',ko:'극도로 경쟁이 치열한, 초경쟁적인',pron:'[ˌhaɪpəkəmˈpetɪtɪv]',nuance:'"in this potentially hypercompetitive environment" — hyper(초과)+competitive(경쟁적). 단순히 경쟁이 치열한 수준을 넘어 생존 자체가 위협받을 수 있는 극단적 경쟁 환경. 효율화로 OFSE 장비 수요가 줄어드는 동시에 기술 기준은 높아지는 이중 압박. 기존 사업 모델로는 생존이 어려워 근본적 전환이 필요. "hypercompetitive market" = 초경쟁 시장',diff:2},
+  {id:'v5',type:'vocab',word:'cascading',ko:'연쇄적으로 이어지는, 폭포처럼 흘러내리는',pron:'[kæˈskeɪdɪŋ]',nuance:'"reshaping OFSE demand could bring cascading impacts across the energy value chain" — cascade(폭포)+ing. 폭포물이 단계적으로 흘러내리듯 한 변화가 다음 변화를 일으키며 연속적으로 확산. "cascading failure" = 연쇄 장애(IT), "cascading effects" = 연쇄 파급. 셰일 생산 증가가 OFSE→미드스트림→정제→화학→오프쇼어까지 밸류체인 전체에 순차적으로 파급된다는 분석',diff:2},
+  {id:'v6',type:'vocab',word:'scrutinize',ko:'면밀히 검토하다, 철저히 조사하다',pron:'[ˈskruːtɪnaɪz]',nuance:'"marginal sources of oil would be scrutinized as shale production increases" — 라틴어 scrutinium(쓰레기 속 물건 찾기). 매우 꼼꼼하고 비판적으로 검토하는 것. 셰일의 비용 경쟁력이 높아지면 심해·오일샌드 같은 고비용 공급원의 경제성이 더 엄격하게 비교·평가받게 된다는 맥락. "scrutiny" = 엄밀한 검토, "under scrutiny" = 조사를 받고 있는',diff:2},
+  {id:'v7',type:'vocab',word:'equilibrium',ko:'균형 상태, 공급과 수요가 맞물린 안정적 상태',pron:'[ˌiːkwɪˈlɪbriəm]',nuance:'"the OFSE sector may be entering a new equilibrium" — 라틴어 aequus(동등한)+libra(저울). 물리학에서 힘들이 균형을 이루는 상태. 경제학에서는 공급과 수요가 일치하는 시장 균형 가격·수량. "new equilibrium" = 과거와 다른 새로운 균형점. 효율화로 장비 수가 줄었지만 기술 수준은 높아진 상태에서 OFSE 산업이 새로운 안정 상태에 진입한다는 맥락',diff:2},
+  {id:'v8',type:'vocab',word:'industrialize',ko:'산업화하다, 기술을 대규모 산업 표준으로 확산시키다',pron:'[ɪnˈdʌstriəlaɪz]',nuance:'"scale and industrialize new innovations" — industry(산업)+alize. 원래 의미는 농업 사회를 제조업 중심으로 전환하는 것. 기술 맥락에서는 실험실·파일럿 수준의 기술을 현장에서 대규모·표준화된 방식으로 구현하는 것. 단순 도입(adopt)보다 한 단계 높은 수준: 표준화·체계화·대규모 확산. "industrialize AI" = AI를 산업 전반에 표준 프로세스로 정착시키다',diff:2},
+  {id:'v9',type:'vocab',word:'proppant',ko:'프로판트, 수압파쇄 후 균열을 열린 상태로 유지하는 모래·세라믹 입자',pron:'[ˈprɒpənt]',nuance:'"advanced proppants (eg, petcoke light weight proppant)" — prop(지탱하다)+ant. 수압파쇄(fracking)로 만든 암석 균열이 다시 닫히지 않도록 균열 속에 채워 넣는 고강도 입자. 일반 모래, 수지 코팅 모래, 세라믹 등 다양한 종류. 경량 프로판트는 균열 깊숙이 침투 가능. 프로판트의 크기·강도·농도가 회수율에 직접 영향. 셰일 완공(completions) 비용의 큰 비중 차지',diff:3},
+  {id:'v10',type:'vocab',word:'feedstock',ko:'원료, 정제·화학 공정의 원재료',pron:'[ˈfiːdstɒk]',nuance:'"continued availability of low-cost feedstocks (light crude, natural gas liquids, and ethane)" — feed(공급하다)+stock(원재료). 제조·화학·정제 공정에 투입되는 원재료. 셰일에서 나오는 경질 원유·NGL·에탄이 미국 정유·석유화학 산업의 저비용 feedstock. 에탄은 에틸렌 생산의 핵심 feedstock으로 미국 화학 산업의 경쟁력 원천. 셰일 생산 지속이 미국 downstream 산업 경쟁력에 직결',diff:2},
+  {id:'b1',type:'biz',word:'BOE',ko:'석유 환산 배럴 (Barrel of Oil Equivalent)',pron:'',nuance:'"reducing breakevens by $7 to $13 per BOE" — 다양한 에너지원(원유·가스·NGLs)의 에너지 함량을 석유 1배럴(약 6.1 GJ)을 기준으로 환산한 단위. 가스전과 오일필드를 동일 기준으로 비교할 때 사용. 1 BOE = 약 5,800 cubic feet of natural gas. "MBOE"(천 BOE), "MMBOE"(백만 BOE). 손익분기 분석·생산량 보고·기업 가치 평가의 표준 단위',diff:2},
+  {id:'b2',type:'biz',word:'MMBOPD',ko:'하루 백만 배럴 (Million Barrels of Oil Per Day)',pron:'',nuance:'"increasing US onshore oil production to as many as 13 MMBOPD" — MM(million)+BO(Barrels of Oil)+PD(Per Day). 국가·지역 수준의 대규모 원유 생산량 단위. 미국 전체 생산량이 약 13 MMBOPD, 사우디아라비아가 약 10 MMBOPD. 세계 총 수요는 약 100 MMBOPD. "MBOPD"(천 배럴/일)는 개별 유전이나 소규모 생산자에 사용. OPEC 회의에서 생산 쿼터의 핵심 단위',diff:2},
+  {id:'b3',type:'biz',word:'WTI',ko:'서부 텍사스 중질유 (West Texas Intermediate), 미국의 원유 가격 기준',pron:'',nuance:'"flat $65 per barrel, WTI" — 텍사스 퍼미안 배신에서 생산되는 경질 저유황 원유. Brent(북해 기준)와 함께 세계 원유 가격의 양대 기준. 뉴욕상업거래소(NYMEX)에서 선물 거래. WTI는 Brent보다 일반적으로 $2~5 낮게 형성. 미국 셰일 손익분기 분석의 표준 기준. "strip pricing" = 선물 시장에서 형성되는 미래 기간별 가격',diff:2},
+  {id:'b4',type:'biz',word:'OFSE',ko:'유전 서비스 및 장비 (Oilfield Services and Equipment)',pron:'',nuance:'"A new equilibrium for oilfield services and equipment (OFSE)" — 석유가스 개발을 위한 시추·완공·생산·유지보수 서비스와 관련 장비를 제공하는 산업. Schlumberger(SLB)·Halliburton·Baker Hughes가 대표 기업. 운영사(operator)와 다른 B2B 사업 모델. 드릴링 효율화로 OFSE 장비 수요가 구조적으로 감소하나, 기술 수준 향상으로 고부가가치 서비스 수요는 증가하는 산업 재편 중',diff:2},
+  {id:'b5',type:'biz',word:'PV15',ko:'15% 할인율 현재가치 (Present Value at 15% Discount Rate)',pron:'',nuance:'"Tier 1 defined as well locations with a breakeven <$40/bbl (PV15 basis)" — 미래 현금흐름을 연 15% 할인율로 현재 가치로 환산한 것. 석유가스 업계 표준 리스크 조정 수익률. PV10(10% 할인)보다 더 보수적 평가. "PV/I ratio" = 투자 대비 현재가치 비율(수익성 지수). Tier 1 기준: PV15 기준 손익분기 $40/bbl 이하. 이 기준으로 55,000~80,000개 Tier 2 구역이 Tier 1으로 전환 가능',diff:3},
+  {id:'b6',type:'biz',word:'SCADA',ko:'원격 감시 제어 시스템 (Supervisory Control and Data Acquisition)',pron:'',nuance:'"next-gen SCADA (eg, remote pump restarts)" — 지리적으로 분산된 산업 설비를 중앙에서 실시간 모니터링하고 원격 제어하는 시스템. 유전의 각 유정·펌프·밸브 상태를 수집해 원격 조작 가능. "next-gen SCADA" = AI·클라우드와 결합해 단순 모니터링을 넘어 예측 유지보수·자율 제어 가능. "remote pump restarts" = 현장 출동 없이 원격으로 펌프를 재가동. 에너지·수도·전력망 운영의 핵심 인프라',diff:3},
+];
+function render(){
+  const grid=document.getElementById('grid');
+  const filtered=grid.dataset.filter||'all';
+  const visible=filtered==='all'?cards:cards.filter(c=>c.type===filtered);
+  const lc=[...learned].filter(id=>visible.some(c=>c.id===id)).length;
+  document.getElementById('stats').textContent=`${lc} / ${visible.length} learned`;
+  grid.innerHTML='';
+  visible.forEach(c=>{
+    const isL=learned.has(c.id);
+    const dots=[1,2,3].map(i=>`<span class="dot${i<=c.diff?' on':''}"></span>`).join('');
+    const div=document.createElement('div');
+    div.className='card'+(isL?' learned':'');
+    div.innerHTML=`<div class="card-inner">
+      <div class="front">
+        <div><span class="tag tag-${c.type}">${c.type}</span>
+        <div class="word">${c.word}</div>
+        ${c.pron?`<div class="pron">${c.pron}</div>`:''}
+        <div class="ko">${c.ko}</div></div>
+        <div class="diff">${dots}</div>
+      </div>
+      <div class="back">
+        <div><div class="word">${c.word}</div>
+        <div class="nuance">${c.nuance}</div></div>
+        <button class="learned-btn${isL?' done':''}" onclick="toggleL(event,'${c.id}')">${isL?'✓ Learned':'Mark learned'}</button>
+      </div>
+    </div>`;
+    div.addEventListener('click',function(e){if(!e.target.classList.contains('learned-btn'))this.classList.toggle('flipped')});
+    grid.appendChild(div);
+  });
+}
+function filter(type,btn){
+  document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('grid').dataset.filter=type;
+  render();
+}
+function toggleL(e,id){
+  e.stopPropagation();
+  if(learned.has(id))learned.delete(id);else learned.add(id);
+  localStorage.setItem(STORE_KEY,JSON.stringify([...learned]));
+  render();
+}
+render();
+</script>
+</body>
+</html>
