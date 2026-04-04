@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vocabulary – The Next Act for Robotics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a2332;--ink2:#2c4a6e;
+  --accent:#e85d04;--accent2:#c44d00;
+  --sky:#fff8f3;--bg:#fef9f5;--border:#f4a261;
+  --r:14px;--shadow:0 4px 24px rgba(26,35,50,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(135deg,#1a2332 0%,#2c4a6e 55%,#e85d04 100%);color:#fff;padding:2.2rem 1.5rem 1.8rem;text-align:center}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:.4rem}
+header p{font-size:.92rem;opacity:.85}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:.25rem .9rem;font-size:.78rem;margin-bottom:.7rem;letter-spacing:.04em}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:1.2rem 1rem .6rem;max-width:860px;margin:0 auto}
+.controls button{border:2px solid var(--border);background:#fff;color:var(--ink2);border-radius:30px;padding:.38rem .95rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s}
+.controls button.active,.controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.stats{text-align:center;font-size:.8rem;color:var(--ink2);padding:.2rem 0 .8rem;opacity:.75}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;padding:0 1rem 2rem;max-width:1100px;margin:0 auto}
+.card{perspective:900px;cursor:pointer;height:210px}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:1.1rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.front{background:#fff;border:2px solid var(--border)}
+.back{background:var(--sky);border:2px solid var(--accent);transform:rotateY(180deg)}
+.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.18rem .55rem;border-radius:10px;color:#fff;width:fit-content}
+.tag-phrasal{background:#e85d04}
+.tag-idiom{background:#7c3aed}
+.tag-colloc{background:#1a2332}
+.tag-vocab{background:#c0392b}
+.tag-biz{background:#2c4a6e}
+.word{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);line-height:1.2;margin:.35rem 0 .1rem}
+.pron{font-size:.78rem;color:var(--ink2);font-style:italic;margin-bottom:.2rem}
+.ko{font-size:.88rem;color:var(--ink2);font-weight:500}
+.diff{display:flex;gap:3px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.on{background:var(--accent)}
+.back .word{font-size:1.1rem;color:var(--ink)}
+.nuance{font-size:.82rem;color:#374151;line-height:1.55;flex:1;margin:.35rem 0 .2rem;overflow:hidden}
+.learned-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.35rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;align-self:flex-end;transition:background .2s}
+.learned-btn.done{background:#10b981}
+.card.learned .front{border-color:#10b981;background:#f0fff8}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey &amp; Company · Industrials &amp; Electronics Practice · March 2026</div>
+  <h1>The Next Act for Robotics</h1>
+  <p>Human–Machine Collaboration — Vocabulary</p>
+</header>
+<div class="controls">
+  <button class="active" onclick="filter('all',this)">All (35)</button>
+  <button onclick="filter('phrasal',this)">Phrasal (6)</button>
+  <button onclick="filter('idiom',this)">Idiom (6)</button>
+  <button onclick="filter('colloc',this)">Colloc (7)</button>
+  <button onclick="filter('vocab',this)">Vocab (10)</button>
+  <button onclick="filter('biz',this)">Biz (6)</button>
+</div>
+<div class="stats" id="stats"></div>
+<div id="grid"></div>
+<script>
+const STORE_KEY='robotics_human_machine_collab_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(STORE_KEY)||'[]'));
+const cards=[
+  {id:'pv1',type:'phrasal',word:'pour into',ko:'(돈·자원을) 쏟아붓다, 대규모로 투입하다',pron:'',nuance:'"a lot of money was poured into manipulation and perception" — pour(붓다)+into(~속으로). 액체를 용기에 붓는 이미지로 대규모 투자·자원·노력을 집중 투입하는 것. 수동태 "be poured into"가 더 자연스러움. "pour resources into" = 자원을 투입하다. AI·로보틱스 붐에 엄청난 자본이 유입되는 것을 생동감 있게 표현. "pour cold water on" = ~에 찬물을 끼얹다(반대 표현)',diff:1},
+  {id:'pv2',type:'phrasal',word:'fence off',ko:'(울타리로) 구역을 분리하다, 격리하다',pron:'',nuance:'"traditionally, especially in automotive, robots are fenced off" — fence(울타리)+off(분리). 위험한 기계·구역을 물리적 울타리로 사람과 분리하는 것. 전통적 산업용 로봇은 안전을 위해 사람과 분리된 케이지(cage) 안에서만 작동. 새로운 협동 로봇(cobot) 기술의 핵심 변화는 이 fence를 없애 사람과 같은 공간에서 작업하는 것. "fence in" = 울타리로 둘러싸다',diff:1},
+  {id:'pv3',type:'phrasal',word:'hand off',ko:'(작업을) 넘겨주다, 다음 담당자에게 이전하다',pron:'',nuance:'"software systems that allow people and robots to hand off work from one to the other" — 릴레이 경주에서 바통을 다음 주자에게 넘기는 이미지. 사람과 로봇이 같은 작업을 분담해 서로 넘겨가며 협력하는 새로운 협업 모델의 핵심. "handoff"(명사) = 인계, 이관. 의료·소프트웨어·제조업 모두에서 중요한 협업 구조. "hand over"보다 더 즉각적이고 무결한 이전의 뉘앙스',diff:1},
+  {id:'pv4',type:'phrasal',word:'come down to',ko:'(결국) ~로 귀결되다, 핵심은 ~이다',pron:'',nuance:'"What it\'s really going to come down to is this: How do you make more than one hand..." — 복잡한 문제나 상황을 분석했을 때 결국 가장 핵심이 되는 한 가지로 수렴되는 것. "boil down to"와 유사하나 더 대화체적. "At the end of the day, it comes down to execution" = 결국은 실행력이 핵심이다. 비즈니스·인터뷰에서 핵심 포인트를 강조할 때 가장 많이 쓰이는 표현 중 하나',diff:1},
+  {id:'pv5',type:'phrasal',word:'retool',ko:'(기술·역할을) 재편하다, 새로운 도구·방식으로 전환하다',pron:'',nuance:'"a workforce that is ready to retool their jobs" — re(다시)+tool(도구). 원래는 공장에서 새로운 제품 생산을 위해 기계·금형을 교체하는 것. 비즈니스에서는 역할·기술·방식을 새로운 환경에 맞게 근본적으로 재편하는 것. "reskilling"과 유사하나 retool은 더 구체적·물리적 변화 뉘앙스. 자동화 시대에 근로자들이 자신의 역할을 로봇과의 협업에 맞게 재편해야 한다는 맥락',diff:2},
+  {id:'pv6',type:'phrasal',word:'overindex on',ko:'~에 과도하게 집착하다, 지나치게 비중을 두다',pron:'',nuance:'"many companies are overindexed on productivity gains" — index(지수, 가중치)+over(초과). 데이터 분석에서 특정 항목의 비중이 평균보다 과도하게 높은 것. 비즈니스에서는 한 가지 지표(생산성)에만 과도하게 집중하고 다른 가치(품질·안전·직원 경험)를 간과하는 것을 지적할 때 사용. "overindex on metrics that don\'t matter" = 중요하지 않은 지표에 과도하게 집착하다',diff:3},
+  {id:'id1',type:'idiom',word:'hype cycle',ko:'과대 광고 사이클, 기술 기대치의 급등락 패턴',pron:'',nuance:'"when these hype cycles occur, expectations will be massively inflated" — Gartner가 1995년에 제시한 기술 성숙도 곡선 모델. 신기술이 등장하면 ①기술 촉발→②과대 기대 정점→③환멸의 골짜기→④계몽기→⑤생산성 안정화의 패턴을 반복. 로보틱스·AI·자율주행 모두 이 사이클을 경험. 거품이 꺼져도 기반 기술은 사회에 스며들어 있다는 것이 테일러의 핵심 통찰',diff:2},
+  {id:'id2',type:'idiom',word:'North Star',ko:'북극성, 변하지 않는 궁극적 목표',pron:'',nuance:'"lights-out manufacturing is a wonderful North Star, but it never becomes a reality" — 항해사가 방향을 잡기 위해 참조하는 북극성처럼, 도달하기 어렵지만 방향을 제시하는 이상적 목표. "North Star metric" = 핵심 방향 지표. "aspirational goal"보다 더 불변적이고 원대한 목표의 뉘앙스. 완전 무인 제조(lights-out)가 이론적 이상(北極星)이지만 현실에서 결코 완전히 실현된 적 없다는 솔직한 인정',diff:1},
+  {id:'id3',type:'idiom',word:'their baby is ugly',ko:'자신의 결과물에 결함이 있다는 냉정한 평가를 받아들이다',pron:'',nuance:'"it requires engineers to be willing to hear that their baby is ugly" — 부모가 자신의 아이는 항상 예쁘다고 생각하듯, 개발자들은 자신의 기술에 맹목적으로 집착하는 경향. "당신의 아이(개발물)가 못생겼다"는 말을 들을 준비가 되어있는 것 = 냉혹한 실사용자 피드백을 겸허히 수용하는 자세. 기술 개발에서 가장 어렵고도 중요한 태도 변화를 유머러스하게 표현',diff:2},
+  {id:'id4',type:'idiom',word:'holy grail',ko:'성배, 가장 오래되고 달성하기 어려운 궁극의 목표',pron:'',nuance:'"Assembly line tasks are the holy grail" — 아서왕 전설의 성배(Holy Grail): 예수의 최후의 만찬 잔으로 불멸·치유의 힘을 가진 전설의 물건. 오랫동안 추구해왔지만 아직 달성하지 못한 가장 중요한 목표. 조립라인 작업의 완전 자동화가 로보틱스의 성배인 이유: 인간의 손·눈·뇌의 놀라운 능력에 의존해온 작업이기 때문. "the holy grail of AI" = AI의 궁극 목표',diff:1},
+  {id:'id5',type:'idiom',word:'lights-out manufacturing',ko:'무인 생산, 조명이 필요 없을 정도로 사람이 없는 완전 자동화 공장',pron:'',nuance:'"I am not a believer in lights-out manufacturing" — 완전 자동화 공장에는 사람이 없어 조명조차 필요 없다는 개념. 이론적 이상으로 자주 논의되지만 현실에서는 예외적 사례만 존재. 테일러의 핵심 주장: 인간의 손·눈·뇌는 아직 대체 불가하며 진정한 미래는 인간과 로봇의 협업. "dark factory" = 같은 의미의 다른 표현. "turn the lights on" = 사람이 다시 필요해졌다',diff:2},
+  {id:'id6',type:'idiom',word:'get your hands dirty',ko:'직접 현장에 뛰어들다, 몸소 경험하다',pron:'',nuance:'"There\'s no replacement for getting your hands dirty and seeing the environment where a robot will be used" — 흙을 만지며 농사짓는 것처럼 이론이 아닌 실제 현장에서 직접 경험하는 것. "hands-on experience"(실습 경험)와 유사. 로보틱스 연구자들에게 실험실을 벗어나 실제 공장·창고에서 현장 경험을 쌓아야 한다는 강력한 메시지. "roll up your sleeves" = 소매를 걷어붙이다(적극 참여)',diff:1},
+  {id:'co1',type:'colloc',word:'operation design domain',ko:'운영 설계 도메인, 자율 시스템이 안전하게 작동하는 조건의 집합',pron:'',nuance:'"the set of conditions under which an autonomous system will work well and safely" — 자율주행차 업계에서 가져온 프레임워크. 어떤 환경(날씨·도로 유형·속도 범위)에서 시스템이 신뢰할 수 있게 작동하는지를 명확히 정의. SW 미남서부 vs 폭설 후 보스턴 시내처럼 완전히 다른 ODD. 로보틱스에도 동일 적용: 어떤 작업·환경에서 로봇이 작동하는지 먼저 정의해야 함',diff:3},
+  {id:'co2',type:'colloc',word:'form factor',ko:'폼 팩터, 기기의 외형·크기·구조적 형태',pron:'',nuance:'"What exactly will that form factor look like? Is it a bipedal humanoid? Is it a wheeled torso?" — 원래 전자기기의 물리적 크기·형태·배치를 지칭하는 엔지니어링 용어. 로보틱스에서는 로봇의 신체 구조(직립형·바퀴형·고정형 등)를 의미. "human form factor" = 인간의 신체 구조를 모방. 어떤 form factor가 실제 작업환경에 최적인지가 현재 로보틱스의 핵심 탐구 질문',diff:2},
+  {id:'co3',type:'colloc',word:'fragile supply chain',ko:'취약한 공급망, 외부 충격에 쉽게 붕괴하는 공급 구조',pron:'',nuance:'"The COVID pandemic exposed the brittleness of our supply chains" — fragile(취약한)+supply chain(공급망). 단일 공급원 의존·재고 최소화(JIT) 전략이 팬데믹·지정학적 충격에 얼마나 취약한지 드러난 사례. 이 취약성이 미국의 리쇼어링(reshoring)과 자동화 투자 가속화의 핵심 동인. "resilient supply chain" = 회복탄력성 있는 공급망(반대)',diff:1},
+  {id:'co4',type:'colloc',word:'systems engineering',ko:'시스템 공학, 복잡한 시스템을 통합적으로 설계·관리하는 엔지니어링',pron:'',nuance:'"It\'s a systems engineering problem" — 하드웨어·소프트웨어·인간 요소를 포함한 복잡한 시스템 전체를 통합적으로 설계·구현·운영하는 공학 분야. "The problems are everywhere" — 소프트웨어만 또는 하드웨어만의 문제가 아닌 전체 시스템의 통합 설계가 핵심. 우주항공·방위·자동차에서 발전한 방법론. 로보틱스의 궁극적 성공은 이 시스템 통합에 달려있다는 핵심 주장',diff:2},
+  {id:'co5',type:'colloc',word:'ergonomic risk',ko:'인체공학적 위험, 작업 환경이 신체에 주는 부담과 상해 위험',pron:'',nuance:'"there might be a set of potential ergonomic risks" — ergonomics(인체공학: 인간의 신체적 능력에 맞게 작업 환경을 설계하는 학문)+risk. 반복 작업·무거운 물건 취급·부자연스러운 자세에서 비롯되는 근골격계 질환 등. 로봇이 인간 대신 에르고노믹 리스크가 높은 작업을 수행하면 산업 재해·직업병을 줄일 수 있다는 것이 자동화의 핵심 가치 중 하나',diff:2},
+  {id:'co6',type:'colloc',word:'parallel workflow',ko:'병렬 워크플로우, 여러 작업이 동시에 독립적으로 진행되는 구조',pron:'',nuance:'"logistics often involves parallel workflows, but manufacturing is famously very linear" — 병렬(parallel): 여러 작업이 동시에 독립적으로 진행 vs 선형(linear): 순차적으로 의존적으로 진행. 물류창고는 수백 개의 주문이 동시에 처리 가능하지만, 자동차 조립라인은 이전 공정이 완료돼야 다음 공정이 진행 가능. 이 구조적 차이가 로봇 통합 방식을 완전히 다르게 만드는 핵심 요인',diff:2},
+  {id:'co7',type:'colloc',word:'perception system',ko:'인지 시스템, 로봇이 주변 환경을 감지·해석하는 센서 및 소프트웨어',pron:'',nuance:'"there\'s a lot that really can only be done with two hands and an advanced perception system" — perception(지각)+system. 카메라·라이다·레이더·촉각 센서로 주변 환경을 감지하고 AI로 해석하는 로봇의 \'눈과 신경계\'. 자율주행차 기술의 핵심 투자가 로봇 인지 기술로 전환 중. 인간의 눈+뇌에 해당하는 기능을 구현하는 것이 차세대 로봇의 핵심 과제',diff:2},
+  {id:'v1',type:'vocab',word:'manipulation',ko:'(로봇의) 물체 조작, 손으로 다루는 능력',pron:'[ˌmænɪpjʊˈleɪʃən]',nuance:'"advances in AI, sensing, and manipulation" — 로보틱스에서 manipulation은 \'부정적 조종\'의 의미가 아닌 물체를 잡고·이동하고·조작하는 능력. 인간의 손처럼 다양한 물체를 섬세하게 다루는 것이 로봇 공학의 가장 어려운 과제. "dexterous manipulation" = 손재주 있는 조작. AI와 결합한 manipulation 기술이 현재 가장 많은 투자를 받고 있는 로보틱스 분야',diff:2},
+  {id:'v2',type:'vocab',word:'bipedal',ko:'두 발로 걷는, 이족보행의',pron:'[baɪˈpiːdəl]',nuance:'"Is it a bipedal humanoid?" — bi(둘)+pes/pedis(발 — 라틴어). 두 발로 이동하는 것. 인간과 대부분의 새가 bipedal. 로보틱스에서 bipedal humanoid는 인간처럼 두 발로 걷는 로봇. 불안정하고 구현이 어렵지만 인간의 환경(계단·좁은 통로)에 적응하기 위해 필요. quadruped(네 발), wheeled(바퀴형) 등 다양한 이동 방식과 대비되는 개념',diff:2},
+  {id:'v3',type:'vocab',word:'prehensile',ko:'(꼬리·손이) 물체를 잡을 수 있는, 파악력이 있는',pron:'[prɪˈhensaɪl]',nuance:'"Does it have a prehensile tail?" — 라틴어 prehendere(잡다). 꼬리나 팔다리가 물체를 잡고 매달릴 수 있는 것. 원숭이·카멜레온의 꼬리가 대표적. 로보틱스에서는 세 번째 팔 역할을 하는 보조적 조작 기관. 인간의 두 손으로 부족한 복잡한 조작을 위해 추가적인 prehensile 기관을 탑재하는 미래 로봇 설계의 탐구적 개념',diff:3},
+  {id:'v4',type:'vocab',word:'dexterous',ko:'손재주가 뛰어난, 정교한 조작이 가능한',pron:'[ˈdekstrəs]',nuance:'"once robots are much more dexterous, mobile, and reliable" — 라틴어 dexter(오른쪽, 능숙한). 손을 섬세하게 다루는 능력. "manual dexterity" = 손재주. 인간의 손은 수만 년 진화의 결과로 놀라운 dexterity를 가짐. 로봇이 나사를 조이고 전선을 연결하고 섬세한 조립 작업을 수행하려면 이 dexterity가 필수. 현재 로봇 조작 기술의 가장 큰 한계이자 가장 많은 연구가 집중되는 영역',diff:2},
+  {id:'v5',type:'vocab',word:'brittle',ko:'(기술이) 취약한, 조건 변화에 쉽게 실패하는',pron:'[ˈbrɪtl]',nuance:'"many newer robotic technologies are brittle when they move from lab settings to the real world" — 유리처럼 작은 충격에도 부러지는 것. 기술 분야에서 brittle = 특정 조건에서만 작동하고 조건이 조금만 바뀌어도 실패하는 취약한 시스템. 실험실의 완벽한 환경에서는 작동하지만 먼지·진동·예상치 못한 상황이 있는 실제 공장에서는 무너지는 로봇 기술의 현실을 정확히 표현',diff:2},
+  {id:'v6',type:'vocab',word:'pervasive',ko:'(기술이) 어디에나 있는, 사방에 스며든',pron:'[pəˈveɪsɪv]',nuance:'"people will not even realize how pervasive it is" — pervasive(만연한, 스며드는). 너무나 광범위하게 퍼져있어 의식하지 못할 정도로 일상에 침투된 상태. 전기·인터넷처럼 처음에는 혁명적이었지만 지금은 인식조차 못 하는 인프라가 된 것처럼, 로봇 기술도 15~20년 후에는 pervasive해져 존재를 인식하지 못할 것. "ubiquitous"와 동의어',diff:2},
+  {id:'v7',type:'vocab',word:'microcosm',ko:'소우주, 더 큰 세계의 축소판',pron:'[ˈmaɪkrəkɒzəm]',nuance:'"validating to see it repeated in the microcosm of a tween Girl Scout troop" — micro(작은)+cosm(우주). 더 큰 세계·시스템의 본질적 특성을 고스란히 담고 있는 축소된 버전. Girl Scout들이 레고 로봇을 만드는 소소한 경험에서 실제 산업용 로봇 개발의 핵심 문제(기술 통합·팀워크·사용자 피드백)가 반복된다는 깨달음. "macrocosm"(대우주)의 반대',diff:2},
+  {id:'v8',type:'vocab',word:'candid',ko:'솔직한, 편견 없이 있는 그대로를 말하는',pron:'[ˈkændɪd]',nuance:'"get very candid feedback from the operators" — 라틴어 candidus(하얀, 순수한). 불편한 진실도 그대로 말하는 솔직함. "honest"보다 더 직접적이고 가감 없는 뉘앙스. 로봇에 흥미를 느끼지 않는 현장 작업자들의 candid 피드백이 기술 개선에 가장 가치 있다는 핵심 인사이트. "off the record" 대화에서 candid = 공식 입장이 아닌 진짜 생각을 공유',diff:1},
+  {id:'v9',type:'vocab',word:'nuanced',ko:'미묘한 차이가 있는, 단순화할 수 없는 복잡한 측면이 있는',pron:'[ˈnjuːɑːnst]',nuance:'"A nuanced picture of the future of robotics" — 프랑스어 nuance(색조의 미묘한 차이). 단순히 좋다/나쁘다, 된다/안 된다로 나눌 수 없는 복잡하고 미묘한 차이를 담고 있는 것. "It\'s nuanced" = 단순하게 말하기 어렵다. 로보틱스의 미래가 언론의 극단적 낙관론이나 공포론 어느 쪽도 아닌, 훨씬 복잡한 현실임을 강조. "nuance"가 없는 설명은 overly simplistic(지나치게 단순화됨)',diff:2},
+  {id:'v10',type:'vocab',word:'codesigned',ko:'공동 설계된, 물리적·소프트웨어적 요소가 함께 통합 설계된',pron:'[ˌkoʊdɪˈzaɪnd]',nuance:'"the fully integrated system that is codesigned top to bottom in the stack, physical and virtual" — co(함께)+design(설계). 하드웨어와 소프트웨어를 별도로 개발 후 통합하는 것이 아니라, 처음부터 함께 설계하는 방식. 시스템의 각 레이어가 상호 최적화되도록 통합적으로 설계하는 것이 로보틱스 성공의 핵심. 애플이 칩-OS-앱을 codesign하는 것처럼, 로봇도 물리·소프트웨어 스택 전체를 codesign해야 함',diff:3},
+  {id:'b1',type:'biz',word:'ODD',ko:'운영 설계 도메인 (Operation Design Domain)',pron:'',nuance:'"the set of conditions under which an autonomous system will work well and safely" — 자율주행차에서 로보틱스로 이식된 핵심 프레임워크. 어떤 환경(온도·조명·바닥 유형·물체 종류)과 조건에서 로봇이 안전하고 신뢰할 수 있게 작동하는지를 명확히 정의한 설계 도메인. ODD 밖에서는 작동 보장 불가. 로봇 기술이 어떤 제품·서비스로 구현될 수 있는지를 판단하는 핵심 평가 도구',diff:3},
+  {id:'b2',type:'biz',word:'uptime',ko:'가동 시간, 시스템이 정상 작동하는 시간의 비율',pron:'',nuance:'"an incredibly high bar for uptime and reliability" — up(작동 중)+time. 전체 시간 중 시스템이 정상적으로 작동하는 시간의 비율. "downtime"(가동 중단)의 반대. 99.9% uptime = 연간 약 8.7시간의 다운타임만 허용. 자동차 조립라인은 1초 다운타임에 수천 달러 손실이 발생하므로 극도의 high uptime 요구. 소비자 가전과 산업용 로봇의 기준이 완전히 다른 이유',diff:1},
+  {id:'b3',type:'biz',word:'robotics stack',ko:'로보틱스 스택, 로봇 시스템의 물리·소프트웨어 전체 레이어',pron:'',nuance:'"the fully integrated system codesigned top to bottom in the stack, physical and virtual" — 소프트웨어 개발의 "tech stack"(기술 스택)에서 유래. 로보틱스에서는 물리적 레이어(하드웨어·구동계·센서)부터 소프트웨어 레이어(OS·미들웨어·AI·클라우드)까지 전체 시스템. "full-stack robotics" = 스택 전체를 자체 개발. 각 레이어의 전문가들이 협력해야 하지만 동시에 통합적 시스템 관점이 필요',diff:2},
+  {id:'b4',type:'biz',word:'embedded software',ko:'임베디드 소프트웨어, 하드웨어에 내장되어 실행되는 소프트웨어',pron:'',nuance:'"AI machine learning is obviously very important, but so is embedded software" — embed(내장하다)+ed+software. 특정 하드웨어 장치 내에 직접 내장되어 실행되는 소프트웨어. PC·스마트폰처럼 범용 OS가 아닌 특정 기능을 위해 최적화. 자동차 ECU·산업용 로봇 제어기·IoT 기기 등에 핵심. 실시간성·안정성·저전력이 중요. 화려한 AI만큼 embedded software 엔지니어링 역량이 로봇의 현장 작동에 결정적',diff:2},
+  {id:'b5',type:'biz',word:'fulfillment center',ko:'주문 처리 센터, 온라인 주문을 처리하는 물류 창고',pron:'',nuance:'"carry pallets across a fulfillment center, warehouse, or factory" — fulfill(주문을 이행하다)+ment+center. 아마존·쿠팡 같은 이커머스의 주문을 받고 상품을 포장·발송하는 대형 물류센터. 단순 보관 창고(warehouse)와 달리 주문 처리·포장·배송 전 과정을 수행. 키바 시스템(Amazon Robotics)이 이 공간의 작동 방식을 혁명적으로 바꾼 것이 로보틱스의 대표 성공 사례',diff:1},
+  {id:'b6',type:'biz',word:'Kiva Systems',ko:'키바 시스템즈, 아마존 로보틱스의 전신인 물류 로봇 혁신 기업',pron:'',nuance:'"Kiva Systems, which became Amazon Robotics after an acquisition, didn\'t have robots walk up and down aisles. They said, \'We\'ll bring the aisles to you.\'" — 2003년 설립, 2012년 아마존이 7억7500만 달러에 인수 후 Amazon Robotics로 개명. 기존 창고 자동화가 로봇을 통로 사이로 이동시켰다면, Kiva는 선반(pod) 전체를 로봇이 들어 사람에게 가져오는 발상의 전환. 인간 중심 작업장 설계의 아이디어를 실현한 물류 혁신의 아이콘',diff:2},
+];
+
+function render(){
+  const grid=document.getElementById('grid');
+  const filtered=grid.dataset.filter||'all';
+  const visible=filtered==='all'?cards:cards.filter(c=>c.type===filtered);
+  const learnedCount=[...learned].filter(id=>visible.some(c=>c.id===id)).length;
+  document.getElementById('stats').textContent=`${learnedCount} / ${visible.length} learned`;
+  grid.innerHTML='';
+  visible.forEach(c=>{
+    const isLearned=learned.has(c.id);
+    const dots=[1,2,3].map(i=>`<span class="dot${i<=c.diff?' on':''}"></span>`).join('');
+    const div=document.createElement('div');
+    div.className='card'+(isLearned?' learned':'');
+    div.dataset.id=c.id;
+    div.innerHTML=`<div class="card-inner">
+      <div class="front">
+        <div><span class="tag tag-${c.type}">${c.type}</span>
+        <div class="word">${c.word}</div>
+        ${c.pron?`<div class="pron">${c.pron}</div>`:''}
+        <div class="ko">${c.ko}</div></div>
+        <div class="diff">${dots}</div>
+      </div>
+      <div class="back">
+        <div><div class="word">${c.word}</div>
+        <div class="nuance">${c.nuance}</div></div>
+        <button class="learned-btn${isLearned?' done':''}" onclick="toggleLearned(event,'${c.id}')">${isLearned?'✓ Learned':'Mark learned'}</button>
+      </div>
+    </div>`;
+    div.addEventListener('click',function(e){if(!e.target.classList.contains('learned-btn'))this.classList.toggle('flipped')});
+    grid.appendChild(div);
+  });
+}
+function filter(type,btn){
+  document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('grid').dataset.filter=type;
+  render();
+}
+function toggleLearned(e,id){
+  e.stopPropagation();
+  if(learned.has(id))learned.delete(id);else learned.add(id);
+  localStorage.setItem(STORE_KEY,JSON.stringify([...learned]));
+  render();
+}
+render();
+</script>
+</body>
+</html>
