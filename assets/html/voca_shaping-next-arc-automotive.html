@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vocabulary – Shaping the Next ARC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1c2a3a;--ink2:#2d4a6b;
+  --accent:#d63031;--accent2:#c0392b;
+  --sky:#fff8f8;--bg:#fefcfc;--border:#e8a09a;
+  --r:14px;--shadow:0 4px 24px rgba(28,42,58,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(135deg,#1c2a3a 0%,#2d4a6b 55%,#d63031 100%);color:#fff;padding:2.2rem 1.5rem 1.8rem;text-align:center}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:.4rem}
+header p{font-size:.92rem;opacity:.85}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:.25rem .9rem;font-size:.78rem;margin-bottom:.7rem;letter-spacing:.04em}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:1.2rem 1rem .6rem;max-width:860px;margin:0 auto}
+.controls button{border:2px solid var(--border);background:#fff;color:var(--ink2);border-radius:30px;padding:.38rem .95rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s}
+.controls button.active,.controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.stats{text-align:center;font-size:.8rem;color:var(--ink2);padding:.2rem 0 .8rem;opacity:.75}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;padding:0 1rem 2rem;max-width:1100px;margin:0 auto}
+.card{perspective:900px;cursor:pointer;height:210px}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:1.1rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.front{background:#fff;border:2px solid var(--border)}
+.back{background:var(--sky);border:2px solid var(--accent);transform:rotateY(180deg)}
+.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.18rem .55rem;border-radius:10px;color:#fff;width:fit-content}
+.tag-phrasal{background:#d4ac0d;color:#1c2a3a}
+.tag-idiom{background:#7c3aed}
+.tag-colloc{background:#1c2a3a}
+.tag-vocab{background:#d63031}
+.tag-biz{background:#2c6e49}
+.word{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);line-height:1.2;margin:.35rem 0 .1rem}
+.pron{font-size:.78rem;color:var(--ink2);font-style:italic;margin-bottom:.2rem}
+.ko{font-size:.88rem;color:var(--ink2);font-weight:500}
+.diff{display:flex;gap:3px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.on{background:var(--accent)}
+.back .word{font-size:1.1rem;color:var(--ink)}
+.nuance{font-size:.82rem;color:#374151;line-height:1.55;flex:1;margin:.35rem 0 .2rem;overflow:hidden}
+.learned-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.35rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;align-self:flex-end;transition:background .2s}
+.learned-btn.done{background:#10b981;color:#fff}
+.card.learned .front{border-color:#10b981;background:#f0fff8}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey &amp; Company · Automotive &amp; Assembly Practice · March 2026</div>
+  <h1>Shaping the Next 'ARC'</h1>
+  <p>North American Automotive Industry — Vocabulary</p>
+</header>
+<div class="controls">
+  <button class="active" onclick="filter('all',this)">All (35)</button>
+  <button onclick="filter('phrasal',this)">Phrasal (6)</button>
+  <button onclick="filter('idiom',this)">Idiom (6)</button>
+  <button onclick="filter('colloc',this)">Colloc (7)</button>
+  <button onclick="filter('vocab',this)">Vocab (10)</button>
+  <button onclick="filter('biz',this)">Biz (6)</button>
+</div>
+<div class="stats" id="stats"></div>
+<div id="grid"></div>
+<script>
+const STORE_KEY='automotive_arc_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(STORE_KEY)||'[]'));
+const cards=[
+  {id:'pv1',type:'phrasal',word:'lock in',ko:'결정·기술·조건을 확정하다, 고정하다',pron:'',nuance:'자물쇠로 잠근다는 이미지. "lock in a design" = 이후 변경이 어렵게 기술·사양을 확정하는 것. OEM 개발 사이클이 길수록 더 이른 시점에 lock in해야 해서 최신 기술 혜택을 놓치게 된다. "lock in prices/rates" = 가격·금리를 고정하다.',diff:1,ex:'North American OEMs must <b>lock in</b> technology years before launch, forfeiting later cost reductions.'},
+  {id:'pv2',type:'phrasal',word:'build in',ko:'처음부터 내재화하다, 내장하다',pron:'',nuance:'나중에 덧붙이는 add-on이 아니라 처음 설계 단계에서 포함시킨다는 뉘앙스. "build in-house expertise" = 외부에 의존하지 않고 내부 역량을 체계적으로 구축한다는 의미. "built-in" = 내장된.',diff:1,ex:'OEMs can <b>build in</b>-house expertise in software architecture and data governance.'},
+  {id:'pv3',type:'phrasal',word:'roll out',ko:'단계적으로 출시·도입하다',pron:'',nuance:'양탄자를 펼치듯 서서히 확장하는 이미지. 한꺼번에 전면 도입하는 것이 아니라 단계별로 배포·적용할 때 사용. "roll out a product" = 제품을 시장에 단계적으로 출시하다. "rollout" = 출시·배포 자체를 가리키는 명사형.',diff:1,ex:'The OEM plans to <b>roll out</b> AI-enabled automation across all support functions.'},
+  {id:'pv4',type:'phrasal',word:'ramp up',ko:'생산량·규모·속도 등을 점진적으로 높이다',pron:'',nuance:'경사로(ramp)를 올라가는 이미지. 즉각적인 급증이 아니라 계획적으로 역량이나 생산을 늘려가는 뉘앙스. "ramp up production" = 생산 능력을 단계적으로 확대하다. "ramp-up period" = 생산이 본격화되기 전 준비 기간.',diff:1,ex:'Companies need to <b>ramp up</b> EV production capacity to meet rapidly growing consumer demand.'},
+  {id:'pv5',type:'phrasal',word:'flatten out',ko:'(조직 계층을) 수평화하다; (비용·가격이) 정체되다',pron:'',nuance:'두 가지 맥락: ① 조직에서는 계층(hierarchy)을 줄여 의사결정을 가속화하는 것, ② 비용·가격 그래프에서는 증가세가 멈추고 수평을 유지하는 것. "flatten the organization" = 조직 구조를 수평화하다. 문맥에 따라 뉘앙스가 다르므로 구별 필요.',diff:1,ex:'Disruptors <b>flatten</b> their organizations and empower teams to make faster decisions.'},
+  {id:'pv6',type:'phrasal',word:'phase out',ko:'단계적으로 폐지·중단하다',pron:'',nuance:'한꺼번에 없애는 것(eliminate)과 달리 시간을 두고 서서히 줄여가는 것. "phase out drivetrain variants" = 여러 파워트레인 옵션을 점차 줄여 나가는 것. "be phased out" = 단계적으로 퇴출되다. 관련어: "phase in" = 단계적으로 도입하다.',diff:1,ex:'One OEM announced plans to <b>phase out</b> 50 percent of drivetrain variants over the next five years.'},
+  {id:'id1',type:'idiom',word:'pay off',ko:'투자·노력이 결실을 맺다, 보람이 있다',pron:'',nuance:'원래는 빚을 갚는다는 뜻이지만 비즈니스에서는 투자·전략·리스크가 긍정적인 결과로 돌아올 때 사용. "That bet paid off" = 위험을 감수한 결정이 결국 성공으로 이어졌다는 것. "payoff" = 보상, 결실 (명사형).',diff:1,ex:'The OEM invested in a plug-in hybrid SUV and that bet <b>paid off</b>—they now hold 41% of the market.'},
+  {id:'id2',type:'idiom',word:'set the bar',ko:'(품질·성과의) 기준을 설정하다',pron:'',nuance:'높이뛰기 바(bar)를 세팅하는 이미지. 주로 "set the bar high" 형태로 쓰며 다른 플레이어들이 따라야 할 높은 기준을 최초로 설정한 기업을 묘사할 때 사용. "raise the bar" = 기존 기준보다 더 높게 끌어올리다. "lower the bar" = 기준을 낮추다.',diff:1,ex:'OEMs like Tesla are <b>setting the bar high</b> by enabling end-to-end digital purchases in as few as ten clicks.'},
+  {id:'id3',type:'idiom',word:'at the turn of the century',ko:'세기 전환기에, 2000년대 초반에',pron:'',nuance:'특정 세기가 끝나고 다음 세기가 시작되는 전환점. 문맥상 일반적으로 1999~2001년을 가리킨다. 과거의 전환점을 회고하며 현재 상황과 대비시킬 때 사용. "at the turn of the millennium" = 새 천년의 전환기에.',diff:2,ex:'Since China joined the WTO <b>at the turn of the century</b>, North American OEMs have steadily lost scale.'},
+  {id:'id4',type:'idiom',word:'seize the moment',ko:'기회를 포착하다, 결정적 순간을 잡다',pron:'',nuance:'Carpe diem(라틴어)의 영어식 표현. 비즈니스에서는 변화의 기점에서 능동적으로 행동하지 않으면 기회를 놓친다는 긴박감을 담는다. "seize the opportunity" = 기회를 포착하다. 수동적 대기가 아닌 능동적 행동을 강조.',diff:1,ex:'The question is not whether transformation is needed, but how leaders will <b>seize this moment</b> to shape the next ARC.'},
+  {id:'id5',type:'idiom',word:'chart a path',ko:'나아갈 방향과 경로를 설계하다',pron:'',nuance:'항해에서 지도(chart)에 항로를 그리는 이미지. 단순한 목표 설정을 넘어 구체적 단계와 방향까지 명확히 한다는 뉘앙스. "chart a clear path forward" = 앞으로 나아갈 구체적인 로드맵을 제시한다. "chart a course" = 방향을 잡다.',diff:1,ex:'The strategies outlined in this article <b>chart a clear path forward</b> for North American automotive OEMs.'},
+  {id:'id6',type:'idiom',word:'make the most of',ko:'~를 최대한 활용하다',pron:'',nuance:'주어진 자원·기회·상황에서 가능한 최대치를 끌어내는 것. 부족한 상황이나 제약이 있음을 암시하면서도 긍정적으로 활용한다는 뉘앙스. "make the most of partnerships" = 파트너십을 통해 최대 시너지를 이끌어내다. "make the best of" 와 유사하나 더 광범위하게 쓰인다.',diff:1,ex:'Companies can <b>make the most of</b> external partnerships while overhauling their operational capabilities.'},
+  {id:'cl1',type:'colloc',word:'design-to-value',ko:'소비자 인식 가치 기준의 제품 설계 방법론',pron:'',nuance:'기능이나 사양을 무조건 높이는 것이 아니라 소비자가 실제로 가치 있다고 느끼는 요소에만 집중해 설계·원가를 최적화하는 접근법. 반대 개념은 over-engineering = 필요 이상으로 복잡하게 만드는 것. "D2V" 로 약칭하기도 한다.',diff:2,ex:'OEMs can relentlessly pursue <b>design-to-value</b> optimization to ensure every feature increases perceived value.'},
+  {id:'cl2',type:'colloc',word:'time to market',ko:'기획부터 상업적 출시까지 소요되는 기간',pron:'',nuance:'자동차 업계에서 매우 중요한 경쟁 지표. 북미 OEM은 40~50개월, 중국 OEM은 24개월 미만. 짧을수록 최신 기술을 더 저렴하게 탑재하고 시장 변화에 빠르게 대응 가능. "accelerate time to market" = 출시 기간을 단축하다.',diff:1,ex:'Chinese OEMs have compressed <b>time to market</b> from 40–50 months to as few as 24 months.'},
+  {id:'cl3',type:'colloc',word:'consumer lifetime value',ko:'고객 생애 가치 — 관계 기간 전체에서 창출되는 총 수익',pron:'',nuance:'CLV 또는 LTV(Lifetime Value)라고도 한다. 단순 판매 시점(point of sale)의 마진이 아니라 유지보수·보험·충전·중고차·구독 서비스 등 사후 수익까지 포함. 맥킨지는 2030년 자동차 수익의 70%가 구매 후 단계에서 발생한다고 전망.',diff:2,ex:'OEMs can expand beyond the point of sale to capture greater <b>consumer lifetime value</b>.'},
+  {id:'cl4',type:'colloc',word:'over-the-air updates',ko:'무선(OTA) 소프트웨어 업데이트',pron:'',nuance:'물리적 서비스 센터 방문 없이 차량 소프트웨어를 원격으로 업데이트하는 것. SDV(소프트웨어 정의 차량) 시대의 핵심 기능. 출시 후에도 성능과 기능을 지속 개선할 수 있게 해준다. "OTA updates" = over-the-air의 약자. Tesla가 이 방식을 선도했다.',diff:1,ex:'Decoupling software from hardware and using <b>over-the-air updates</b> enables continuous post-launch improvement.'},
+  {id:'cl5',type:'colloc',word:'go-to-market cycle',ko:'제품의 개발 완료부터 시장 출시까지의 상업화 프로세스',pron:'',nuance:'단순한 출시 날짜가 아니라 가격 책정·유통·마케팅·영업 전략까지 포함한 전체 상업화 과정. "accelerate go-to-market cycles" = 개발부터 판매까지의 전 과정을 단축·효율화한다는 의미. "GTM strategy" = go-to-market 전략.',diff:2,ex:'Faster innovation and <b>go-to-market cycles</b> are key for OEMs to remain competitive.'},
+  {id:'cl6',type:'colloc',word:'economies of scale',ko:'규모의 경제 — 생산량 증가에 따른 단위 비용 감소',pron:'',nuance:'고정비용이 더 많은 단위에 분산되면서 단위당 비용이 낮아지는 경제 원리. 자동차 산업에서는 플랫폼 공유, 부품 표준화, 모델 라인업 단순화 등을 통해 실현. "achieve/realize economies of scale" = 규모의 경제를 실현하다.',diff:1,ex:'To restore capital efficiency, OEMs must regain <b>economies of scale</b> through portfolio simplification.'},
+  {id:'cl7',type:'colloc',word:'supply chain intelligence',ko:'데이터 기반 공급망 가시성·분석·예측 역량',pron:'',nuance:'단순한 공급망 관리(SCM)를 넘어 AI와 데이터 분석으로 공급·수요 리스크를 사전에 감지하고 대응하는 능력. 지정학적 리스크, 관세 변동, 부품 수급 불안정 등에 빠르게 대응하기 위해 필수적이다. "digital supply chain intelligence" = 디지털 기반의 공급망 인텔리전스.',diff:2,ex:'OEMs can manage volatility by investing in digital <b>supply chain intelligence</b>.'},
+  {id:'vo1',type:'vocab',word:'OEM',ko:'Original Equipment Manufacturer — 완성차 제조사',pron:'[ˌoʊ iː ˈem]',nuance:'원래는 다른 브랜드 제품에 들어가는 부품을 생산하는 업체를 뜻했으나, 자동차 업계에서는 완성차를 직접 설계·제조·브랜딩하는 업체를 지칭. 공급업체(supplier)나 유통업체(dealer)와 구별되는 개념. Ford, GM, Hyundai 등이 OEM.',diff:1,ex:'North American <b>OEM</b>s face rising R&D costs and must find new ways to compete with Chinese rivals.'},
+  {id:'vo2',type:'vocab',word:'optionality',ko:'다양한 선택지를 열어두는 능력; 미래 옵션의 가치',pron:'[ˌɒpʃəˈnælɪti]',nuance:'금융 파생상품(option)에서 온 개념. 전략적 맥락에서는 불확실한 환경에서 특정 방향에 완전히 베팅하지 않고 여러 경로를 유지하는 것. 파워트레인 전환이 불확실한 EV 시대에 ICE·HEV·BEV를 동시에 유지하는 것이 대표적 예시.',diff:2,ex:'North American OEMs can maintain <b>optionality</b> as the pace of powertrain transition remains uncertain.'},
+  {id:'vo3',type:'vocab',word:'disruptor',ko:'기존 산업 질서를 근본적으로 바꾸는 혁신 기업',pron:'[dɪsˈrʌptər]',nuance:'Clayton Christensen의 파괴적 혁신(disruptive innovation)에서 유래. 기존 기업(incumbent)이 간과하는 영역에서 시작해 점차 주류 시장을 잠식하는 신진 업체. 자동차 업계에서는 Tesla와 중국 BYD·NIO 등이 대표적 disruptor.',diff:1,ex:'International <b>disruptors</b> like Chinese OEMs have compressed development timelines to under 24 months.'},
+  {id:'vo4',type:'vocab',word:'incumbent',ko:'현재 시장을 점유하고 있는 기존(legacy) 기업',pron:'[ɪnˈkʌmbənt]',nuance:'원래는 현직(現職)에 있는 사람을 뜻하는 단어. 비즈니스에서는 시장에서 이미 입지를 가진 기존 기업을 가리키며, 신진 disruptor와 대비된다. 규모·브랜드·유통망 등의 이점이 있지만 변화에 느리다는 함의도 있다.',diff:1,ex:'<b>Incumbent</b> OEMs offer an average of eight or more trim variants, while disruptors offer only three.'},
+  {id:'vo5',type:'vocab',word:'powertrain',ko:'동력 전달 계통 — 엔진/모터·변속기·구동축 전체',pron:'[ˈpaʊərˌtreɪn]',nuance:'power(동력) + train(연결된 일련의 부품). ICE 차량에서는 엔진·변속기·드라이브샤프트가 핵심이고 EV에서는 배터리·전동기·인버터가 핵심이다. "powertrain variants" = ICE·HEV·PHEV·BEV 등 다양한 동력원 조합.',diff:1,ex:'OEMs can simplify their portfolio by reducing the number of <b>powertrain</b> variants offered.'},
+  {id:'vo6',type:'vocab',word:'aftersales',ko:'구매 후 서비스·부품·금융 등 사후 수익 사업',pron:'[ˈɑːftərseɪlz]',nuance:'자동차의 경우 판매 이후 유지보수(maintenance), 수리(repair), 부품(spare parts), 보험(insurance), 금융(financing) 등을 포괄. 신차 판매 마진이 줄어들수록 aftersales의 전략적 중요성이 높아진다. 한국에서 쓰이는 AS(after-service)보다 넓은 개념.',diff:1,ex:'OEMs are expanding into <b>aftersales</b> services including insurance, used cars, and battery recycling.'},
+  {id:'vo7',type:'vocab',word:'virtualize',ko:'물리적 과정을 디지털·가상 환경으로 대체하다',pron:'[ˈvɜːrtʃuəlaɪz]',nuance:'제품 개발에서는 물리적 프로토타입 제작과 실물 테스트를 디지털 시뮬레이션으로 대체하는 것. "virtualize testing" = 실물 충돌 테스트 대신 컴퓨터 시뮬레이션으로 동등한 검증을 하는 것. 중국 OEM은 65%의 테스트를 가상으로 수행한다.',diff:2,ex:'Chinese OEMs conduct 65% of testing through simulation—North American OEMs must <b>virtualize</b> development.'},
+  {id:'vo8',type:'vocab',word:'codesign',ko:'OEM과 공급사·파트너가 처음부터 공동으로 설계하다',pron:'[ˌkoʊdɪˈzaɪn]',nuance:'기존의 수직적 발주 구조(OEM이 사양을 정해 공급사에 발주)와 달리 개발 초기부터 서로의 전문성을 결합해 함께 설계하는 방식. 한국 OEM(현대·기아)과 공급사들이 이 방식을 적극 활용해 경쟁력을 높였다고 본문에서 언급.',diff:2,ex:'Korean OEMs frequently <b>codesign</b> platforms with suppliers to achieve economies of scale.'},
+  {id:'vo9',type:'vocab',word:'car parc',ko:'특정 시장에 등록된 차량의 총 수',pron:'[pɑːrk]',nuance:'프랑스어 parc(공원, 단지)에서 유래한 자동차 업계 전문 용어. fleet(기업·기관 보유 차량)과 달리 개인 소유 포함 전체 등록 차량을 가리킨다. "EV parc" = 전기차 전체 등록 대수, "aging ICE parc" = 노후화된 내연기관 차량들의 총량.',diff:3,ex:'Aging ICE vehicles in the <b>car parc</b> will drive demand for maintenance and aftersales services.'},
+  {id:'vo10',type:'vocab',word:'CAGR',ko:'Compound Annual Growth Rate — 연평균 복합 성장률',pron:'[ˈkeɪgɑːr]',nuance:'특정 기간 동안의 성장률을 1년 단위로 환산한 것. 단순 평균 성장률과 달리 복리 개념을 적용하므로 투자·시장 분석에서 표준적으로 사용. "0.7% CAGR from 2023 to 2030" = 향후 7년간 매년 평균 0.7%씩 성장한다는 의미.',diff:1,ex:'New vehicle sales are expected to grow at a mere 0.7% <b>CAGR</b> from 2023 to 2030.'},
+  {id:'bz1',type:'biz',word:'ICE',ko:'Internal Combustion Engine — 내연기관 (가솔린·디젤 차량)',pron:'[aɪ siː iː]',nuance:'EV 시대가 도래하면서 ICE 차량은 레거시로 분류되기 시작했다. 그러나 전환 속도의 불확실성 때문에 당분간 ICE 차량이 주류를 유지할 것이며, 노후 ICE 차량의 유지보수 수요가 aftersales 기회를 창출한다.',diff:1,ex:'Price ranked as the top purchase criterion for <b>ICE</b> buyers in McKinsey\'s 2025 Consumer Pulse Survey.'},
+  {id:'bz2',type:'biz',word:'BEV',ko:'Battery Electric Vehicle — 배터리 전기차 (순수 전기차)',pron:'[biː iː viː]',nuance:'HEV(하이브리드), PHEV(플러그인 하이브리드)와 구별되는 순수 배터리 구동 전기차. 리튬이온 배터리 비용이 정체기에 달하고 있어 BEV의 가격 경쟁력이 향후 쟁점이다. 노후 BEV가 수명 말기에 달하면서 배터리 재활용(circularity) 시장도 열린다.',diff:1,ex:'Older <b>BEV</b> models reaching end of life are driving demand for battery recycling and circularity.'},
+  {id:'bz3',type:'biz',word:'SDV',ko:'Software-Defined Vehicle — 소프트웨어 정의 차량',pron:'[ɛs diː viː]',nuance:'차량의 기능과 성능이 하드웨어가 아닌 소프트웨어에 의해 결정되는 차량 아키텍처. OTA 업데이트를 통해 구매 후에도 새 기능 추가와 성능 개선이 가능하다. Tesla가 선도했으며 기존 OEM들의 핵심 전환 과제 중 하나.',diff:2,ex:'Leading disruptors see vehicles as software platforms—the era of the <b>SDV</b> is here.'},
+  {id:'bz4',type:'biz',word:'ADAS',ko:'Advanced Driver-Assistance Systems — 첨단 운전자 보조 시스템',pron:'[ˈeɪdæs]',nuance:'자율주행 레벨 1~5 중 레벨 2~3에 해당하는 반자동화 시스템. 차선 유지, 자동 제동, 크루즈 컨트롤 등이 포함된다. 본문에서 언급된 "level 3 highway pilot" = 고속도로에서 조건부 자율주행이 가능한 ADAS의 상위 단계.',diff:1,ex:'A 2-year gap in <b>ADAS</b> technology lock-in can translate to a cost difference of ~$400 per vehicle.'},
+  {id:'bz5',type:'biz',word:'COGS',ko:'Cost of Goods Sold — 매출원가 (제품 생산에 직접 투입된 비용)',pron:'[kɒɡz]',nuance:'R&D 강도(R&D intensity)는 흔히 R&D 비용을 COGS로 나눈 비율로 측정한다. "rising COGS and R&D intensity" = 차량 1대를 만드는 기본 비용도 오르고 연구개발 투자 부담도 증가하는 이중 압박. 손익계산서에서 매출총이익(Gross Profit) = 매출 - COGS.',diff:2,ex:'North American OEMs have seen compound annual increases in R&D costs relative to <b>COGS</b> of ~4.8%.'},
+  {id:'bz6',type:'biz',word:'IP',ko:'Intellectual Property — 지식재산권 (특허·상표·영업비밀 등)',pron:'[ˌaɪ ˈpiː]',nuance:'하드웨어 위주 산업에서는 제조 공정·설계 특허가 핵심 IP였지만 SDV 시대에는 소프트웨어 알고리즘·데이터·UX가 핵심 IP로 부상하고 있다. 중국 OEM 임원들이 IP 보호보다 실행 속도를 더 중시한다는 언급이 본문의 인상적인 대목.',diff:1,ex:'Chinese executives prioritize speed of execution over <b>IP</b> protection, sharing solutions openly.'}
+];
+
+let current='all';
+function render(list){
+  const g=document.getElementById('grid');
+  g.innerHTML='';
+  const total=list.length;
+  const done=list.filter(c=>learned.has(c.id)).length;
+  document.getElementById('stats').textContent=`${total} cards · ${done} learned`;
+  list.forEach(c=>{
+    const isL=learned.has(c.id);
+    const dots=[1,2,3].map(i=>`<span class="dot${i<=c.diff?' on':''}"></span>`).join('');
+    const card=document.createElement('div');
+    card.className='card'+(isL?' learned':'');
+    card.dataset.id=c.id;
+    card.dataset.type=c.type;
+    card.innerHTML=`<div class="card-inner">
+      <div class="front">
+        <div><span class="tag tag-${c.type}">${c.type}</span>
+        <div class="word">${c.word}</div>
+        ${c.pron?`<div class="pron">${c.pron}</div>`:''}
+        <div class="ko">${c.ko}</div></div>
+        <div class="diff">${dots}</div>
+      </div>
+      <div class="back">
+        <div><div class="word">${c.word}</div>
+        <div class="nuance">${c.nuance}</div>
+        ${c.ex?`<div class="nuance" style="font-style:italic;color:#555;margin-top:.2rem">${c.ex}</div>`:''}
+        </div>
+        <button class="learned-btn${isL?' done':''}" onclick="toggleLearned(event,'${c.id}')">${isL?'✓ Learned':'Mark learned'}</button>
+      </div>
+    </div>`;
+    card.addEventListener('click',e=>{if(!e.target.classList.contains('learned-btn'))card.classList.toggle('flipped')});
+    g.appendChild(card);
+  });
+}
+function filter(type,btn){
+  current=type;
+  document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render(type==='all'?cards:cards.filter(c=>c.type===type));
+}
+function toggleLearned(e,id){
+  e.stopPropagation();
+  if(learned.has(id))learned.delete(id);else learned.add(id);
+  localStorage.setItem(STORE_KEY,JSON.stringify([...learned]));
+  render(current==='all'?cards:cards.filter(c=>c.type===current));
+}
+render(cards);
+</script>
+</body>
+</html>
