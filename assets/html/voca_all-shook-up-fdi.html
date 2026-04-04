@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vocabulary – All Shook Up: FDI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1f3a;--ink2:#2d3561;
+  --accent:#0891b2;--accent2:#0e7490;
+  --sky:#f0fbff;--bg:#fafeff;--border:#7dd3fc;
+  --r:14px;--shadow:0 4px 24px rgba(26,31,58,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(135deg,#1a1f3a 0%,#2d3561 55%,#0891b2 100%);color:#fff;padding:2.2rem 1.5rem 1.8rem;text-align:center}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:.4rem}
+header p{font-size:.92rem;opacity:.85}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:.25rem .9rem;font-size:.78rem;margin-bottom:.7rem;letter-spacing:.04em}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:1.2rem 1rem .6rem;max-width:860px;margin:0 auto}
+.controls button{border:2px solid var(--border);background:#fff;color:var(--ink2);border-radius:30px;padding:.38rem .95rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s}
+.controls button.active,.controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.stats{text-align:center;font-size:.8rem;color:var(--ink2);padding:.2rem 0 .8rem;opacity:.75}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;padding:0 1rem 2rem;max-width:1100px;margin:0 auto}
+.card{perspective:900px;cursor:pointer;height:210px}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:1.1rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.front{background:#fff;border:2px solid var(--border)}
+.back{background:var(--sky);border:2px solid var(--accent);transform:rotateY(180deg)}
+.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.18rem .55rem;border-radius:10px;color:#fff;width:fit-content}
+.tag-phrasal{background:#0891b2;color:#fff}
+.tag-idiom{background:#7c3aed}
+.tag-colloc{background:#1a1f3a}
+.tag-vocab{background:#c0392b}
+.tag-biz{background:#2c6e49}
+.word{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);line-height:1.2;margin:.35rem 0 .1rem}
+.pron{font-size:.78rem;color:var(--ink2);font-style:italic;margin-bottom:.2rem}
+.ko{font-size:.88rem;color:var(--ink2);font-weight:500}
+.diff{display:flex;gap:3px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.on{background:var(--accent)}
+.back .word{font-size:1.1rem;color:var(--ink)}
+.nuance{font-size:.82rem;color:#374151;line-height:1.55;flex:1;margin:.35rem 0 .2rem;overflow:hidden}
+.learned-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.35rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;align-self:flex-end;transition:background .2s}
+.learned-btn.done{background:#10b981;color:#fff}
+.card.learned .front{border-color:#10b981;background:#f0fff8}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey Global Institute · Future of Asia Podcast · March 2026</div>
+  <h1>All Shook Up</h1>
+  <p>How Foreign Direct Investment is Shaping Future Business — Vocabulary</p>
+</header>
+<div class="controls">
+  <button class="active" onclick="filter('all',this)">All (35)</button>
+  <button onclick="filter('phrasal',this)">Phrasal (6)</button>
+  <button onclick="filter('idiom',this)">Idiom (6)</button>
+  <button onclick="filter('colloc',this)">Colloc (7)</button>
+  <button onclick="filter('vocab',this)">Vocab (10)</button>
+  <button onclick="filter('biz',this)">Biz (6)</button>
+</div>
+<div class="stats" id="stats"></div>
+<div id="grid"></div>
+<script>
+const STORE_KEY='fdi_future_business_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(STORE_KEY)||'[]'));
+const cards=[
+  {id:'pv1',type:'phrasal',word:'zoom out',ko:'더 큰 그림을 보다, 시야를 넓히다',pron:'',nuance:'카메라 줌(zoom)을 당겨 더 넓은 시야를 확보하는 이미지. 세부 사항에서 벗어나 거시적·전략적 관점으로 전환할 때 사용. "zoom in" = 특정 주제를 깊이 파고들다. 반대. 인터뷰·분석에서 "Let me zoom out and talk about Asia as a whole" = 중국만 보던 시각을 아시아 전체로 넓히겠다는 뜻.',diff:1,ex:'Debbi Cheong: I\'d like to <b>zoom out</b> and talk about Asia as a whole rather than just China.'},
+  {id:'pv2',type:'phrasal',word:'hone in on',ko:'~에 집중하다, 정밀하게 겨냥하다',pron:'',nuance:'유도탄이 목표물에 신호를 추적하며 접근하는 이미지. "home in on"과 혼용되지만 "hone in on"이 현대 미국 영어에서 더 자주 쓰인다. "hone"(갈고 닦다)에서 유래해 정밀성의 뉘앙스를 더한다. "hone in on the details" = 세부 사항을 정밀하게 파고들다.',diff:2,ex:'You really have to <b>hone in on</b> these huge projects and make sure they happen as planned.'},
+  {id:'pv3',type:'phrasal',word:'pour into',ko:'~에 쏟아붓다, 대규모로 투자하다',pron:'',nuance:'물이나 액체를 그릇에 쏟아 넣는 이미지. 투자·자원·노력을 특정 분야에 대규모로 집중적으로 투입하는 것. "pour money into" = 자금을 쏟아붓다. "pour resources into" = 자원을 집중 투입하다. 여러 곳에 분산하는 것이 아니라 한 방향으로 집중 투입한다는 뉘앙스.',diff:1,ex:'As Japanese and South Korean firms <b>pour more money into</b> India, new corridors of trade are emerging.'},
+  {id:'pv4',type:'phrasal',word:'scoop up',ko:'(기회·자원을) 긁어모으다, 독식하다',pron:'',nuance:'삽이나 국자로 한꺼번에 퍼 담는 이미지. 기회·자원·시장 점유율을 빠르고 탐욕스럽게 확보하는 것. "scoop up capital" = 자본을 쓸어모으다. "scoop up talent" = 인재를 싹쓸이하다. 경쟁 속에서 남들보다 빠르게 선점한다는 긴박감을 내포.',diff:1,ex:'Industries of the future are <b>scooping up capital</b> around the world at an unprecedented pace.'},
+  {id:'pv5',type:'phrasal',word:'fast-forward',ko:'(시간을) 앞당겨 보다, 미래를 미리 시뮬레이션하다',pron:'',nuance:'비디오 플레이어의 빨리감기(fast-forward) 버튼에서 유래. 현재의 결정이나 추세를 미래 시점까지 이어나가면 어떤 결과가 될지 추정하는 것. "fast-forward to 2030" = 2030년으로 빨리감기하다. FDI 발표를 완료 시점까지 fast-forward하면 미래 무역 구조가 보인다는 논리.',diff:1,ex:'If we <b>fast-forward</b> these deals and play them out to completion, what does it tell us about future trade?'},
+  {id:'pv6',type:'phrasal',word:'ride a wave',ko:'(성장·트렌드의) 파도를 타다, 흐름을 이용하다',pron:'',nuance:'서퍼가 파도 위에 올라타 추진력을 얻는 이미지. 자신이 만든 것이 아닌 외부 흐름(FDI 유입, 기술 붐, 경제 성장 등)을 잘 활용하여 성장하는 것. "ride the wave of growth" = 성장 흐름에 올라타다. "ride a wave of investment" = 투자 물결을 타다.',diff:1,ex:'Which economies are going to <b>ride a wave of growth</b> on the back of these FDI projects?'},
+  {id:'id1',type:'idiom',word:'tip of the iceberg',ko:'빙산의 일각, 드러난 것은 전체의 극히 일부',pron:'',nuance:'수면 위로 보이는 빙산의 일부는 전체의 약 10%에 불과하고 90%는 물속에 잠겨 있다는 사실에서 유래. "what you see is just the tip of the iceberg" = 보이는 것은 실제 규모의 극히 일부에 불과하다. FDI 무역 패턴은 눈에 보이는 것이지만 그 아래에서 훨씬 더 큰 구조적 변화가 진행 중이라는 맥락.',diff:1,ex:'The patterns Jeongmin described are the <b>tip of the iceberg</b>—there is still a lot happening under the surface.'},
+  {id:'id2',type:'idiom',word:'all eggs in one basket',ko:'모든 달걀을 한 바구니에 담다 — 위험을 분산하지 않고 한 곳에 집중하는 것',pron:'',nuance:'달걀을 한 바구니에 담으면 바구니가 떨어질 때 모두 깨진다는 오래된 격언. 투자·의존도·리스크가 한 주체·시장·프로젝트에 집중되면 그 하나가 실패할 때 전체가 위험해진다. "don\'t put all your eggs in one basket" = 분산 투자·리스크 분산을 권고하는 표현.',diff:1,ex:'If you <b>put all your eggs in the same basket</b>, you need to make sure you hold on to it well.'},
+  {id:'id3',type:'idiom',word:'shovel provider',ko:'금광 러시에서 삽 파는 사람 — 붐에 직접 참여하기보다 인프라를 공급하는 업자',pron:'',nuance:'19세기 캘리포니아 골드러시에서 금을 캔 사람들보다 삽·청바지·식량을 판 상인들이 더 안정적으로 돈을 벌었다는 역사에서 유래. "if folks are digging for gold, they need shovels" = 메가프로젝트 자체보다 그 주변 생태계(화학·기계·식음료·물류 등)를 공급하는 기업이 새로운 기회를 잡는다는 전략적 통찰.',diff:2,ex:'If folks are digging for gold, they need shovels—be a <b>shovel provider</b> for the megaproject ecosystem.'},
+  {id:'id4',type:'idiom',word:'separate signal from noise',ko:'신호와 잡음을 구분하다 — 중요한 정보와 무의미한 소음을 구별하다',pron:'',nuance:'무선통신·신호처리에서 유래. "signal" = 의미 있는 정보, "noise" = 무의미한 잡음. 데이터·뉴스·트렌드 속에서 실제 구조적 변화를 나타내는 신호를 소음(일시적 변동, 과장된 뉴스)으로부터 구별하는 분석적 능력. "separate the signal from the noise" = 핵심 통찰을 찾아내다.',diff:2,ex:'If you can <b>separate the signal from the noise</b>, you will be ahead of the competition.'},
+  {id:'id5',type:'idiom',word:'million-dollar question',ko:'백만 달러짜리 질문 — 답하기 매우 어렵고 중요한 핵심 질문',pron:'',nuance:'원래 퀴즈쇼의 최고 상금에서 유래. "the million-dollar question" = 모두가 알고 싶어하지만 쉽게 답할 수 없는 핵심 질문. 이 기사에서는 "trillion-dollar question"으로 격상되어, 글로벌 무역 재편을 어떻게 활용하느냐는 질문이 수조 달러의 가치가 있는 질문임을 강조.',diff:1,ex:'Every time we talk with executives, the opportunities vary—<b>the million-dollar question</b> is always different.'},
+  {id:'id6',type:'idiom',word:'friend-shoring',ko:'우방국 중심의 공급망 재편 — 지정학적으로 동맹인 국가들로 공급망을 이전하는 전략',pron:'',nuance:'outsourcing(외주)의 유추에서 만든 신조어. "onshoring" = 국내 복귀, "nearshoring" = 인근 국가 이전, "reshoring" = 해외에서 국내 복귀. "friend-shoring" = 정치·군사적으로 동맹 관계인 국가들로 공급망을 재편하는 것. 지정학적 리스크를 줄이기 위한 전략이나 경제적 효율성을 희생하는 트레이드오프가 존재.',diff:2,ex:'"<b>Friend-shoring</b>" seems to be happening: countries are trading more with geopolitically closer partners.'},
+  {id:'cl1',type:'colloc',word:'greenfield investment',ko:'그린필드 투자 — 기존 기업 인수 없이 처음부터 새로운 시설을 신규 건설하는 투자',pron:'',nuance:'아직 아무것도 없는 푸른 들판(greenfield)에서 처음부터 짓는다는 이미지. 반대 개념: "brownfield investment" = 기존 시설을 인수·재활용하는 투자. "M&A(mergers and acquisitions)" = 기업 인수. 그린필드 프로젝트는 허가·건설·운영 등 시간이 오래 걸리지만 완전한 통제권을 가진다.',diff:2,ex:'Announced <b>greenfield FDI</b> and new projects into China have dropped by about 70 percent.'},
+  {id:'cl2',type:'colloc',word:'realization rate',ko:'실현율 — 발표된 투자 계획 중 실제로 이행되는 비율',pron:'',nuance:'발표(announced)와 실제 집행(implemented) 사이의 간극을 측정하는 지표. 역사적으로 그린필드 프로젝트의 60~80%가 실현됐다. 2025년 빈티지는 AI 투자 급증과 관세 충격의 불확실성 때문에 실현율이 달라질 수 있다. "announcement" ≠ "commitment" = 발표가 반드시 실행을 의미하지는 않는다.',diff:2,ex:'Historically, about 60–80% of announced greenfield projects were realized—the <b>realization rate</b>.'},
+  {id:'cl3',type:'colloc',word:'geopolitical distance',ko:'지정학적 거리 — 무역 파트너 간의 지정학적 입장 차이를 측정하는 지표',pron:'',nuance:'McKinsey MGI가 개발한 측정 지표. 물리적 거리와 달리 국가 간 외교·군사·가치관의 정렬 정도를 측정. "geopolitical distance of trade" = 무역 파트너들의 지정학적 이격. 이 지표가 2017년 이후 7% 하락 = 국가들이 지정학적으로 더 가까운 파트너들과 더 많이 무역하게 됨.',diff:2,ex:'The <b>geopolitical distance</b> of trade has fallen by about 7 percent since 2017—friend-shoring in action.'},
+  {id:'cl4',type:'colloc',word:'value chain',ko:'가치 사슬 — 원자재부터 최종 소비자까지 이어지는 생산·유통의 단계별 연결 고리',pron:'',nuance:'Michael Porter가 1985년 제시한 개념. "upstream" = 원자재·부품 등 가치 사슬의 상류, "downstream" = 유통·소비자 등 하류. "integrate into global value chains" = 글로벌 가치 사슬에 편입되다. 아시아는 전자기기 가치 사슬의 결합 조직(connective tissue)으로 불릴 만큼 핵심적 역할.',diff:1,ex:'Successful economies became well integrated into global or regional <b>value chains</b> with strong linkages.'},
+  {id:'cl5',type:'colloc',word:'megadeal',ko:'메가딜 — 10억 달러 이상의 초대형 단일 투자 프로젝트',pron:'',nuance:'mega(거대) + deal(거래). 단일 공장, 단일 광산, 단일 데이터센터가 10억 달러 이상인 프로젝트. 팬데믹 이전 전체 FDI 가치의 30%였으나 현재 50%로 증가. 소수의 메가딜이 한 나라의 경제를 좌우할 수 있어 기회이자 리스크. "economy-shaping megadeal" = 경제 구조를 바꾸는 초대형 투자.',diff:1,ex:'<b>Megadeals</b> now account for about 50% of all announced FDI value, up from 30% before the pandemic.'},
+  {id:'cl6',type:'colloc',word:'capital-intensive',ko:'자본집약적인 — 대규모 초기 투자가 필요한',pron:'',nuance:'"labor-intensive"(노동집약적) vs "capital-intensive"(자본집약적) vs "knowledge-intensive"(지식집약적). 반도체 팹·기가팩토리·데이터센터는 초기 투자 규모가 조 단위에 달하는 대표적 자본집약적 산업. 이 특성 때문에 "winner takes most" 구조가 형성된다. 한번 투자하면 철수 비용이 커 "stranded assets" 리스크도 존재.',diff:1,ex:'Semiconductors, gigafactories, and data centers are highly <b>capital-intensive</b> industries where winners take most.'},
+  {id:'cl7',type:'colloc',word:'winner-takes-most',ko:'승자독식 구조 — 선두 기업이 시장의 대부분을 가져가는 경쟁 구도',pron:'',nuance:'"winner-takes-all"(완전 독식)보다 현실적인 표현. 1등이 모든 것을 갖지는 않지만 불균형적으로 큰 몫을 가져가는 시장 구조. 네트워크 효과, 규모의 경제, 데이터 우위가 있는 산업에서 나타난다. 자본집약적 산업에서는 선두 기업이 더 많은 자본을 투자해 기술 격차를 벌린다.',diff:2,ex:'In <b>winner-takes-most</b> industries, multinationals race to out-invest each other to secure leading-edge capability.'},
+  {id:'vo1',type:'vocab',word:'reconfiguration',ko:'재구성, 재편 — 기존 구조를 해체하지 않고 새롭게 배열하는 것',pron:'[ˌriːˌkɒnfɪɡjʊˈreɪʃən]',nuance:'re(다시) + configuration(구성·배열). "deglobalization(탈세계화)"이 아니라 "reconfiguration(재구성)"이 핵심 개념. 글로벌 무역이 사라지는 것이 아니라 새로운 파트너·경로·구조로 재편되는 것. IT에서 시스템 설정을 변경하는 것도 reconfiguration. "trade network reconfiguration" = 무역망 재편.',diff:2,ex:'What is happening right now is not deglobalization, but a <b>reconfiguration</b> of the global trade network.'},
+  {id:'vo2',type:'vocab',word:'deglobalization',ko:'탈세계화 — 국제 경제 통합이 역전되고 무역·투자가 위축되는 현상',pron:'[ˌdiːˌɡloʊbəlaɪˈzeɪʃən]',nuance:'de(역방향) + globalization(세계화). 무역 장벽 강화, 관세 충격, 지정학적 분리 등이 세계화를 역전시킨다는 주장. 그러나 이 기사는 실제로는 deglobalization이 아니라 reconfiguration이 일어나고 있다고 반박. 무역의 지리적 거리는 오히려 증가하고 있어 세계화가 멈추지 않았다.',diff:1,ex:'Many headlines highlight debates around decoupling and <b>deglobalization</b>—but our view is it is a reconfiguration.'},
+  {id:'vo3',type:'vocab',word:'reshoring',ko:'리쇼어링 — 해외로 이전했던 생산시설을 본국으로 되돌리는 것',pron:'[ˌriːˈʃɔːrɪŋ]',nuance:'re(돌아오다) + shoring(해안, onshore). "offshoring" = 비용 절감을 위해 해외로 이전. "onshoring" = 국내 생산. "nearshoring" = 인접 국가로 이전. "reshoring" = 해외에 나가 있던 것을 다시 국내로. 지정학적 리스크와 공급망 안보 이슈로 선진국들이 적극 추진 중이나 실제 글로벌 차원에서는 아직 대규모로 일어나지 않고 있다.',diff:1,ex:'Despite all the talk about <b>reshoring</b> or onshoring, they are not happening at a global scale yet.'},
+  {id:'vo4',type:'vocab',word:'accretive',ko:'(성장에) 기여하는, 가치 증대적인',pron:'[əˈkriːtɪv]',nuance:'accrete(점진적으로 쌓이다)에서 유래. 금융에서 "accretive acquisition" = 인수 후 주당 이익이 증가하는 인수합병. 더 넓게는 특정 목표(성장·가치)에 긍정적으로 기여하는 것. "accretive to growth" = 성장에 기여하는. 메가딜이 해당 국가의 성장에 기여하도록 만들어야 한다는 맥락에서 사용.',diff:3,ex:'Huge projects must happen in a way that is <b>accretive</b> to the growth of the individual country.'},
+  {id:'vo5',type:'vocab',word:'catalyze',ko:'촉진하다, 촉매 작용을 하다',pron:'[ˈkætəlaɪz]',nuance:'화학의 촉매(catalyst)에서 유래. 촉매는 자신은 변하지 않으면서 반응을 가속화한다. "FDI as seed capital that catalyzes domestic investment" = FDI가 씨앗 자본으로 작용하여 국내 투자를 촉진하는 것. "catalyze change" = 변화를 촉발하다. 단순히 지원하는 것보다 강한 능동적 촉진의 뉘앙스.',diff:2,ex:'Successful economies used FDI as seed capital and then <b>catalyzed</b> domestic investment to sustain growth.'},
+  {id:'vo6',type:'vocab',word:'connective tissue',ko:'결합 조직; (산업·경제의) 연결 고리',pron:'[kəˈnektɪv ˈtɪʃuː]',nuance:'생물학에서 연골·힘줄·지방처럼 장기와 장기를 연결·지지하는 조직. 경제·산업 맥락에서는 다양한 국가·기업·공급망을 하나로 연결하는 역할을 하는 경제 주체를 묘사. "Asia is the connective tissue of global electronics" = 아시아가 글로벌 전자기기 공급망의 연결 고리라는 비유.',diff:2,ex:'Asia is essentially the world\'s <b>connective tissue</b> when it comes to electronics supply chains.'},
+  {id:'vo7',type:'vocab',word:'vintage',ko:'(특정 연도의) 산출물, 해당 시기를 대표하는 집합체',pron:'[ˈvɪntɪdʒ]',nuance:'원래 와인 제조에서 특정 해에 수확한 포도로 만든 와인을 가리킨다. 투자·금융에서는 특정 연도에 조성된 펀드나 이루어진 투자들의 집합을 뜻한다. "the 2025 vintage of FDI announcements" = 2025년에 발표된 FDI들의 집합. "vintage year" = 특히 좋은 성과를 낸 해.',diff:3,ex:'The open question is whether the realization rate will hold for the <b>2025 vintage</b> of FDI announcements.'},
+  {id:'vo8',type:'vocab',word:'complementarity',ko:'상호 보완성 — 서로 다른 강점이 결합하여 더 큰 가치를 만드는 관계',pron:'[ˌkɒmplɪmenˈtærɪti]',nuance:'complement(보완하다)의 명사형. "complementary" = 상호 보완적인. 아시아의 다양한 경제권(중국 자본 + 인도네시아 자원 + 말레이시아 기술 + 인도 IT)이 서로 다른 역량을 결합해 전체 아시아의 경쟁력을 높이는 것. 경쟁(competition)과 구별되는 협력의 논리.',diff:3,ex:'Different parts of Asia are driving <b>complementarities</b> and uplifting the continent\'s capabilities as a whole.'},
+  {id:'vo9',type:'vocab',word:'discontinuity',ko:'불연속, 단절 — 기존 패턴·추세가 갑자기 끊기는 변화',pron:'[ˌdɪskɒntɪˈnjuːɪti]',nuance:'dis(반대) + continuity(연속성). 점진적 변화(incremental change)가 아니라 기존 패턴이 갑자기 끊기는 구조적 전환. 글로벌 무역 재편처럼 30%의 무역 흐름이 한 통로에서 다른 통로로 이동하는 것이 전형적인 discontinuity. 위기이자 기회: "discontinuity can create new opportunities if you are ready"',diff:2,ex:'This kind of <b>discontinuity</b> can create new opportunities for companies that are ready for it.'},
+  {id:'vo10',type:'vocab',word:'hyperscaler',ko:'초대형 클라우드 서비스 기업 — 방대한 글로벌 컴퓨팅 인프라를 운영하는 기업',pron:'[ˈhaɪpərˌskeɪlər]',nuance:'hyper(초과) + scaler(규모를 키우는 자). Amazon(AWS), Microsoft(Azure), Google(GCP), Meta 등이 대표적. 이들은 전 세계에 거대한 데이터센터를 건설하며 서로 경쟁적으로 투자를 늘리고 있다. "hyperscalers building bigger data centers" = AI 수요 폭증으로 더 크고 많은 데이터센터 경쟁이 심화되는 것.',diff:2,ex:'We see <b>hyperscalers</b> racing to build bigger and bigger data centers—a defining megadeal category.'},
+  {id:'bz1',type:'biz',word:'FDI',ko:'Foreign Direct Investment — 해외직접투자',pron:'[ɛf diː aɪ]',nuance:'한 국가의 기업이 다른 국가에 공장·시설·사업체를 직접 설립하거나 인수하는 투자. 주식 매입만으로 이루어지는 포트폴리오 투자(FPI)와 구별. 일반적으로 10% 이상의 경영 참여를 동반한다. "greenfield FDI" = 신규 시설 설립, "brownfield FDI" = 기존 시설 인수. FDI는 무역의 "leading indicator(선행 지표)".',diff:1,ex:'Three-quarters of <b>FDI</b> announcements since 2022 have gone toward AI, advanced manufacturing, and energy.'},
+  {id:'bz2',type:'biz',word:'fab (semiconductor fab)',ko:'팹 — 반도체 제조 시설 (fabrication facility)',pron:'[fæb]',nuance:'fabrication(제조)의 약자. 반도체 웨이퍼를 실제로 생산하는 제조 공장. "fabless" = 설계만 하고 제조는 외주하는 기업(Qualcomm, NVIDIA 등). "foundry" = 타사 설계를 위탁 생산하는 팹(TSMC, Samsung 등). 단일 최첨단 팹의 건설 비용은 200억~300억 달러에 달한다.',diff:2,ex:'Semiconductor <b>fabs</b> are growing two to three times and shifting geographically—from Taiwan to the United States.'},
+  {id:'bz3',type:'biz',word:'gigafactory',ko:'기가팩토리 — 대규모 배터리 또는 전기차 부품 제조 공장',pron:'[ˈɡɪɡəˌfæktəri]',nuance:'giga(10억, 엄청난 규모) + factory. Tesla가 네바다에 처음 건설한 대형 배터리 공장을 부른 이름으로, 이제 업계 일반 용어가 됐다. 연간 수십 GWh의 배터리를 생산할 수 있는 초대형 공장. 건설 비용이 수십억 달러에 달하는 메가딜의 대표적 예시. "gigafactories shifting from China to Europe/Indonesia/Malaysia/Morocco".',diff:1,ex:'<b>Gigafactories</b> for batteries are growing 2–3x and shifting from China to Europe, Indonesia, and Morocco.'},
+  {id:'bz4',type:'biz',word:'ASEAN',ko:'동남아시아국가연합 — 10개 동남아 국가의 경제·정치 협력체',pron:'[ˈɑːziæn]',nuance:'Association of Southeast Asian Nations. 브루나이·캄보디아·인도네시아·라오스·말레이시아·미얀마·필리핀·싱가포르·태국·베트남 10개국. GDP 합계 약 3.6조 달러. 글로벌 공급망 재편에서 중국 대안 제조기지로 부상. 말레이시아·태국은 반도체·AI 투자 강세, 인도네시아·베트남은 섹터별 성장세.',diff:1,ex:'<b>ASEAN</b> and India are net recipients of FDI, with inflows roughly three times their outflows.'},
+  {id:'bz5',type:'biz',word:'MGI',ko:'McKinsey Global Institute — 맥킨지 글로벌 리서치 기관',pron:'[ɛm dʒiː aɪ]',nuance:'McKinsey & Company의 싱크탱크(think tank) 부문. 1990년 설립. 글로벌 경제·무역·기술·노동시장 등 거시경제 주제를 심층 연구하는 기관. 이 기사의 원본 연구 「FDI shake-up」의 발행처. "MGI partner" = MGI에서 파트너 직급을 가진 리서치 전문가.',diff:1,ex:'<b>MGI</b> analyzed around 200,000 FDI deals over the past decade to understand future trade patterns.'},
+  {id:'bz6',type:'biz',word:'net outbound / inbound investor',ko:'순 유출/순 유입 투자국',pron:'',nuance:'"outbound FDI" = 자국 기업이 해외에 투자하는 것(outflow), "inbound FDI" = 외국 기업이 자국에 투자하는 것(inflow). "net outbound investor" = 유출이 유입보다 큰 국가(중국, 한국, 일본). "net inbound recipient" = 유입이 유출보다 큰 국가(ASEAN, 인도). 중국은 과거 순 유입국에서 순 유출국으로 전환된 대표적 사례.',diff:2,ex:'China and advanced Asia are major <b>net outbound investors</b>; ASEAN and India are net FDI recipients.'}
+];
+
+let current='all';
+function render(list){
+  const g=document.getElementById('grid');
+  g.innerHTML='';
+  const total=list.length;
+  const done=list.filter(c=>learned.has(c.id)).length;
+  document.getElementById('stats').textContent=`${total} cards · ${done} learned`;
+  list.forEach(c=>{
+    const isL=learned.has(c.id);
+    const dots=[1,2,3].map(i=>`<span class="dot${i<=c.diff?' on':''}"></span>`).join('');
+    const card=document.createElement('div');
+    card.className='card'+(isL?' learned':'');
+    card.dataset.id=c.id;
+    card.dataset.type=c.type;
+    card.innerHTML=`<div class="card-inner">
+      <div class="front">
+        <div><span class="tag tag-${c.type}">${c.type}</span>
+        <div class="word">${c.word}</div>
+        ${c.pron?`<div class="pron">${c.pron}</div>`:''}
+        <div class="ko">${c.ko}</div></div>
+        <div class="diff">${dots}</div>
+      </div>
+      <div class="back">
+        <div><div class="word">${c.word}</div>
+        <div class="nuance">${c.nuance}</div>
+        ${c.ex?`<div class="nuance" style="font-style:italic;color:#555;margin-top:.2rem">${c.ex}</div>`:''}
+        </div>
+        <button class="learned-btn${isL?' done':''}" onclick="toggleLearned(event,'${c.id}')">${isL?'✓ Learned':'Mark learned'}</button>
+      </div>
+    </div>`;
+    card.addEventListener('click',e=>{if(!e.target.classList.contains('learned-btn'))card.classList.toggle('flipped')});
+    g.appendChild(card);
+  });
+}
+function filter(type,btn){
+  current=type;
+  document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render(type==='all'?cards:cards.filter(c=>c.type===type));
+}
+function toggleLearned(e,id){
+  e.stopPropagation();
+  if(learned.has(id))learned.delete(id);else learned.add(id);
+  localStorage.setItem(STORE_KEY,JSON.stringify([...learned]));
+  render(current==='all'?cards:cards.filter(c=>c.type===current));
+}
+render(cards);
+</script>
+</body>
+</html>
