@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vocabulary – The Next Era of Semiconductor Value Creation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d1b2a;--ink2:#1e3a5f;
+  --accent:#3b82f6;--accent2:#1d4ed8;
+  --sky:#eff6ff;--bg:#f8faff;--border:#93c5fd;
+  --r:14px;--shadow:0 4px 24px rgba(13,27,42,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(135deg,#0d1b2a 0%,#1e3a5f 55%,#3b82f6 100%);color:#fff;padding:2.2rem 1.5rem 1.8rem;text-align:center}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);margin-bottom:.4rem}
+header p{font-size:.92rem;opacity:.85}
+.badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:20px;padding:.25rem .9rem;font-size:.78rem;margin-bottom:.7rem;letter-spacing:.04em}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;padding:1.2rem 1rem .6rem;max-width:860px;margin:0 auto}
+.controls button{border:2px solid var(--border);background:#fff;color:var(--ink2);border-radius:30px;padding:.38rem .95rem;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s}
+.controls button.active,.controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.stats{text-align:center;font-size:.8rem;color:var(--ink2);padding:.2rem 0 .8rem;opacity:.75}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;padding:0 1rem 2rem;max-width:1100px;margin:0 auto}
+.card{perspective:900px;cursor:pointer;height:210px}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:1.1rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+.front{background:#fff;border:2px solid var(--border)}
+.back{background:var(--sky);border:2px solid var(--accent);transform:rotateY(180deg)}
+.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.18rem .55rem;border-radius:10px;color:#fff;width:fit-content}
+.tag-phrasal{background:#0891b2}
+.tag-idiom{background:#7c3aed}
+.tag-colloc{background:#0d1b2a}
+.tag-vocab{background:#c0392b}
+.tag-biz{background:#3b82f6}
+.word{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);line-height:1.2;margin:.35rem 0 .1rem}
+.pron{font-size:.78rem;color:var(--ink2);font-style:italic;margin-bottom:.2rem}
+.ko{font-size:.88rem;color:var(--ink2);font-weight:500}
+.diff{display:flex;gap:3px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.dot.on{background:var(--accent)}
+.back .word{font-size:1.1rem;color:var(--ink)}
+.nuance{font-size:.82rem;color:#374151;line-height:1.55;flex:1;margin:.35rem 0 .2rem;overflow:hidden}
+.learned-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.35rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;align-self:flex-end;transition:background .2s}
+.learned-btn.done{background:#10b981;color:#fff}
+.card.learned .front{border-color:#10b981;background:#f0fff8}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey &amp; Company · Semiconductors Practice · March 2026</div>
+  <h1>The Next Era of Semiconductor Value Creation</h1>
+  <p>AI Boom, Big Moves &amp; Strategic Core — Vocabulary</p>
+</header>
+<div class="controls">
+  <button class="active" onclick="filter('all',this)">All (35)</button>
+  <button onclick="filter('phrasal',this)">Phrasal (6)</button>
+  <button onclick="filter('idiom',this)">Idiom (6)</button>
+  <button onclick="filter('colloc',this)">Colloc (7)</button>
+  <button onclick="filter('vocab',this)">Vocab (10)</button>
+  <button onclick="filter('biz',this)">Biz (6)</button>
+</div>
+<div class="stats" id="stats"></div>
+<div id="grid"></div>
+<script>
+const STORE_KEY='semiconductor_value_creation_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(STORE_KEY)||'[]'));
+const cards=[
+  {id:'pv1',type:'phrasal',word:'double down on',ko:'~에 더욱 크게 베팅하다, 확신을 갖고 집중 투자하다',pron:'[ˌdʌbəl ˈdaʊn ɒn]',nuance:'블랙잭에서 첫 두 장 패가 좋을 때 베팅을 두 배로 올리는 것에서 유래. 이미 선택한 전략이나 기술에 대해 불확실성에도 불구하고 더 강하게 투자·집중하는 것. "double down on core technology" = 핵심 기술에 더욱 집중 투자하다. 반대 전략인 다각화(diversification)와 대비되며, 집중(focus)과 깊이(depth)를 강조하는 뉘앙스.',diff:2,ex:'Semiconductor leaders must decide whether to <b>double down on</b> deep core technology leadership or pivot to high-growth verticals.'},
+  {id:'pv2',type:'phrasal',word:'pivot to',ko:'(핵심 역량을 유지하며) ~으로 방향을 전환하다',pron:'[ˈpɪvət tuː]',nuance:'피벗(pivot)은 농구에서 한 발을 축으로 몸을 회전하는 동작. 한 발은 고정(핵심 역량)하고 다른 발로 새 방향을 탐색하는 이미지. 기존 강점을 버리지 않으면서도 새로운 시장·기술·세그먼트로 전략적 방향을 바꾸는 것. "pivot from gaming to AI" = 게이밍 GPU 사업에서 쌓은 역량을 기반으로 AI 인프라로 전환한 Nvidia의 사례.',diff:1,ex:'Nvidia was able to <b>pivot</b> rapidly from gaming to cryptocurrency, data centers, AI, and software offerings using its modular GPU architecture.'},
+  {id:'pv3',type:'phrasal',word:'out-invest',ko:'경쟁사를 압도하는 규모로 투자하다, 투자 규모에서 앞서다',pron:'[ˌaʊtɪnˈvest]',nuance:'"out-"은 경쟁을 의미하는 접두사("out-perform" = 능가, "out-run" = 앞지르다). "out-invest" = 투자 규모에서 경쟁사를 압도하다. 반도체처럼 고정비가 높고 개발 주기가 긴 산업에서는 규모의 투자가 기술 선도권을 결정. "outspend competitors" = 경쟁사보다 더 많이 지출하다 (이 기사에서도 혼용).',diff:2,ex:'Top performers consistently <b>out-invest</b> rivals: the capex-to-revenue ratio for leading semiconductor companies is 1.7 times the industry median.'},
+  {id:'pv4',type:'phrasal',word:'bode well for',ko:'~에 좋은 징조가 되다, ~에 긍정적 신호를 보내다',pron:'[bəʊd wel fɔː]',nuance:'"bode"는 고대 영어 "bodian"(예언하다)에서 유래. "bode well" = 좋은 결과를 예고하다. "bode ill" = 나쁜 결과를 예고하다. 현재의 징후·데이터·추세가 미래의 좋은 결과를 암시한다는 의미. "recent developments bode well for its future" = 최근의 발전이 반도체 산업의 미래에 긍정적 신호를 보낸다.',diff:2,ex:'The rise of AI could trigger unprecedented demand for chips—recent developments <b>bode well for</b> the semiconductor industry\'s future.'},
+  {id:'pv5',type:'phrasal',word:'translate into',ko:'(인사이트·전략을) ~으로 전환하다, 구체적 성과로 연결하다',pron:'[trænsˈleɪt ˈɪntə]',nuance:'"translate" = 언어를 바꾸다. 비유적으로는 한 형태의 것을 다른 형태로 전환하는 것. "translate insight into commitment" = 분석적 이해를 실제 전략적 약속으로 바꾸다. "translate strategy into action" = 전략을 행동으로 연결하다. 분석·계획 단계에서 실행 단계로 넘어가는 핵심 과제를 표현할 때 사용.',diff:1,ex:'Leaders that will shape the next era are those that <b>translate</b> insight <b>into</b> commitment, making required moves at full scale.'},
+  {id:'pv6',type:'phrasal',word:'loom (over)',ko:'(위협이) 어렴풋이 다가오다, 임박한 위협으로 드리우다',pron:'[luːm]',nuance:'"loom"은 원래 안개 속에서 크게 윤곽만 드러나는 이미지. 아직 현실화되지 않았지만 가까운 미래에 심각한 영향을 미칠 위협이 나타나기 시작할 때 사용. "some challenges loom" = 몇 가지 도전 과제가 음울하게 드리워지고 있다. "loom large" = (위협·문제가) 매우 크게 다가오다. 현재보다 미래 시점의 리스크를 강조.',diff:2,ex:'Some challenges also <b>loom</b>, however: geopolitical tensions, tariff policies, and material shortages are pressuring the global semiconductor value chain.'},
+
+  {id:'id1',type:'idiom',word:'flywheel',ko:'플라이휠 — 한번 회전 시작하면 자체 모멘텀으로 가속되는 선순환 구조',pron:'[ˈflaɪwiːl]',nuance:'무거운 바퀴(flywheel)는 처음 돌리기 어렵지만, 일단 속도가 붙으면 관성으로 계속 회전한다. 비즈니스에서는 투자 → 역량 강화 → 경쟁 우위 → 더 많은 수익 → 재투자의 자기 강화적 순환. "act as a flywheel for innovation and scale" = 혁신과 규모 확장의 선순환 동력이 되다. Jim Collins의 저서 *Good to Great*에서 널리 알려진 개념.',diff:2,ex:'Companies should invest in ecosystems that can act as a <b>flywheel</b> for innovation and scale, creating self-reinforcing competitive advantages.'},
+  {id:'id2',type:'idiom',word:'hockey stick',ko:'하키 스틱 — 완만하다가 갑자기 급등하는 성장 곡선',pron:'[ˈhɒki stɪk]',nuance:'아이스하키 스틱의 모양에서 유래. 긴 손잡이(느린 초기 성장)와 날카로운 날(갑작스러운 급등)로 구성. McKinsey 도서 *Strategy Beyond the Hockey Stick*(2018)에서 인용. 대부분의 기업이 야심 찬 성장을 목표로 하지만 실제로 하키 스틱 성장을 달성하는 기업은 소수. 반도체 산업의 EP 성장 40배가 대표적인 하키 스틱 성장 사례.',diff:1,ex:'We grounded our analysis in <b>Strategy Beyond the Hockey Stick</b>—companies executing bold moves are far more likely to achieve exponential growth.'},
+  {id:'id3',type:'idiom',word:'make bold bets',ko:'대담한 베팅을 하다 — 높은 불확실성에도 불구하고 대규모 전략적 도박을 감행하다',pron:'',nuance:'"bet"(도박의 베팅)에서 유래. 비즈니스에서 "bold bets" = 완전히 확신하기 어렵지만 잠재 보상이 매우 큰 대규모 전략적 투자 결정. "when the top companies make big bets, they focus on their core technologies and remain committed" = 핵심 기술에 집중하고 확신을 유지하는 것이 성공의 열쇠. 반대말: "incremental adjustments" = 점진적 조정.',diff:1,ex:'When the top companies <b>make big bets</b>, they focus on core technologies and remain committed—ASML invested $6 billion in EUV over 17 years.'},
+  {id:'id4',type:'idiom',word:'ahead of the curve',ko:'시대를 앞서가다; 트렌드를 남보다 먼저 예측하고 준비하다',pron:'',nuance:'도로의 커브(곡선)보다 앞에 위치한 자동차는 커브 이후의 상황을 먼저 본다는 이미지. 시장 트렌드, 기술 변화, 고객 수요가 주류가 되기 전에 먼저 준비하고 투자하는 포지션. "positioning them for the next wave of innovation long before it gains momentum" = 모멘텀을 얻기 훨씬 전에 미리 포지셔닝하는 것이 ahead of the curve.',diff:1,ex:'Companies that anticipate future developments invest in focus areas long before they gain momentum—staying <b>ahead of the curve</b> in technology cycles.'},
+  {id:'id5',type:'idiom',word:'gain an edge',ko:'우위를 확보하다; 경쟁에서 앞설 수 있는 우세한 포지션을 얻다',pron:'',nuance:'"edge" = 칼날 끝의 날카로운 부분. 그 부분에 있으면 상대방보다 미세하지만 결정적으로 앞선다는 이미지. 산업 표준 영향력, 희귀 기술, 고객 관계, 특허 등 경쟁사 대비 지속가능한 우위 요소를 확보하는 것. "Is there any place where competitors are not going, where we might have an edge?" = 경쟁사가 진입하지 않는 틈새에서 우위를 찾으라는 전략.',diff:1,ex:'Companies should look for geographies and segments where competitors are not yet present—places where they might <b>gain an edge</b> in the next era.'},
+  {id:'id6',type:'idiom',word:'stay the course',ko:'어려움에도 방향을 유지하다; 전략적 방향을 끝까지 고수하다',pron:'',nuance:'항해에서 목표 방향(course)을 폭풍 속에서도 유지하는 것에서 유래. 단기 역풍이나 비판에도 불구하고 장기 전략을 포기하지 않는 의지. ASML이 EUV에 17년간 60억 달러를 투자하며 흔들리지 않았던 것이 대표 사례. 반도체처럼 투자 회수 기간이 긴 산업에서 전략적 일관성(commitment)이 성과를 결정하는 핵심 요소.',diff:2,ex:'ASML <b>stayed the course</b> on EUV lithography—investing over $6 billion across more than 17 years despite uncertainty—and became the global leader.'},
+
+  {id:'cl1',type:'colloc',word:'economic profit',ko:'경제적 이익 — 자본 비용 초과 이익; 가치 창출의 진정한 척도',pron:'[ˌiːkəˈnɒmɪk ˈprɒfɪt]',nuance:'"EP" = Net operating profit after taxes − (Invested capital × WACC). 회계적 순이익과 달리 자본 기회비용까지 감안한 진정한 초과 수익. EP가 양수이면 기업이 자본 비용 이상의 가치를 창출하고 있다는 의미. McKinsey의 *Strategy Beyond the Hockey Stick*에서 핵심 성과 지표로 사용. 반도체 산업의 EP는 2000년대 초 이후 약 40배 성장했음.',diff:3,ex:'The semiconductor industry\'s average annual <b>economic profit (EP)</b> rose from 12th out of 31 industries in the early 2000s to third place for 2020–2024.'},
+  {id:'cl2',type:'colloc',word:'resource reallocation',ko:'자원 재배분 — 수익성 낮은 곳에서 높은 곳으로 투자를 전략적으로 이동',pron:'[rɪˈsɔːs ˌriːæləˈkeɪʃən]',nuance:'"resource" = 자금·인력·R&D 등 회사 자원 전반. "reallocation" = 이미 배분된 자원을 다시 배분하는 것. 신규 투자보다 기존 자원을 어디에서 어디로 옮기느냐의 문제. "dynamic resource reallocation" = 시장 변화에 반응하여 능동적으로 자원을 이동하는 능력. 상위 반도체 기업들은 10년에 걸쳐 연간 투자의 최소 60%를 다른 사업부로 이동시켰음.',diff:2,ex:'Top semiconductor companies mastered <b>dynamic resource reallocation</b>, shifting at least 60 percent of annual capex to different business units over a decade.'},
+  {id:'cl3',type:'colloc',word:'product differentiation',ko:'제품 차별화 — 경쟁사와 구분되는 고유한 특성으로 가격 프리미엄을 확보하는 전략',pron:'[ˈprɒdʌkt ˌdɪfərənʃiˈeɪʃən]',nuance:'"differentiation"(차별화)은 Michael Porter의 경쟁 전략 프레임워크의 핵심 개념. 기능·성능·신뢰성·브랜드 등에서 경쟁사와 명확히 다른 가치를 제공하여 가격 결정력과 마진을 확보. "better product differentiation, healthier margins" = 차별화된 제품이 더 높은 마진으로 이어진다는 직접적 연관성. TSMC의 EUV 공정 기술이 대표 사례.',diff:2,ex:'Top-performing semiconductor companies improved gross margins faster than 70 percent of peers through better <b>product differentiation</b> and unique core technology offerings.'},
+  {id:'cl4',type:'colloc',word:'technology road map',ko:'기술 로드맵 — 미래 기술 개발 방향과 마일스톤을 담은 장기 계획',pron:'[tekˈnɒlədʒi rəʊd mæp]',nuance:'자동차 여행에서 경로와 중간 기착지를 표시한 지도에서 유래. "technology road map" = 현재 기술에서 출발하여 미래 기술 목표까지 달성할 구체적 단계와 타임라인을 정의한 계획. TSMC, ASML이 이를 바탕으로 수십 년에 걸쳐 기술 리더십을 유지. 고객과 공유하면 신뢰 형성과 공동 투자 유도 효과도 있음.',diff:1,ex:'ASML developed a long-term <b>technology road map</b> for its EUV platform that called for continuous improvement, making it the global leader in semiconductor equipment.'},
+  {id:'cl5',type:'colloc',word:'market capitalization',ko:'시가총액 — 상장 주식 수 × 현재 주가; 시장이 평가하는 기업 가치',pron:'[ˈmɑːkɪt ˌkæpɪtəlaɪˈzeɪʃən]',nuance:'"market cap" = 시장이 현재 평가하는 기업의 총 가치. "market cap"을 기준으로 M&A 규모를 평가하는 것이 이 기사의 핵심 개념: 프로그래매틱 M&A에서 10년간 M&A 총액이 시가총액의 30% 이상이어야 한다는 기준. "Nvidia became the first company to reach $5 trillion in market value" = 시가총액 5조 달러 돌파.',diff:2,ex:'Programmatic M&A typically involves deals whose combined value represents at least 30 percent of a company\'s <b>market capitalization</b> over a decade.'},
+  {id:'cl6',type:'colloc',word:'vertical integration',ko:'수직 통합 — 가치 사슬의 여러 단계를 단일 기업이 내재화하여 통제하는 전략',pron:'[ˈvɜːtɪkəl ˌɪntɪˈɡreɪʃən]',nuance:'제품 제조에서 원자재 → 부품 → 조립 → 유통까지의 가치 사슬을 "수직(vertical)"이라고 할 때, 그 여러 단계를 한 회사가 직접 수행하는 것. "vertical integration" = 설계·제조·패키징·소프트웨어를 한 기업이 통합. 반대는 "horizontal integration"(같은 단계의 경쟁사 합병). 반도체에서 IDM(Integrated Device Manufacturer)이 전통적인 수직 통합 모델.',diff:2,ex:'Several end markets are demanding <b>vertical integration</b>—semiconductor companies must consider how to align their strategies to succeed in these more integrated markets.'},
+  {id:'cl7',type:'colloc',word:'domain-specific architecture',ko:'도메인 특화 아키텍처 — 특정 워크로드에 최적화된 맞춤형 칩 설계',pron:'[dəˈmeɪn spəˈsɪfɪk ˈɑːkɪtektʃə]',nuance:'"domain" = 특정 응용 분야(AI 추론, 이미지 처리, 무선 통신 등). "domain-specific architecture (DSA)" = 범용 CPU/GPU 대신 특정 워크로드에만 최적화된 칩 설계. Google TPU(텐서 처리), Qualcomm NPU(신경망 처리), AWS Graviton 등이 사례. 전력 효율과 처리 속도가 범용 칩 대비 10~100배 이상. AI 시대의 핵심 칩 설계 패러다임.',diff:3,ex:'New computing models and <b>domain-specific architectures</b> will be key drivers pushing the semiconductor industry toward $1.6 trillion in revenue by 2030.'},
+
+  {id:'vc1',type:'vocab',word:'fabless',ko:'팹리스 — 제조 시설 없이 반도체를 설계만 하는 회사',pron:'[ˈfæbləs]',nuance:'"fab"(fabrication = 반도체 제조 공장) + "-less"(없는). 막대한 자본이 필요한 웨이퍼 제조 공장을 직접 운영하지 않고 TSMC 같은 파운드리에 위탁하여 설계에만 집중하는 비즈니스 모델. Nvidia, Qualcomm, AMD, Apple이 대표적 팹리스 기업. 반대는 IDM(Integrated Device Manufacturer, 예: Intel, Samsung). 팹리스 모델이 AI 붐을 타고 가장 빠르게 가치를 창출하는 세그먼트로 부상.',diff:2,ex:'<b>Fabless</b> companies and captive chip players are now generating more value than traditional integrated device manufacturers—the shift accelerated with the AI boom.'},
+  {id:'vc2',type:'vocab',word:'parallelism',ko:'병렬성 — 여러 연산을 동시에 처리하는 능력',pron:'[ˈpærəlelɪzəm]',nuance:'"parallel"(병렬) + "-ism"(특성). 단일 순차 연산이 아니라 수천~수만 개의 연산을 동시에 실행하는 컴퓨팅 방식. GPU는 원래 3D 그래픽의 픽셀 연산을 병렬 처리하기 위해 설계되었으나, 이 병렬성이 딥러닝 행렬 연산에도 완벽히 적합하여 AI 시대의 핵심 하드웨어가 됨. "GPU parallelism could accelerate a broad set of compute-intensive workloads" = 이것이 Nvidia의 전환점.',diff:2,ex:'Nvidia recognized that GPU <b>parallelism</b> could accelerate compute-intensive workloads beyond graphics—the key insight that drove its AI data center pivot.'},
+  {id:'vc3',type:'vocab',word:'monolithic',ko:'모놀리식 — 단일 불분할 구조; 변화에 느리고 경직된',pron:'[ˌmɒnəˈlɪθɪk]',nuance:'"mono"(하나) + "lithos"(돌, 그리스어). 거대하고 단단한 단일 돌 구조물 이미지. 소프트웨어/칩 아키텍처에서는 모든 기능이 하나의 거대한 덩어리로 구성되어 일부만 교체하거나 업그레이드하기 어려운 구조. 반대는 "modular"(모듈식). 이 기사에서는 "monolithic players" = 전략 전환이 느리고 경직된 대형 기업들. 플랫폼 민첩성이 monolithic players에 대한 우위를 제공한다.',diff:2,ex:'By designing modular and scalable architectures, platform-agile companies can outmaneuver slower-moving or <b>monolithic</b> players in the industry.'},
+  {id:'vc4',type:'vocab',word:'cocreation',ko:'공동 창조 — 고객·공급자·연구기관과 함께 기술을 개발하는 협력 혁신',pron:'[ˌkəʊkriˈeɪʃən]',nuance:'"co-"(함께) + "creation"(창조). 기업 내부에서만 R&D를 수행하는 것이 아니라 고객, 공급업체, 연구기관이 공동으로 기술을 개발하는 것. "Applied Materials emphasizes customer cocreation" = 고객과 함께 제품을 개발하여 시장 정합성을 높이고 출시 리스크를 줄임. ASML이 고객에게 R&D 프로그램에 공동 투자 기회를 제공하는 것도 cocreation의 일환.',diff:2,ex:'Applied Materials emphasizes customer <b>cocreation</b> to ensure it develops the right products—top semiconductor companies don\'t just serve customers, they build with them.'},
+  {id:'vc5',type:'vocab',word:'interconnect',ko:'인터커넥트 — 칩·프로세서·시스템을 연결하는 배선·통신 기술',pron:'[ˌɪntəˈkɒnekt]',nuance:'"inter"(사이) + "connect"(연결). 반도체 맥락에서는 (1) 칩 내부의 금속 배선, (2) 칩과 칩 사이 연결(패키징 기술), (3) 서버와 서버를 잇는 네트워크 패브릭. Nvidia가 Mellanox를 인수하여 InfiniBand와 Ethernet을 GPU 클러스터 연결에 활용한 것이 핵심 사례. AI 데이터 센터에서 GPU 수천 개를 묶으려면 초고속 인터커넥트가 필수.',diff:3,ex:'Following its Mellanox acquisition, Nvidia expanded the InfiniBand and Ethernet <b>interconnect</b> platforms that connect GPUs into clusters for industrial-scale AI infrastructure.'},
+  {id:'vc6',type:'vocab',word:'inference',ko:'추론 — 학습된 AI 모델을 실행하여 새로운 입력에서 출력을 생성하는 것',pron:'[ˈɪnfərəns]',nuance:'"infer"(추론하다)에서 유래. AI 맥락에서 "training"(학습)과 대비되는 개념. "training" = 방대한 데이터로 모델 파라미터를 최적화하는 과정(한 번, 매우 비쌈). "inference" = 학습된 모델을 실제 사용자 쿼리에 적용하는 과정(반복적, 더 많은 GPU 사용). 데이터 센터 AI 워크로드에서 inference 수요가 training을 빠르게 앞지르고 있으며, 이것이 반도체 수요 급증의 핵심 동인.',diff:2,ex:'GPUs proved valuable not only for graphics but for highly parallel tasks—crypto mining and, ultimately, AI training and <b>inference</b>.'},
+  {id:'vc7',type:'vocab',word:'quintile',ko:'5분위 — 데이터를 5등분했을 때 각 구간; 성과 순위 척도',pron:'[ˈkwɪntaɪl]',nuance:'"quint-"(5, 라틴어) + "-ile"(분위 접미사). 상위 20% = 1st quintile. "moving to the top quintile" = 상위 20%로 진입하는 것. McKinsey 전략 연구에서 산업 내 EP 순위를 5분위로 나누어 기업 성과를 평가. "average probability of moving into the top quintile was 8%" = 아무 전략적 행동을 하지 않으면 상위 20%로 올라갈 확률이 8%에 불과. 빅 무브를 실행하면 그 확률이 6배 상승.',diff:3,ex:'Companies that undertook at least one portfolio and one performance initiative were six times more likely to move to the top <b>quintile</b>—compared to those that made no big moves.'},
+  {id:'vc8',type:'vocab',word:'lithography',ko:'리소그래피 — 반도체 웨이퍼에 회로 패턴을 인쇄하는 광학 공정',pron:'[lɪˈθɒɡrəfi]',nuance:'"lithos"(돌) + "graphein"(쓰다). 원래는 돌판 인쇄 기법. 반도체에서는 빛(광원)으로 포토마스크의 회로 패턴을 웨이퍼의 감광막에 전사하는 핵심 공정. EUV(Extreme Ultraviolet) 리소그래피는 13.5nm 파장의 극자외선을 사용하여 2nm 이하의 미세 패턴 구현. ASML이 세계 유일의 EUV 장비 공급사. 리소그래피 장비 한 대가 약 3,500억 원.',diff:2,ex:'ASML invested over $6 billion in R&D for extreme ultraviolet (EUV) <b>lithography</b> over more than 17 years—about twice as much as peer companies spent on R&D over the past decade.'},
+  {id:'vc9',type:'vocab',word:'wafer',ko:'웨이퍼 — 반도체 칩이 제조되는 원형 실리콘 기판',pron:'[ˈweɪfər]',nuance:'얇고 둥근 과자(wafer)를 닮은 실리콘 원판. 순수 실리콘을 원기둥으로 결정화한 뒤 얇게 슬라이스한 것. 웨이퍼 위에 수백~수천 개의 칩이 동시에 제조됨. "200-millimeter and 300-millimeter wafers" = 지름이 200mm 또는 300mm인 웨이퍼. 클수록 동시에 제조할 수 있는 칩 수가 많아 생산 효율 향상. Texas Instruments가 레거시 150mm 팹을 매각하고 200mm, 300mm로 전환한 이유.',diff:1,ex:'Texas Instruments automated equipment maintenance and divested its 150-millimeter legacy fabs after shifting focus to 200-millimeter and 300-millimeter <b>wafers</b>.'},
+  {id:'vc10',type:'vocab',word:'captive chip',ko:'캡티브 칩 — 비(非)반도체 기업이 자사 제품에 내재화한 자체 설계 칩',pron:'[ˈkæptɪv tʃɪp]',nuance:'"captive" = 포로, 내부에 갇힌. 반도체 전문 기업이 아닌 OEM(Apple, Google, Amazon, Tesla 등)이 자사 제품에 특화된 칩을 직접 설계하여 사용하는 것. Apple의 M 시리즈, Google의 TPU, Amazon의 Graviton 등이 사례. 전통적 반도체 기업(Qualcomm, Intel)의 시장 점유율을 잠식하는 새로운 위협. "captive chip players" = 이러한 자체 칩 설계 OEM들.',diff:3,ex:'<b>Captive chip</b> players—OEMs with in-house design capabilities—are now generating more value in the semiconductor landscape, challenging traditional IDMs and fabless companies.'},
+
+  {id:'bz1',type:'biz',word:'GPU',ko:'그래픽 처리 장치 — 병렬 연산에 특화된 프로세서; AI 시대의 핵심 칩',pron:'[ˌdʒiː piː ˈjuː]',nuance:'Graphics Processing Unit. 원래 3D 게임 그래픽의 픽셀 렌더링을 위해 설계된 특수 프로세서. 수천 개의 소형 코어가 동시에 동일한 연산을 실행하는 병렬 구조가 딥러닝 행렬 곱셈에 최적화. CPU(중앙처리장치)가 순차 처리에 강점이라면 GPU는 대규모 병렬 처리에 강점. Nvidia A100·H100이 AI 학습·추론 표준 칩. "GPU parallelism" = AI를 가능하게 한 하드웨어 특성.',diff:1,ex:'After building its business in gaming <b>GPUs</b>, Nvidia recognized that GPU parallelism could accelerate AI training and inference—pivoting to become a $5 trillion company.'},
+  {id:'bz2',type:'biz',word:'HBM',ko:'고대역폭 메모리 — AI GPU에 탑재되는 초고속 적층 메모리',pron:'[eɪtʃ biː ˈem]',nuance:'High Bandwidth Memory. 기존 DRAM을 수직으로 여러 층 쌓아 올려(3D stacking) GPU에 매우 가까이 배치한 메모리 기술. 일반 DRAM 대비 대역폭이 10배 이상. AI 모델의 방대한 가중치 데이터를 GPU로 빠르게 전송하는 데 필수. SK hynix가 현재 세계 최고의 HBM 공급자. "SK hynix plans to invest $75 billion, allocating 80 percent to its core HBM technology" = AI 메모리 시장의 핵심 전장.',diff:2,ex:'SK hynix plans to invest about $75 billion in AI-optimized memory, allocating about 80 percent to its core <b>HBM</b> technology to secure its leadership position.'},
+  {id:'bz3',type:'biz',word:'ASIC',ko:'응용 주문형 반도체 — 특정 용도에 최적화된 맞춤 설계 칩',pron:'[ˈeɪzɪk]',nuance:'Application-Specific Integrated Circuit. 범용 CPU/GPU 대신 특정 기능(암호화폐 채굴, AI 추론, 네트워크 라우팅 등)에만 최적화된 칩. 해당 용도에서는 범용 칩보다 전력 효율이 10~100배 높으나 다른 용도로는 사용 불가. Google의 TPU, Bitcoin 채굴기 칩, Broadcom의 데이터 센터용 커스텀 칩이 대표적. "custom ASICs" = 특정 고객(AWS, Meta, Google)을 위해 맞춤 제작한 칩.',diff:2,ex:'Broadcom built its AI portfolio to include custom application-specific integrated circuits (<b>ASICs</b>) tailored for hyperscalers—alongside switch chips and server connectivity solutions.'},
+  {id:'bz4',type:'biz',word:'SoC',ko:'시스템 온 칩 — CPU·GPU·메모리·통신 모듈을 하나의 칩에 통합',pron:'[ˌes əʊ ˈsiː]',nuance:'System on Chip. 별도의 칩으로 존재했던 CPU, GPU, NPU(AI 엔진), 메모리 컨트롤러, 통신 모뎀 등을 하나의 실리콘 다이에 통합한 칩. 물리적 크기와 전력 소비를 줄여 스마트폰·자동차·IoT에 최적. Qualcomm의 Snapdragon, Apple의 A·M 시리즈가 대표적 SoC. "Qualcomm\'s focus on power-efficient, high-performance SoCs" = 모바일에서 자동차·IoT까지 확장한 비결.',diff:2,ex:'Qualcomm\'s focus on power-efficient, high-performance <b>SoCs</b> allowed the company to expand from mobile into automotive and Internet of Things segments.'},
+  {id:'bz5',type:'biz',word:'EUV',ko:'극자외선 리소그래피 — 최첨단 반도체 제조에 사용되는 차세대 패터닝 기술',pron:'[ˌiː juː ˈviː]',nuance:'Extreme Ultraviolet. 파장 13.5nm의 극자외선을 이용한 리소그래피 기술. 기존 ArF(193nm) 대비 훨씬 짧은 파장으로 더 미세한 회로 패턴 구현. 2nm 이하의 첨단 반도체 제조에 필수. ASML만이 세계에서 유일하게 EUV 장비를 제조할 수 있으며, 이것이 ASML의 독점적 경쟁 우위. 한 대 가격이 약 3억 달러(약 4,000억 원). 미·중 반도체 기술 경쟁에서 EUV 장비 수출 제한이 핵심 지정학적 무기.',diff:2,ex:'ASML invested over $6 billion in R&D for <b>EUV</b> lithography over 17 years—about twice as much as peer companies spent—to become the undisputed global leader.'},
+  {id:'bz6',type:'biz',word:'CUDA',ko:'쿠다 — Nvidia의 GPU 병렬 컴퓨팅 플랫폼; AI 생태계의 운영체제',pron:'[ˈkjuːdə]',nuance:'Compute Unified Device Architecture. Nvidia가 2006년 출시한 GPU 프로그래밍 플랫폼. 개발자들이 C/C++ 코드로 GPU의 병렬 연산 능력을 활용할 수 있게 해주는 소프트웨어 환경. PyTorch·TensorFlow 등 대부분의 AI 프레임워크가 CUDA 위에서 실행됨. CUDA 생태계에 수백만 명의 개발자가 묶여 있어, Nvidia의 가장 강력한 해자(moat). "proprietary compute unified device architecture, or CUDA" = Nvidia 플랫폼 전략의 핵심.',diff:3,ex:'Nvidia developed a modular core architecture—its proprietary <b>CUDA</b>—that allowed it to pivot from gaming to data centers and AI, creating an unmatched developer ecosystem.'}
+];
+function render(type){
+  const grid=document.getElementById('grid');
+  const filtered=type==='all'?cards:cards.filter(c=>c.type===type);
+  grid.innerHTML=filtered.map(c=>`
+  <div class="card${learned.has(c.id)?' learned':''}" id="card-${c.id}" onclick="flip('${c.id}')">
+    <div class="card-inner">
+      <div class="front">
+        <div>
+          <span class="tag tag-${c.type}">${c.type}</span>
+          <div class="word">${c.word}</div>
+          <div class="pron">${c.pron}</div>
+          <div class="ko">${c.ko}</div>
+        </div>
+        <div class="diff">${[1,2,3].map(i=>`<div class="dot${i<=c.diff?' on':''}"></div>`).join('')}</div>
+      </div>
+      <div class="back">
+        <div>
+          <div class="word">${c.word}</div>
+          <div class="nuance">${c.nuance}</div>
+        </div>
+        <button class="learned-btn${learned.has(c.id)?' done':''}" onclick="markLearned(event,'${c.id}')">${learned.has(c.id)?'✓ Learned':'Mark Learned'}</button>
+      </div>
+    </div>
+  </div>`).join('');
+  updateStats();
+}
+function flip(id){document.getElementById('card-'+id).classList.toggle('flipped');}
+function markLearned(e,id){
+  e.stopPropagation();
+  if(learned.has(id)){learned.delete(id);}else{learned.add(id);}
+  localStorage.setItem(STORE_KEY,JSON.stringify([...learned]));
+  render(currentFilter);
+}
+function filter(type,btn){
+  currentFilter=type;
+  document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render(type);
+}
+function updateStats(){
+  document.getElementById('stats').textContent=`${learned.size} / ${cards.length} learned`;
+}
+let currentFilter='all';
+render('all');
+</script>
+</body>
+</html>
