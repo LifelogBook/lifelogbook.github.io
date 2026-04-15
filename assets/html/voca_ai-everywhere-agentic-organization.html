@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vocabulary – AI is Everywhere: The Agentic Organization</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f172a;--surface:#1e293b;--border:#334155;--ink:#f1f5f9;--muted:#94a3b8;--accent:#6366f1;--accent2:#818cf8;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;padding:20px;}
+  header{text-align:center;margin-bottom:20px;}
+  .badge{display:inline-block;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:.72rem;color:var(--muted);margin-bottom:10px;letter-spacing:.03em;}
+  h1{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);margin-bottom:6px;}
+  .subtitle{font-size:.8rem;color:var(--muted);}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px;}
+  .filters button{background:var(--surface);border:1.5px solid var(--border);color:var(--muted);border-radius:20px;padding:5px 14px;font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+  .filters button.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .progress{text-align:center;font-size:.78rem;color:var(--muted);margin-bottom:14px;}
+  .progress span{color:var(--accent2);font-weight:600;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+  .card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;cursor:pointer;perspective:800px;height:200px;transition:opacity .3s;}
+  .card.hidden{display:none;}
+  .card.learned{opacity:.45;}
+  .card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s;}
+  .card.flipped .card-inner{transform:rotateY(180deg);}
+  .front,.back{position:absolute;inset:0;border-radius:13px;padding:16px;backface-visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;}
+  .front{background:var(--surface);}
+  .back{background:#1a2540;transform:rotateY(180deg);}
+  .cat-tag{font-size:.65rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border-radius:10px;align-self:flex-start;}
+  .phrasal .cat-tag{background:#1e3a5f;color:#60a5fa;}
+  .idiom .cat-tag{background:#3b1f5e;color:#c084fc;}
+  .colloc .cat-tag{background:#1a3d2b;color:#4ade80;}
+  .vocab .cat-tag{background:#3d2400;color:#fb923c;}
+  .biz .cat-tag{background:#1f2d3d;color:#38bdf8;}
+  .word{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--ink);line-height:1.3;}
+  .dots{display:flex;gap:3px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--border);}
+  .dot.on{background:var(--accent);}
+  .ko{font-size:.88rem;color:var(--accent2);font-weight:600;margin-bottom:6px;}
+  .nuance{font-size:.72rem;color:var(--muted);line-height:1.5;flex:1;overflow:hidden;}
+  .mark-btn{margin-top:8px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:4px 10px;font-size:.7rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;align-self:flex-end;}
+  .mark-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .card.learned .mark-btn{border-color:#22c55e;color:#22c55e;}
+  .reset{display:block;margin:20px auto 0;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:7px 20px;font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+  .reset:hover{border-color:var(--accent);color:var(--accent);}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey &amp; Company · People &amp; Organizational Performance · April 2026</div>
+  <h1>AI is Everywhere. The Agentic Organization Isn't—Yet</h1>
+  <p class="subtitle">에이전틱 조직 구축을 위한 핵심 표현 35선</p>
+</header>
+
+<div class="filters">
+  <button class="active" data-cat="all">ALL</button>
+  <button data-cat="phrasal">PHRASAL</button>
+  <button data-cat="idiom">IDIOM</button>
+  <button data-cat="colloc">COLLOC</button>
+  <button data-cat="vocab">VOCAB</button>
+  <button data-cat="biz">BIZ</button>
+</div>
+
+<div class="progress">학습 완료: <span id="cnt">0</span> / <span id="tot">35</span></div>
+
+<div class="grid" id="grid"></div>
+<button class="reset" id="resetBtn">진행도 초기화</button>
+
+<script>
+const STORE='agentic_org_learned';
+const cards=[
+  {id:'pv1',cat:'phrasal',word:'strike up',ko:'시작하다, 착수하다 (새 관계·시도)',nuance:'"leaders strike up new pilots" — 마치 악단이 연주를 시작하듯 새로운 파트너십이나 시도를 개시하는 이미지. start보다 적극적·의도적 뉘앙스. strike up a conversation, strike up a deal',diff:1},
+  {id:'pv2',cat:'phrasal',word:'flatten (out)',ko:'(조직 구조를) 단순화하다, 계층을 줄이다',nuance:'"flatten their structure and get faster" — 다층적 위계를 수평적으로 만드는 것. de-layer와 유사. flat organization(수평적 조직)의 동사형. 비용 절감과 의사결정 속도 향상이 목적',diff:2},
+  {id:'pv3',cat:'phrasal',word:'supercharge',ko:'대폭 강화하다, 급격히 가속하다',nuance:'"supercharge the speed at which they can innovate" — 자동차 엔진의 과급기(supercharger)처럼 보통 이상의 에너지를 공급해 성능을 극대화하는 이미지. turbocharge와 유사하지만 규모감이 더 큼',diff:2},
+  {id:'pv4',cat:'phrasal',word:'grapple with',ko:'씨름하다, 깊이 고민하며 다루다',nuance:'"grapple with it nearly everywhere simultaneously" — 단순히 다루는(deal with) 것이 아니라 어렵고 복잡한 문제를 육탄전(grapple=몸싸움)하듯 적극적으로 파고드는 이미지. wrestle with와 교환 가능',diff:2},
+  {id:'pv5',cat:'phrasal',word:'draw on',ko:'활용하다, ~을 끌어내다 (자원·전문성)',nuance:'"draw on, from within tech, to enable change" — 우물에서 물을 길어 올리듯 내부에 축적된 전문성이나 자원을 끌어내 활용하는 이미지. leverage, tap into와 유사. draw on experience(경험을 살리다)',diff:1},
+  {id:'pv6',cat:'phrasal',word:'roll (sth) forward',ko:'(시나리오를) 앞으로 돌리다, 미래로 투영하다',nuance:'"roll that movie forward ten years" — 영화 테이프를 앞으로 감듯 현재 상황을 미래로 투영해 시뮬레이션하는 표현. fast-forward(빨리 감기)와 유사한 맥락. 전략적 사고에서 자주 사용',diff:2},
+  {id:'id1',cat:'idiom',word:'above the loop',ko:'루프 위에서 감독하다 (AI가 실행, 인간은 판단)',nuance:'"humans above the loop" — human-in-the-loop(실행 중간에 개입)의 진화 버전. AI 에이전트가 핵심 프로세스 대부분을 수행하고 인간은 결과에 대한 최종 판단만 담당하는 구조. 감독자(overseer) 역할',diff:3},
+  {id:'id2',cat:'idiom',word:'betting the company',ko:'회사 전체를 걸다, 올인식 도박을 하다',nuance:'"not betting the company" — 한 번의 잘못된 결정으로 회사 전체가 위험에 빠질 수 있는 극단적 고위험 행동. 반대 개념: two-way door(되돌릴 수 있는 결정). 전략 맥락에서 과도한 집중 투자 경고 시 사용',diff:2},
+  {id:'id3',cat:'idiom',word:'hazing grunt work',ko:'하급 기초 작업 (판단력을 키우는 혹독한 훈련)',nuance:'"hazing grunt work their leaders did in the pre-agentic era" — hazing(신입 괴롭힘)+grunt work(단순 노동). 리더들이 주니어 시절 겪었던 지루하고 반복적이지만 판단력을 길러주는 기초 작업을 뜻함. AI 시대에 이것이 사라진다는 역설',diff:3},
+  {id:'id4',cat:'idiom',word:'two-way door',ko:'되돌릴 수 있는 결정 (실험 가능한 선택)',nuance:'"two-way doors, not one-way doors" — Amazon Bezos가 유명화. 한번 열면 돌아올 수 없는 one-way door(비가역적 결정) vs. 틀리면 다시 돌아올 수 있는 two-way door(가역적 결정). 반복적 실험 문화의 핵심',diff:2},
+  {id:'id5',cat:'idiom',word:'lighthouse use case',ko:'등대 사례, 선도적 파일럿 사례',nuance:'"areas ripe for being lighthouse use cases" — 등대처럼 어둠 속에서 방향을 밝혀주는 선도 사례. 성공 패턴을 다른 영역에 복제하기 위한 초기 증명 사례. 비슷한 표현: flagship project, anchor case',diff:2},
+  {id:'id6',cat:'idiom',word:'show up differently',ko:'다른 방식으로 나타나다, 리더십 태도를 바꾸다',nuance:'"How do I need to show up differently to lead the organization forward?" — show up(나타나다)에 differently를 더해 단순 출석이 아닌 행동·태도·역할을 근본적으로 변화시키는 것. 리더십 개발 담론의 핵심 표현',diff:2},
+  {id:'co1',cat:'colloc',word:'paradigm shift',ko:'패러다임 전환, 근본적 변화',nuance:'"the biggest paradigm shift since the industrial and digital revolutions" — Thomas Kuhn의 과학철학 용어. 기존 틀 자체가 깨지고 새로운 세계관이 채택되는 혁명적 전환. 단순 개선(incremental change)의 반대. 비즈니스에서는 산업 구조 자체가 바뀔 때 사용',diff:1},
+  {id:'co2',cat:'colloc',word:'trust gap',ko:'신뢰 격차, 기술에 대한 신뢰 부족',nuance:'"a huge trust gap exists today" — 기술의 잠재력과 실제 사용자의 신뢰 수준 사이의 괴리. AI 환각(hallucination) 사례들이 이 갭을 만든 원인. skill gap(역량 격차)과 함께 AI 전환의 대표적 장애물',diff:2},
+  {id:'co3',cat:'colloc',word:'skill gap',ko:'역량 격차, 요구 역량과 보유 역량의 차이',nuance:'"nearly half of leaders say they see skill gaps" — 조직이 필요로 하는 역량과 현재 인력이 보유한 역량 사이의 불일치. 에이전틱 AI 시대에는 AI 감독·판단·시스템 사고 역량 부족이 핵심 gap. talent gap과 혼용',diff:1},
+  {id:'co4',cat:'colloc',word:'near-zero marginal cost',ko:'한계비용 제로에 근접, 추가 생산 비용 소멸',nuance:'"move toward near-zero marginal cost of delivery" — 한 단위 더 생산·제공할 때 드는 추가 비용이 사실상 제로에 가까워지는 것. 디지털·AI 경제의 핵심 특성. 규모의 경제를 넘어서는 개념으로 비즈니스 모델을 근본적으로 변화시킴',diff:3},
+  {id:'co5',cat:'colloc',word:'fluid talent flows',ko:'유동적 인재 흐름, 민첩한 인재 이동',nuance:'"fluid talent flows is going to increase" — 고정된 직무·팀 구조 대신 프로젝트별로 인재가 유연하게 이동하는 방식. 전통적 사일로(silo)와 반대. pods of work(작업 팟)와 연결되는 개념. 조직 민첩성의 핵심 지표',diff:3},
+  {id:'co6',cat:'colloc',word:'systems thinking',ko:'시스템 사고, 전체 구조의 상호작용을 파악하는 사고',nuance:'"systems thinking that is starting to unlock opportunities at scale" — 부분이 아닌 전체 시스템을 조망하고, 구성 요소들의 상호작용과 피드백 루프를 이해하는 사고 방식. 에이전틱 AI 워크플로 재설계에 필수적인 역량',diff:2},
+  {id:'co7',cat:'colloc',word:'perpetual state',ko:'영속적 상태, 끝나지 않는 진행형',nuance:'"change management is no longer an episodic thing. It\'s a perpetual state" — 한번 완료되는 프로젝트가 아닌 계속 진행되는 상태. episodic(간헐적)의 반대. AI 시대에는 변화가 특별한 사건이 아니라 일상이 됨을 강조',diff:2},
+  {id:'vc1',cat:'vocab',word:'precipice',ko:'벼랑 끝, 중대한 전환점의 직전',nuance:'"leaders feel like they\'re on the precipice of that question" — 원래는 절벽 가장자리(cliff edge)를 뜻하지만, 비유적으로 중요한 결정이나 변화의 직전 순간을 표현. on the brink of, on the verge of와 교환 가능. 위험과 기회가 공존하는 순간',diff:2},
+  {id:'vc2',cat:'vocab',word:'hypersegment',ko:'초세분화하다, 개인 단위까지 세분화하다',nuance:'"tailor and hypersegment to the unit of one" — 기존의 시장 세분화(segmentation)를 넘어 개인 한 명 한 명을 별개의 세그먼트로 취급하는 것. AI와 데이터 분석 덕분에 가능해진 극단적 개인화. unit of one(개인 단위)과 함께 사용',diff:3},
+  {id:'vc3',cat:'vocab',word:'moat',ko:'해자, 경쟁 방어 장벽',nuance:'"fundamentally changes the moat that has existed in financial services" — 성(castle)을 둘러싼 해자처럼 경쟁자의 진입을 막는 지속적 경쟁 우위. Warren Buffett이 투자 철학으로 유명화. wide moat(넓은 해자) = 강력한 경쟁 우위. AI 시대에 기존 해자가 무력화될 위험을 논할 때 사용',diff:2},
+  {id:'vc4',cat:'vocab',word:'reusable',ko:'재사용 가능한 (에이전트·컴포넌트)',nuance:'"make them reusable, so once they\'re trained, I can deploy them in multiple places" — 에이전트를 한번 구축해 여러 워크플로에 반복 배포하는 설계 원칙. 소프트웨어 공학의 reusable component에서 유래. 에이전틱 AI 인프라 비용 절감의 핵심 논리',diff:1},
+  {id:'vc5',cat:'vocab',word:'iterative',ko:'반복적인, 점진적 개선을 거치는',nuance:'"we have to be highly iterative" — 한 번에 완성하는 것이 아닌, 작은 사이클을 반복하며 개선하는 방식. agile 방법론의 핵심 원리. incremental과 유사하지만 iterative는 피드백 기반 순환에 초점. two-way door(되돌릴 수 있는 결정)와 짝을 이루는 개념',diff:2},
+  {id:'vc6',cat:'vocab',word:'sidecar',ko:'사이드카, 본체에 붙은 보조 장치·부수적 활동',nuance:'"The investment in L&D is a bit of a sidecar" — 오토바이 옆에 붙은 사이드카처럼 중요하지만 핵심이 아닌 보조적 존재를 비유. 중요하게 취급받지 못하고 선택적으로 운영되는 활동. 저자는 L&D가 사이드카에서 핵심으로 이동해야 한다고 주장',diff:2},
+  {id:'vc7',cat:'vocab',word:'frictionless',ko:'마찰 없는, 장벽 없이 원활한',nuance:'"move money frictionlessly across bank accounts" — 물리적·행정적·인지적 마찰 없이 매끄럽게 작동하는 경험. UX 디자인, 핀테크, e-커머스에서 핵심 가치. AI 에이전트가 대신 처리함으로써 사용자가 느끼는 마찰이 사라지는 미래를 묘사',diff:2},
+  {id:'vc8',cat:'vocab',word:'superhuman',ko:'초인적인, 인간 능력을 초월한',nuance:'"the equivalent of superhuman capabilities added to your teams" — super(초월)+human(인간). AI가 속도·정확도·처리량에서 인간을 능가하는 역량. 단, 판단·윤리·창의성은 여전히 human layer가 담당. 에이전틱 AI의 가능성을 설명하는 핵심 표현',diff:1},
+  {id:'vc9',cat:'vocab',word:'episodic',ko:'간헐적인, 특정 시점에만 발생하는',nuance:'"change management is no longer an episodic thing" — 에피소드(episode)처럼 특정 시기에만 발생하고 끝나는 성질. perpetual state(영속적 상태)의 반대. 전통적 변화 관리는 특정 프로젝트 기간에만 집중하는 episodic 접근이었음',diff:2},
+  {id:'vc10',cat:'vocab',word:'nimble',ko:'민첩한, 빠르고 유연한',nuance:'"pods that move across the organization more nimbly" — 몸이 가볍고 빠른 동물처럼 신속하게 적응하고 이동하는 성질. agile과 유사하지만 조직보다는 움직임·유연성에 초점. nimble organization, nimble response처럼 조직·전략 맥락에서 자주 사용',diff:1},
+  {id:'bz1',cat:'biz',word:'SWAT team',ko:'SWAT 팀, 특수 목적 기동 부대',nuance:'"creating SWAT-type teams that they can draw on" — Special Weapons And Tactics의 약어. 기업에서는 특정 문제 해결을 위해 조직 내에서 차출된 소수 정예 전담팀. task force와 유사하지만 더 기동력 있는 뉘앙스. AI 도입 가속화를 위해 기술 부서 내에 설치',diff:2},
+  {id:'bz2',cat:'biz',word:'span of control',ko:'통제 범위, 관리자의 직접 보고 인원 수',nuance:'"manage broader spans of talent" — 한 관리자가 직접 감독하는 부하 직원의 수. AI가 관리자의 업무를 보조해 span of control을 확대할 수 있다는 것이 핵심 논지. narrow span(소수 집중관리) vs. wide span(다수 분산관리)',diff:2},
+  {id:'bz3',cat:'biz',word:'L&D',ko:'L&D, 학습 및 개발 (Learning & Development)',nuance:'"The investment in learning and development is a bit of a sidecar" — 기업 내 직원 교육·역량 개발 전담 기능. 에이전틱 AI 시대에는 간헐적 이벤트가 아닌 직원 여정의 중심이 되어야 한다고 강조. HR의 하위 기능. upskilling, reskilling과 연결',diff:1},
+  {id:'bz4',cat:'biz',word:'unit of one',ko:'단위 개인, 개인 맞춤화의 최소 단위',nuance:'"tailor and hypersegment to the unit of one" — 마케팅·서비스를 고객 집단이 아닌 개인 한 명 단위로 맞춤 제공하는 것. mass customization의 궁극 형태. AI의 비용 곡선 변화로 현실화되는 비즈니스 모델. 반대: mass market(대중 시장)',diff:3},
+  {id:'bz5',cat:'biz',word:'org chart',ko:'조직도, 보고 구조 도식',nuance:'"Org charts are tricky" — organizational chart의 약어. 기업의 위계, 보고 라인, 부서 구조를 도식화한 것. AI 시대에는 전통적 수직 org chart에서 pods·fluid structures로의 전환이 논의됨. 참고: org chart는 공식 구조, 비공식 영향력은 반영 못 함',diff:1},
+  {id:'bz6',cat:'biz',word:'corporate function',ko:'코퍼레이트 기능, 기업 지원 부서 (HR·재무·법무 등)',nuance:'"companies envision corporate functions as cost centers" — 영업·마케팅 같은 수익 창출 부서와 달리 비용 센터로 분류되는 HR, 재무, 법무, IT 등의 지원 부서를 통칭. 에이전틱 AI가 이 영역의 효율성을 대폭 높여 capacity를 해방할 것으로 기대',diff:2}
+];
+
+const learned=new Set(JSON.parse(localStorage.getItem(STORE)||'[]'));
+let activeCat='all';
+
+function dots(n){return[1,2,3].map(i=>`<span class="dot${i<=n?' on':''}"></span>`).join('');}
+function render(){
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  cards.forEach(c=>{
+    const div=document.createElement('div');
+    div.className=`card ${c.cat}${learned.has(c.id)?' learned':''}${activeCat!=='all'&&c.cat!==activeCat?' hidden':''}`;
+    div.innerHTML=`<div class="card-inner">
+      <div class="front">
+        <span class="cat-tag">${c.cat.toUpperCase()}</span>
+        <div class="word">${c.word}</div>
+        <div class="dots">${dots(c.diff)}</div>
+      </div>
+      <div class="back">
+        <span class="cat-tag">${c.cat.toUpperCase()}</span>
+        <div class="ko">${c.ko}</div>
+        <div class="nuance">${c.nuance}</div>
+        <button class="mark-btn">${learned.has(c.id)?'✓ 학습완료':'완료 표시'}</button>
+      </div>
+    </div>`;
+    div.addEventListener('click',e=>{
+      if(e.target.classList.contains('mark-btn'))return;
+      div.classList.toggle('flipped');
+    });
+    div.querySelector('.mark-btn').addEventListener('click',()=>{
+      if(learned.has(c.id))learned.delete(c.id);else learned.add(c.id);
+      localStorage.setItem(STORE,JSON.stringify([...learned]));
+      render();updateCount();
+    });
+    grid.appendChild(div);
+  });
+}
+function updateCount(){
+  document.getElementById('cnt').textContent=learned.size;
+}
+document.querySelectorAll('.filters button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCat=btn.dataset.cat;
+    render();
+  });
+});
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  learned.clear();localStorage.removeItem(STORE);render();updateCount();
+});
+render();updateCount();
+</script>
+</body>
+</html>
