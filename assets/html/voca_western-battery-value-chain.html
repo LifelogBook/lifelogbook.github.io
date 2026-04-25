@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vocabulary – Incentive Pricing for Batteries: Scaling the Western Supply Chain</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0e14;--surface:#111827;--border:#1e3552;--ink:#e2e8f0;--muted:#64748b;--accent:#3b82f6;--accent2:#60a5fa;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;padding:20px;}
+  header{text-align:center;margin-bottom:20px;}
+  .badge{display:inline-block;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:.72rem;color:var(--muted);margin-bottom:10px;letter-spacing:.03em;}
+  h1{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);margin-bottom:6px;}
+  .subtitle{font-size:.8rem;color:var(--muted);}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px;}
+  .filters button{background:var(--surface);border:1.5px solid var(--border);color:var(--muted);border-radius:20px;padding:5px 14px;font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+  .filters button.active{background:var(--accent);border-color:var(--accent);color:#0a0e14;}
+  .progress{text-align:center;font-size:.78rem;color:var(--muted);margin-bottom:14px;}
+  .progress span{color:var(--accent2);font-weight:600;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+  .card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;cursor:pointer;perspective:800px;height:200px;transition:opacity .3s;}
+  .card.hidden{display:none;}
+  .card.learned{opacity:.45;}
+  .card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s;}
+  .card.flipped .card-inner{transform:rotateY(180deg);}
+  .front,.back{position:absolute;inset:0;border-radius:13px;padding:16px;backface-visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;}
+  .front{background:var(--surface);}
+  .back{background:#060c18;transform:rotateY(180deg);}
+  .cat-tag{font-size:.65rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border-radius:10px;align-self:flex-start;}
+  .cat-PHRASAL{background:#1e3a5f;color:#93c5fd;}
+  .cat-IDIOM{background:#1a3a2a;color:#6ee7b7;}
+  .cat-COLLOC{background:#2d1f4a;color:#c4b5fd;}
+  .cat-VOCAB{background:#3a1f1f;color:#fca5a5;}
+  .cat-BIZ{background:#2a2210;color:#fcd34d;}
+  .word{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--ink);line-height:1.3;}
+  .pron{font-size:.72rem;color:var(--muted);margin-top:4px;}
+  .diff{display:flex;gap:3px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--border);}
+  .dot.on{background:var(--accent);}
+  .ko{font-size:.82rem;color:var(--accent2);font-weight:600;margin-bottom:6px;line-height:1.4;}
+  .nuance{font-size:.7rem;color:#94a3b8;line-height:1.55;overflow-y:auto;flex:1;}
+  .learn-btn{margin-top:8px;background:var(--accent);border:none;color:#fff;border-radius:8px;padding:5px 10px;font-size:.72rem;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;}
+  .learn-btn:hover{background:var(--accent2);}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey &amp; Company · Automotive &amp; Assembly Practice · April 2026</div>
+  <h1>⚡ Incentive Pricing for Batteries: Scaling the Western Supply Chain</h1>
+  <p class="subtitle">by Raphael Rettig &amp; Wenting Gao · powered by MineSpans</p>
+</header>
+<div class="filters">
+  <button class="active" data-filter="ALL">ALL</button>
+  <button data-filter="PHRASAL">PHRASAL</button>
+  <button data-filter="IDIOM">IDIOM</button>
+  <button data-filter="COLLOC">COLLOC</button>
+  <button data-filter="VOCAB">VOCAB</button>
+  <button data-filter="BIZ">BIZ</button>
+</div>
+<div class="progress">학습 완료: <span id="cnt">0</span> / 35</div>
+<div class="grid" id="grid"></div>
+<script>
+const KEY='western_battery_chain_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(KEY)||'[]'));
+const cards=[
+  {id:'ph1',type:'PHRASAL',word:'account for',pron:'',ko:'(비율을) 차지하다, 구성하다',nuance:'라틴어 computare(계산하다)에서. "75% of global supply is accounted for by China." 숫자·비율과 함께 쓰여 특정 부분이 전체에서 차지하는 비중을 나타냄. represent·make up과 비슷하지만 공식 보고서·분석 글에서 account for가 훨씬 자주 등장. \'who accounts for what\'을 파악하면 시장 구조가 보인다. 이미지: 📊 파이 차트에서 중국이 차지하는 거대한 조각.',diff:1,ex:'China <b>accounts for</b> more than 90% of anode and LFP cathode production worldwide.'},
+  {id:'ph2',type:'PHRASAL',word:'scale back',pron:'',ko:'(규모를) 줄이다, 축소하다',nuance:'scale up(확장)의 정확한 반대말. "Several projects have been delayed or scaled back as EV sales growth slowed." 수요 약화 → 생산 축소의 연쇄 반응. cut back은 비용 절감 뉘앙스, scale back은 규모·범위 자체를 줄이는 뉘앙스. 배터리 업계에서 OEM들이 수요 둔화에 맞춰 기가팩토리 계획을 scale back하는 일이 반복됨. 이미지: 📉 생산 라인 속도를 낮추는 제어 다이얼.',diff:1,ex:'OEMs have <b>scaled back</b> joint ventures as EV demand forecasts softened.'},
+  {id:'ph3',type:'PHRASAL',word:'suffer from',pron:'',ko:'(구조적 단점으로) 고통받다, 시달리다',nuance:'개인의 통증이 아닌 구조적·만성적 약점을 묘사할 때도 강력한 표현. "Western markets suffer from structurally higher costs because of limited feedstock access and energy prices." 단순히 \'비싸다\'가 아니라 \'구조적으로 불리하다\'는 뉘앙스. face보다 더 강하고, struggle with보다는 더 수동적·체계적인 피해 느낌. 이미지: 🏋️ 무거운 짐(고에너지 비용·규제)을 지고 아시아 경쟁자와 뛰는 서방 생산자.',diff:1,ex:'Western anode producers <b>suffer from</b> electricity costs that make synthetic graphite economically uncompetitive.'},
+  {id:'ph4',type:'PHRASAL',word:'move into',pron:'',ko:'(새 시장·사업 영역으로) 진출하다',nuance:'"Several incumbents have begun moving into this space." 기존 대기업이 인접 시장으로 발을 넓히는 그림. enter는 즉각적·단일 사건, move into는 점진적 전환의 뉘앙스. ExxonMobil(석유→합성흑연), BASF(화학→CAM)가 배터리 소재 시장으로 moving into. 이미지: 🚀 거대한 화학·에너지 기업이 배터리 소재 영역으로 서서히 이동하는 모습.',diff:1,ex:'Major oil and gas conglomerates are <b>moving into</b> battery materials to leverage existing refinery feedstocks and process engineering.'},
+  {id:'ph5',type:'PHRASAL',word:'conditioned on',pron:'',ko:'~을 조건으로, ~에 종속되어',nuance:'라틴어 conditio(조건)에서. 어떤 혜택·지원이 특정 조건의 충족을 전제로 한다는 의미. "access to subsidies often conditioned on domestic production or sourcing requirements." 보조금은 있지만, 열쇠(조건)를 먼저 충족해야 문이 열림. subject to(재량적), contingent on(외부 상황 의존), conditioned on(사전 조건 명시—가장 강한 조건부 표현)의 차이를 파악하면 계약·정책 문서가 보임. 이미지: 🔐 자물쇠(조건) 뒤에 있는 보조금 열쇠.',diff:2,ex:'Access to direct tax credits is often <b>conditioned on</b> meeting local content thresholds for domestic battery production.'},
+  {id:'ph6',type:'PHRASAL',word:'leave exposed',pron:'',ko:'(리스크에) 무방비로 노출시키다',nuance:'"These JVs leave cell producers fully exposed to utilization risk." 커버나 보호 없이 위험에 무방비 상태로 두다. expose to risk보다 더 결과적·방치의 뉘앙스. 금융·공급망 글에서 "leave sb exposed" 패턴이 핵심. OEM이 수요를 보장하지 않으면, 셀 제조사는 설비 가동률 위험에 그대로 노출됨. 이미지: ⛈️ 우산 없이 폭풍(수요 변동) 속에 서 있는 배터리 셀 공장.',diff:2,ex:'Without firm offtake commitments, joint ventures <b>leave</b> cell producers <b>exposed</b> to demand fluctuations they cannot manage alone.'},
+  {id:'id1',type:'IDIOM',word:'take or pay',pron:'',ko:'수령 또는 지불 — 받든 안 받든 대금을 치러야 하는 계약 구조',nuance:'1970년대 미국 천연가스 파이프라인 업계에서 시작된 계약 표준. 구매자가 합의된 물량을 take(실제로 인수)하든지, 못 할 경우라도 pay(대금을 지불)해야 하는 조항. 생산자에게 예측 가능한 매출을 보장 → 대규모 설비 투자 결정 용이. 단점: 수요 급감 시 구매자 비용 급증. 배터리 소재 업계에서 "take or pay" 구조 강화가 서방 투자 활성화의 핵심으로 제시됨. 이미지: ⚖️ 물건을 받든 안 받든 청구서가 날아오는 엄격한 계약서.',diff:2,ex:'Standardizing <b>take-or-pay</b> offtake structures would give component producers confidence in predictable baseline revenue.'},
+  {id:'id2',type:'IDIOM',word:'player-agnostic',pron:'',ko:'특정 기업에 편향 없는, 어느 기업이나 공평하게 혜택받을 수 있는',nuance:'그리스어 agnostos(알 수 없는)에서. 종교적 agnosticism(신의 존재를 알 수 없다는 입장)→ IT·정책 분야에서 \'어느 쪽도 편들지 않는\' 뉘앙스로 확장. "tech- and player-agnostic incentive pricing mechanisms." 특정 기업(CATL, 삼성SDI 등)을 지목해 혜택을 주는 게 아니라, 모든 참여자가 공정하게 경쟁. 비교: technology-neutral(기술 중립)은 비슷하지만, player-agnostic은 기업 편애 없음을 더 강조. 이미지: 🏆 어떤 팀이 이기든 규칙만 공정하게 집행하는 심판.',diff:2,ex:'Incentive pricing mechanisms should be <b>player-agnostic</b>—rewarding the most competitive solution regardless of the technology or company behind it.'},
+  {id:'id3',type:'IDIOM',word:'end-to-end',pron:'',ko:'처음부터 끝까지, 가치사슬 전 단계를 아우르는',nuance:'공급망의 맨 앞(광산·정제)부터 맨 끝(셀·EV 소비자)까지 모든 단계를 빠짐없이 포괄한다는 뜻. "the reliable, end-to-end return visibility required to overcome high capital intensity." 각 단계별 인센티브가 따로따로 있어도, 전체 가치사슬 관점의 투자 수익 가시성이 없으면 대형 투자가 일어나지 않음. IT에서도 \'end-to-end encryption\'(암호화)처럼 광범위하게 사용. 이미지: 🏭→⚗️→🔋→🚗 광산에서 EV까지 끊기지 않는 긴 사슬.',diff:1,ex:'Investors need <b>end-to-end</b> return visibility across the full battery value chain, not just at individual segments.'},
+  {id:'id4',type:'IDIOM',word:'demand certainty',pron:'',ko:'수요 확실성 — 대규모 투자 결정을 가능하게 하는 안정적이고 예측 가능한 수요',nuance:'반도체·철강·배터리처럼 capital-intensive 산업에서 투자자가 수십억 달러를 쏟아붓기 위해 요구하는 전제 조건. "large-scale industrial investment succeeds when three conditions are present: credible demand, durable policy support, and transparent pricing signals." 수요 확실성이 없으면: 생산자 → 공장 짓기 두려움, OEM → 장기 계약 꺼림, 투자자 → 자금 미투입. 비교: demand visibility(수요 가시성—단기), demand certainty(수요 확실성—장기 계약·정책으로 보장). 이미지: 📋 10~15년짜리 장기 구매 계약서—이게 있어야 기가팩토리가 세워짐.',diff:2,ex:'Without <b>demand certainty</b>, producers cannot justify the $1 billion per 10 GWh investment required to build new battery materials capacity.'},
+  {id:'id5',type:'IDIOM',word:'cost of capital',pron:'',ko:'자본비용 — 투자자가 특정 프로젝트에 요구하는 최소 수익률',nuance:'금융의 핵심 개념. 부채라면 이자율, 자기자본이라면 기대 수익률. WACC(가중평균자본비용)로 표현되기도 함. "lower cost of capital, enabled by DOE support"—정부 보증이 투자 위험을 낮추면 투자자 요구 수익률도 낮아짐 → 프로젝트 경제성 개선. 배터리 공장은 risk premium이 높아 cost of capital이 높음 → 수익성 저하의 악순환. 반대로 정부 보증·보조금 → risk 낮아짐 → cost of capital 감소 → 투자 유인 증가. 이미지: 🏦 은행 이자율처럼, 리스크가 높을수록 투자자가 요구하는 수익률도 올라감.',diff:2,ex:'DOE loan guarantees help reduce the <b>cost of capital</b> for battery projects, making them comparable to more established infrastructure investments.'},
+  {id:'id6',type:'IDIOM',word:'market failure',pron:'',ko:'시장 실패 — 시장 메커니즘이 자원을 효율적으로 배분하지 못하는 상황',nuance:'경제학 핵심 개념. 자유 시장에 맡겨두면 최적의 결과가 나오지 않는 상황. 원인: ① 외부효과(탄소배출), ② 공공재, ③ 정보 비대칭, ④ 독점. 배터리 소재의 경우: "battery materials remained traded through bilateral pricing with no transparent index, leaving counterparties without a mechanism to manage risk." 즉 가격 정보 비대칭 + 중국 집중 독점 → 시장 실패. 정부 개입(인센티브 가격 책정)의 정당성 근거. 이미지: 🚦 신호등이 고장난 사거리—누가 먼저 가야 할지 아무도 모르는 상태.',diff:2,ex:'The absence of a transparent price index for battery materials represents a <b>market failure</b> that discourages long-term contracting and investment.'},
+  {id:'cl1',type:'COLLOC',word:'price index',pron:'',ko:'가격 지수 — 특정 상품의 시장 가격을 투명하게 보여주는 공개 기준 지표',nuance:'철강은 HRC(열연강판) 지수, 원유는 WTI/Brent — 이런 공개 지수가 있어야 장기 계약·파생상품·가격 협상이 가능. "battery materials remained traded through bilateral pricing with no transparent index"—리튬·코발트 가격 지수가 아직 약함 → 계약 당사자 간 위험 관리 불가 → 투자 기피. 공개 price index가 생기면: 계약 기준 명확 → 위험 헤지 가능 → 투자 유인 증가. 이미지: 📰 매일 신문에 실리는 철광석·구리 가격표—모든 참여자가 동일한 숫자를 보고 계약함.',diff:2,ex:'Establishing a transparent <b>price index</b> for lithium and cathode materials would reduce bilateral negotiation risk and support long-term offtake contracting.'},
+  {id:'cl2',type:'COLLOC',word:'loan guarantee',pron:'',ko:'대출 보증 — 정부·기관이 차입자 대신 상환을 보증하는 약속',nuance:'정부가 민간 은행에 "이 프로젝트가 실패하면 우리가 대신 갚는다"고 약속. 결과: 은행의 리스크 감소 → 이자율 인하 → 프로젝트 cost of capital 감소. 역사: 2009년 DOE 보증 → 솔린드라 파산 → 논란. 하지만 테슬라·아틀란티스·배터리 분리막 업체 등 성공 사례도 많음. 핵심: loan guarantee는 직접 지출(outlay)이 없어 예산 부담 작음—실패 시에만 비용 발생. 이미지: 🛡️ 투자자와 은행 사이에 서서 "내가 책임진다"고 확약하는 정부.',diff:2,ex:'The DOE provided a <b>loan guarantee</b> that reduced financing risk and made the battery separator investment more attractive to infrastructure investors.'},
+  {id:'cl3',type:'COLLOC',word:'contract for difference',pron:'[ˈkɒntrækt fər ˈdɪfərəns]',ko:'차액 정산 계약 — 보장 가격과 시장 가격의 차이를 정산해 투자자에게 안정적 수익을 제공하는 계약',nuance:'영국 재생에너지 시장에서 광범위하게 사용된 구조. 작동 원리: ① strike price(보장 가격) 사전 합의. ② 시장 가격 < strike → 정부가 차액 지급. ③ 시장 가격 > strike → 생산자가 초과분 반환. 결과: 생산자는 안정적 수익, 소비자는 시장 급등 시 초과이익 환수. 배터리 소재에 적용: 리튬 가격이 급락해도 생산자는 보장 수익 유지 → 서방 투자 결정 용이. 이미지: ⚖️ 두 눈금 사이를 오가는 저울—항상 사전 합의된 기준점으로 정산.',diff:3,ex:'A <b>contract for difference</b> can shield Western lithium refiners from the price swings that have historically made new capacity unfinanceable.'},
+  {id:'cl4',type:'COLLOC',word:'capital formation',pron:'',ko:'자본 형성 — 생산적 자산(공장·설비·인프라)을 구축·축적하는 과정',nuance:'거시경제학의 핵심 개념. GDP 통계에서는 \'총 고정자본 형성(Gross Fixed Capital Formation)\'으로 측정. "Focus on capital formation: structure capital to make long-term, capital-intensive investment the rational choice"—인센티브 설계의 궁극적 목표는 서방 배터리 생산 기반의 물리적 구축. 자본 형성 없이 공급망 다변화는 구호에 불과. 이미지: 🧱 벽돌(자본)을 하나씩 쌓아 거대한 기가팩토리(생산 기반)를 완성하는 과정.',diff:2,ex:'Incentive pricing mechanisms are designed to accelerate <b>capital formation</b> in Western battery value chains by making long-term investment the rational economic choice.'},
+  {id:'cl5',type:'COLLOC',word:'local content requirements',pron:'',ko:'현지 조달 요건 — 보조금·시장 접근 자격을 얻으려면 일정 비율을 국내에서 생산·조달해야 하는 규칙',nuance:'IRA(미국): 배터리 소재의 일정 비율이 미국 또는 FTA 파트너 국가산이어야 세액공제 적용. EU 배터리 규정: 원산지 추적(rules of origin) 요구. "access to subsidies often conditioned on domestic production or sourcing requirements." 효과: 공급망 다변화 촉진, 서방 투자 유인. 부작용: 조달처 제한 → 비용 상승 가능. 이미지: 🇺🇸 "Made Here" 체크리스트—특정 비율 충족 시에만 세금 혜택이 지급되는 구조.',diff:2,ex:'<b>Local content requirements</b> under the IRA and EU battery regulations are forcing OEMs to build supply chains closer to home.'},
+  {id:'cl6',type:'COLLOC',word:'downside protection',pron:'',ko:'하방 보호 — 투자 손실이 특정 수준 이하로 내려가지 않도록 막는 안전장치',nuance:'금융·프로젝트 파이낸스의 핵심 개념. "investors can prioritize platforms with downside protection, contracted offtake, and clear timelines." 하방이 막혀 있어야 대형 기관 투자자(연기금, 인프라 펀드)가 참여 가능. 수단: 정부 대출 보증, take-or-pay 계약, price floor(but \'price floor\' is a separate concept), 보험. 비교: upside(잠재 수익)만으로 투자 결정 하는 VC와 달리, 인프라 펀드는 downside protection이 필수. 이미지: 🛡️ 절벽 끝에 설치된 안전망—아래로 너무 떨어지지 않게 잡아줌.',diff:2,ex:'For infrastructure investors, battery component manufacturing becomes attractive only when <b>downside protection</b> is in place through contracted revenues and policy-backed floors.'},
+  {id:'cl7',type:'COLLOC',word:'production milestone',pron:'',ko:'생산 마일스톤 — 다음 단계 지원·자금 지급의 조건이 되는 사전 정의된 생산 목표치',nuance:'중세 도로변 이정표(milestone)에서: 특정 거리(마일)를 지나면 새 돌을 세워 진행 상황 표시. 오늘날 정책·금융에서: "milestone-based incentives to derisk early scale-up"—공장이 특정 생산량·품질 기준에 도달하면 다음 인센티브 트랜치(tranche) 자동 지급. 효과: 납세자 보호(실패 시 다음 지급 없음) + 생산자에게 명확한 목표 제시. 반도체 CHIPS Act 보조금도 milestone-based 지급 구조. 이미지: 🏁 마라톤 구간별 체크포인트—통과해야 다음 보급품(자금)이 지급.',diff:2,ex:'DOE grants structured around <b>production milestones</b> helped the battery separator producer reduce ramp-up risk and attract private equity capital.'},
+  {id:'vc1',type:'VOCAB',word:'entrenched',pron:'[ɪnˈtrentʃt]',ko:'(이점이) 공고히 자리잡은, 뿌리 깊이 박힌',nuance:'군사 어원: in(안) + trench(참호). 1차 세계대전 참호전 이미지—한 번 참호(trench)를 파고 들어가면 적이 쉽게 몰아낼 수 없음. "creating economies of scale that further entrench these advantages." 중국의 규모 우위가 시간이 지날수록 더 단단히 고착됨. 비교 강도: established(그냥 자리잡음) < ingrained(깊이 밴) < entrenched(참호처럼 고착—가장 강함). \'deeply entrenched\'로 강조 자주 사용. 이미지: 🪖 파고들면 쫓아낼 수 없는 참호—중국 배터리 산업의 구조적 우위.',diff:2,ex:'China\'s battery manufacturing ecosystem is deeply <b>entrenched</b>, with scale advantages across every step reinforcing one another.'},
+  {id:'vc2',type:'VOCAB',word:'backstop',pron:'[ˈbækstɒp]',ko:'최후의 안전망, 보루; 금융적 보증·보장 장치',nuance:'야구(baseball) 어원: 포수 뒤 그물(backstop)—공이 더 이상 뒤로 가지 않도록 막음. 금융에서 "the government backstops private lending"—차입자가 못 갚아도 정부가 대신 갚아줌. 중앙은행의 lender of last resort도 일종의 backstop. "public backstops during demand slowdowns"—수요 침체기에 초과 생산물을 정부가 흡수. 비교: safety net(더 일반적), backstop(더 구체적·직접적 개입의 뉘앙스). 이미지: ⚾ 포수 뒤 철망—어떤 실수가 있어도 최악의 결과는 막아주는 구조.',diff:2,ex:'Government <b>backstops</b> allow cell producers to channel excess capacity into grid storage during periods of weak EV demand, ensuring facilities remain viable.'},
+  {id:'vc3',type:'VOCAB',word:'techno-economics',pron:'[ˌteknəʊˌiːkəˈnɒmɪks]',ko:'기술경제학 — 기술적 성능과 경제적 비용·수익성을 통합 분석하는 학문',nuance:'technology + economics의 합성어. 단순히 기술이 가능한가(technical feasibility)가 아니라, 그것이 경제적으로도 타당한가(economic viability)를 함께 분석. "The techno-economics of battery materials"—어떤 화학계가 어느 비용에서 경쟁력을 갖는가. 에너지·배터리·반도체·수소 분야에서 핵심 분석 프레임워크. 비교: techno-economic analysis vs business case analysis(더 협의적). 이미지: 🔬+💰 실험실 현미경과 재무 스프레드시트가 나란히 놓인 분석 책상.',diff:2,ex:'The <b>techno-economics</b> of synthetic graphite anode production strongly favor Asian producers due to electricity cost advantages.'},
+  {id:'vc4',type:'VOCAB',word:'agnostic',pron:'[æɡˈnɒstɪk]',ko:'(특정 기술·회사에) 중립적인, 편향 없이 열린',nuance:'그리스어 a(부정) + gnostos(알 수 있는) = 알 수 없음. 1869년 토머스 헉슬리가 신의 존재를 알 수 없다는 철학적 입장으로 조어(agnosticism). 오늘날 기술·정책에서: 특정 기술이나 플레이어를 편들지 않는 중립적 입장. "tech- and player-agnostic mechanisms." 단순 neutral(중립)보다 더 철학적·원칙적 무판단 의지. 이미지: ⚖️ 어느 배터리 화학(LFP냐 NMC냐)이 이기든 공정한 규칙만 보장하는 심판.',diff:2,ex:'An <b>agnostic</b> incentive framework rewards whichever technology proves most competitive—without the government picking winners.'},
+  {id:'vc5',type:'VOCAB',word:'subscale',pron:'[ˈsʌbskeɪl]',ko:'적정 규모 이하의, 비효율적으로 소규모인',nuance:'sub(아래) + scale(규모). 특정 산업·공정이 경제적 최적 규모에 도달하지 못한 상태. "Western facilities are either in early stages or subscale. As a result, economies of scale are limited in the West and unit costs remain elevated." subscale = 적정 규모 아래 → 단위 비용 높음 → 경쟁력 없음의 악순환. 탈출법: 수요 보장(offtake) → 생산 확대 → 규모의 경제 → 비용 하락 → 경쟁력. 이미지: 🏭 적정 용량의 절반만 가동되는 공장—기계는 있지만 원가가 너무 높음.',diff:2,ex:'Most Western battery recycling facilities remain <b>subscale</b>, which keeps unit processing costs nearly double those of Asian competitors.'},
+  {id:'vc6',type:'VOCAB',word:'mobilize',pron:'[ˈməʊbɪlaɪz]',ko:'(자본을) 동원하다, 결집시키다',nuance:'라틴어 mobilis(움직일 수 있는)에서. 군사 용어로: 군대를 전쟁 준비 상태로 집결시키다. 금융에서: "align complementary interventions that together create credible, long-term pricing and return signals sufficient to mobilize private capital." 민간 자본이 배터리 공급망으로 흘러오도록 만드는 것이 인센티브 가격 책정의 궁극적 목표. 비교: attract capital(수동적으로 끌어당김) vs mobilize capital(능동적으로 결집시킴—더 역동적). 이미지: 🪖 군대처럼 흩어진 민간 자본을 배터리 공급망으로 집결시키는 신호탄.',diff:2,ex:'No single policy tool can <b>mobilize</b> the private capital needed to build a competitive Western battery supply chain—a coordinated framework is required.'},
+  {id:'vc7',type:'VOCAB',word:'milestone-based',pron:'',ko:'마일스톤 기반의 — 사전 정의된 달성 기준에 연동된 (지원·지급 구조)',nuance:'중세 도로변 이정표(milestone)—특정 거리를 지나면 새 돌을 세워 진행 표시. 오늘날 project finance·정책에서: "milestone-based incentives to derisk early scale-up." 공장이 특정 생산량·품질 기준에 도달하면 다음 지원 트랜치 자동 지급. 의의: ① 납세자 보호(실패 시 다음 지급 없음), ② 생산자에게 명확한 목표 제시, ③ 리스크를 단계적으로 관리. CHIPS Act, DOE LPO도 이 구조 채택. 이미지: 🏁 구간별 체크포인트—통과해야 다음 자금이 지급되는 마라톤 코스.',diff:2,ex:'<b>Milestone-based</b> policy loans help share the ramp-up risk that has caused many early-stage battery facilities to struggle financially before reaching commercial scale.'},
+  {id:'vc8',type:'VOCAB',word:'stranded',pron:'[ˈstrænd ɪd]',ko:'(자산이) 좌초된, 활용되지 못하고 방치된',nuance:'strand = 해안·강가 모래톱. 물이 빠진 후 모래톱에 박힌 배처럼, 더 이상 움직이지 못하는 상태. 에너지 경제학에서 stranded asset: 기후 규제·수요 감소로 수익을 낼 수 없는 자산(예: 석탄 발전소). 배터리 문맥: "localized upstream capacity risks being underutilized or stranded"—수요 없이 지어진 서방 공장이 가동률 0%의 좌초 자산이 될 위험. 비교: idle(일시적 유휴) < underutilized(저활용) < stranded(회수도 불가능한 완전 좌초). 이미지: 🚢 조류에 밀려 모래톱에 박힌 배—엔진도 소용없는 좌초 상태.',diff:2,ex:'Without anchored demand, Western upstream battery capacity risks becoming <b>stranded</b>—built but chronically underutilized.'},
+  {id:'vc9',type:'VOCAB',word:'precursor',pron:'[priːˈkɜːsər]',ko:'전구체 — 최종 제품이 되기 전 단계의 중간 화학물질·소재',nuance:'라틴어 praecursor(앞서 달리는 자)에서. 화학에서: 최종 물질(CAM 등)이 되기 전 중간 단계 물질. 배터리에서: "cathode precursors"(pCAM)—리튬화 전 단계의 니켈·망간·코발트 혼합 수산화물. ExxonMobil, BASF 같은 화학 기업이 "cathode precursors, electrolyte solvents, and engineered carbon materials" 생산에 강점. 비교: raw material(원자재) → precursor(전구체) → active material(활물질) → cell(셀). 이미지: 🧪 완성된 배터리 소재가 되기 직전의 반응 대기 중인 화학 분말.',diff:3,ex:'Major chemical companies are well-positioned to supply battery <b>precursors</b> such as cathode intermediate materials and engineered carbon for anodes.'},
+  {id:'bz1',type:'BIZ',word:'TWh',pron:'[ˌtetrəˈwɒt aʊər]',ko:'테라와트시 — 대규모 에너지·배터리 수요를 표현하는 단위',nuance:'1 TWh = 10¹² Wh = 1조 와트시. 크기 감각: 1 GWh = 소형 기가팩토리 1개 연간 생산량 수준. 1 TWh = 1,000 GWh. 글로벌 Li-ion 배터리 수요 전망: 2024년 1.0 TWh → 2030년 4.2 TWh → 2035년 6.8 TWh. 중국이 2035년 수요의 75%를 공급 전망. 단위 계층: kWh(가정용) → MWh(BESS) → GWh(기가팩토리) → TWh(국가·글로벌 수요). 이미지: ⚡ 전 세계 수억 대 EV와 수백 개 BESS가 필요로 하는 에너지의 합산.',diff:1,ex:'Global demand for lithium-ion batteries is expected to grow from 1.0 <b>TWh</b> in 2024 to 6.8 TWh by 2035, with 75 percent still concentrated in China.'},
+  {id:'bz2',type:'BIZ',word:'45X tax credit',pron:'',ko:'45X 세액공제 — 미국 첨단 제조 생산 세액공제 (IRA, 2022)',nuance:'인플레이션 감축법(IRA, 2022) Section 45X: Advanced Manufacturing Production Tax Credit. 미국 내 생산된 배터리 셀·모듈, 양극재·음극재, 전해질, 핵심 광물에 대해 단위당 세금 공제. 특징: ① per-unit 지급(생산량 연동) → 실제 생산할수록 더 많이 받음. ② player-agnostic(특정 기업·기술 무관). ③ 2029년부터 단계적 축소(phase-down). 45X와 혼동 주의: 30D(소비자 EV 세액공제), 48C(제조 시설 투자 세액공제). 이미지: 🏭 미국 공장에서 배터리 셀이 생산될 때마다 세금 계산서에서 자동 차감되는 크레딧.',diff:2,ex:'The <b>45X tax credit</b> provides per-unit incentives for domestic battery cell and active material production, directly improving project economics for US-based manufacturers.'},
+  {id:'bz3',type:'BIZ',word:'CAM',pron:'[siː eɪ em]',ko:'양극 활물질 (Cathode Active Materials)',nuance:'배터리 양극(cathode)에 쓰이는 핵심 소재—리튬이온이 방전 시 이동해 오는 쪽. 배터리 에너지 밀도·화학적 특성·비용의 대부분을 결정. 주요 종류: LFP(리튬철인산염—저비용·안전·긴 수명), NMC(니켈망간코발트—고에너지밀도·비쌈). 중국이 LFP CAM 사실상 독점. NMC는 일본·한국에 Know-how 있으나 비용·혁신 속도에서 중국 기업이 지배. BASF: NMC 622·811 고니켈 CAM을 핀란드·독일에서 생산. 이미지: 🔋 배터리 양극에 있는 수~수십 마이크론의 흑색·회색 산화물 분말.',diff:2,ex:'Western markets lack domestic <b>CAM</b> production for LFP batteries, creating a critical dependency on Chinese supply that local content rules cannot quickly resolve.'},
+  {id:'bz4',type:'BIZ',word:'AAM',pron:'[eɪ eɪ em]',ko:'음극 활물질 (Anode Active Materials)',nuance:'배터리 음극(anode)에 쓰이는 소재—충전 시 리튬이온을 흡수·저장. 현재 주류: 흑연(graphite). 천연흑연(natural graphite)과 합성흑연(synthetic graphite) 두 종류. 서방 AAM이 비싼 이유: 합성흑연 제조는 전기 집약적(graphitization, ~2800°C) → 중국의 전기 가격 대비 서방이 불리. 그 결과: 천연 AAM +70%, 합성 AAM +100% 더 비쌈(vs 중국). ExxonMobil이 Superior Graphite 인수 → 합성흑연 AAM 분야 진출. 이미지: ⬛ 배터리 음극의 검은 흑연 구조—리튬이온을 스펀지처럼 흡수하는 층상 구조.',diff:2,ex:'Synthetic <b>AAM</b> production in the West costs twice as much as in China due to electricity-intensive graphitization processes and the lack of domestic graphite feedstock.'},
+  {id:'bz5',type:'BIZ',word:'DOE',pron:'[diː əʊ iː]',ko:'미국 에너지부 (Department of Energy)',nuance:'1977년 카터 행정부 설립—핵무기 관리 + 에너지 정책 통합. 배터리 공급망에서의 역할: Loan Programs Office(LPO)를 통해 배터리 소재·셀·분리막 생산 공장에 저금리 대출 및 보증. "supported by a loan from the US Department of Energy"—배터리 분리막 생산업체 투자 케이스에서 핵심 역할. DOE 지원의 3대 효과: ① cost of capital 감소, ② 민간 투자자 신뢰도 향상, ③ 초기 ramp-up 위험 완화. 이미지: 🏛️ 워싱턴 D.C.에서 에너지 전환과 안보를 동시에 관장하는 연방 기관.',diff:1,ex:'A global infrastructure investor took a majority stake in a battery separator producer after a <b>DOE</b> loan reduced the financing risk and cost of capital.'},
+  {id:'bz6',type:'BIZ',word:'COD',pron:'[siː əʊ diː]',ko:'상업 운전 개시일 (Commercial Operations Date)',nuance:'프로젝트 파이낸스의 핵심 이정표. 공장·발전소·BESS가 테스트·시운전을 완료하고 정식으로 상업적 운전을 시작하는 날짜—이 날부터 offtake 계약이 시작되고 대출 상환도 개시. "infrastructure funds enter post-COD with capacity payments or power purchase agreements"—COD 이전은 건설 위험, COD 이후는 운영 위험. 인프라 펀드는 COD 이후에야 진입(안정적 현금흐름 시작 후). 이미지: 🎊 공장 준공식 테이프 커팅—이날부터 돈이 들어오기 시작하는 공식 시작점.',diff:2,ex:'Infrastructure investors typically enter battery projects only after <b>COD</b>, when contracted revenues provide the stable cash flow they require to underwrite the investment.'},
+  {id:'bz7',type:'BIZ',word:'black mass',pron:'',ko:'블랙 매스 — 배터리 분쇄·처리 후 얻는 검은 분말 혼합물; 재활용 출발 물질',nuance:'폐배터리를 방전·해체·분쇄하면 나오는 검고 거친 분말. 리튬, 니켈, 코발트, 망간, 흑연 등 유가금속이 혼합된 상태. 이후 습식(hydrometallurgy: 산 용해·정제) 또는 건식(pyrometallurgy: 고온 용융) 공정으로 개별 금속 회수. 2025년 기준: 서방 $5/kg vs 중국 $2/kg(+100%). 서방 리사이클링이 비싼 이유: 소규모 subscale 공장 → 단위 비용 높음. 이름 유래: 불에 탄 것처럼 검게 보이는 분쇄 배터리 물질. 이미지: 🖤 폐배터리에서 나온 검은 분말—안에 리튬·코발트라는 보물이 숨어 있음.',diff:2,ex:'Western battery recycling plants process <b>black mass</b> at nearly double the cost of Asian competitors, limiting the economic case for large-scale domestic recycling investment.'}
+];
+function render(filter){
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  cards.forEach(c=>{
+    if(filter!=='ALL'&&c.type!==filter)return;
+    const div=document.createElement('div');
+    div.className='card'+(learned.has(c.id)?' learned':'');
+    div.innerHTML=`<div class="card-inner">
+      <div class="front">
+        <div><span class="cat-tag cat-${c.type}">${c.type}</span></div>
+        <div class="word">${c.word}</div>
+        <div class="pron">${c.pron}</div>
+        <div class="diff">${[1,2,3].map(i=>`<div class="dot${c.diff>=i?' on':''}"></div>`).join('')}</div>
+      </div>
+      <div class="back">
+        <div class="ko">${c.ko}</div>
+        <div class="nuance">${c.nuance}</div>
+        <button class="learn-btn" data-id="${c.id}">${learned.has(c.id)?'✓ 학습 완료':'학습 완료로 표시'}</button>
+      </div>
+    </div>`;
+    div.addEventListener('click',e=>{
+      if(e.target.classList.contains('learn-btn'))return;
+      div.classList.toggle('flipped');
+    });
+    div.querySelector('.learn-btn').addEventListener('click',e=>{
+      e.stopPropagation();
+      const id=e.target.dataset.id;
+      if(learned.has(id)){learned.delete(id);div.classList.remove('learned');e.target.textContent='학습 완료로 표시';}
+      else{learned.add(id);div.classList.add('learned');e.target.textContent='✓ 학습 완료';}
+      localStorage.setItem(KEY,JSON.stringify([...learned]));
+      document.getElementById('cnt').textContent=learned.size;
+    });
+    grid.appendChild(div);
+  });
+}
+document.querySelectorAll('.filters button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    render(btn.dataset.filter);
+  });
+});
+document.getElementById('cnt').textContent=learned.size;
+render('ALL');
+</script>
+</body>
+</html>
