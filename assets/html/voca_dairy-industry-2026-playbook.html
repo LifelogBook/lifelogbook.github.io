@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vocabulary – The Dairy Industry's 2026 Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#18100a;--surface:#261a0f;--border:#4a3018;--ink:#fef9ef;--muted:#b8956a;--accent:#f59e0b;--accent2:#fcd34d;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;padding:20px;}
+  header{text-align:center;margin-bottom:20px;}
+  .badge{display:inline-block;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:.72rem;color:var(--muted);margin-bottom:10px;letter-spacing:.03em;}
+  h1{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);margin-bottom:6px;}
+  .subtitle{font-size:.8rem;color:var(--muted);}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px;}
+  .filters button{background:var(--surface);border:1.5px solid var(--border);color:var(--muted);border-radius:20px;padding:5px 14px;font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+  .filters button.active{background:var(--accent);border-color:var(--accent);color:#1a1208;}
+  .progress{text-align:center;font-size:.78rem;color:var(--muted);margin-bottom:14px;}
+  .progress span{color:var(--accent2);font-weight:600;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+  .card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;cursor:pointer;perspective:800px;height:200px;transition:opacity .3s;}
+  .card.hidden{display:none;}
+  .card.learned{opacity:.45;}
+  .card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s;}
+  .card.flipped .card-inner{transform:rotateY(180deg);}
+  .front,.back{position:absolute;inset:0;border-radius:13px;padding:16px;backface-visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;}
+  .front{background:var(--surface);}
+  .back{background:#201408;transform:rotateY(180deg);}
+  .cat-tag{font-size:.65rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border-radius:10px;align-self:flex-start;}
+  .phrasal .cat-tag{background:#1e2e1a;color:#86efac;}
+  .idiom .cat-tag{background:#2e1a1a;color:#fca5a5;}
+  .colloc .cat-tag{background:#1a2630;color:#7dd3fc;}
+  .vocab .cat-tag{background:#2e2010;color:#fde68a;}
+  .biz .cat-tag{background:#201a30;color:#c4b5fd;}
+  .word{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--ink);line-height:1.3;}
+  .dots{display:flex;gap:3px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--border);}
+  .dot.on{background:var(--accent);}
+  .ko{font-size:.88rem;color:var(--accent2);font-weight:600;margin-bottom:6px;}
+  .nuance{font-size:.72rem;color:var(--muted);line-height:1.5;flex:1;overflow:hidden;}
+  .mark-btn{margin-top:8px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:4px 10px;font-size:.7rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;align-self:flex-end;}
+  .mark-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .card.learned .mark-btn{border-color:#22c55e;color:#22c55e;}
+  .reset{display:block;margin:20px auto 0;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:7px 20px;font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+  .reset:hover{border-color:var(--accent);color:var(--accent);}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey &amp; Company · Agriculture Practice · April 2026</div>
+  <h1>The Dairy Industry's 2026 Playbook</h1>
+  <p class="subtitle">유제품 산업 전략 핵심 표현 35선 — 이미지·어원·뉘앙스 완전 해설</p>
+</header>
+
+<div class="filters">
+  <button class="active" data-cat="all">ALL</button>
+  <button data-cat="phrasal">PHRASAL</button>
+  <button data-cat="idiom">IDIOM</button>
+  <button data-cat="colloc">COLLOC</button>
+  <button data-cat="vocab">VOCAB</button>
+  <button data-cat="biz">BIZ</button>
+</div>
+
+<div class="progress">학습 완료: <span id="cnt">0</span> / <span id="tot">35</span></div>
+
+<div class="grid" id="grid"></div>
+<button class="reset" id="resetBtn">진행도 초기화</button>
+
+<script>
+const STORE='dairy_2026_playbook_learned';
+const cards=[
+  {id:'pv1',cat:'phrasal',word:'compress (margins)',ko:'(마진을) 압축하다, 이익을 짓눌다',nuance:'물리학 이미지: 스펀지를 양손으로 꽉 누르면 안에 있는 물이 밖으로 빠져나가듯, 원가(cost)와 판매가격(price) 사이에 낀 이익이 사라지는 것. "margins are being compressed" = 원가는 오르고 가격은 못 올리는 상황. squeeze와 비슷하지만 compress는 더 정밀하고 기술적인 뉘앙스. 반대: expand margins(마진 확대)',diff:2},
+  {id:'pv2',cat:'phrasal',word:'contend with',ko:'~와 씨름하다, 여러 어려움에 동시에 맞서다',nuance:'Latin contendere = con(함께) + tendere(뻗다·긴장하다). 원래 의미: 경쟁하다. 현대 영어에서 "contend with"는 단순히 deal with(다루다)가 아닌, 여러 가지 힘든 상황들과 동시에 맞서 싸우며 버텨야 하는 상황. "as producers contend with animal health issues, climate, and labor shortages" = 세 가지를 한꺼번에 상대하는 이미지. 복수로 쓸 때 더 강렬함',diff:2},
+  {id:'pv3',cat:'phrasal',word:'outpace',ko:'앞서 나가다, 더 빠른 속도로 초과하다',nuance:'out(초과) + pace(걸음 속도). 달리기에서 상대보다 빠른 페이스로 앞서 나가는 이미지. 중요한 것은 "pace" = 일정하게 지속되는 속도. "demand could outpace supply" = 수요가 공급보다 빠르게 증가해 격차 발생. outrun(더 빨리 달리다)과 비슷하지만, outpace는 일시적이 아닌 지속적 속도차에 초점. 경제 기사에서 자주 사용',diff:1},
+  {id:'pv4',cat:'phrasal',word:'weather (a storm)',ko:'(어려운 상황을) 견뎌내다, 버티고 살아남다',nuance:'명사 "날씨(weather)"가 동사로 전환: "거친 날씨를 버텨내다" → "어떤 어려운 상황도 살아남다". "weather the storm"이 가장 유명한 형태 — 폭풍 속에서 도망치지 않고 계속 항해하는 배의 이미지. 수동적 회피가 아닌 능동적 인내. "weather volatility" = 변동성을 버텨내다. survive보다 훨씬 더 능동적이고 강인한 뉘앙스',diff:2},
+  {id:'pv5',cat:'phrasal',word:'compound (a problem)',ko:'(문제를) 더욱 악화시키다, 복리처럼 증폭시키다',nuance:'금융의 compound interest(복리) 이미지: 이자에 이자가 붙어 기하급수적으로 커지는 것. "compound a problem" = 이미 나쁜 상황 위에 또 다른 나쁜 요소가 더해져 문제가 복리처럼 악화. "An aging farming population compounds these pressures" = 농촌 고령화가 기존 압박들을 복리처럼 증폭시킨다. make worse보다 규모와 속도 감이 더 강함',diff:2},
+  {id:'pv6',cat:'phrasal',word:'let loose',ko:'묶인 것을 풀어놓다, 자유롭게 방치하다',nuance:'loose = 묶임이 없는, 자유로운 상태. "let loose" = 묶거나 통제하던 것을 풀어 자유롭게 놔두다. 맹수를 우리에서 풀어놓는 이미지. unleash와 같은 의미지만 훨씬 구어적(informal)이고, 때로 위험하거나 통제를 잃는 뉘앙스. "not ready to let AI loose on our plants" = AI를 공장에 자유롭게 풀어놓을 준비가 안 됐다 — 강력하지만 아직 통제 필요',diff:1},
+  {id:'id1',cat:'idiom',word:'headwind',ko:'역풍, 진전을 방해하는 외부 요인',nuance:'항공·항해 용어에서 유래: 비행기나 배의 진행 방향과 정반대로 부는 바람 → 속도 감소, 연료 소비 증가. 반대: tailwind(순풍 = 성장을 돕는 조건). 금융·경제 언론의 필수 단어: "despite these headwinds" = 이러한 역풍들에도 불구하고. "structural headwinds" = 구조적 역풍. 복수 "headwinds"로 쓰면 여러 동시 장애 요인 암시. The Economist, FT, WSJ에서 주 2회 이상 등장할 정도로 빈번한 표현',diff:1},
+  {id:'id2',cat:'idiom',word:'in a tough spot',ko:'곤란한 처지에, 어려운 상황에 놓인',nuance:'spot = 위치(location). 18세기 영어에서 "in a spot" = 움직이지 못하는 곤란한 자리에 처한 상태. "tough" = 힘들고 거친. "puts us in a tough spot" = 우리를 곤란한 처지로 만든다. 비슷한 표현들의 뉘앙스 차이: in a bind(얽매인), in a pickle(영국식, 절여진 것처럼 진퇴양난), in a jam(막힌), in a fix(고장 난 것처럼 꼼짝 못 하는). "tough spot"이 가장 중립적이고 비즈니스에서 자주 쓰임',diff:1},
+  {id:'id3',cat:'idiom',word:'mind-blowing',ko:'경이로운, 마음이 날아갈 정도로 충격적으로 대단한',nuance:'1960년대 미국 반문화(counterculture) 운동에서 유래: 강렬한 체험이 "마음(mind)을 날려버린다(blow)"는 표현. 당시 부정적 뉘앙스에서 "엄청나게 놀랍고 인상적인"으로 일반화. "The progress we\'ve made with AI is mind-blowing" — 비즈니스 인터뷰에서도 자연스럽게 사용. incredible, astonishing보다 더 구어적이고 강렬함. 영어 원어민이 일상에서 진심으로 감동했을 때 자연스럽게 쓰는 표현',diff:1},
+  {id:'id4',cat:'idiom',word:'through the lens of',ko:'~의 시각으로, ~라는 프레임을 통해 바라보다',nuance:'렌즈(lens) = 카메라나 안경의 광학 유리. 렌즈를 통해 보면 세상이 특정 방식으로 확대되거나 초점이 맞춰짐. "protein has become the primary lens through which leaders evaluate growth" = 단백질이라는 렌즈로 모든 기회를 바라본다. 분석·학문·전략에서 매우 자주 쓰이는 은유. 비슷한 표현: "through the prism of"(더 격식적), "from the perspective of"(더 중립적). lens는 왜곡·확대의 뉘앙스 포함',diff:2},
+  {id:'id5',cat:'idiom',word:'marketing angle',ko:'마케팅 각도, 제품을 소비자에게 포지셔닝하는 접근법',nuance:'angle = 기하학의 각도 → 특정 방향에서 보는 시각. 저널리즘에서: "a story\'s angle" = 기사를 어떤 관점에서 쓸 것인가. 마케팅에서: "angle" = 제품의 어떤 강점을 강조해 소비자에게 어필할 것인가. "protein not as a short-term marketing angle" = 단기 프로모션 포인트가 아니라는 것. spin(정치적 프레이밍)과 유사하지만 중립적 뉘앙스. take a new angle on = 새로운 시각으로 접근하다',diff:2},
+  {id:'id6',cat:'idiom',word:'on the horizon',ko:'수평선 위에 = 가까운 미래에 다가오는',nuance:'horizon = 수평선. 바라볼 수 있지만 아직 도달하지 못한 경계선. "on the horizon" = 곧 다가오는 것으로 보이지만 아직 도착하지 않은 상태. "an emerging trend on the horizon" = 수평선 위로 막 떠오르는 신흥 트렌드. 거리 뉘앙스 비교: on the horizon(가까운 미래, 보임) > around the corner(더 임박함) > over the horizon(아직 멀거나 이미 지난). 희망적이고 시각적인 이미지',diff:1},
+  {id:'co1',cat:'colloc',word:'margin pressure',ko:'마진 압박, 이익률을 쥐어짜는 외부 압력',nuance:'margin = 매출에서 원가를 뺀 이익률. pressure = 외부에서 가해지는 힘. 원자재 비용 상승 + 가격 인상 불가 = margin pressure. "margin pressure" vs "margin compression": pressure는 외부에서 가해지는 힘 자체, compression은 실제로 마진이 눌린 결과. "under margin pressure" = 마진 압박 하에 있다. 제조업, 소매, 식품업에서 거의 매 분기 실적 발표에 등장하는 필수 표현',diff:1},
+  {id:'co2',cat:'colloc',word:'input volatility',ko:'원자재 투입 비용 변동성',nuance:'input = 생산에 들어가는 원재료·에너지·노동력. volatility는 원래 물리학 용어: volatile(휘발성 있는) = 쉽게 기화하는 성질 → 금융에서 가격이 예측 불가능하게 오르내리는 성질로 확장. "input volatility" = 원재료·에너지 비용이 불안정하게 변동하는 것. 낙농업은 곡물(사료), 에너지, 포장재 가격 변동에 특히 취약. high-volatility environment = 비용 예측이 불가능한 환경',diff:2},
+  {id:'co3',cat:'colloc',word:'supply security',ko:'공급 안보, 안정적인 원료 공급 보장',nuance:'"energy security"(에너지 안보)와 같은 패턴. security = 위협으로부터 보호된 안정된 상태. "supply security" = 생산에 필요한 원료나 자원이 중단 없이 안정적으로 공급될 것이라는 확신. COVID·전쟁 이후 글로벌 공급망 재편 논의에서 핵심 용어로 부상. 유럽 낙농업에서는 원유 공급 자체가 위협받는 상황: "supply security and labor availability as intertwined challenges"',diff:2},
+  {id:'co4',cat:'colloc',word:'investment thesis',ko:'투자 논리, 투자 결정의 핵심 근거',nuance:'thesis = 논제(대학원 학위논문처럼 증명해야 할 명제). "investment thesis" = "이 투자를 해야 하는 이유와 기대 결과에 대한 논리적 주장". VC(벤처캐피털)가 스타트업에 투자할 때 "our investment thesis is X" 형식으로 사용. "protein not as a short-term marketing angle but as a long-term investment thesis" = 단기 프로모션이 아닌 장기 투자 근거로 단백질을 바라본다는 것. 전략적 사고의 핵심 표현',diff:3},
+  {id:'co5',cat:'colloc',word:'protein fortification',ko:'단백질 강화, 식품에 단백질을 추가하는 것',nuance:'fortification의 어원: Latin fortis(강한) + -fication(만들기). 원래 의미: 성벽 강화, 요새화(fort). 식품 과학에서: 원래 음식에 없거나 부족한 영양소를 인공적으로 추가. 역사적 배경: 1930년대 미국에서 비타민 D 결핍으로 인한 구루병(rickets) 예방을 위해 우유에 비타민 D를 강화한 것이 fortification의 시작. "fortified milk" = 강화 우유는 미국 낙농업의 표준. 오늘날 "protein fortification" = 고단백 트렌드의 핵심 전략',diff:2},
+  {id:'co6',cat:'colloc',word:'capital allocation',ko:'자본 배분, 보유 자금을 어디에 쓸지 결정하는 것',nuance:'capital = 자본(기업이 활용할 수 있는 돈·자산). allocation = 배분(allocate에서). "capital allocation" = 기업이 보유한 자금을 어떤 사업/설비/R&D/주주환원에 쓸지 결정하는 것. Warren Buffett: "The most important job of a CEO is capital allocation." CEO와 CFO가 하는 가장 중요한 전략적 의사결정. "shaping portfolio strategy and capital allocation" = 포트폴리오 전략과 자금 사용 방향 결정',diff:2},
+  {id:'co7',cat:'colloc',word:'succession pipeline',ko:'승계 파이프라인, 리더십 후계자 준비 경로',nuance:'succession = 계승(왕위 계승처럼). pipeline = 파이프라인: 원유가 단계적으로 흐르는 관 → 미래 후보자들이 단계적으로 준비되는 이미지. "succession pipeline" = 핵심 직위가 빌 때 즉시 채울 준비된 후보자 풀. "thin succession pipelines for critical operational roles" = 공장장 같은 핵심 운영직 후계자가 거의 없는 상태. 군주제의 "line of succession"(왕위 계승 순서)에서 비즈니스로 전용된 표현',diff:2},
+  {id:'vc1',cat:'vocab',word:'durable',ko:'내구성 있는, 오래 지속되는',nuance:'Latin durare(지속하다) → durus(단단한, hard). 물리적으로 오래 버티는 성질 → 비유적으로 오래 지속되는 것. 경제학에서 중요한 구분: "durable goods"(내구재, 3년+ 사용: 가전·자동차) vs "non-durable goods"(비내구재: 식품·연료). 전략에서: "durable growth themes" = 지나가는 유행이 아닌 구조적으로 지속되는 성장 테마. "durable competitive advantage" = 오래 유지되는 경쟁 우위. lasting과 비슷하지만 더 견고하고 내성 있는 뉘앙스',diff:1},
+  {id:'vc2',cat:'vocab',word:'pragmatic',ko:'실용적인, 이상보다 현실에 집중하는',nuance:'그리스어 pragma(πρᾶγμα) = 행동, 사실, 사물. 19세기 말 미국 철학자 William James, John Dewey가 Pragmatism(실용주의)을 체계화: "이론의 가치는 실제 결과로 판단". 비즈니스에서: 이상적 목표보다 실제로 작동하는 것에 집중하는 태도. "a more pragmatic stance on sustainability" = 야심찬 선언이 아닌 실제 할 수 있는 것에 집중. 반대: idealistic(이상주의적), dogmatic(교조적). 비즈니스 리더가 "I\'m pragmatic"이라고 하면 큰 칭찬',diff:1},
+  {id:'vc3',cat:'vocab',word:'premiumization',ko:'프리미엄화, 고부가가치 포지셔닝으로의 이동',nuance:'premium = Latin praemium(보상, 상금). 품질에 대해 추가로 지불하는 값. premiumization = 시장에서 프리미엄 세그먼트가 커지거나, 브랜드가 의도적으로 프리미엄으로 이동하는 트렌드. 일본 식품·음료 시장(프리미엄 맥주, 아이스크림)에서 두드러져 글로벌 용어로 확산. 낙농업: 일반 우유 → 오가닉·그라스-fed·고단백 제품으로의 프리미엄화. -ization 접미사로 만든 비즈니스 신조어',diff:3},
+  {id:'vc4',cat:'vocab',word:'intertwined',ko:'서로 얽히고 꼬인, 분리 불가능하게 뒤섞인',nuance:'twine = 실이나 끈을 꼬다(twist together). inter = 서로 간(between). "intertwined" = 두 개 이상의 것이 실처럼 서로 꼬이고 얽혀서 분리가 불가능한 상태. 물리적 이미지: DNA 이중 나선, 꼬인 밧줄, 덩굴. "supply security and labor availability as intertwined challenges" = 두 문제가 너무 얽혀 하나만 따로 해결 불가. interconnected(연결된)보다 훨씬 강하게 얽혀 있다는 뉘앙스. 떼어내면 둘 다 상처 입음',diff:2},
+  {id:'vc5',cat:'vocab',word:'measurable',ko:'측정 가능한, 숫자로 검증할 수 있는',nuance:'measure + -able. 경영학의 유명한 경구: "What gets measured, gets managed" (측정되는 것만 관리된다 — Drucker에서 파생). "measurable impact" = 느낌이 아닌 데이터로 증명 가능한 성과. ESG·AI 투자에서 특히 중요: "tangible and measurable impact"가 화두. SMART 목표의 M(Measurable). 반대: qualitative(질적), subjective(주관적). 투자자들이 "ROI가 measurable하냐?"라고 물을 때 핵심 기준',diff:1},
+  {id:'vc6',cat:'vocab',word:'ample',ko:'충분하고도 남는, 풍족한',nuance:'Latin amplus = 충분히 넓은, 풍부한. enough(충분한)보다 여유가 있고 넉넉한 뉘앙스. "ample milk supply" = 충분하고도 남을 만큼 풍족한 원유 공급. "ample time/room/evidence" = 시간/공간/증거가 충분히 많다. enough는 겨우 충분한 최솟값, ample은 그것을 넘어 여유 있는 상태. abundant는 더 극적으로 풍부. enough → ample → abundant → plentiful 순으로 강도가 세짐',diff:1},
+  {id:'vc7',cat:'vocab',word:'exacerbate',ko:'악화시키다, 이미 나쁜 것을 더욱 심하게 만들다',nuance:'Latin ex(강화·완전히) + acerbare(쓰게 만들다) → acerbus(쓴, 신랄한). "이미 쓴(나쁜) 것을 더욱 쓰게 만들다"는 이미지. "exacerbated by elevated retirement rates" = 높은 은퇴율에 의해 더욱 악화됨. 발음 중요: ig-ZAS-er-bate. make worse보다 훨씬 격식적·학술적. 비슷한 단어 강도: worsen(일반) < aggravate(구어) < exacerbate(격식·의학). 의학에서도 "symptoms were exacerbated"처럼 자주 사용',diff:3},
+  {id:'vc8',cat:'vocab',word:'tangible',ko:'실체가 있는, 만질 수 있을 만큼 구체적인',nuance:'Latin tangere = 만지다(touch). 같은 어원: contact(접촉), contagion(전염), tact(눈치). 원래 의미: 물리적으로 만질 수 있는. 비즈니스에서: 추상적·개념적이 아닌, 실제로 측정하고 경험할 수 있는 것. "tangible and pragmatic sustainability initiatives" = 선언이 아닌 실제로 손에 잡히는 이니셔티브. tangible assets(유형 자산: 건물·기계) vs intangible assets(무형 자산: 브랜드·특허). "tangible results" = 눈에 보이는 결과',diff:1},
+  {id:'vc9',cat:'vocab',word:'crosscurrent',ko:'교차 흐름, 서로 다른 방향으로 작용하는 복수의 힘',nuance:'물에서 주류(main current)와 교차하는 방향으로 흐르는 흐름 → 수영이나 항해를 어렵게 만듦. "crosscurrents" = 서로 다른(심지어 반대) 방향으로 작용하는 복수의 힘들. "these crosscurrents translate into a clear imperative" = 여러 상충하는 힘들이 결국 하나의 명확한 방향성을 만든다. 금융 언론에서: "crosscurrents in the global economy" = 성장 요인과 둔화 요인이 동시에 존재하는 복잡한 상황. undercurrent(수면 아래 흐름)와 함께 사용',diff:3},
+  {id:'vc10',cat:'vocab',word:'backdrop',ko:'배경, 사건이 일어나는 거시적 맥락',nuance:'연극 무대에서 배우 뒤에 걸린 배경 그림(painted scenery). 행위자 뒤에서 장면의 분위기와 맥락을 제공. 비즈니스·언론에서: "backdrop" = 비즈니스 활동이 일어나는 거시적 환경·맥락. "against a more cautious macroeconomic backdrop" = 더 신중한 거시경제 환경을 배경으로. 배우(기업)가 backdrop(거시환경)을 직접 통제할 수 없듯, 기업도 외부 환경을 통제 불가. background보다 더 시각적·드라마틱한 뉘앙스',diff:1},
+  {id:'bz1',cat:'biz',word:'GHG',ko:'GHG, 온실가스 (Greenhouse Gas)',nuance:'Greenhouse Gas = 지구 대기가 태양열을 가두는 온실 효과를 일으키는 가스들. "greenhouse"의 이미지: 식물원 유리 온실처럼 열이 빠져나가지 못하는 구조. 1824년 Joseph Fourier가 처음 개념화. 주요 GHG: CO₂(이산화탄소), CH₄(메탄), N₂O(아산화질소). 낙농업은 전 세계 GHG 배출의 약 3-4%를 차지하며 특히 소의 메탄(트림) 배출이 핵심 이슈. "GHG reduction or mitigation" = 온실가스 감축 또는 완화',diff:1},
+  {id:'bz2',cat:'biz',word:'CAGR',ko:'CAGR, 복합 연간 성장률 (Compound Annual Growth Rate)',nuance:'Compound Annual Growth Rate. 단순 평균이 아닌 복리(compound)로 계산한 연평균 성장률. 핵심: 매년 전년도 수치에 대한 성장률이므로 복리 효과 반영. 계산식: CAGR = (최종값/초기값)^(1/년수) - 1. "17% CAGR between 2019 and 2024" = 5년간 매년 복리로 17% 성장. 단순 평균보다 실제 성장 속도를 더 정확히 반영. 투자자·애널리스트·컨설턴트가 성장성 비교에 필수 사용. "growing at a healthy CAGR"처럼 사용',diff:2},
+  {id:'bz3',cat:'biz',word:'ESG',ko:'ESG, 환경·사회·지배구조 (Environmental, Social, Governance)',nuance:'2004년 UN Global Compact 보고서 "Who Cares Wins"에서 처음 체계화. 투자자들이 기업의 비재무적 리스크를 평가하는 프레임워크. E: 기후변화·탄소·물·생물다양성 / S: 노동환경·공급망·다양성 / G: 이사회 구성·반부패·주주권. 낙농업 ESG 트렌드: 광범위한 ESG 선언에서 "emissions reduction + energy + water"로 좁아지는 실용적 전환. ESG 피로감(ESG fatigue)이 커지면서 measurable한 성과 중심으로 재편',diff:1},
+  {id:'bz4',cat:'biz',word:'prebiotic',ko:'프리바이오틱, 장내 유익균의 먹이가 되는 성분',nuance:'pre(앞서, 이전에) + biotic(생물의). probiotic(프로바이오틱 = 살아있는 유익균)과 혼동 주의! 정원 비유: probiotic = 정원에 좋은 식물(균) 심기 / prebiotic = 그 식물이 잘 자라도록 비료(먹이) 주기. 주성분: 식이섬유, 이눌린, FOS(과당올리고당). "protein paired with fiber and prebiotics" = 단백질 + 식이섬유 + 프리바이오틱스 조합이 기능성 식품의 새 트렌드. 11% YoY 성장하는 고섬유 포장 클레임의 주역',diff:2},
+  {id:'bz5',cat:'biz',word:'milk pool',ko:'밀크 풀, 가공 가능한 총 원유 공급량',nuance:'pool = 수영장, 연못처럼 한 곳에 모인 전체. "milk pool" = 특정 지역·협동조합·국가에서 처리·가공할 수 있는 총 원유(raw milk) 공급량의 총합. 유럽 낙농 특수 용어: EU는 2015년까지 milk quota(우유 쿼터제)로 milk pool을 규제. "reshaping the outlook for the milk pool" = 원유 전체 공급 전망 변화. 농장 고령화·기후변화·규제가 milk pool 축소를 위협하는 것이 유럽 낙농업의 핵심 과제',diff:2},
+  {id:'bz6',cat:'biz',word:'frontline (worker)',ko:'프런트라인, 현장 최전선 직원',nuance:'군사 용어에서 유래: front line = 전투가 벌어지는 최전방. 비즈니스에서: 고객이나 생산 현장에서 직접 일하는 직원. 낙농업: "frontline workers" = 공장 생산직·유지보수·품질관리 등 실제 현장 직원. "frontline leaders" = 이들을 직접 이끄는 일선 관리자·감독. COVID 팬데믹으로 "essential workers" = "frontline workers"가 주목받으며 사회적 재평가. "thin succession pipelines for frontline leaders" = 일선 관리자 후계자 부족 문제',diff:1}
+];
+
+const learned=new Set(JSON.parse(localStorage.getItem(STORE)||'[]'));
+let activeCat='all';
+
+function dots(n){return[1,2,3].map(i=>`<span class="dot${i<=n?' on':''}"></span>`).join('');}
+function render(){
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  cards.forEach(c=>{
+    const div=document.createElement('div');
+    div.className=`card ${c.cat}${learned.has(c.id)?' learned':''}${activeCat!=='all'&&c.cat!==activeCat?' hidden':''}`;
+    div.innerHTML=`<div class="card-inner">
+      <div class="front">
+        <span class="cat-tag">${c.cat.toUpperCase()}</span>
+        <div class="word">${c.word}</div>
+        <div class="dots">${dots(c.diff)}</div>
+      </div>
+      <div class="back">
+        <span class="cat-tag">${c.cat.toUpperCase()}</span>
+        <div class="ko">${c.ko}</div>
+        <div class="nuance">${c.nuance}</div>
+        <button class="mark-btn">${learned.has(c.id)?'✓ 학습완료':'완료 표시'}</button>
+      </div>
+    </div>`;
+    div.addEventListener('click',e=>{
+      if(e.target.classList.contains('mark-btn'))return;
+      div.classList.toggle('flipped');
+    });
+    div.querySelector('.mark-btn').addEventListener('click',()=>{
+      if(learned.has(c.id))learned.delete(c.id);else learned.add(c.id);
+      localStorage.setItem(STORE,JSON.stringify([...learned]));
+      render();updateCount();
+    });
+    grid.appendChild(div);
+  });
+}
+function updateCount(){
+  document.getElementById('cnt').textContent=learned.size;
+}
+document.querySelectorAll('.filters button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCat=btn.dataset.cat;
+    render();
+  });
+});
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  learned.clear();localStorage.removeItem(STORE);render();updateCount();
+});
+render();updateCount();
+</script>
+</body>
+</html>
