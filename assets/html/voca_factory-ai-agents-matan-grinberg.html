@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vocabulary – Paving the Road for AI Agents: Factory CEO Interview</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--ink:#e6edf3;--muted:#7d8590;--accent:#f97316;--accent2:#fb923c;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;padding:20px;}
+  header{text-align:center;margin-bottom:20px;}
+  .badge{display:inline-block;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:.72rem;color:var(--muted);margin-bottom:10px;letter-spacing:.03em;}
+  h1{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);margin-bottom:6px;}
+  .subtitle{font-size:.8rem;color:var(--muted);}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px;}
+  .filters button{background:var(--surface);border:1.5px solid var(--border);color:var(--muted);border-radius:20px;padding:5px 14px;font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+  .filters button.active{background:var(--accent);border-color:var(--accent);color:#0d1117;}
+  .progress{text-align:center;font-size:.78rem;color:var(--muted);margin-bottom:14px;}
+  .progress span{color:var(--accent2);font-weight:600;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+  .card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;cursor:pointer;perspective:800px;height:200px;transition:opacity .3s;}
+  .card.hidden{display:none;}
+  .card.learned{opacity:.45;}
+  .card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s;}
+  .card.flipped .card-inner{transform:rotateY(180deg);}
+  .front,.back{position:absolute;inset:0;border-radius:13px;padding:16px;backface-visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;}
+  .front{background:var(--surface);}
+  .back{background:#0a0f1a;transform:rotateY(180deg);}
+  .cat-tag{font-size:.65rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border-radius:10px;align-self:flex-start;}
+  .phrasal .cat-tag{background:#0d2a1a;color:#4ade80;}
+  .idiom .cat-tag{background:#2a1a0d;color:#fdba74;}
+  .colloc .cat-tag{background:#0d1a2a;color:#7dd3fc;}
+  .vocab .cat-tag{background:#2a1a2a;color:#e879f9;}
+  .biz .cat-tag{background:#1a1a0d;color:#fde047;}
+  .word{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--ink);line-height:1.3;}
+  .dots{display:flex;gap:3px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--border);}
+  .dot.on{background:var(--accent);}
+  .ko{font-size:.88rem;color:var(--accent2);font-weight:600;margin-bottom:6px;}
+  .nuance{font-size:.72rem;color:var(--muted);line-height:1.5;flex:1;overflow:hidden;}
+  .mark-btn{margin-top:8px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:4px 10px;font-size:.7rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;align-self:flex-end;}
+  .mark-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .card.learned .mark-btn{border-color:#22c55e;color:#22c55e;}
+  .reset{display:block;margin:20px auto 0;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:7px 20px;font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+  .reset:hover{border-color:var(--accent);color:var(--accent);}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey Technology · Factory × McKinsey · April 2026</div>
+  <h1>Paving the Road for AI Agents</h1>
+  <p class="subtitle">Factory CEO Matan Grinberg 인터뷰 — 이미지·어원·맥락 완전 해설</p>
+</header>
+
+<div class="filters">
+  <button class="active" data-cat="all">ALL</button>
+  <button data-cat="phrasal">PHRASAL</button>
+  <button data-cat="idiom">IDIOM</button>
+  <button data-cat="colloc">COLLOC</button>
+  <button data-cat="vocab">VOCAB</button>
+  <button data-cat="biz">BIZ</button>
+</div>
+
+<div class="progress">학습 완료: <span id="cnt">0</span> / <span id="tot">35</span></div>
+
+<div class="grid" id="grid"></div>
+<button class="reset" id="resetBtn">진행도 초기화</button>
+
+<script>
+const STORE='factory_ai_agents_learned';
+const cards=[
+  {id:'pv1',cat:'phrasal',word:'take a bet on',ko:'~에 베팅하다, 평판을 걸고 도전하다',nuance:'"willing to take a bet on their reputation" — bet = 내기. "take a bet on X"는 X가 성공할 것이라 믿고 자신의 자원(돈, 평판, 시간)을 거는 것. "take a bet on their reputation" = 자신의 평판을 담보로 걸고 AI를 시도한다. 도박(gambling)의 이미지지만 비즈니스에서는 긍정적 용기. "I\'m willing to bet on it" = 나는 그것이 될 거라고 확신한다. make a bet on, place a bet on과 교환 가능',diff:2},
+  {id:'pv2',cat:'phrasal',word:'lock up',ko:'(잠재력 등이) 갇혀있다, 쓰이지 못한 채 묶여 있다',nuance:'"a lot of potential is locked up" — lock up = 자물쇠로 잠가 안에 가두다. 창고에 귀중품이 갇혀 있는 이미지 → 사용 가능한 잠재력이 구식 코드나 레거시 시스템 안에 갇혀 있는 상태. "unlock" = 그 가능성을 해방시키는 것. 이 인터뷰의 핵심 전제: 기업의 잠재력이 legacy 코드베이스에 lock up되어 있고, AI 에이전트가 그것을 unlock한다',diff:1},
+  {id:'pv3',cat:'phrasal',word:'offload',ko:'(짐·업무를) 내려놓다, 에이전트에게 위임하다',nuance:'"engineers think about what they can offload" — off(아래로) + load(짐). 트럭에서 짐을 내려놓는 물리적 이미지. 비즈니스에서: 시간이 많이 걸리거나 반복적인 업무를 다른 사람/시스템에 넘기다. "offload work to agents" = 에이전트에게 업무를 덜어내다. delegate(공식적 위임)보다 더 일상적·실용적 뉘앙스. "offload cognitive load" = 인지 부담을 줄이다',diff:1},
+  {id:'pv4',cat:'phrasal',word:'ship (code / a feature)',ko:'(코드·기능을) 출시하다, 배포하다',nuance:'"people ship code for automations" — ship = 배로 물건을 보내다 → 소프트웨어 업계에서 "완성된 코드를 사용자에게 전달하다"의 의미로 확장. 1980-90년대 실리콘밸리 개발 문화에서 굳어진 표현. "ship it" = 완벽하지 않아도 지금 출시하라 (Done is better than perfect). "shipping features" = 기능을 실제로 사용자에게 내보내다. release, deploy보다 더 구어적이고 빠른 뉘앙스',diff:1},
+  {id:'pv5',cat:'phrasal',word:'take the leap',ko:'용기 있게 뛰어들다, 결단하고 도약하다',nuance:'"he challenged me to take the leap" — leap = 크게 뛰어오르다(jump보다 훨씬 크고 과감한 동작). "take a leap" = 불확실한 미래를 향해 과감하게 뛰어드는 것. "leap of faith" = 증거 없이 믿음으로 뛰어드는 것(종교·철학 용어에서 확장). Grinberg가 PhD를 그만두고 회사를 차린 것처럼, 안정적인 것을 버리고 새로운 것으로 도약하는 결단. take the plunge(물에 뛰어드는)와 유사',diff:1},
+  {id:'pv6',cat:'phrasal',word:'bring over',ko:'데리고 오다, 설득해서 자기 쪽으로 끌어오다',nuance:'"they know which engineers to bring over and say, \'Look at this.\'" — bring + over(쪽으로). 단순히 부르는(bring)것이 아니라 자신이 있는 쪽(over)으로 와서 직접 보여주는 뉘앙스. 조직에서 AI 채택을 확산시킬 때 핵심 전술: 회의적인 사람을 직접 성공 사례 앞에 데려와 "이것 좀 봐"라고 말하는 것. win over(설득해서 지지자로 만들다)와 뉘앙스 연결',diff:2},
+  {id:'id1',cat:'idiom',word:'step change',ko:'계단식 도약, 점진적이 아닌 급격한 수준 변화',nuance:'"not all have seen a step change in impact" — 공학 용어에서 유래: step function(계단 함수) = 연속적으로 증가하지 않고 갑자기 한 단계 올라가는 함수. 비즈니스에서: "step change" = 점진적 개선(incremental improvement)이 아닌 갑작스러운 질적 도약. "a step change in productivity" = 생산성이 확 달라지는 것. 비슷한 표현: quantum leap(양자 도약 = 갑작스러운 큰 발전), paradigm shift보다 더 구체적인 수준의 변화',diff:2},
+  {id:'id2',cat:'idiom',word:'take hold',ko:'(변화가) 자리를 잡다, 뿌리를 내리다',nuance:'"how quickly this change takes hold" — hold = 잡아두는 힘. "take hold" = 어떤 것이 확고하게 자리를 잡고 쉽게 흔들리지 않는 상태. 씨앗이 땅에 뿌리(hold)를 내리는 이미지. "fire takes hold" = 불이 번지기 시작해 통제하기 어려워지다. 변화가 "take hold"하면 이전으로 돌아가기 어렵다. gain traction(동력을 얻다)과 비슷하지만 take hold는 더 영구적인 정착 뉘앙스',diff:2},
+  {id:'id3',cat:'idiom',word:'pave the road',ko:'도로를 닦다 = AI를 위한 인프라를 먼저 구축하다',nuance:'Grinberg의 핵심 은유: "Ferrari in 1850 San Francisco with dirt roads." 아무리 뛰어난 기술도(Ferrari = AI 에이전트) 인프라(roads = 문서화·테스트·CI/CD)가 없으면 무용지물. "pave"는 원래 돌이나 아스팔트로 길을 포장하는 것(Latin pavire = 두드려 다지다). "pave the way for" = ~를 위한 길을 열다. 이 은유의 힘: 기술 문제가 아닌 인프라 문제임을 직관적으로 설명',diff:1},
+  {id:'id4',cat:'idiom',word:'crash into a ditch',ko:'도랑에 빠지다 = 잘못된 조건에서 시험 후 오류 결론 내리기',nuance:'"you might crash it into a ditch and conclude that cars don\'t work" — Ferrari를 비포장 도로에서 달리다 도랑에 처박힌 뒤 "자동차는 안 되는 기술이야"라고 결론짓는 것. 즉, 환경 문제를 기술 문제로 오진하는 것. AI 도입 실패의 본질: 에이전트가 안 되는 게 아니라, 인프라가 없는 것. "crash and burn" = 완전히 실패하다와 유사한 이미지. ditch = 길가 배수로, 구덩이',diff:2},
+  {id:'id5',cat:'idiom',word:'agent-native',ko:'에이전트 원어민, AI 에이전트를 자연스럽게 활용하는 상태',nuance:'"you want as many developers as possible to become agent-native" — "native"의 원래 의미: 태어난 곳에 속한(native speaker = 원어민). 기술 분야: "cloud-native"(클라우드에 맞게 설계된), "mobile-native"(모바일 우선). "digital native" = 디지털 환경에서 태어나고 자란 세대(vs. digital immigrant = 나중에 배운 세대). "agent-native" = 에이전트와 함께 일하는 것이 원어민처럼 자연스러운 개발자 세대. 새로운 패러다임의 기준 세대를 의미',diff:2},
+  {id:'id6',cat:'idiom',word:'get stuck',ko:'꼼짝 못하다, 막힌 곳에서 진전이 불가능해지다',nuance:'"that\'s where enterprises actually get stuck" — stick(붙다)에서. 진흙에 빠진 바퀴, 껌이 신발에 붙은 것처럼 움직이지 못하는 물리적 이미지. "get stuck in traffic" = 교통 체증에 걸리다. "stuck in a rut" = 수레바퀴 자국(rut)처럼 같은 홈을 반복해 변화 못하는 상태. "I\'m stuck" = 모르겠어, 막혔어. 기업에서: legacy 시스템에서 벗어나지 못해 혁신이 막히는 상태. "get unstuck" = 막힌 것을 뚫다',diff:1},
+  {id:'co1',cat:'colloc',word:'tacit knowledge',ko:'암묵적 지식, 말로 설명되지 않은 내면의 앎',nuance:'"the enemy of AI agents is tacit knowledge" — tacit은 Latin tacere(침묵하다)에서. tacit knowledge는 철학자 Michael Polanyi(1958)가 체계화: "We know more than we can tell"(우리는 말할 수 있는 것보다 더 많이 안다). 자전거 타기, 장인의 손기술처럼 경험으로 체득했지만 말로 전달하기 어려운 지식. 반대: explicit knowledge(명시적 지식 = 문서화된 것). AI 에이전트가 tacit knowledge를 처리 못하는 것이 엔터프라이즈 AI 확산의 핵심 장애',diff:3},
+  {id:'co2',cat:'colloc',word:'codebase',ko:'코드베이스, 프로젝트의 소스 코드 전체',nuance:'"code bases that are sometimes older than the people working on them" — code + base(기반). 특정 소프트웨어 시스템의 소스 코드 전체를 가리키는 단어. 30년 된 코드베이스를 20대 개발자가 유지보수하는 상황이 레거시 마이그레이션의 현실. "a messy codebase" = 복잡하게 얽힌 코드, "clean codebase" = 잘 정리된 코드. codebase의 크기와 복잡도가 AI 에이전트 성능에 직결됨: 잘 문서화된 코드베이스일수록 Droid가 더 잘 작동',diff:2},
+  {id:'co3',cat:'colloc',word:'legacy migration',ko:'레거시 마이그레이션, 구형 시스템의 신형 전환',nuance:'"We\'ve focused on legacy migrations" — legacy = Latin legatum(유산, 물려받은 것). IT에서: 교체하기는 어렵지만 여전히 사용 중인 구형 시스템. "migration" = 이주(새 환경으로 데이터·시스템을 옮기는 것). legacy migration = 구형 코드·시스템을 현대 아키텍처로 전환하는 프로젝트. 가장 힘들고 재미없는 작업 중 하나 → "no one wants to spend more time than necessary" = AI 에이전트의 도움이 가장 환영받는 영역',diff:2},
+  {id:'co4',cat:'colloc',word:'outcome-based (ownership)',ko:'성과 중심 (소유권), 누가 결과에 책임지는가',nuance:'"shift away from inputs and toward outcomes" — input-based = 내가 어떤 작업을 했나(과정 중심). outcome-based = 그 결과로 무엇이 달성됐나(성과 중심). "Who owns the customer outcome?" = 고객 결과에 책임지는 사람이 누구인가. AI가 코드를 대신 쓰면서 "나는 코드를 안 써서 내 책임이 아님"이라는 변명이 사라지고, 모든 역할이 결과 책임을 지게 됨. B2B SaaS에서 outcome-based pricing(결과 기반 가격 책정)도 같은 개념',diff:2},
+  {id:'co5',cat:'colloc',word:'daily usage',ko:'일일 사용률, 제품 활성 참여도 지표',nuance:'"Adoption percentage and daily usage matter" — 제품이 실제로 매일 쓰이는지를 나타내는 engagement 지표. 앱 업계: DAU(Daily Active Users)와 같은 개념. "daily usage" = 단순 가입(sign-up)이 아닌 매일 실제로 쓰는 것. "sticky product" = daily usage가 높은 제품. Grinberg의 Phase 1 지표: 채택률(adoption rate) + daily usage → 에이전트가 개발자의 일상 워크플로에 진짜 통합됐는지 확인하는 가장 직접적인 측정',diff:1},
+  {id:'co6',cat:'colloc',word:'business bottleneck',ko:'사업의 병목, 성장을 제한하는 핵심 제약',nuance:'"the right metric depends on the business bottleneck" — bottleneck = 병목(bottle + neck). 와인병 목처럼 좁아져 흐름을 제한하는 지점. Eliyahu Goldratt의 TOC(Theory of Constraints, 1984): 시스템의 성과는 가장 약한 병목에 의해 결정됨. "what\'s the business bottleneck?" = 지금 우리 사업에서 가장 흐름을 막는 지점이 어디인가. AI 성과 측정의 핵심 인사이트: 병목이 코드 속도가 아니라 관계나 품질이라면 story points 지표는 무의미',diff:2},
+  {id:'co7',cat:'colloc',word:'behavior change',ko:'행동 변화, 실제 일하는 방식을 바꾸는 것',nuance:'"Behavior change is hard" — 이 인터뷰의 핵심 결론. 기술 변화(tool change)보다 행동 변화(behavior change)가 훨씬 어렵다. 심리학: B.F. Skinner의 행동주의, Kahneman의 시스템1/2, BJ Fogg의 Tiny Habits — 모두 행동 변화의 어려움을 다룸. 조직에서: "10,000명의 엔지니어 행동이 의미 있게 바뀌면 조직의 속도가 달라진다" — 기술이 아닌 사람이 진짜 전환의 속도를 결정한다는 Grinberg의 통찰',diff:2},
+  {id:'vc1',cat:'vocab',word:'obsessed',ko:'집착하다, 완전히 사로잡히다 (스타트업에서는 칭찬)',nuance:'"got me obsessed" — obsess는 Latin obsidere(포위하다) = ob(앞에서) + sedere(앉다). 원래 의미: 악령이 사람 앞에 앉아 떠나지 않는 것(haunted). 심리학적 의미: 강박적 생각. 그러나 스타트업·테크 문화에서: "I got obsessed with X"는 badge of honor(명예 훈장). 어떤 문제에 완전히 빠져든 집중력의 표현. "what are you obsessed with?" = 당신의 열정 분야가 무엇인가. Paul Graham도 창업자 조건으로 "obsessiveness"를 꼽음',diff:1},
+  {id:'vc2',cat:'vocab',word:'legacy',ko:'유산, 과거로부터 물려받은 것 (IT에서는 구형 시스템)',nuance:'Latin legatum = 유증(遺贈), 유산으로 남겨진 것. 원래 의미: 매우 긍정적인 "남겨진 가치" — a leader\'s legacy(리더의 유산), legacy of innovation(혁신의 유산). 아이러니: IT 세계에서 "legacy system/code"는 주로 부정적 — 교체하기는 어렵지만 여전히 써야 하는 낡은 것. "legacy bank"(낡은 은행 시스템), "legacy codebase"(수십 년 된 코드). 같은 단어가 일반 문맥에서는 긍정, 기술 문맥에서는 부정이 되는 흥미로운 의미 이중성',diff:1},
+  {id:'vc3',cat:'vocab',word:'observability',ko:'관찰 가능성, 시스템 내부를 외부에서 파악하는 능력',nuance:'"documentation, test coverage, CI/CD, observability, linters" — 제어이론(control theory)에서 유래한 공학 용어. observable system = 외부 출력만으로 내부 상태를 완전히 파악할 수 있는 시스템. DevOps에서: 로그(logs), 메트릭(metrics), 트레이스(traces) 세 가지로 시스템 내부를 들여다보는 것. observability가 없으면 뭔가 잘못됐을 때 원인을 찾지 못함. AI 에이전트에게도 동일: 에이전트가 무엇을 하는지 볼 수 없으면 신뢰하고 확장하기 불가능',diff:3},
+  {id:'vc4',cat:'vocab',word:'permeate',ko:'스며들다, 서서히 침투해 전체에 퍼지다',nuance:'"a lot of what we discussed will take time to permeate large enterprises" — Latin permeare = per(완전히 통과하다) + meare(가다·흐르다). 물이 스펀지에 스며들거나, 향기가 방 전체에 퍼지는 이미지. 완전히 통과하고 침투해 모든 구석까지 영향을 미치는 것. "permeate the organization" = 조직 전체에 서서히 퍼지다. penetrate(뚫고 들어가다)보다 더 점진적이고 자연스러운 확산 뉘앙스. "ideas permeate culture"처럼 무형의 것에 자주 사용',diff:2},
+  {id:'vc5',cat:'vocab',word:'friction',ko:'마찰, 흐름을 방해하는 불편함·저항',nuance:'"that creates friction" — 물리학: 두 물체가 접촉할 때 생기는 저항력. UX/프로덕트 디자인에서: 사용자가 원하는 행동을 완료하기까지의 장애물. "reducing friction" = 결제 과정을 단순화하거나 클릭 수를 줄이는 것. 여기서: AI 에이전트가 모르는 암묵적 지식이 있으면 엔지니어가 일일이 알려줘야 하는 추가 단계 = friction 발생. "frictionless" = 장애물 없는 상태(이전 카드에서 사용됨). friction을 이해하면 frictionless도 깊게 이해됨',diff:1},
+  {id:'vc6',cat:'vocab',word:'delegate',ko:'위임하다, 권한·업무를 다른 사람(에이전트)에게 맡기다',nuance:'"the new directive isn\'t to write a line of code. It\'s to delegate to an agent" — Latin delegare = de(완전히) + legare(보내다, 특사 파견하다). 원래: 왕이 특사(legate)를 파견해 권한을 부여하는 것. 현대: 관리자가 업무와 권한을 부하직원에게 맡기는 것. 중요한 구분: assign(일만 넘기기) vs. delegate(권한까지 함께 부여). delegation = 성공적 관리자의 핵심 역량. 이제 에이전트에게 delegate = AI 시대의 새로운 핵심 스킬',diff:1},
+  {id:'vc7',cat:'vocab',word:'accountable',ko:'(결과에 대해) 책임지는, 해명 의무가 있는',nuance:'"who is accountable?" — account = 계좌, 설명(Latin computare에서). "accountable"은 자신의 행동과 결과에 대해 다른 사람에게 설명하고 책임질 수 있는 상태. responsible과 차이: responsible(책임감 있는, 내적 속성) vs. accountable(결과에 대해 외부에 해명 의무, 귀책 가능한). "hold someone accountable" = 책임을 묻다. 조직 설계에서: "who is accountable for the outcome?" = 결과에 귀책이 있는 사람이 누구인지 명확히 하는 것',diff:2},
+  {id:'vc8',cat:'vocab',word:'latency',ko:'지연 시간, 반응까지 걸리는 딜레이',nuance:'"the constraint might be relationships, quality, or latency" — Latin latere = 숨어있다. "latent" = 잠재하는, 아직 드러나지 않은 → latency = 숨어서 기다리는 시간. 네트워크에서: 요청을 보내고 응답이 오기까지의 시간(밀리초 단위). 사용자 경험의 핵심: latency > 200ms이면 "느리다"고 느낌. 확장된 의미: 어떤 시스템이든 "입력"과 "출력" 사이의 지연. "low-latency trading"(초저지연 거래), "latency-sensitive application" = 딜레이에 민감한 앱',diff:2},
+  {id:'vc9',cat:'vocab',word:'vibe coding',ko:'바이브 코딩, AI에게 느낌만 줘도 코드가 나오는 작업 방식',nuance:'"not just for vibe coding or building a website from scratch" — 2024년 등장한 신조어. Andrej Karpathy(OpenAI 공동 창업자)가 처음 사용. "vibe"는 "진동, 분위기"의 줄임말 → AI에게 원하는 것의 느낌(vibe)만 대략 설명하면 코드를 생성해주는 것. 비판: vibe coding은 간단한 프로토타입엔 좋지만 복잡한 엔터프라이즈 코드에는 부족. Factory Droids는 vibe coding이 아닌 legacy codebase 이해와 정밀한 실행에 초점. 새로운 기술 문화 용어',diff:2},
+  {id:'vc10',cat:'vocab',word:'directive',ko:'지시, 방침, 새로운 핵심 작업 지침',nuance:'"the new directive isn\'t to write a line of code" — Latin directus(곧은, 직접적인) → direct의 명사형. directive = 권위 있는 곳에서 내려오는 명확한 방향 지시. EU Directive(EU 지침 = 회원국들이 따라야 하는 법적 방향), military directive(작전 지시), strategic directive(전략 방침). "the new directive is to delegate" = 새로운 핵심 행동 방침. 단순한 instruction(지시)보다 더 공식적이고 구조적. 조직의 근본적 행동 원칙이 바뀌는 것을 강조할 때 사용',diff:2},
+  {id:'bz1',cat:'biz',word:'CI/CD',ko:'CI/CD, 지속적 통합/지속적 배포 (소프트웨어 개발 자동화)',nuance:'CI = Continuous Integration: 개발자들이 코드를 자주(하루에도 여러 번) 공유 저장소에 병합하고 자동으로 빌드·테스트하는 관행. CD = Continuous Delivery/Deployment: 검증된 코드를 언제든지 프로덕션에 배포 가능한 상태로 유지하거나 자동 배포하는 것. 2000년대 초 Agile과 함께 등장. AI 에이전트가 작성한 코드가 CI/CD 파이프라인 없이는 안전하게 검증·배포될 수 없음 → "pave the road"의 핵심 요소',diff:2},
+  {id:'bz2',cat:'biz',word:'story points',ko:'스토리 포인트, Agile에서 업무량·복잡도를 측정하는 단위',nuance:'"story points delivered" — Agile 개발 방법론의 핵심 메트릭. "user story" = 사용자가 무엇을 원하는지 짧게 기술한 요구사항. "story points" = 그 user story를 완료하는 데 필요한 복잡도와 노력을 상대적으로 수치화(피보나치 수열 1,2,3,5,8,13... 사용). 실제 시간(시간 단위)이 아닌 상대적 크기. "velocity" = 팀이 스프린트당 처리하는 story points 총합. 그러나 Grinberg는 "story points가 진짜 비즈니스 병목을 반영하지 못할 수 있다"고 비판',diff:2},
+  {id:'bz3',cat:'biz',word:'linter',ko:'린터, 코드 품질과 스타일을 자동 검사하는 도구',nuance:'"documentation, CI/CD, observability, linters" — 1978년 Bell Labs의 Stephen Johnson이 만든 Unix 도구 "lint"에서 유래. lint = 옷에 붙은 보풀(작은 결함). 코드의 작은 결함(문법 오류, 스타일 위반, 잠재적 버그)을 자동으로 찾아내는 정적 분석 도구. ESLint(JavaScript), Pylint(Python), Rubocop(Ruby). "linting" = 코드를 린터로 검사하는 행위. AI 에이전트가 생성한 코드도 linter를 통과해야 품질 보장 가능',diff:2},
+  {id:'bz4',cat:'biz',word:'token cost',ko:'토큰 비용, LLM API 사용량에 따른 과금',nuance:'"You shouldn\'t be overly focused on efficiency or token costs at that stage" — LLM(Large Language Model) API는 입력+출력 텍스트를 "token"(단어보다 작은 단위) 수로 측정해 과금. 영어 약 1 token ≈ 4글자. OpenAI GPT-4: 1M tokens ≈ $10-30. "token cost" = AI를 사용할수록 드는 비용. Grinberg의 인사이트: Phase 1(채택 단계)에서는 token cost에 집착하지 말고 adoption을 최우선하라. 나중에 효율화 가능',diff:2},
+  {id:'bz5',cat:'biz',word:'program synthesis',ko:'프로그램 합성, AI가 명세(spec)에서 코드를 자동 생성',nuance:'"what was then called program synthesis, now called code generation" — synthesis = 합성(여러 부분을 결합해 새로운 전체를 만드는 것). "program synthesis" = 형식 명세(formal specification) 또는 예제에서 프로그램을 자동으로 생성하는 AI 연구 분야. 1950년대부터 AI 연구의 꿈이었으나 오래 한계. 2020년대 LLM으로 실용화되며 "code generation"으로 이름이 바뀌어 대중화. Grinberg가 2022-23년 이 연구로 Factory를 시작한 배경',diff:3},
+  {id:'bz6',cat:'biz',word:'cold email',ko:'콜드 이메일, 사전 관계 없이 처음 보내는 이메일',nuance:'"I cold-emailed a former physicist who is now at Sequoia" — cold = 차가운. cold call(모르는 사람에게 갑자기 전화하는 영업 전술)에서 유래. cold email = 아무 사전 연락이나 소개 없이 처음 보내는 이메일. "warm intro"(지인 소개)의 반대. 스타트업 창업자들이 VC·잠재 고객·멘토에게 보내는 핵심 도구. 좋은 cold email의 3요소: 짧고 구체적인 가치 제안, 상대방의 관심사 연구, 명확한 CTA(call to action). Grinberg도 cold email 한 통으로 Sequoia 파트너를 만난 것',diff:1}
+];
+
+const learned=new Set(JSON.parse(localStorage.getItem(STORE)||'[]'));
+let activeCat='all';
+
+function dots(n){return[1,2,3].map(i=>`<span class="dot${i<=n?' on':''}"></span>`).join('');}
+function render(){
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  cards.forEach(c=>{
+    const div=document.createElement('div');
+    div.className=`card ${c.cat}${learned.has(c.id)?' learned':''}${activeCat!=='all'&&c.cat!==activeCat?' hidden':''}`;
+    div.innerHTML=`<div class="card-inner">
+      <div class="front">
+        <span class="cat-tag">${c.cat.toUpperCase()}</span>
+        <div class="word">${c.word}</div>
+        <div class="dots">${dots(c.diff)}</div>
+      </div>
+      <div class="back">
+        <span class="cat-tag">${c.cat.toUpperCase()}</span>
+        <div class="ko">${c.ko}</div>
+        <div class="nuance">${c.nuance}</div>
+        <button class="mark-btn">${learned.has(c.id)?'✓ 학습완료':'완료 표시'}</button>
+      </div>
+    </div>`;
+    div.addEventListener('click',e=>{
+      if(e.target.classList.contains('mark-btn'))return;
+      div.classList.toggle('flipped');
+    });
+    div.querySelector('.mark-btn').addEventListener('click',()=>{
+      if(learned.has(c.id))learned.delete(c.id);else learned.add(c.id);
+      localStorage.setItem(STORE,JSON.stringify([...learned]));
+      render();updateCount();
+    });
+    grid.appendChild(div);
+  });
+}
+function updateCount(){
+  document.getElementById('cnt').textContent=learned.size;
+}
+document.querySelectorAll('.filters button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCat=btn.dataset.cat;
+    render();
+  });
+});
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  learned.clear();localStorage.removeItem(STORE);render();updateCount();
+});
+render();updateCount();
+</script>
+</body>
+</html>
