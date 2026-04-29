@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vocabulary – Turning Humanoid Supply Chain Constraints into Billion-Dollar Wins</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#090e17;--surface:#0f1724;--border:#1e2d4a;--ink:#e2e8f0;--muted:#64748b;--accent:#818cf8;--accent2:#a5b4fc;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;padding:20px;}
+  header{text-align:center;margin-bottom:20px;}
+  .badge{display:inline-block;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:.72rem;color:var(--muted);margin-bottom:10px;letter-spacing:.03em;}
+  h1{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);margin-bottom:6px;}
+  .subtitle{font-size:.8rem;color:var(--muted);}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px;}
+  .filters button{background:var(--surface);border:1.5px solid var(--border);color:var(--muted);border-radius:20px;padding:5px 14px;font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+  .filters button.active{background:var(--accent);border-color:var(--accent);color:#090e17;}
+  .progress{text-align:center;font-size:.78rem;color:var(--muted);margin-bottom:14px;}
+  .progress span{color:var(--accent2);font-weight:600;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+  .card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;cursor:pointer;perspective:800px;height:200px;transition:opacity .3s;}
+  .card.hidden{display:none;}
+  .card.learned{opacity:.45;}
+  .card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s;}
+  .card.flipped .card-inner{transform:rotateY(180deg);}
+  .front,.back{position:absolute;inset:0;border-radius:13px;padding:16px;backface-visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;}
+  .front{background:var(--surface);}
+  .back{background:#060a14;transform:rotateY(180deg);}
+  .cat-tag{font-size:.65rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border-radius:10px;align-self:flex-start;}
+  .cat-PHRASAL{background:#1e3a5f;color:#93c5fd;}
+  .cat-IDIOM{background:#1a3a2a;color:#6ee7b7;}
+  .cat-COLLOC{background:#2d1f4a;color:#c4b5fd;}
+  .cat-VOCAB{background:#3a1f1f;color:#fca5a5;}
+  .cat-BIZ{background:#2a2210;color:#fcd34d;}
+  .word{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--ink);line-height:1.3;}
+  .pron{font-size:.72rem;color:var(--muted);margin-top:4px;}
+  .diff{display:flex;gap:3px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--border);}
+  .dot.on{background:var(--accent);}
+  .ko{font-size:.82rem;color:var(--accent2);font-weight:600;margin-bottom:6px;line-height:1.4;}
+  .nuance{font-size:.7rem;color:#94a3b8;line-height:1.55;overflow-y:auto;flex:1;}
+  .learn-btn{margin-top:8px;background:var(--accent);border:none;color:#fff;border-radius:8px;padding:5px 10px;font-size:.72rem;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;}
+  .learn-btn:hover{background:var(--accent2);}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">McKinsey &amp; Company · Industrials Practice · April 2026</div>
+  <h1>🤖 Turning Humanoid Supply Chain Constraints into Billion-Dollar Wins</h1>
+  <p class="subtitle">by Ani Kelkar, Christian Jansen, Erik Sparre, Mark Patel &amp; Mikael Robertson</p>
+</header>
+<div class="filters">
+  <button class="active" data-filter="ALL">ALL</button>
+  <button data-filter="PHRASAL">PHRASAL</button>
+  <button data-filter="IDIOM">IDIOM</button>
+  <button data-filter="COLLOC">COLLOC</button>
+  <button data-filter="VOCAB">VOCAB</button>
+  <button data-filter="BIZ">BIZ</button>
+</div>
+<div class="progress">학습 완료: <span id="cnt">0</span> / 35</div>
+<div class="grid" id="grid"></div>
+<script>
+const KEY='humanoid_supply_chain_learned';
+const learned=new Set(JSON.parse(localStorage.getItem(KEY)||'[]'));
+const cards=[
+  {id:'ph1',type:'PHRASAL',word:'concentrate in',pron:'',ko:'(리스크·가치가) ~에 집중되다',nuance:'라틴어 con-(함께) + centrum(중심). "Bottlenecks will concentrate in subsystems where high-performance requirements, supplier concentration, and limited standardization intersect." 위험이 무작위로 퍼지는 게 아니라 구조적으로 특정 지점에 몰린다는 신호. 이미지: 협곡에서 급류로 변하는 강—지질학이 물을 좁은 통로로 밀어넣듯, 기술·공급 조건이 병목을 특정 하위 시스템에 집중시킨다. cluster in(군집), converge at(합류)와 달리, concentrate in은 구조적 필연성이 가장 강하다.',diff:1,ex:'Supply chain risks will <b>concentrate in</b> subsystems where high performance, supplier scarcity, and limited standardization intersect.'},
+  {id:'ph2',type:'PHRASAL',word:'overlap with',pron:'',ko:'~와 구조적으로 겹치다',nuance:'라틴어 super(위) + lappare(감다). "Many high-impact humanoid components overlap structurally with the EV value chain." 겹치는 영역에서 EV 투자 20년치 툴링·공급업체·공정 성숙도를 무임승차 가능—전략적 인접성의 핵심. 이미지: 벤 다이어그램의 교집합—오버랩 영역이 클수록 더 많은 기존 자원을 빌릴 수 있다. coincide with(완전 일치), relate to(느슨한 관련)보다 부분적·구조적 중복을 정확하게 표현.',diff:1,ex:'Actuator power electronics and precision bearings <b>overlap with</b> EV component supply chains, enabling faster cost compression.'},
+  {id:'ph3',type:'PHRASAL',word:'position for',pron:'',ko:'(미래 역할을 위해) 선제적으로 자리잡다',nuance:'라틴어 ponere(놓다). "They are positioning now for the platform roles that will eventually define the ecosystem." 게임 규칙이 확정되기 전에 핵심 칸을 선점하는 체스 전략. prepare for(일반적 준비)와 달리, position for는 경쟁 지형에서의 의도적 선점—게임이 시작되기 전에 가장 유리한 레인에 서는 것. 이미지: 결승선 위치가 바뀔 수도 있는 마라톤에서 가장 유리한 레인을 먼저 차지하는 주자.',diff:2,ex:'Adjacent industry suppliers are <b>positioning for</b> the platform roles that will define the humanoid ecosystem by 2035.'},
+  {id:'ph4',type:'PHRASAL',word:'anchor in',pron:'',ko:'(플랫폼·설계에) 깊이 박히다, 굳건히 자리잡다',nuance:'그리스어 ankyra(닻). "Suppliers that support early codesign may anchor themselves in future high-volume platforms." 설계 초기에 부품이 OEM 사양에 통합되면, 나중에 교체하려면 전체 설계를 뜯어야 한다—닻처럼 빠지지 않는 구조. embed in(수동적 삽입)이나 integrate into(기술적 통합)와 달리, anchor in은 의도적이고 전략적인 고착을 시사. 이미지: 폭풍 전에 해저에 닻을 내리는 배—일단 박히면 파도가 와도 배는 떠나지 못한다.',diff:2,ex:'Suppliers that support OEM codesign early can <b>anchor</b> their components <b>in</b> future mass-production platforms before specifications are frozen.'},
+  {id:'ph5',type:'PHRASAL',word:'force into',pron:'',ko:'~로 내몰리다, 구조적으로 강제되다',nuance:'라틴어 fortis(강한). "Most OEMs are forced into vertical integration out of necessity, not preference." 수동 구문이 핵심—OEM이 선택한 게 아니라 공급망이 선택지를 없앴다. opt for(자발적 선택), resort to(마지못한 선택)과 달리, force into는 에이전시가 완전히 제거된 상태. 이미지: 두 갈래 길이 모두 험난하지만 서 있을 수도 없는 나그네—지형이 발을 밀어넣는다.',diff:1,ex:'The absence of viable suppliers has <b>forced</b> most humanoid OEMs <b>into</b> vertical integration rather than external sourcing.'},
+  {id:'ph6',type:'PHRASAL',word:'converge on',pron:'',ko:'(표준·기준이) ~로 수렴하다',nuance:'라틴어 con-(함께) + vergere(기울다). "Three conditions include stable subsystem architectures and converging interface standards." 여러 독립적 경로가 시장 압력에 의해 같은 표준으로 끌려오는 유기적 과정. standardize(위에서 부과)나 align with(양방향 합의)와 달리, converge on은 복수 플레이어가 각자의 이유로 같은 지점에 모여드는 자연스러운 수렴—선언이 아닌 진화. 이미지: 서로 다른 산에서 발원한 강들이 결국 같은 호수로 흘러드는 모습.',diff:2,ex:'Once humanoid architecture begins to <b>converge on</b> shared interface standards, the transition from vertical integration to modular sourcing will accelerate.'},
+  {id:'id1',type:'IDIOM',word:'land grab',pron:'',ko:'영토 선점 경쟁, 전략적 자리 잡기 러시',nuance:'1889년 미국 오클라호마 랜드 런—총소리와 함께 수만 명이 달려가 가장 좋은 땅에 깃발을 꽂은 역사적 이벤트. "In compute, a parallel land grab is underway." 지금 파트너십을 맺고 플랫폼 설계에 참여하는 기업이 향후 생태계의 핵심 자리를 선점한다. market expansion(순서 있는 성장), competitive race(규칙 있는 경쟁)과 달리, land grab은 선점 우선·규칙 후 정립의 무법 지대 느낌—나중에 오면 이미 좋은 땅은 없다. 이미지: 🏇 총소리와 함께 말을 달려 땅에 깃발을 꽂는 정착민들.',diff:2,ex:'In compute, a parallel <b>land grab</b> is underway, with chip makers and platform vendors racing to define next-generation humanoid architectures.'},
+  {id:'id2',type:'IDIOM',word:'gating factor',pron:'',ko:'관문 요소 — 전체 진전을 막는 단일 제약 조건',nuance:'영어 gate(문)에서. "Hands are a potential gating factor but also a key opportunity area." 게이트는 열리지 않으면 아무리 뒤가 넓어도 나갈 수 없다. bottleneck(흐름 제한—속도를 늦춤)이 아니라, gating factor는 흐름 자체를 막는다—더 강하고 이진적(binary). 제거되면 급격한 가속이 일어난다는 잠재적 기회의 뉘앙스도 품는다. 이미지: 성문의 쇠창살—저 하나만 올라가면 도시 전체가 열린다.',diff:2,ex:'Tactile sensor maturity is a potential <b>gating factor</b> for deploying humanoids in tasks requiring dexterous manipulation.'},
+  {id:'id3',type:'IDIOM',word:'choke point',pron:'',ko:'초크 포인트 — 모든 흐름이 반드시 통과해야 하는 전략적 병목',nuance:'군사·지리 용어. choke(질식) + point(지점). 호르무즈 해협처럼—21마일 폭에 세계 석유 20%가 통과. "High risk: The choke points where supply struggles to meet ambitions." NdFeB 자석이 전형적 예: 중국 공정 없이 고토크 액추에이터를 만들 현실적 우회로가 없다. bottleneck(일반적 흐름 제한)과 달리, choke point는 전략적 취약성의 차원—통제하면 전체 공급을 좌우할 수 있다. 이미지: 🌍 지도 위의 좁은 해협—어디로 가든 이 지점을 통과해야만 한다.',diff:2,ex:'Rare-earth permanent magnets represent the sharpest supply <b>choke point</b> in the humanoid hardware stack.'},
+  {id:'id4',type:'IDIOM',word:'production incumbency',pron:'',ko:'생산 선점 지위 — 대규모 양산 시작 시 기존 공급업체가 갖는 구조적 우위',nuance:'라틴어 incumbere(위에 올라 눌러앉다). "Design successes convert into production incumbency once architectures stabilize." 재인증 비용, 설계 변경 비용, 관계 투자가 모두 교체를 막는 구조. first-mover advantage(시장 진입 초기)와 달리, production incumbency는 제조·인증 레이어의 고착—설계가 공급업체 공차와 공정에 맞춰 수렴된 상태. 이미지: 🪨 첫 번째 기차가 지나간 길에 굳어버린 철로—노선 확정 후 바꾸는 비용이 엄청나다.',diff:3,ex:'Early prototype partnerships will convert into <b>production incumbency</b> as volumes scale and re-qualification costs make switching prohibitive.'},
+  {id:'id5',type:'IDIOM',word:'scaling dilemma',pron:'',ko:'규모화 딜레마 — 해결책이 그 전제 조건을 요구하는 악순환',nuance:'그리스어 dilemma(이중 명제). "Low volumes prevent suppliers from investing, yet without cost reductions, end user demand remains constrained." 물량 없이 전용 라인 투자 불가, 비용 절감 없이 수요 없음—닭이 먼저냐 달걀이 먼저냐의 산업 버전. coordination failure(협력 실패)와 다르다: 두 플레이어가 합의해도 해결 안 됨, 산업 전체의 임계점(threshold) 문제. 이미지: 🐔🥚 닭과 달걀이 마주보며 기다리는 구조—외부 개입 없이는 순환이 깨지지 않는다.',diff:3,ex:'The humanoid hardware cost curve faces a <b>scaling dilemma</b>: low volumes deter investment, yet without investment, costs cannot fall enough to stimulate demand.'},
+  {id:'id6',type:'IDIOM',word:'engine supplier',pron:'',ko:'"엔진 공급업체" — 시스템 전체 설계를 지배하는 핵심 하위 시스템 공급자',nuance:'자동차 산업의 엔진 제조사 비유—엔진 공급업체의 스펙이 차량 전체 설계 언어를 지배한다. "There is no equivalent of an \'engine supplier\' for humanoid actuators." 이 역할이 현재 공백—Schaeffler 등이 노리는 이유: 한 번 자리잡으면 주변 모든 부품이 자신의 스펙에 맞춰 설계되어 교체가 거의 불가능. Tier 1 supplier(1차 납품업체)나 platform provider(넓은 범주)와 달리, engine supplier는 성능 임계 하위 시스템의 독점적 아키텍처 지배자. 이미지: ⚙️ 성당의 쐐기돌(keystone)—빠지면 아치 전체가 무너지는 중심 부품 공급자.',diff:3,ex:'Automotive suppliers are racing to claim the "<b>engine supplier</b>" role for humanoid actuators—a position that does not yet formally exist.'},
+  {id:'cl1',type:'COLLOC',word:'codevelopment partnership',pron:'',ko:'공동 개발 파트너십',nuance:'라틴어 co-(함께) + de-(아래) + veloper(풀다). "Forging early codevelopment partnerships" is the first supplier priority. 공급업체가 사양 확정 전에 OEM 설계 과정에 참여—두 당사자가 함께 제품을 빚어간다. vendor relationship(매수·매도), outsourcing(위탁)과 달리, codevelopment는 IP 공동 창출과 상호 의존성을 만든다. 이미지: 🤝 동일한 화이트보드 앞의 두 엔지니어—설계가 어느 한쪽에서 나오는 게 아니라 둘이 함께 그린다.',diff:2,ex:'Schaeffler established <b>codevelopment partnerships</b> with three humanoid OEMs in five months, positioning itself as the preferred actuator supplier.'},
+  {id:'cl2',type:'COLLOC',word:'qualification cycle',pron:'',ko:'자격 인증 주기 — 부품이 양산 투입 승인을 받는 검증 과정',nuance:'라틴어 qualificare(품질 갖추다) + cyclus(순환). "Production requires dedicated tooling, metrology infrastructure, and long qualification cycles." 하모닉 드라이브는 12~24개월의 인증 주기—늦게 시작하면 더 빨리 일해도 따라잡을 수 없다. testing phase(비공식·반복적)나 certification(제3자 외부 검증)과 달리, qualification cycle은 OEM이 자체 설계에 맞춰 검증하는 내부 프로세스—그 자체가 최소 기간을 가진다. 이미지: 🏥 수술실 입장 전 필수 의료 검사—빠르게 마칠 방법이 없는, 시간이 보장된 과정.',diff:3,ex:'The <b>qualification cycle</b> for precision gearboxes can take 18 months—suppliers that start late cannot catch up by working faster.'},
+  {id:'cl3',type:'COLLOC',word:'tooling investment',pron:'',ko:'툴링 투자 — 특정 부품 생산용 금형·치공구에 대한 전용 자본 지출',nuance:'고대 영어 tol(도구) + 라틴어 investire(두르다). "Harmonic gearboxes require dedicated tooling, metrology infrastructure." 툴링은 부품별 전용 투자—한 고객 설계에 맞춘 금형은 다른 설계에 전용 불가. 매몰 비용(sunk cost): 일단 투자하면 회수 불가—교체는 이전 투자를 포기한다는 의미. capital expenditure(넓은 범주)나 manufacturing investment(일반적)와 달리, tooling investment는 부품 특수적·전용적·비가역적. 이미지: 🔩 정밀 금형—수억 원이 들지만 이 설계 외 다른 부품에는 쓸 수 없다.',diff:2,ex:'Precision gearbox manufacturers face $10M+ <b>tooling investments</b> before producing a single qualified unit for humanoid applications.'},
+  {id:'cl4',type:'COLLOC',word:'cost compression',pron:'',ko:'비용 압축 — 볼륨·설계 최적화·공급망 성숙을 통한 단위 비용의 구조적 감소',nuance:'라틴어 comprimere(함께 압착하다). "Significant cost compression is still required to unlock mass-market demand." BOM이 3만~15만 달러에서 2만 달러 아래로 내려가야 대중 시장이 열린다. cost cutting(반응적·일회성)이나 price reduction(출력 측면)과 달리, cost compression은 구조적 궤적—생산 학습 곡선, 공급업체 경쟁, 설계 반복이 복리처럼 누적된다. 이미지: 🗜️ 수십 개 레버를 동시에 누르는 유압 프레스—단 하나의 결정이 아닌 시스템 전체가 비용을 짓누른다.',diff:2,ex:'Moving the humanoid BOM below $20,000 requires sustained <b>cost compression</b> across every major hardware domain simultaneously.'},
+  {id:'cl5',type:'COLLOC',word:'torque density',pron:'',ko:'토크 밀도 — 무게·부피 대비 생성하는 회전력의 비율',nuance:'그리스어 torkos(비틀기) + 라틴어 densitas(밀도). "Actuators concentrate core competitive levers: torque density, backdrivability, precision." 같은 무게에서 더 큰 힘을 내는 액추에이터가 더 가볍고 강한 로봇을 만든다. power output(절대치)과 달리, torque density는 상대치—하모닉 드라이브가 선호되는 이유: 납작하고 가벼운 패키지에 엄청난 감속비를 담는다. 이미지: 🐝 벌새의 날갯짓—체중의 수배 양력을 초소형 근육에서 만들어내는, 자연계 최고의 토크 밀도.',diff:3,ex:'Harmonic drives dominate humanoid joints because of their unmatched <b>torque density</b> in a compact, lightweight package.'},
+  {id:'cl6',type:'COLLOC',word:'supplier concentration',pron:'',ko:'공급업체 집중도 — 핵심 부품 생산이 소수 업체에 집중된 정도',nuance:'라틴어 concentrare(중심으로 모으다). "These areas combine supplier concentration, performance sensitivity, and IP leverage." 전 세계 하모닉 드라이브를 3~4개 회사가 만들면: 한 곳만 멈춰도 산업 전체가 정지한다. oligopoly(경제학적 시장 구조)나 supply risk(넓은 범주)와 달리, supplier concentration은 지리적·기업별 집중이라는 구체적 취약성을 지시. 이미지: 🌐 세계 지도 위 세 개의 공장 점—하나만 꺼지면 전 세계 로봇 관절이 멈춘다.',diff:2,ex:'High <b>supplier concentration</b> in harmonic drives means that any disruption to the top three manufacturers would halt global humanoid production.'},
+  {id:'cl7',type:'COLLOC',word:'switching cost',pron:'',ko:'전환 비용 — 기존 공급업체를 교체할 때 드는 금전·기술·시간 비용',nuance:'중세 영어 swichen(치다) + 라틴어 costare(비용). "Standardization will increase switching costs, thereby benefiting early movers." 스위칭 비용이 높으면 고객은 묶여(locked-in) 있고, 공급업체는 가격 결정권을 가진다. lock-in(상태)과 exit barrier(결과)가 스위칭 비용의 산물이라면, switching cost는 그것을 만드는 메커니즘. 이미지: 🔒 USB 표준이 채택되면 새 커넥터로 바꾸려면 모든 기기를 교체해야 하는 구조—표준 자체가 해자(moat)가 된다.',diff:2,ex:'Modular subsystem standards will increase <b>switching costs</b> for OEMs, rewarding suppliers that anchor their design language into the emerging ecosystem.'},
+  {id:'vc1',type:'VOCAB',word:'backdrivability',pron:'[ˌbækˈdraɪvəˌbɪlɪti]',ko:'역구동성 — 외부 힘이 액추에이터를 반대 방향으로 움직일 수 있는 성질',nuance:'back(역방향) + drive(구동) + -ability(능력). "Actuators concentrate core levers: torque density, backdrivability, precision." 역구동 가능한 관절은 예기치 않은 충격을 부드럽게 흡수—사람이 부딪혀도 꺾이는 게 아니라 밀려난다. compliance(일반적 유연성)나 force control(능동적 보상)과 달리, backdrivability는 수동적·구조적 안전 특성—별도 센서 없이도 안전하다. 하모닉 드라이브의 딜레마: 토크 밀도는 최고지만 역구동성이 낮아 넘어질 때 기어가 손상될 수 있음. 이미지: 🤸 충격을 밀려나며 흡수하는 로봇 팔—뻣뻣하게 버티는 게 아니라 힘에 순응하며 안전을 만든다.',diff:3,ex:'High <b>backdrivability</b> is essential for fenceless humanoid operation—when a robot falls, the drivetrain must absorb force rather than fracture.'},
+  {id:'vc2',type:'VOCAB',word:'metrology',pron:'[mɪˈtrɒlədʒi]',ko:'계측학 — 정밀 측정의 과학; 제조 정밀도 검증 인프라',nuance:'그리스어 metron(측정) + -logia(학문). "Production requires dedicated tooling, metrology infrastructure, and long qualification cycles." 아무리 잘 만들어도 측정할 수 없으면 품질 보장 불가—계측이 병목이 된다. quality control(합격/불합격 검사)이나 testing(조건 하 성능)과 달리, metrology는 측정 자체의 정확성을 보장하는 과학—좌표 측정기(CMM), 레이저 간섭계가 수억 원짜리 전용 장비. 이미지: 🔬 나노미터 단위로 정확한 마스터 게이지 블록—공장의 모든 측정 도구를 교정하는 절대 기준.',diff:3,ex:'Scaling harmonic drive production requires not just machining capacity but also <b>metrology</b> infrastructure capable of verifying micron-level tolerances.'},
+  {id:'vc3',type:'VOCAB',word:'premodular',pron:'[ˌpriːˈmɒdjʊlər]',ko:'사전 모듈화 — 표준화된 교환 가능 모듈이 등장하기 이전 단계',nuance:'라틴어 prae-(앞) + modulus(소단위). "In this premodular phase, most OEMs are forced into vertical integration." Ford 모델 T 이전 자동차처럼—모든 부품이 맞춤 제작, 두 대의 동일 모델도 부품이 서로 호환되지 않는 상태. modular(플러그앤플레이)와 custom(일회성 맞춤)의 중간이 아닌, 모듈화 이전 단계 자체를 지시—역사적 위치 묘사. 이미지: 🔧 포드 T형 이전 수제 자동차—표준화된 공용 부품이 없어 모든 수리가 일회성 작업.',diff:3,ex:'The humanoid industry remains in a <b>premodular</b> phase: no standard actuator interfaces exist, and every OEM designs their own proprietary stack.'},
+  {id:'vc4',type:'VOCAB',word:'scarcity',pron:'[ˈskɛrsɪti]',ko:'희소성 — 수요 대비 공급이 구조적으로 부족한 상태',nuance:'고대 프랑스어 escars(드물다). "The risk of bottlenecks results from absence of cohesive platforms, rather than component scarcity." 이 구분이 전략적으로 중요: 컴퓨트 병목은 칩이 없는 것(물리적 희소성)이 아니라 통합 플랫폼이 없는 것(아키텍처 부재)—해결책이 완전히 다르다. shortage(일시적 결핍)와 달리, scarcity는 구조적·만성적 상태. 이미지: 🏜️ 사막의 샘 대 도시의 단수—물리적 희소성과 구조적 희소성은 같은 목마름을 만들지만, 전혀 다른 해결책이 필요하다.',diff:1,ex:'Compute bottlenecks arise from architectural absence, not component <b>scarcity</b>—there is no standardized robot ECU, not a shortage of chips.'},
+  {id:'vc5',type:'VOCAB',word:'payload',pron:'[ˈpeɪlɔːd]',ko:'페이로드 — 로봇이 정상 성능을 유지하면서 운반·조작할 수 있는 최대 하중',nuance:'라틴어 pacare(만족시키다) + load(운반물). "As humanoid OEMs pursue higher payloads, demand for roller screws could exceed suppliers\' ability to scale." 페이로드는 상업 사양이자 시장 분류 기준—딸기 수확(0.5kg) vs 자동차 부품 운반(10kg+). 더 높은 페이로드 → 더 큰 액추에이터 → 더 큰 롤러 스크류 수요 → 공급업체 병목 심화의 연쇄. capacity(전체 출력 가능량)나 lift force(최대 순간력)와 달리, payload는 지속적·안정적으로 운반 가능한 무게. 이미지: 🏋️ 무거운 물건을 들고도 정상적으로 걸을 수 있는 로봇—이 무게가 상업 가치를 결정한다.',diff:2,ex:'As OEMs pursue higher <b>payloads</b> for industrial applications, demand for precision roller screws will outpace the supplier base\'s ability to scale.'},
+  {id:'vc6',type:'VOCAB',word:'fenceless',pron:'[ˈfensləs]',ko:'울타리 없는 — 물리적 안전 장벽 없이 사람과 공간을 공유하는',nuance:'고대 영어 fens(방어) + -less(없는). "Safety for fenceless operation" is one of four bridges to commercial viability. 전통 산업 로봇은 철장 케이지 안에 갇혀야 안전하다—사람이 가까이 오면 라인이 멈춘다. 이 울타리가 사라지면 로봇이 접근 가능한 작업 공간이 폭발적으로 증가. collaborative(인간 근접 설계), autonomous(자체 방향 결정)와 달리, fenceless는 물리적 격리의 제거를 구체적으로 지시. 이미지: 🏭 철장 없이 작업자 옆에서 일하는 로봇—단 하나의 차이가 적용 가능 시장을 수십 배로 바꾼다.',diff:2,ex:'Achieving <b>fenceless</b> operation requires not only safe hardware but also safety-certified control systems that regulators will accept.'},
+  {id:'vc7',type:'VOCAB',word:'relinquish',pron:'[rɪˈlɪŋkwɪʃ]',ko:'(통제권을) 넘겨주다, 포기하다',nuance:'라틴어 relinquere(뒤에 남겨두다). "OEMs will be reluctant to relinquish architectural control." 단순히 포기(give up)가 아니라, 오랫동안 가치 있게 여겨온 것을 넘겨주는 것—의지보다 상황에 의한 굴복의 뉘앙스. delegate(권한 유지, 업무만 위임), outsource(계약으로 업무 이전)와 달리, relinquish는 통제 그 자체를 내려놓는다. 이미지: 🏰 성문을 동맹군에게 여는 사령관—일단 열면 쉽게 닫을 수 없고, 자신의 핵심 자산이 외부인의 손에 들어간다.',diff:2,ex:'OEMs will be reluctant to <b>relinquish</b> actuator architecture control until supplier capacity expands and interface standards stabilize.'},
+  {id:'vc8',type:'VOCAB',word:'spillover',pron:'[ˈspɪlˌoʊvər]',ko:'파급 효과 — 한 산업의 기술·인프라가 인접 산업으로 넘쳐흐르는 현상',nuance:'고대 영어 spillan(흘러넘치다) + over(경계 너머). "Subsystems with strong EV spillover benefit from existing tooling, supplier depth, and process maturity." EV 산업 20년의 제조 학습·공급업체 생태계·비용 곡선이 경계를 넘어 휴머노이드로 흘러온다. technology transfer(의도적·계약적)나 cross-industry application(의도적 재활용)과 달리, spillover는 수동적·구조적—아무도 계획하지 않았지만 인접성 때문에 자동으로 일어난다. 이미지: 🌊 댐이 넘쳐 인접 농경지가 무상으로 물을 얻는 장면.',diff:2,ex:'Components with strong EV <b>spillover</b>—motors, bearings, power electronics—will see faster cost compression than robotics-specific parts.'},
+  {id:'vc9',type:'VOCAB',word:'multisource',pron:'[ˈmʌltiˌsɔːrs]',ko:'복수 소싱 — 여러 공급업체에서 동시에 조달해 의존도를 분산하는 전략',nuance:'라틴어 multus(많은) + sourcier(솟아오르다). "China\'s ecosystem allows OEMs to multisource quickly within a short radius." 단 하나의 어시장에 의존하지 않는 주방장처럼—복수 소싱은 공급 중단 위험을 분산. dual-source(최소 두 곳)보다 더 적극적이고, single-source의 정반대. 중국 산업 클러스터의 장점: 반경 100km 이내에 세 곳 공급업체를 동시에 검증 가능—서방 OEM은 대륙을 넘나들어야. 이미지: 🍽️ 세 군데 시장에 단골을 만들어두는 셰프—어느 한 곳이 문을 닫아도 주방이 멈추지 않는다.',diff:2,ex:'China\'s dense industrial clusters allow OEMs to <b>multisource</b> critical components from competing vendors within a 100 km radius.'},
+  {id:'bz1',type:'BIZ',word:'BLDC',pron:'[biː el diː siː]',ko:'브러시리스 DC 모터 (Brushless DC Motor)',nuance:'브러시 없음 + 직류 모터. 정류를 기계적 브러시 대신 전자 회로로 처리. "BLDC and PMSM motors are produced at scale for EVs and consumer electronics." 탄소 브러시 마찰·마모·스파크 제거—더 조용하고 오래 간다. 하드 드라이브, 드론, e-바이크, EV 보조 모터에 수십억 개 생산되어 EV 파급 효과 최대. PMSM과 비교: 기술적으로 유사하지만 PMSM이 더 부드러운 토크, 높은 비용. 이미지: 🔇 소음 없이 도는 드론 모터—카본 브러시가 없으니 탈 것도, 소음도 없다.',diff:1,ex:'<b>BLDC</b> motors are a low-risk humanoid component, benefiting from massive EV and consumer electronics production scale.'},
+  {id:'bz2',type:'BIZ',word:'PMSM',pron:'[piː em es em]',ko:'영구 자석 동기 모터 (Permanent Magnet Synchronous Motor)',nuance:'영구 자석(회전자 자기장 고정) + 동기(회전자 속도 = 전기 주파수). "PMSM offer smoother commutation at higher cost." 회전자와 자기장이 정확히 같은 속도로 회전—슬립 없이 부드러운 토크 생성. BLDC보다 비싸지만 더 정밀한 토크 제어 가능—로봇 관절처럼 정밀 동작이 중요한 곳에 적합. NdFeB 자석이 PMSM 성능의 핵심—이것이 중국의 공급망 레버리지가 되는 이유. 이미지: 💃 완벽하게 박자를 맞추는 두 댄서—로터와 자기장이 동기화되어 에너지 손실이 없다.',diff:2,ex:'<b>PMSM</b> motors offer smoother torque for humanoid joints but depend on NdFeB magnets, linking performance to China\'s rare-earth supply chain.'},
+  {id:'bz3',type:'BIZ',word:'strain-wave drive',pron:'',ko:'스트레인-웨이브 드라이브 — 탄성 변형 파동으로 고감속비를 구현하는 정밀 기어',nuance:'변형(strain) + 파동(wave). "Harmonic and strain-wave drives: compact, high-torque-density gearboxes used in humanoid joints." 얇은 금속 컵(flexspline)이 타원형 베어링에 의해 주기적으로 변형되며 내부 링기어와 맞물려 고감속비 달성. 두께 수cm에 감속비 50:1~320:1 구현, 백래시(backlash) 없음—정밀 위치 제어 가능. 단점: 역구동성 낮음, 충격에 취약, 생산이 초정밀 연삭에 의존. Harmonic Drive Corp(일본)이 원조 특허. 이미지: 🥁 탄력 있는 금속 드럼이 물결처럼 변형되며 기어 이빨을 차례로 맞물리게 하는 초정밀 감속기.',diff:3,ex:'<b>Strain-wave drives</b> offer unmatched precision in humanoid joints but face the most acute supply bottleneck due to concentrated production and long qualification cycles.'},
+  {id:'bz4',type:'BIZ',word:'EMS',pron:'[iː em es]',ko:'전자 제조 서비스 (Electronics Manufacturing Services)',nuance:'계약 제조업체가 OEM 고객 대신 전자 부품·완제품을 생산하는 서비스. "Jabil has become the worldwide production partner for Apptronik\'s Apollo humanoids." Jabil, Foxconn, Flex, Celestica가 대표 EMS. OEM은 설계·브랜드를 보유, EMS는 공장·장비·제조 전문성을 제공. ODM(설계까지 담당)과 달리, EMS는 OEM의 레시피대로만 만든다. 휴머노이드에서 EMS의 역할: 자동차 등급 제조 규율과 글로벌 공급망 네트워크를 휴머노이드 조립에 적용—스케일업의 핵심 인프라. 이미지: 🏭 미슐랭 셰프의 레시피대로만 요리하는 전문 주방—셰프(OEM)는 레시피를, 주방(EMS)은 대량 조리를 책임진다.',diff:2,ex:'<b>EMS</b> firms like Jabil are positioning as scalable production platforms for humanoid OEMs that lack large-volume manufacturing experience.'},
+  {id:'bz5',type:'BIZ',word:'ASIL',pron:'[ˈeɪsɪl]',ko:'자동차 기능 안전 무결성 수준 (Automotive Safety Integrity Level)',nuance:'ISO 26262 기능 안전 표준의 위험 분류 체계. A(최저) → D(최고) 4단계. "Suppliers that build SIL/ASIL certification capabilities will lower adoption friction." ASIL D: 단일 고장만으로 사망 사고 가능한 시스템(파워 스티어링, 브레이크)에 요구. 휴머노이드에서 ASIL이 중요한 이유: 사람과 공간 공유 → 단일 제어 오류가 부상으로 이어질 수 있음 → 서방 시장 규제·기업 고객이 요구. IEC 61508(산업 일반 SIL)과 관계: ISO 26262는 자동차 특화 적용판. 이미지: 🔴🟡🟢 4단계 비상 경보 시스템—D등급은 이중화·독립 검증이 전 시스템에 요구된다.',diff:3,ex:'<b>ASIL</b>-certified suppliers will face lower adoption friction in Western markets where safety regulators require documented functional safety evidence.'},
+  {id:'bz6',type:'BIZ',word:'IMU',pron:'[aɪ em juː]',ko:'관성 측정 장치 (Inertial Measurement Unit)',nuance:'라틴어 inertia(변하지 않으려는 성질) + mensura(측정). "IMUs are widely available but not all variants provide the latency and drift stability for dynamic bipedal balance." 외부 기준점 없이 가속도·각속도를 측정해 자세와 운동을 파악—로봇의 내이(inner ear). 소비자용 IMU(스마트폰): 오차 허용 큼. 휴머노이드용: 1.5m/s로 넘어지는 로봇을 잡으려면 킬로헤르츠 속도, 밀리초 지연 이내 필요—완전히 다른 사양. 이미지: 🦻 사람의 귀 안쪽 세반고리관—고개를 돌리지 않아도 회전을 느끼는 감각, 그것이 로봇에게 IMU다.',diff:2,ex:'Consumer-grade <b>IMU</b>s lack the latency and drift stability required for the kilohertz-rate balance control of dynamic bipedal locomotion.'},
+  {id:'bz7',type:'BIZ',word:'robot ECU',pron:'',ko:'로봇 전자 제어 장치 — 아직 존재하지 않는 휴머노이드 통합 제어 표준',nuance:'자동차 ECU: 엔진·변속기를 통합 조율하는 표준화 제어 장치. "There is no standardized, safety-certified \'robot ECU\' analogous to an automotive engine control unit." 현재 휴머노이드는 Nvidia Jetson(인식) + 자동차 MCU + 산업용 서보 컨트롤러의 이기종 스택—오케스트라 지휘자 없이 80명이 각자 악보를 보는 상태. 이 공백이 Qualcomm(Dragonwing IQ10), Infineon, NXP가 노리는 전략적 기회. 일단 표준이 형성되면, 그것을 정의한 기업이 하위 시스템 설계 언어를 지배—생산 선점 지위(production incumbency). 이미지: 🎼 오케스트라 지휘자—있으면 80명이 협연, 없으면 각자 연주.',diff:3,ex:'The absence of a standardized <b>robot ECU</b> forces every OEM to build heterogeneous control stacks from scratch, multiplying integration and certification costs.'}
+];
+function render(filter){
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  cards.forEach(c=>{
+    if(filter!=='ALL'&&c.type!==filter)return;
+    const div=document.createElement('div');
+    div.className='card'+(learned.has(c.id)?' learned':'');
+    div.innerHTML=`<div class="card-inner">
+      <div class="front">
+        <div><span class="cat-tag cat-${c.type}">${c.type}</span></div>
+        <div class="word">${c.word}</div>
+        <div class="pron">${c.pron}</div>
+        <div class="diff">${[1,2,3].map(i=>`<div class="dot${c.diff>=i?' on':''}"></div>`).join('')}</div>
+      </div>
+      <div class="back">
+        <div class="ko">${c.ko}</div>
+        <div class="nuance">${c.nuance}</div>
+        <button class="learn-btn" data-id="${c.id}">${learned.has(c.id)?'✓ 학습 완료':'학습 완료로 표시'}</button>
+      </div>
+    </div>`;
+    div.addEventListener('click',e=>{
+      if(e.target.classList.contains('learn-btn'))return;
+      div.classList.toggle('flipped');
+    });
+    div.querySelector('.learn-btn').addEventListener('click',e=>{
+      e.stopPropagation();
+      const id=e.target.dataset.id;
+      if(learned.has(id)){learned.delete(id);div.classList.remove('learned');e.target.textContent='학습 완료로 표시';}
+      else{learned.add(id);div.classList.add('learned');e.target.textContent='✓ 학습 완료';}
+      localStorage.setItem(KEY,JSON.stringify([...learned]));
+      document.getElementById('cnt').textContent=learned.size;
+    });
+    grid.appendChild(div);
+  });
+}
+document.querySelectorAll('.filters button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    render(btn.dataset.filter);
+  });
+});
+document.getElementById('cnt').textContent=learned.size;
+render('ALL');
+</script>
+</body>
+</html>
