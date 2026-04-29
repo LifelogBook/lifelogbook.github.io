@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vocab: The Next Age of Fintech</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050d1a;
+  --surface:#0b1a2e;
+  --border:#1a3050;
+  --accent:#06b6d4;
+  --accent2:#0891b2;
+  --text:#e2e8f0;
+  --muted:#64748b;
+  --front:#0b1a2e;
+  --back:#071422;
+  --tag-ph:#7c3aed;
+  --tag-id:#b45309;
+  --tag-co:#166534;
+  --tag-vo:#0e7490;
+  --tag-bz:#9f1239;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;padding:24px 16px 60px;}
+h1{font-family:'DM Serif Display',serif;font-size:clamp(1.4rem,3vw,2rem);text-align:center;margin-bottom:4px;color:#f1f5f9;}
+.badge{text-align:center;font-size:.72rem;color:var(--muted);margin-bottom:18px;letter-spacing:.04em;}
+/* filters */
+.filters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:22px;}
+.fbtn{border:1px solid var(--border);background:transparent;color:var(--muted);padding:5px 14px;border-radius:20px;cursor:pointer;font-size:.78rem;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.fbtn.active,.fbtn:hover{color:#fff;border-color:var(--accent);background:rgba(6,182,212,.15);}
+/* stats */
+.stats{text-align:center;font-size:.78rem;color:var(--muted);margin-bottom:20px;}
+.stats span{color:var(--accent);font-weight:600;}
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;max-width:1100px;margin:0 auto;}
+/* card */
+.card-wrap{perspective:900px;height:230px;cursor:pointer;}
+.card-wrap.hidden{display:none;}
+.card-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;}
+.card-wrap.flipped .card-inner{transform:rotateY(180deg);}
+.front,.back{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;padding:18px 20px;display:flex;flex-direction:column;gap:8px;}
+.front{background:var(--front);border:1px solid var(--border);}
+.back{background:var(--back);border:1px solid var(--border);transform:rotateY(180deg);overflow-y:auto;gap:6px;}
+/* front content */
+.tag{display:inline-block;font-size:.65rem;font-weight:600;letter-spacing:.07em;padding:2px 9px;border-radius:10px;width:fit-content;}
+.tag-PHRASAL{background:rgba(124,58,237,.2);color:#c4b5fd;}
+.tag-IDIOM{background:rgba(180,83,9,.2);color:#fcd34d;}
+.tag-COLLOC{background:rgba(22,101,52,.2);color:#86efac;}
+.tag-VOCAB{background:rgba(14,116,144,.2);color:#67e8f9;}
+.tag-BIZ{background:rgba(159,18,57,.2);color:#fda4af;}
+.word{font-family:'DM Serif Display',serif;font-size:1.45rem;color:#f8fafc;line-height:1.2;}
+.pron{font-size:.78rem;color:var(--muted);font-style:italic;}
+.ko{font-size:.88rem;color:#cbd5e1;line-height:1.5;}
+.diff-row{display:flex;align-items:center;gap:4px;margin-top:auto;}
+.dot{width:8px;height:8px;border-radius:50%;}
+.dot.on{background:var(--accent);}
+.dot.off{background:var(--border);}
+.flip-hint{font-size:.65rem;color:var(--muted);margin-left:auto;}
+/* back content */
+.nuance{font-size:.78rem;color:#cbd5e1;line-height:1.65;}
+.ex-label{font-size:.65rem;font-weight:600;letter-spacing:.06em;color:var(--accent);margin-top:4px;}
+.ex{font-size:.77rem;color:#94a3b8;line-height:1.6;font-style:italic;}
+/* learned btn */
+.learned-btn{margin-top:auto;align-self:flex-end;border:none;border-radius:8px;padding:4px 12px;font-size:.72rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.learned-btn.done{background:rgba(6,182,212,.2);color:var(--accent);}
+.learned-btn.undone{background:rgba(255,255,255,.06);color:var(--muted);}
+/* progress bar */
+.prog-wrap{max-width:420px;margin:0 auto 20px;display:flex;align-items:center;gap:10px;}
+.prog-bar{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s;}
+.prog-text{font-size:.72rem;color:var(--muted);white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<h1>The Next Age of Fintech</h1>
+<div class="badge">McKinsey &amp; Company · Financial Services Practice · QED Investors · April 2026</div>
+
+<div class="prog-wrap">
+  <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  <div class="prog-text" id="progText">0 / 35 학습</div>
+</div>
+
+<div class="filters">
+  <button class="fbtn active" data-f="ALL">ALL</button>
+  <button class="fbtn" data-f="PHRASAL">PHRASAL</button>
+  <button class="fbtn" data-f="IDIOM">IDIOM</button>
+  <button class="fbtn" data-f="COLLOC">COLLOC</button>
+  <button class="fbtn" data-f="VOCAB">VOCAB</button>
+  <button class="fbtn" data-f="BIZ">BIZ</button>
+</div>
+<div class="stats">총 <span id="visCount">35</span>개 표시 중</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const STORE='fintech_next_age_learned';
+let learned=new Set(JSON.parse(localStorage.getItem(STORE)||'[]'));
+
+const cards=[
+  /* ── PHRASAL ── */
+  {id:'ph1',type:'PHRASAL',word:'re-rate',pron:'[riː reɪt]',ko:'(섹터·자산을) 재평가하다; 밸류에이션 배수 자체를 상향 또는 하향 조정하다',nuance:'Latin re-(다시) + ratum(추정하다). 단순 가격 변동(re-price)과 달리, 시장이 특정 자산이나 섹터를 바라보는 구조적 렌즈(P/E 배수, EV/Revenue)를 바꾸는 것. "investors are re-rating the digital-assets space"—이 한 문장은 내러티브 전환의 선언. re-price(가격 조정) < re-rate(배수 조정) < revalue(본질 가치 재평가). 이미지: 📊 같은 자산을 다른 배율의 현미경으로 다시 보는 장면.',diff:2,ex:'Investors are <b>re-rating</b> the digital-assets space because stablecoins and tokenized deposits now offer quantifiable revenue streams—not just speculative upside.',},
+  {id:'ph2',type:'PHRASAL',word:'come of age',pron:'[kʌm əv eɪdʒ]',ko:'성숙하다, 성년이 되다; (산업·기술이) 실험 단계를 넘어 완전히 자리잡다',nuance:'Old English 법적 성인 기준(age of majority) 도달에서 유래. 성장(grow)과 다름—come of age는 사회적 인정과 검증의 순간을 포함. "The industry has come of age"는 단순 확장이 아닌 수익성·신뢰·확장성을 동시에 입증했다는 선언. mature(성숙하다, 단계적) vs come of age(특정 전환점의 도달). 이미지: 🌱→🌳 씨앗이 뿌리 깊은 나무로 완성되는 순간.',diff:1,ex:'With 95 profitable fintechs out of 200 and market cap surpassing $850 billion, the sector has truly <b>come of age</b>.',},
+  {id:'ph3',type:'PHRASAL',word:'prop up',pron:'[prɒp ʌp]',ko:'(인위적으로) 버티게 하다, 떠받치다; 자생적이지 못한 것을 외부 노력으로 임시 유지하다',nuance:'Middle Dutch proppe(지지대, stopper). 자연스럽게 서 있지 못하는 것을 나무 막대로 받쳐두는 이미지. 핵심 함의: 지지대가 없어지면 무너진다는 취약성. support(중립적 지원) vs prop up(한계에 다다른 것을 임시 유지) — prop up은 지속 불가능성을 암시. 이미지: 🪵 기울어진 낡은 벽을 임시 막대로 지지하는 건설 현장.',diff:1,ex:'AI is rapidly modernizing 40-year-old legacy systems that were previously <b>propped up</b> with intensive, manual engineering support.',},
+  {id:'ph4',type:'PHRASAL',word:'debank',pron:'[diː bæŋk]',ko:'(파트너 은행이) 금융 서비스 관계를 단절하다; 계좌·스폰서십을 일방적으로 종료하다',nuance:'de-(박탈) + bank. "deplatform"의 금융 버전. 2020년대 BaaS(Banking as a Service) 생태계에서 등장한 신조어. 파트너 은행이 규제 압박이나 평판 위험으로 핀테크의 계좌·인가를 취소할 때 사용. 하루아침에 서비스 불능 상태가 될 수 있어 핀테크의 핵심 실존 리스크. 은행 인가(charter) 취득이 이 리스크의 해결책. 이미지: 🔌 금융 인프라 전원 플러그가 갑자기 뽑히는 장면.',diff:3,ex:'Acquiring a banking charter eliminates the danger of being <b>debanked</b> by a partner, but replaces that vulnerability with direct regulatory responsibility.',},
+  {id:'ph5',type:'PHRASAL',word:'tether to',pron:'[ˈteðər tuː]',ko:'~에 묶여 있다; 더 빠른 기술이 있어도 레거시 제약에서 벗어나지 못하다',nuance:'Old Norse tjóðr(동물을 묶는 줄). 말이 말뚝 반경 밖으로 나갈 수 없듯, 더 빠른 해결책이 있어도 낡은 인프라에 구속된 상태. "tether to legacy delays"—블록체인 속도로 거래하고 싶지만 T+2 결제 시스템에 묶인 금융 기관의 현실. constrained by(제약받다) vs tether to(묶여 벗어나지 못하다)—tether는 물리적 구속감이 강함. 이미지: ⛓️ 고속 블록체인 트랙 옆에서 낡은 말뚝에 묶인 경주마.',diff:2,ex:'Without bank-issued tokens, tokenized asset trades remain <b>tethered to</b> the 24- to 48-hour delays of the legacy banking system, negating blockchain\'s efficiency gains.',},
+  {id:'ph6',type:'PHRASAL',word:'graduate to',pron:'[ˈɡrædʒuɪt tuː]',ko:'(단계를 거쳐) ~로 진급하다; 성장 지표에서 수익성 기준으로 졸업하다',nuance:'Latin gradus(단계). 학위 수여(graduation)처럼 특정 조건을 충족했을 때 다음 단계로 공식 인정받는 것. 핀테크에서 "graduate to credible unit economics"는 성장만으로 인정받던 시대에서 실제 수익성 입증이 필수인 시대로의 공식 전환. move to(이동) vs graduate to(자격 갖춰 이동)—graduate to는 성취와 인정을 내포. 이미지: 🎓 학사→석사처럼, 스타트업이 "성장 증명"에서 "수익 증명"으로 졸업하는 순간.',diff:2,ex:'Winning firms must demonstrate strong growth while maintaining—or demonstrating a near-term graduation path to—credible unit economics after years of growth-at-all-costs.',},
+
+  /* ── IDIOM ── */
+  {id:'id1',type:'IDIOM',word:'double-edged sword',pron:'[ˌdʌbəl edʒd sɔːrd]',ko:'양날의 검; 같은 요소가 동시에 이점과 위협을 제공하는 상황',nuance:'Greek δίστομος(di-stomos, 두 입을 가진). 전통 무기 비유—찌를 수 있지만 다루는 자도 다칠 수 있음. AI는 스케일드 핀테크의 현재 강점을 강화하면서, 동시에 신규 진입 장벽을 낮춰 자신을 위협하는 AI-second 파괴자를 육성. catch-22(선택 불가 딜레마) vs double-edged sword(같은 것의 양면성)—double-edged는 동일 요소의 이중 작용에 집중. 이미지: ⚔️ 양쪽 날이 선 검—적도 베고 나도 벤다.',diff:1,ex:'For scaled fintechs, AI is a <b>double-edged sword</b>—it powers their current advantage while simultaneously lowering the barriers that once protected them from insurgents.',},
+  {id:'id2',type:'IDIOM',word:'barbell-shaped',pron:'[ˈbɑːrbel ʃeɪpt]',ko:'바벨형; 양 극단에 집중되고 중간이 취약한 투자·분포 구조',nuance:'역기(barbell) 모양: 가운데는 가늘고 양 끝에만 무게가 쏠린 형태. 나심 탈레브(Nassim Taleb)가 2010년대 투자 전략으로 대중화. 핀테크 투자에서: 검증된 대형 기업(IPO/PE) + 초기 AI 네이티브 스타트업(VC)은 강하고, 중간 성장 단계(Series C-D)가 빈곤한 구조. bimodal(통계적 양봉 분포) vs barbell-shaped(구조적 양극화, 전략적 함의). 이미지: 🏋️ 바벨—양쪽 원판만 무겁고 중간 막대는 가는 역기.',diff:2,ex:'A <b>barbell-shaped</b> investment profile is emerging: oversubscribed IPOs of proven giants at one end, and bold VC bets on AI disruptors at the other, leaving midstage firms starved of capital.',},
+  {id:'id3',type:'IDIOM',word:'picks and shovels',pron:'[pɪks ænd ˈʃʌvəlz]',ko:'곡괭이·삽 전략; 금을 캐는 것보다 채굴 도구를 파는 것이 더 안정적이라는 투자 원리',nuance:'1848~1855년 캘리포니아 골드러시(California Gold Rush) 유래. 금을 캐는 광부는 성패가 불확실하지만, 곡괭이·삽을 파는 상인(리바이스 청바지처럼)은 누가 이기든 수익. 핀테크에서: 어떤 수직(결제·대출·보험) 플레이어가 이기든, 그들에게 인프라·소프트웨어를 공급하는 수평 핀테크가 안정적 수익. infrastructure play vs picks and shovels—picks and shovels는 골드러시 비유로 구조적 안정성을 직관적으로 표현. 이미지: ⛏️ 금광 앞 도구 상점—광부들이 몰려드는 곳.',diff:2,ex:'Horizontal fintechs are the <b>picks and shovels</b> of the next phase of fintech growth, benefiting from structural demand for efficiency, compliance, and scale regardless of which vertical wins.',},
+  {id:'id4',type:'IDIOM',word:'breathing room',pron:'[ˈbriːðɪŋ ruːm]',ko:'숨 쉴 공간, 여유; 경쟁 압박 속에서 재투자·재설계를 위한 전략적 여유',nuance:'말 그대로 숨(breath)을 쉴(room) 공간. 코너에 몰리거나 쫓기는 상황에서 잠시 멈추고 다음을 생각할 수 있는 여유. 스타트업에서 런웨이(runway), 전략 수립 여유, 시장이 일시적으로 경쟁 압박을 완화하는 순간이 "breathing room". headroom(성장 여지, 천장까지의 공간) vs breathing room(압박에서의 해방, 측면 공간)—breathing room은 생존적 긴박감을 내포. 이미지: 🌬️ 압박 속에서 한 번 깊게 숨을 쉴 수 있는 틈—전략적 재조정의 전제 조건.',diff:1,ex:'Slow-moving incumbents may find it harder to find the <b>breathing room</b> to reinvest, reinvent, and thrive as AI accelerates competitive pressure from all directions.',},
+  {id:'id5',type:'IDIOM',word:'harvest now, decrypt later',pron:'[ˈhɑːrvɪst naʊ dɪˈkrɪpt ˈleɪtər]',ko:'지금 수확·나중에 복호화; 현재 암호화된 데이터를 미리 수집해 미래 양자 컴퓨터로 해독하려는 사이버 공격 전략',nuance:'2010년대 후반 양자 보안 연구자들이 명명. harvest(지금 데이터 수집) + decrypt later(미래 양자 기술로 암호 해독). 금융 데이터는 수십 년 유효(계좌번호·대출 기록·거래 이력)하므로 특히 취약. 오늘 훔친 데이터를 10년 후 양자 컴퓨터로 열어볼 수 있다는 공격. MITM attack(실시간 공격) vs harvest now, decrypt later(시간 차 비동기 공격)—HNDL은 미래 기술 성숙을 전제로 한 장기 위협. 이미지: 🌾 덜 익은 곡식을 미리 베어 창고에 쌓아두는 농부—시간이 지나면 쓸 수 있게.',diff:3,ex:'Financial institutions are vulnerable to a <b>harvest now, decrypt later</b> attack: adversaries collect encrypted data today, waiting for quantum computers to break the cryptography tomorrow.',},
+  {id:'id6',type:'IDIOM',word:'four horsemen',pron:'[fɔːr ˈhɔːrsmən]',ko:'네 기수; 어떤 산업을 근본적으로 뒤흔드는 4가지 동시 작용력 (McKinsey: 상품화·민주화·탈결합·탈중개)',nuance:'요한계시록(Book of Revelation) 6장: 정복·전쟁·기근·죽음의 4기사. 불가피하고 동시에 진격하며 막을 수 없다는 함의. McKinsey는 AI가 금융 서비스에 가져오는 4가지 변혁(commoditization·democratization·disaggregation·disintermediation)을 four horsemen으로 명명. 각 기사는 서로 독립적이면서 동시에 전진. disruption forces vs four horsemen—four horsemen은 성서적 불가피성과 동시성의 무게를 담음. 이미지: 🐴🐴🐴🐴 네 방향에서 동시에 달려오는 기수들—어느 하나도 홀로 막기 어렵다.',diff:2,ex:'McKinsey identifies AI\'s <b>four horsemen</b> of financial services—commoditization, democratization, disaggregation, and disintermediation—as the simultaneous forces transforming fintech economics.',},
+
+  /* ── COLLOC ── */
+  {id:'co1',type:'COLLOC',word:'regulatory arbitrage',pron:'[ˌreɡjuˈleɪtəri ˈɑːrbɪtrɪdʒ]',ko:'규제 차익; 더 느슨한 규제 환경을 이용해 엄격히 규제받는 경쟁자보다 구조적 우위를 점하는 전략',nuance:'Latin arbitrare(판단하다). 금융에서 arbitrage는 두 시장의 가격 차이를 이용한 무위험 이익. "regulatory arbitrage"는 국가·라이선스 유형·구조 간 규제 강도 차이를 이용. e-money licence나 BaaS를 통해 직접 은행 규제 없이 유사 서비스를 제공한 핀테크의 전통적 방법. 지금은 banking charter로 이 게임이 역전되는 중. tax arbitrage(세금 차익) vs regulatory arbitrage(규제 차익)—규제 차익은 영업 구조와 시장 접근성에 직접 영향. 이미지: ⚖️ 한쪽은 무거운 규제 추, 다른 쪽은 가벼운 추—가벼운 쪽에서 경쟁하는 전략.',diff:2,ex:'Previously, some argued that fintechs benefited from <b>regulatory arbitrage</b>, operating under lighter oversight than the licensed banks they were directly competing with.',},
+  {id:'co2',type:'COLLOC',word:'banking charter',pron:'[ˈbæŋkɪŋ ˈtʃɑːrtər]',ko:'은행 인가; 정부 규제기관이 부여하는 은행 영업 허가증. 예금·대출·결제 청산 등 핵심 금융 기능의 법적 권한',nuance:'Greek kharaktos(도장이 찍힌 것). charter는 왕·정부가 특정 단체에 특권을 부여하는 공식 문서. 은행 charter는 OCC(미국 통화감독청) 등 감독기관의 인가. 핀테크에게: ① 소매 예금으로 자금 조달 비용 절감 ② 규제 신뢰 강화 ③ 제품 확장(모기지·대출) ④ 탈중개 리스크 제거. money transmitter license < e-money licence < banking charter—charter는 가장 강력하고 무거운 라이선스. 이미지: 🏛️ 정부 도장이 찍힌 허가장—핀테크가 진짜 은행이 되는 공식 순간.',diff:1,ex:'In 2025, 21 fintechs applied for US <b>banking charters</b>—more than in the previous four years combined—viewing licenses as strategic tools to unlock cheaper funding and expand offerings.',},
+  {id:'co3',type:'COLLOC',word:'unit economics',pron:'[ˈjuːnɪt ˌiːkəˈnɒmɪks]',ko:'단위 경제; 고객 1명·거래 1건 단위의 수익성 분석. LTV/CAC 비율이 핵심',nuance:'"unit"은 분석의 최소 단위(고객 1명, 거래 1건, 구독 1개). "economics"는 그 단위의 비용·수익 구조. SaaS·핀테크에서 "unit economics가 작동한다"는 신규 고객 1명 획득·서비스 시 적자가 나지 않는다는 의미. 2021-22 "growth at all costs" 시대에 무시됐다가 2023년 이후 투자자 필수 심사 기준으로 복귀. profitability(전체 기업 수익성) vs unit economics(단위별 구조적 수익성). 이미지: 🔬 고객 한 명을 현미경으로 들여다보는 CFO—그 한 명이 돈이 되는지 확인.',diff:2,ex:'The era of growth at all costs has ended; investors now demand credible <b>unit economics</b> or a demonstrable path to achieving them before committing capital to fintech firms.',},
+  {id:'co4',type:'COLLOC',word:'correspondent rail',pron:'[ˌkɒrɪˈspɒndənt reɪl]',ko:'코레스폰던트 레일; SWIFT 기반 은행 간 대리 결제 인프라 경로. 국제 송금의 전통 경로',nuance:'Latin correspondere(서로 응답하다). "correspondent bank"는 해외에 지점 없는 은행의 대리 결제 역할. "rail"은 결제가 흐르는 인프라 경로(railroad 비유). 여러 중간 은행을 거치며 수수료 누적·수일 소요·불투명한 환율 적용이 문제. 스테이블코인의 핵심 대체 대상. SWIFT(메시지 네트워크) vs correspondent rail(실제 자금 이동 경로). 이미지: 🚂 구불구불한 낡은 철로—고속철도(스테이블코인)가 대체하려는 레거시 경로.',diff:3,ex:'Klarna and PayPal developed payment stablecoins aimed at reducing cross-border costs and reliance on legacy <b>correspondent rails</b>, which add fees, delays, and opacity.',},
+  {id:'co5',type:'COLLOC',word:'collateral mobility',pron:'[kəˈlætərəl moʊˈbɪlɪti]',ko:'담보 이동성; 토큰화로 담보 자산을 실시간으로 다른 거래·플랫폼에 재배치하는 능력',nuance:'Latin collateralis(나란히 있는) + mobilitas(이동성). 전통 금융에서 담보는 물리적 문서·custody 이전이 수일 소요. 토큰화 환경에서는 스마트 컨트랙트로 즉시 재배치. 유휴 담보 자산의 활용도를 극대화하는 운전 자본 효율성의 핵심 레버. collateral management(담보 관리, 정적) vs collateral mobility(담보 이동성, 동적)—mobility는 블록체인이 가능하게 한 실시간성 강조. 이미지: 🎲 체스 말처럼 담보 자산을 실시간으로 다른 칸에 옮기는 디지털 보드.',diff:3,ex:'Tokenized deposits give institutions a way to bring programmable money into regulatory frameworks while enabling superior <b>collateral mobility</b> and atomic settlement across trades.',},
+  {id:'co6',type:'COLLOC',word:'atomic settlement',pron:'[əˈtɒmɪk ˈsetlmənt]',ko:'원자적 결제; 자산 인도와 대금 지급이 동시에 완전하게 이루어지거나, 하나가 실패하면 전체가 취소되는 블록체인 결제',nuance:'Greek atomos(더 이상 나눌 수 없는). 전통 T+2 결제에서는 인도와 지급 사이 수일의 시간 차와 상대방 리스크가 존재. 스마트 컨트랙트 기반 atomic settlement는 "all-or-nothing"—자산과 현금이 동시에 교환되거나 아예 거래가 취소. T+2(2영업일 결제) → T+0(당일 결제) → atomic settlement(시간 차 제로의 동시 결제). 이미지: ⚛️ 원자처럼 분리 불가능한 결제 쌍—자산과 현금이 동시에 교환되거나 아예 안 됨.',diff:3,ex:'Executing trades with <b>atomic settlement</b> requires an equivalent digital dollar on the same ledger, making tokenized deposits essential for completing the cash leg of blockchain-based transactions.',},
+  {id:'co7',type:'COLLOC',word:'open banking',pron:'[ˈoʊpən ˈbæŋkɪŋ]',ko:'오픈 뱅킹; API를 통해 고객 동의 하에 은행이 제3자 금융 서비스 제공자와 계좌 데이터·결제 기능을 공유하는 규제·기술 프레임워크',nuance:'2018년 EU PSD2(Payment Services Directive 2)로 제도화. 고객의 금융 데이터 주권 강화와 핀테크 혁신 촉진을 위해 은행에 API 개방 의무화. 영국 CMA, 인도 UPI/Account Aggregator, 브라질 Open Finance가 유사 프레임워크. API banking(기술적 개념) vs open banking(규제 의무 + 표준화 + 기술)—open banking은 강제성과 생태계를 포함. 이미지: 🔓 자물쇠가 열린 은행 금고—허가받은 누구나 데이터를 안전하게 활용 가능.',diff:1,ex:'<b>Open banking</b> mandates and real-time payment systems are enabling a new class of lenders to build richer, more dynamic credit profiles than traditional bureaus ever could.',},
+
+  /* ── VOCAB ── */
+  {id:'vo1',type:'VOCAB',word:'centicorn',pron:'[ˈsentɪkɔːrn]',ko:'센티콘; 기업 가치 1,000억 달러($100B) 이상의 핀테크·스타트업. "유니콘×100"',nuance:'centi-(100, Latin: centum) + unicorn($1B 기업). 밸류에이션 계층: unicorn($1B, 2013 Aileen Lee 명명) → decacorn($10B) → centicorn($100B). 2025년 현재 Revolut($75B), Nubank($75B market cap), Robinhood($77B), Stripe($159B)가 센티콘 임계값에 근접 또는 도달. 핀테크 5세대의 성숙을 상징하는 이정표. unicorn < decacorn < centicorn—밸류에이션 생물 분류표. 이미지: 🦄×100 — 유니콘 100마리의 가치를 지닌 하나의 전설적 존재.',diff:2,ex:'Five fintechs are approaching <b>centicorn</b> valuations of $100 billion, a milestone that was unthinkable when the term "unicorn" was coined just over a decade ago.',},
+  {id:'vo2',type:'VOCAB',word:'tokenization',pron:'[ˌtoʊkənɪˈzeɪʃən]',ko:'토큰화; 실물 자산(주식·채권·예금·부동산)을 블록체인상의 디지털 토큰으로 전환하여 분할 소유·즉시 거래·프로그래머블 결제를 가능하게 하는 과정',nuance:'Latin token(표시·증거물) → 중세 영어 tōcen(징표). 블록체인 맥락에서는 자산의 소유권·권리를 표준화된 디지털 단위로 표현. 비트코인이 가치 저장을 토큰화했다면, RWA 토큰화는 실물 금융 인프라를 블록체인으로 이전하는 것. securitization(증권화, 전통 금융, 구조 복잡) vs tokenization(토큰화, 즉시성·분할성·프로그래머블 조건 추가). 이미지: 🏠→🪙 부동산을 수천 개의 작은 코인으로 쪼개어 누구나 소유할 수 있게 하는 장면.',diff:1,ex:'The real-world asset explosion—<b>tokenizing</b> bonds, equities, real estate, and private credit on-chain—could create a $2 trillion RWA market by 2030, according to McKinsey estimates.',},
+  {id:'vo3',type:'VOCAB',word:'stablecoin',pron:'[ˈsteɪbəlkɔɪn]',ko:'스테이블코인; 미국 달러 등 법정화폐에 1:1로 가치가 고정된 암호화폐. 변동성 없이 블록체인 결제 인프라를 활용하기 위해 설계',nuance:'"stable"(안정적) + "coin"(코인). 2014년 Tether(USDT)가 최초 달러 연동 스테이블코인 발행. 비트코인 변동성 문제를 해결하면서 블록체인의 24/7 즉시 결제·저비용 장점 보존. 2025년 총 발행액 $3,000억, 연간 거래량 $35조(실결제 약 1%). CBDC(중앙은행 발행) vs stablecoin(민간 발행) vs tokenized deposit(은행 발행)—세 가지 "디지털 달러"의 차이. 이미지: ⚓ 거친 암호화폐 바다에서 달러에 닻을 내려 흔들리지 않는 선박.',diff:1,ex:'Of the $35 trillion in reported <b>stablecoin</b> transaction volume, only about 1 percent represents true end-user payments; the remainder is trading, arbitrage, and crypto-native activity.',},
+  {id:'vo4',type:'VOCAB',word:'horizontalization',pron:'[ˌhɒrɪzɒntəlaɪˈzeɪʃən]',ko:'수평화; 금융기관을 내부로부터 디지털화하는 소프트웨어·인프라 기업들이 핀테크 수익의 새로운 축으로 성장하는 현상',nuance:'horizontal(수평의) + -ization(~화). "수직 파괴(vertical disruption)"의 대안 개념. 수직 핀테크가 기존 은행 고객을 직접 빼앗는다면, 수평 핀테크(horizontal fintech)는 은행이 더 잘할 수 있도록 인프라를 공급. Vitesse(보험사 결제 자동화), Footprint(KYC 도구), Omilia(AI 고객 서비스)가 사례. vertical fintech(소비자 직접 대면) vs horizontal fintech(업계 인프라 제공)—horizontalization은 핀테크 성장의 구조적 전환. 이미지: ➡️ 수직으로 시장을 잠식하는 대신, 가로로 업계 전체를 관통하며 인프라를 놓는 이미지.',diff:3,ex:'About 13 percent of fintech revenue now comes from firms driving the <b>horizontalization</b> of financial services, growing 25 percent faster than verticals and posing little direct competition to incumbents.',},
+  {id:'vo5',type:'VOCAB',word:'disintermediation',pron:'[ˌdɪsɪntəˌmiːdiˈeɪʃən]',ko:'탈중개화; AI 또는 기술이 기존 거래 중개자(은행·브로커·에이전트)를 제거하고 공급자와 소비자가 직접 연결되는 현상',nuance:'Latin dis-(제거) + intermedius(중간의) + -ation. 1960년대 미국에서 저축예금 규제로 자금이 은행을 우회해 자본 시장으로 이동한 현상에서 등장. AI 에이전트가 "전면 창구"가 되면, 소비자는 자신의 AI 에이전트를 통해 금융기관과 직접 대화—은행이 보이지 않는 백엔드로 밀린다. unbundling(기능 분리, 부분적) vs disintermediation(중개 자체 제거, 구조적). 이미지: 🔗→✂️ 공급자와 소비자 사이의 중개 고리가 잘려나가는 장면.',diff:2,ex:'Agentic AI has the potential to drive total <b>disintermediation</b>: a customer\'s AI agent negotiates directly with a financial institution\'s agent, bypassing human brokers entirely.',},
+  {id:'vo6',type:'VOCAB',word:'decacorn',pron:'[ˈdekəkɔːrn]',ko:'데카콘; 기업 가치 100억 달러($10B) 이상의 스타트업. "유니콘×10"',nuance:'deca-(10, Greek: δέκα) + unicorn. Aileen Lee의 2013년 unicorn 정의 이후, 더 큰 기업 표현을 위해 확장된 용어. "hectocorn"($100B)이 혼동되어 decacorn이 $10B에 정착하고, 이후 centicorn($100B)이 도입. 2025년 핀테크에서 15개 decacorn 활동 중. unicorn($1B) → decacorn($10B) → centicorn($100B)—밸류에이션 생물학 분류표. 이미지: 🦄×10 — 유니콘 열 마리가 합쳐진 신화적 생물체. Nubank, Klarna, Adyen이 사례.',diff:2,ex:'Fintech investment returned to growth in 2025, with 15 <b>decacorns</b> reaching valuations exceeding $10 billion, signaling renewed confidence after the 2023–24 correction.',},
+  {id:'vo7',type:'VOCAB',word:'underbanked',pron:'[ˌʌndərˈbæŋkt]',ko:'금융 소외 계층; 기본 계좌는 있지만 신용·대출·보험 등 주류 금융 서비스 접근이 제한된 인구',nuance:'under-(불충분하게) + banked(은행 서비스를 받는). unbanked(계좌 자체가 없는 사람)와 구분: underbanked는 계좌는 있지만 예금 외 서비스(여신·투자·보험)는 거의 못 쓰는 사람. 신흥 시장에서 fragmented SMEs, limited credit bureau, less efficient lending model이 배경. Nubank(브라질), WeBank(중국)의 핵심 타겟. unbanked(계좌 없음) < underbanked(계좌 있으나 서비스 제한)—핀테크 성장의 가장 큰 기회 영역. 이미지: 🏧 계좌는 있지만 대출 한도 0인 스마트폰 화면.',diff:1,ex:'Fintechs like Nubank and WeBank scaled lending by embedding credit into digital platforms, profitably serving the large, previously <b>underbanked</b> populations of Latin America and Asia.',},
+  {id:'vo8',type:'VOCAB',word:'neobank',pron:'[ˈniːoʊbæŋk]',ko:'네오뱅크; 물리적 지점 없이 디지털로만 운영되는 신생 은행. 스마트폰 앱 기반의 기술 우선(technology-first) 금융 서비스',nuance:'neo-(새로운, Greek: νέος) + bank. 2010년대 초 Monzo(영국), N26(독일), Revolut(영국), Nubank(브라질)의 등장으로 대중화. challenger bank와 유사하지만 구별: challenger bank는 기존 은행에 대한 경쟁적 도전을 강조, neobank는 디지털 네이티브 구조 자체를 강조. digital bank(온라인 서비스 추가한 전통 은행) vs neobank(태생적 디지털, 지점 없음)—neobank는 레거시 없이 태어남. 이미지: 📱 스마트폰 안에만 존재하는 은행—지점도 없고 서류도 없이 몇 분 안에 계좌 개설.',diff:1,ex:'International <b>neobanks</b> such as Nubank are approaching centicorn valuations, driven by their success in serving underbanked populations with mobile-first banking at dramatically lower cost.',},
+  {id:'vo9',type:'VOCAB',word:'embedded finance',pron:'[ɪmˈbedɪd ˈfaɪnæns]',ko:'임베디드 파이낸스; 결제·대출·보험·투자 서비스를 비금융 플랫폼 안에 통합하여 별도 금융 앱 없이 맥락 안에서 이용하게 하는 방식',nuance:'Latin embed(깊이 박아 넣다) + finance. BaaS(Banking as a Service)의 소비자 경험 관점 표현. Shopify Capital(SME 대출), Uber 결제, Grab Financial, 아마존 신용 한도가 대표 사례. 금융이 일상 앱의 보이지 않는 레이어로 녹아드는 현상. BaaS(공급자 인프라 관점) vs embedded finance(사용자 맥락·마찰 제거 관점). 이미지: 💳 이커머스 앱 안에 숨겨진 신용카드—결제·대출이 인프라로 통합된 세계. "A feature is no longer a fintech."',diff:2,ex:'Rapid growth in <b>embedded finance</b> and platform-based commerce has helped players like PayPal and Stripe capture the fastest-growing global transaction flows across digital channels.',},
+
+  /* ── BIZ ── */
+  {id:'bz1',type:'BIZ',word:'NPS',pron:'[en piː es]',ko:'Net Promoter Score; 고객 충성도 지표. "이 서비스를 지인에게 추천하겠습니까?(0–10)"에서 추천자(9–10%) – 비추천자(0–6%) 비율',nuance:'Bain & Company의 Fred Reichheld가 2003년 HBR에 제안. 복잡한 고객 만족도 조사를 단 하나의 질문으로 압축. 범위 -100~+100. 핀테크 평균 NPS는 전통 은행의 2.5배 수준(McKinsey 2025 Retail Banking Survey). 애플(+72), 아마존(+62)이 업계 벤치마크. CSAT(개별 거래 직후 만족도) vs NPS(장기 충성도·추천 의향)—NPS는 관계의 깊이를 측정. 이미지: 📊 0~10점 척도에서 9~10점을 체크하는 고객—충성 고객 비율을 단번에 파악.',diff:1,ex:'Fintechs have achieved <b>NPS</b> scores two and a half times higher than traditional banks, and for the first time, customers report trusting fintechs more than their primary bank.',},
+  {id:'bz2',type:'BIZ',word:'GENIUS Act',pron:'[ˈdʒiːniəs ækt]',ko:'미국 스테이블코인 연방법 (Guiding and Establishing National Innovation for US Stablecoins Act, 2025). 1:1 고품질 유동성 준비금 및 AML 기준 의무화',nuance:'약어: Guiding and Establishing National Innovation for US Stablecoins. 2025년 미국 의회 통과. 민간 스테이블코인 발행자(Circle, Tether 등)에 대한 최초 연방 규제 체계 수립. "payment stablecoin"에 한정하여 규제—투자형 암호자산은 별도. 유럽 MiCA와 함께 글로벌 스테이블코인 규제의 양대 축. MiCA(EU, 포괄적 암호자산) vs GENIUS Act(미국, 결제 스테이블코인 특화). 이미지: 🏛️ 미국 의회 + 달러 — 암호화폐를 연방법 틀 안으로 가져온 역사적 입법.',diff:3,ex:'The <b>GENIUS Act</b> of 2025 established a federal regime for payment stablecoins, mandating 1:1 high-quality liquid reserves and helping transform them from crypto tools into regulated payment infrastructure.',},
+  {id:'bz3',type:'BIZ',word:'MiCA',pron:'[ˈmɪkə]',ko:'유럽 암호자산 규제 (Markets in Crypto-Assets Regulation). EU 최초 포괄적 암호화폐 규제 프레임워크. 스테이블코인 발행자·거래소·커스터디에 인가 기준 수립',nuance:'약어: Markets in Crypto-Assets. 2020년 EU 제안, 2023년 발효, 2024–25년 단계적 시행. 자산준거 토큰(ART)과 전자화폐 토큰(EMT)을 구분 규제. Circle(USDC), Société Générale(EUR CoinVertible) 등이 MiCA 승인 취득. 전통 금융 규제(MiFID, PSD2)와의 일관성 추구. GENIUS Act(미국, 결제 스테이블코인 특화) vs MiCA(EU, 더 넓은 범위 커버). 이미지: 🇪🇺 EU 별 + 암호화폐 심볼—유럽이 암호 자산을 제도권으로 포용한 순간.',diff:3,ex:'In Europe, <b>MiCA</b> defines categories for stablecoin-like instruments and sets requirements for issuers, enabling regulated digital assets to operate legally across all 27 EU member states.',},
+  {id:'bz4',type:'BIZ',word:'RWA',pron:'[ɑːr dʌbljuː eɪ]',ko:'Real-World Asset; 부동산·국채·회사채·사모 대출 등 블록체인 외부 실물 자산을 토큰화하여 온체인에서 거래·담보·투자 가능하게 한 것',nuance:'Real-World Asset = 현실 세계 자산. 비트코인·이더리움 같은 순수 암호 자산과 달리 법적·물리적 실체가 있는 자산. 2024년부터 BlackRock(BUIDL 펀드), Franklin Templeton 등 전통 금융 기관 참여로 기관급 RWA 시장 급성장. McKinsey 2030년 전망 $2T. capital efficiency가 핵심 드라이버—yield-bearing collateral, tokenized repo, atomic settlement. digital asset(암호 네이티브) vs RWA(실물 자산의 블록체인 표현)—RWA는 TradFi와 DeFi의 교차점. 이미지: 🏗️→🪙 실물 빌딩이 블록체인 위 토큰으로 변환되는 장면.',diff:2,ex:'Beyond tokenized money lies the <b>RWA</b> explosion—tokenizing bonds, equities, and private credit on-chain—with consensus estimates reaching $2 trillion by 2030, led by yield-bearing collateral.',},
+  {id:'bz5',type:'BIZ',word:'ROTE',pron:'[ɑːr oʊ tiː iː]',ko:'Return on Tangible Equity; 유형 자본 수익률. 영업권·무형자산을 제외한 실질 자본에 대한 순이익 비율. 은행의 핵심 수익성 지표',nuance:'ROE(Return on Equity)에서 goodwill(영업권)과 intangibles(무형자산)을 제거한 순수 물리적 자본 기준 수익률. 은행 M&A나 기술 투자로 영업권이 쌓이면 ROE가 왜곡될 수 있어 ROTE가 은행 분석가가 선호하는 지표. McKinsey Exhibit 11: AI 선도자 ROTE +0~+4%p, 지연자 –2~–4%p 전망(2035). ROE(자본 수익률, 무형자산 포함) vs ROTE(유형 자본만, 더 보수적). 이미지: 💰÷🧱 순이익을 실질 벽돌 자본으로 나누는 계산—영업권이라는 허수를 걷어낸 수익성.',diff:2,ex:'AI pioneers could see <b>ROTE</b> improve by up to four percentage points by 2035, while slow-moving incumbents face a two- to four-point decline from pricing competition and disintermediation.',},
+  {id:'bz6',type:'BIZ',word:'KYB',pron:'[keɪ waɪ biː]',ko:'Know Your Business; 기업 고객 신원·소유 구조·실소유자(UBO) 확인 절차. KYC의 법인 버전',nuance:'Know Your Business = 당신의 사업체를 알아라. KYC(개인 신원 확인)의 법인 확장판. 법인 등록, 지분 구조, 최종 수익 소유자(UBO, Ultimate Beneficial Owner), 사업 목적, 자금 출처를 확인. 페이퍼 컴퍼니·자금 세탁·제재 우회 방지에 필수. B2B 핀테크·BaaS에서 온보딩 마찰의 주원인. AI 도구(Footprint 등)로 자동화가 진행 중. KYC(개인) vs KYB(법인, 더 복잡한 구조) vs AML(거래 모니터링). 이미지: 🔍 거미줄 같은 지분 구조를 파헤치는 컴플라이언스 담당자.',diff:2,ex:'Firms like Footprint provide automated identity tools that help banks and fintechs automate <b>KYB</b> and KYC screening, reducing onboarding friction while strengthening AML compliance.',},
+  {id:'bz7',type:'BIZ',word:'AML',pron:'[eɪ em el]',ko:'Anti-Money Laundering; 자금 세탁 방지. 불법 자금을 합법적 금융 시스템에 유입하려는 시도를 탐지·예방·보고하는 규제 체계',nuance:'Money laundering(자금 세탁): 알 카포네 시대 세탁소를 통한 범죄 수익 은폐에서 유래. 1989년 G7의 FATF(금융행동기구) 설립으로 국제 표준화. CTR(거액 현금 거래 보고), SAR(의심 거래 보고), 거래 모니터링이 핵심 도구. 규정 위반 시 수십억 달러 벌금(HSBC $1.9B, 2012). GENIUS Act는 스테이블코인 발행자에게도 동일한 AML 기준 적용 요구. CFT(테러 자금 조달 방지) vs AML(자금 세탁 방지)—규제에서 AML/CFT로 묶여 처리. 이미지: 🚿 더러운 돈이 금융 시스템을 통해 세탁되는 것을 막는 필터.',diff:2,ex:'The GENIUS Act mandates strict <b>AML</b> standards for stablecoin issuers, elevating payment stablecoins to the same compliance level as traditional banking and treasury infrastructure.',},
+];
+
+let currentFilter='ALL';
+
+function renderCards(){
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  const visible=cards.filter(c=>currentFilter==='ALL'||c.type===currentFilter);
+  document.getElementById('visCount').textContent=visible.length;
+  visible.forEach(c=>{
+    const isLearned=learned.has(c.id);
+    const dots=[1,2,3].map(i=>`<div class="dot ${i<=c.diff?'on':'off'}"></div>`).join('');
+    const wrap=document.createElement('div');
+    wrap.className='card-wrap'+(isLearned?' learned':'');
+    wrap.dataset.id=c.id;
+    wrap.innerHTML=`
+      <div class="card-inner">
+        <div class="front">
+          <span class="tag tag-${c.type}">${c.type}</span>
+          <div class="word">${c.word}</div>
+          <div class="pron">${c.pron}</div>
+          <div class="ko">${c.ko}</div>
+          <div class="diff-row">${dots}<span class="flip-hint">탭하여 뒤집기 →</span></div>
+        </div>
+        <div class="back">
+          <div class="nuance">${c.nuance}</div>
+          <div class="ex-label">EXAMPLE</div>
+          <div class="ex">${c.ex}</div>
+          <button class="learned-btn ${isLearned?'done':'undone'}" data-id="${c.id}">
+            ${isLearned?'✓ 학습 완료':'학습 완료로 표시'}
+          </button>
+        </div>
+      </div>`;
+    wrap.addEventListener('click',e=>{
+      if(e.target.classList.contains('learned-btn'))return;
+      wrap.classList.toggle('flipped');
+    });
+    wrap.querySelector('.learned-btn').addEventListener('click',e=>{
+      e.stopPropagation();
+      const id=e.target.dataset.id;
+      if(learned.has(id)){learned.delete(id);}else{learned.add(id);}
+      localStorage.setItem(STORE,JSON.stringify([...learned]));
+      renderCards();
+      updateProgress();
+    });
+    grid.appendChild(wrap);
+  });
+  updateProgress();
+}
+
+function updateProgress(){
+  const total=cards.length;
+  const done=learned.size;
+  const pct=Math.round(done/total*100);
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progText').textContent=`${done} / ${total} 학습`;
+}
+
+document.querySelectorAll('.fbtn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter=btn.dataset.f;
+    renderCards();
+  });
+});
+
+renderCards();
+</script>
+</body>
+</html>
