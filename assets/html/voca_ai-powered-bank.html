@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vocab: The AI-Powered Bank</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0f1e;
+  --surface:#111827;
+  --border:#1f2d4a;
+  --accent:#f59e0b;
+  --accent2:#d97706;
+  --text:#e2e8f0;
+  --muted:#64748b;
+  --front:#111827;
+  --back:#090e1b;
+  --tag-ph:#7c3aed;
+  --tag-id:#b45309;
+  --tag-co:#166534;
+  --tag-vo:#0e7490;
+  --tag-bz:#9f1239;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;padding:24px 16px 60px;}
+h1{font-family:'DM Serif Display',serif;font-size:clamp(1.4rem,3vw,2rem);text-align:center;margin-bottom:4px;color:#f1f5f9;}
+.badge{text-align:center;font-size:.72rem;color:var(--muted);margin-bottom:18px;letter-spacing:.04em;}
+.filters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:22px;}
+.fbtn{border:1px solid var(--border);background:transparent;color:var(--muted);padding:5px 14px;border-radius:20px;cursor:pointer;font-size:.78rem;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.fbtn.active,.fbtn:hover{color:#fff;border-color:var(--accent);background:rgba(245,158,11,.15);}
+.stats{text-align:center;font-size:.78rem;color:var(--muted);margin-bottom:20px;}
+.stats span{color:var(--accent);font-weight:600;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;max-width:1100px;margin:0 auto;}
+.card-wrap{perspective:900px;height:230px;cursor:pointer;}
+.card-wrap.hidden{display:none;}
+.card-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;}
+.card-wrap.flipped .card-inner{transform:rotateY(180deg);}
+.front,.back{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;padding:18px 20px;display:flex;flex-direction:column;gap:8px;}
+.front{background:var(--front);border:1px solid var(--border);}
+.back{background:var(--back);border:1px solid var(--border);transform:rotateY(180deg);overflow-y:auto;gap:6px;}
+.tag{display:inline-block;font-size:.65rem;font-weight:600;letter-spacing:.07em;padding:2px 9px;border-radius:10px;width:fit-content;}
+.tag-PHRASAL{background:rgba(124,58,237,.2);color:#c4b5fd;}
+.tag-IDIOM{background:rgba(180,83,9,.2);color:#fcd34d;}
+.tag-COLLOC{background:rgba(22,101,52,.2);color:#86efac;}
+.tag-VOCAB{background:rgba(14,116,144,.2);color:#67e8f9;}
+.tag-BIZ{background:rgba(159,18,57,.2);color:#fda4af;}
+.word{font-family:'DM Serif Display',serif;font-size:1.45rem;color:#f8fafc;line-height:1.2;}
+.pron{font-size:.78rem;color:var(--muted);font-style:italic;}
+.ko{font-size:.88rem;color:#cbd5e1;line-height:1.5;}
+.diff-row{display:flex;align-items:center;gap:4px;margin-top:auto;}
+.dot{width:8px;height:8px;border-radius:50%;}
+.dot.on{background:var(--accent);}
+.dot.off{background:var(--border);}
+.flip-hint{font-size:.65rem;color:var(--muted);margin-left:auto;}
+.nuance{font-size:.78rem;color:#cbd5e1;line-height:1.65;}
+.ex-label{font-size:.65rem;font-weight:600;letter-spacing:.06em;color:var(--accent);margin-top:4px;}
+.ex{font-size:.77rem;color:#94a3b8;line-height:1.6;font-style:italic;}
+.learned-btn{margin-top:auto;align-self:flex-end;border:none;border-radius:8px;padding:4px 12px;font-size:.72rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.learned-btn.done{background:rgba(245,158,11,.2);color:var(--accent);}
+.learned-btn.undone{background:rgba(255,255,255,.06);color:var(--muted);}
+.prog-wrap{max-width:420px;margin:0 auto 20px;display:flex;align-items:center;gap:10px;}
+.prog-bar{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s;}
+.prog-text{font-size:.72rem;color:var(--muted);white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<h1>The AI-Powered Bank</h1>
+<div class="badge">McKinsey &amp; Company · Financial Services Practice · April 2026</div>
+
+<div class="prog-wrap">
+  <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  <div class="prog-text" id="progText">0 / 35 학습</div>
+</div>
+
+<div class="filters">
+  <button class="fbtn active" data-f="ALL">ALL</button>
+  <button class="fbtn" data-f="PHRASAL">PHRASAL</button>
+  <button class="fbtn" data-f="IDIOM">IDIOM</button>
+  <button class="fbtn" data-f="COLLOC">COLLOC</button>
+  <button class="fbtn" data-f="VOCAB">VOCAB</button>
+  <button class="fbtn" data-f="BIZ">BIZ</button>
+</div>
+<div class="stats">총 <span id="visCount">35</span>개 표시 중</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const STORE='ai_powered_bank_learned';
+let learned=new Set(JSON.parse(localStorage.getItem(STORE)||'[]'));
+
+const cards=[
+  /* ── PHRASAL ── */
+  {id:'ph1',type:'PHRASAL',word:'toggle between',pron:'[ˈtɒɡəl bɪˈtwiːn]',ko:'~사이를 전환하다; (여러 시스템·화면·모드를) 반복적으로 오가며 수동으로 스위칭하다',nuance:'Old Norse toga(당기다) + between. 물리적으로 전등 스위치를 위아래로 당기는 이미지—ON과 OFF 사이를 반복. 은행 콜센터에서 "toggling between ten legacy systems"는 상담원이 고객 한 명을 응대하는 동안 10개 이상의 구식 시스템을 수동으로 전환하는 비효율을 가리킨다. 이 행위 자체가 "handle-time drag"의 핵심 원인. switch between(더 일반적) vs toggle between(반복적·기계적 전환의 뉘앙스)—toggle은 자동화되지 않은 수동 전환을 강조. 이미지: 🔀 10개의 화면 창을 Alt+Tab으로 끊임없이 오가는 상담원 모니터.',diff:1,ex:'An agent who still spends 70 percent of their time <b>toggling between</b> ten legacy systems gains little relief from an AI copilot bolted onto the same broken workflow.',},
+  {id:'ph2',type:'PHRASAL',word:'stall out',pron:'[stɔːl aʊt]',ko:'동력을 잃고 멈추다; (프로젝트·가치 창출이) 기대와 달리 진척 없이 정체되다',nuance:'aviation에서 stall: 엔진이나 날개가 양력을 잃어 기체가 멈추는 현상—충분한 추진력 없이 상승하다가 갑자기 동력 상실. 은행 AI에서: 기술적으로는 강력한 도구를 배치했으나 레거시 운영 모델에 "얹혀" 구조적 변화 없이 기대 성과를 내지 못하고 멈추는 현상. plateau(일정 수준에서 정체) vs stall out(동력 자체를 잃어 멈춤)—stall out은 진전이 아예 멈추는 더 심각한 상황. 이미지: ✈️ 엔진이 꺼진 비행기—여전히 하늘에 있지만 상승 동력이 없다.',diff:1,ex:'In boardrooms across the industry, a fundamental reckoning is looming as the anticipated gains from AI investments <b>stall out</b> before delivering structural impact.',},
+  {id:'ph3',type:'PHRASAL',word:'paper over',pron:'[ˈpeɪpər ˈoʊvər]',ko:'(문제를) 겉만 가리다, 임시변통으로 덮다; 근본 원인을 해결하지 않고 표면적 해결책으로 감추다',nuance:'벽의 균열에 벽지(wallpaper)를 발라 덮는 시각적 이미지—균열은 그대로지만 보이지 않게 됨. "paper over the cracks"(균열을 도배지로 덮다)에서 유래. 은행 AI에서: 프로세스 근본 문제를 재설계하지 않고 AI 도구를 그 위에 얹어 증상만 자동화하는 실패 패턴. fix(근본 해결) vs paper over(표면 봉합). 이미지: 🖼️ 금이 간 벽 위에 예쁜 벽지를 바르는 사람—6개월 후 균열이 다시 드러난다.',diff:2,ex:'Automating broken processes instead of redesigning them simply <b>papers over</b> structural inefficiencies—AI amplifies whatever the process does, including its flaws.',},
+  {id:'ph4',type:'PHRASAL',word:'call out',pron:'[kɔːl aʊt]',ko:'(문제·사실을) 명시적으로 지적하다, 공개적으로 언급하다; 회피하지 않고 직접적으로 문제를 제기하다',nuance:'원래 군사·소방 맥락: 긴급 상황에 인원을 "호출"하는 것. 현대적 용법: 불편한 진실이나 문제를 회피 없이 직접 지목. 비즈니스에서: 회의실에서 다루기 불편한 인센티브 미스얼라인먼트나 프로세스 결함을 명시적으로 거론. call attention to(주의를 끌다, 더 유연) vs call out(직접적 지목, 더 강하고 불편할 수 있음). 이미지: 📣 손가락을 정확히 문제를 향해 가리키는 사람—회피 없는 직접적 지목.',diff:1,ex:'The McKinsey framework <b>calls out</b> three gaps that cause AI value to stall: the process gap, the operating model gap, and the governance gap.',},
+  {id:'ph5',type:'PHRASAL',word:'fall back on',pron:'[fɔːl bæk ɒn]',ko:'~에 의지하다, 후퇴하여 ~에 기대다; (혁신 실패 후) 익숙한 방법으로 돌아가다',nuance:'군사 전술에서 "fall back": 전선에서 후퇴하여 방어 포지션으로 이동. 전략이 실패했을 때 안전지대로 복귀하는 것. 은행 AI에서: 급속한 AI 해고 → 서비스 품질 붕괴 → 인간 주도 지원으로 "후퇴"하는 surge-and-retreat 패턴. revert to(이전 상태로 완전히 돌아가다) vs fall back on(더 안전한 대안에 기대다). 이미지: 🪂 낙하산—주 낙하산 실패 시 비상 낙하산으로 전환하는 백업.',diff:1,ex:'Banks that aggressively replace agents with AI and trigger service-quality collapse are forced to <b>fall back on</b> human-led support, losing the efficiency gains they sought.',},
+  {id:'ph6',type:'PHRASAL',word:'run up against',pron:'[rʌn ʌp əˈɡenst]',ko:'~에 부딪히다, 예기치 않은 장벽에 직면하다; (추진 중인 프로젝트가) 특정 제약이나 반대에 막히다',nuance:'물리적으로 장벽을 향해 달려가다 부딪히는 이미지. encounter(만나다, 중립적) vs run up against(진행 중에 예상치 못한 저항을 만나 막히다)—run up against는 모멘텀이 있다가 갑자기 막히는 역동성을 포함. 은행 AI 거버넌스에서: AI 프로젝트가 risk·legal 팀의 벽에 늦게 부딪혀 "permanent pilot"이 되는 현상. 이미지: 🏃 달리던 사람이 유리벽에 막히는 순간—보이지 않았던 장벽.',diff:2,ex:'AI projects developed in isolation inevitably <b>run up against</b> risk and legal teams at the point of scaling, turning potential breakthroughs into permanent pilots.',},
+
+  /* ── IDIOM ── */
+  {id:'id1',type:'IDIOM',word:'surge-and-retreat',pron:'[sɜːrdʒ ænd rɪˈtriːt]',ko:'급속 팽창 후 후퇴 패턴; AI로 상담원을 급속 대체하다 서비스 품질이 붕괴하여 다시 인간 지원으로 돌아가는 반복 실패 사이클',nuance:'군사 용어: surge(병력 급증 투입) + retreat(철수). 이라크·아프가니스탄의 미군 병력 급증(surge) 전술에서 차용. 은행 AI에서 특수하게 사용: 공격적 에이전트 AI 교체 → 서비스 품질 붕괴 → 인간 지원으로 복귀의 반복 사이클. boom-and-bust(경기 급등락) vs surge-and-retreat(목표를 향해 진격하다가 다시 철수하는 전략적 실패). 이미지: ⚔️→🏃 전선으로 진격했다가 지원 없이 후퇴하는 군대—승리 없이 반복되는 전진과 철수.',diff:2,ex:'Prioritizing aggressive replacement of agents over augmenting their jobs can lead to a <b>surge-and-retreat</b> pattern where rapid AI-driven layoffs result in service-quality collapse.',},
+  {id:'id2',type:'IDIOM',word:'step change',pron:'[step tʃeɪndʒ]',ko:'단계적 비약; 점진적 개선이 아닌 성과·생산성의 질적·불연속적 도약',nuance:'수학·공학의 "step function"에서 유래—점진적 곡선(gradual curve)이 아닌 계단형 수직 점프. 점진적 개선(incremental improvement)과 근본적으로 다름: 5% 개선이 아니라 패러다임 자체가 바뀌어 20~40% 성과 변화가 일어나는 것. "permanent step change in productivity"—AI rewiring 이후 기준선 자체가 영구히 상향 이동. incremental gain(점진적 개선) vs step change(불연속적 도약). 이미지: 📈 완만한 곡선이 갑자기 한 단계 위로 점프하는 계단—새로운 기준선이 형성된다.',diff:2,ex:'The long-term prize of AI rewiring is not another round of cost savings but a permanent <b>step change</b> in productivity—a new baseline that legacy-bound competitors cannot easily replicate.',},
+  {id:'id3',type:'IDIOM',word:'self-funding',pron:'[self ˈfʌndɪŋ]',ko:'자기 재원 조달; 변환 프로그램이 초기 단계에서 창출하는 절감액이 다음 단계의 투자 비용을 충당하는 구조',nuance:'self(자기) + funding(자금 조달). 외부 추가 예산 없이 프로그램 자체가 생성하는 효율 이득(efficiency savings)으로 다음 단계 투자를 조달. McKinsey 사례: 콜센터 AI 전환 6개월 내 10% 비용 절감 → 이것이 나머지 변환 프로그램의 비용을 "support"—경영진 설득의 핵심 논리. ROI-positive(투자 대비 수익이 양수) vs self-funding(수익이 다음 투자를 스스로 조달할 만큼 충분하다). 이미지: ♻️ 첫 번째 단계의 절약액이 두 번째 단계 연료가 되는 영구 기관.',diff:2,ex:'Within the first six months of the transformation program, the client realized a 10 percent cost reduction—making the initiative <b>self-funding</b> and removing the need for additional budget approvals.',},
+  {id:'id4',type:'IDIOM',word:'lab-and-factory',pron:'[læb ænd ˈfæktəri]',ko:'랩앤팩토리 모델; AI 개발을 실험실(Lab)과 생산 공장(Factory) 두 기능으로 분리하여 재사용 컴포넌트와 특정 사용 사례 확장을 병행하는 구조',nuance:'lab(실험실): 재사용 가능한 AI 컴포넌트(표준 인증 모듈 등) 식별·구축. factory(공장): 검증된 컴포넌트로 특정 사용 사례를 빠르게 확장·양산. 이분법의 핵심: lab은 R&D로 플랫폼 구축, factory는 실행으로 가치 창출. 효과: 투자 50% 이상 절감, 납품 시간 70%까지 단축. center of excellence vs lab-and-factory—CoE는 전문성 집중, lab-and-factory는 컴포넌트 재사용으로 확장 속도 극대화. 이미지: 🔬+🏭 연구실에서 만든 레고 블록을 공장에서 빠르게 조립하는 이미지.',diff:2,ex:'Winning banks adopt a <b>lab-and-factory</b> setup: the lab identifies and builds reusable AI components, while the factory scales those components into specific use cases—reducing investment by 50 percent.',},
+  {id:'id5',type:'IDIOM',word:'legacy-bound',pron:'[ˈleɡəsi baʊnd]',ko:'레거시에 묶인; 구식 시스템·프로세스·인센티브 구조에 얽매여 새로운 방향으로 움직이지 못하는 상태',nuance:'legacy(유산, 과거에서 물려받은 것) + bound(묶인). 컴퓨터 과학의 "memory-bound"(메모리 병목)처럼 특정 제약이 진행을 막는 구조. 은행에서 legacy-bound = 10개 이상 구형 코어 뱅킹 시스템, 사일로화된 인센티브, 수십 년된 프로세스에 전략적 자유가 얽매인 상태. 경쟁 함의: "rewired" 선도주자와 "legacy-bound" 지체자의 격차가 확대되면 단순히 성과 차이가 아닌 생존 문제가 된다. tethered(묶인, 물리적 구속) vs legacy-bound(역사와 관성에 묶인, 더 구조적). 이미지: 🏛️ 웅장하지만 거대한 닻에 묶인 고대 갤리선—힘은 있지만 움직일 수 없다.',diff:2,ex:'As the gap between rewired leaders and <b>legacy-bound</b> laggards widens, the boardroom reckoning will shift from a question of technology to a question of competitive survival.',},
+  {id:'id6',type:'IDIOM',word:'permanent pilot',pron:'[ˈpɜːrmənənt ˈpaɪlət]',ko:'영구 시범 운영; 실증에서 전면 확장으로 이행하지 못하고 소규모 시험 단계에 영원히 머무는 AI 프로젝트의 함정',nuance:'pilot(조종사→시범 운영)의 역설: 비행기는 이륙하기 위해 파일럿이 필요하지만, "permanent pilot"은 결코 이륙하지 않는 비행기를 조종하는 파일럿. McKinsey가 지목하는 거버넌스 갭의 결과: AI가 리스크·법무팀 검토 없이 개발되다가 확장 시점에 규제 노출·환각 우려로 막혀 영구적 시험 단계에 갇히는 것. pilot paralysis(시범 운영에서 결정 못 하는 마비) vs permanent pilot(시범이 영구화된 구조적 함정). 이미지: 🛫 영원히 활주로에서 멈춰 엔진만 돌아가는 비행기—이륙 허가가 나지 않는다.',diff:2,ex:'When AI is presented to risk and legal teams only at the point of scaling, concerns around hallucination and regulatory exposure transform promising breakthroughs into <b>permanent pilots</b>.',},
+
+  /* ── COLLOC ── */
+  {id:'co1',type:'COLLOC',word:'contact center',pron:'[ˈkɒntækt ˈsentər]',ko:'컨택 센터; 전화·채팅·이메일·소셜 등 멀티채널로 고객을 응대하는 통합 고객 서비스 거점. 전통적 "콜센터"의 현대적 명칭',nuance:'call center(전화 전용, 단일 채널) → contact center(멀티채널 고객 접점 통합). 디지털 전환으로 채널이 다양화되면서 명칭도 진화. 은행에서 contact center는 AI 투자의 초기 거점: 고밀도 구조적 데이터(녹취·로그·피드백), 높은 자동화 가능성, 즉각적 ROI 측정 가능. "고밀도 데이터 환경"—수백만 건의 녹취·구조화된 상담 로그·실시간 고객 피드백이 축적. call center(전화 전용, 레거시 개념) vs contact center(옴니채널, 현대적 개념). 이미지: 🎧 헤드셋을 낀 상담원 뒤로 전화·채팅·이메일 아이콘이 떠 있는 현대적 오피스.',diff:1,ex:'Banking leaders often prioritize the <b>contact center</b> as an initial domain for AI investment because of its high-density data environment and the highly automatable nature of routine tasks.',},
+  {id:'co2',type:'COLLOC',word:'voice bot',pron:'[vɔɪs bɒt]',ko:'보이스 봇; 전화 통화에서 자연어 처리로 고객 질의에 자동 응답하는 AI 시스템. IVR의 진화형으로 스크립트 대신 대화형 AI',nuance:'voice(음성) + bot(robot의 줄임말). 전통적 IVR(Interactive Voice Response)이 미리 녹음된 선택지를 제공했다면, voice bot은 LLM 기반 자연어로 대화. 한계: 고객이 "잔액 조회" 같은 단순 질의가 아닌 복합 불만("잔액이 잘못됐어요")을 제기할 때 root-cause complexity를 다루지 못하면 고객을 인간 상담원에게 이관하거나 미해결 상태로 종료. IVR(선택지 기반, 선형) vs voice bot(대화형, 비선형) vs virtual agent(더 광범위한 AI 에이전트 개념). 이미지: 📞🤖 전화 수화기에서 흘러나오는 AI 음성—"안녕하세요, 무엇을 도와드릴까요?"',diff:1,ex:'Millions are being poured into <b>voice bots</b>, agent copilots, and real-time sentiment analysis that promise 30 to 45 percent cost reductions—yet anticipated gains often fail to materialize.',},
+  {id:'co3',type:'COLLOC',word:'agent copilot',pron:'[ˈeɪdʒənt ˈkoʊpaɪlət]',ko:'에이전트 코파일럿; 인간 상담원(agent)이 고객을 응대하는 동안 실시간으로 지식베이스 탐색·컴플라이언스 플래깅·답변 초안을 제공하는 AI 보조 도구',nuance:'agent(상담원) + copilot(부조종사, 지원자). 항공에서 copilot은 기장을 대체하지 않고 보조—같은 원리로 AI copilot은 상담원을 대체가 아닌 증강. 핵심 기능: 지식베이스 실시간 탐색, 사기 위험 임계치 신호, 규정 준수 공시 초안 작성. "handle-time drag" 해소의 핵심 도구지만, 깨진 워크플로에 얹으면 상담원이 여전히 10개 레거시 시스템을 오가야 해 효과 제한. productivity tool vs copilot—copilot은 인간과 AI의 협업적 파트너십을 강조. 이미지: 🛩️ 조종사 옆에서 항법·점검을 보조하는 부조종사—결정권은 기장에게 있다.',diff:1,ex:'A retail bank shifted AI from a research tool to an <b>agent copilot</b> that actively navigates knowledge bases, signals fraud risk thresholds, and drafts compliant disclosures in real time.',},
+  {id:'co4',type:'COLLOC',word:'containment rate',pron:'[kənˈteɪnmənt reɪt]',ko:'컨테인먼트율; AI(봇·가상 에이전트)가 인간 상담원에게 이관하지 않고 독자적으로 해결한 상담 건수의 비율',nuance:'contain(담다, 봉쇄하다) + rate(비율). 군사·방역에서 "containment"(확산 봉쇄)의 개념이 차용. AI가 인간 에스컬레이션 없이 스스로 "봉쇄"한 비율. 핵심 함정(McKinsey): 90% containment rate를 달성한 봇이라도 root cause를 해결하지 못하면 고객이 3일 후 다시 전화 → 실제 cost per contact 증가. 즉, containment rate는 technical metric이지 business metric이 아님. containment rate(기술 지표) vs cost per contact(비즈니스 지표) vs FCR(first-call resolution, 품질 지표). 이미지: 📊 봇이 처리한 비율을 보여주는 파이차트—숫자가 높아도 재전화가 많으면 의미 없다.',diff:2,ex:'A bot might achieve a 90 percent <b>containment rate</b> for disputes, but if those customers call back three days later because the root cause wasn\'t addressed, total cost per contact actually increases.',},
+  {id:'co5',type:'COLLOC',word:'demand intelligence',pron:'[dɪˈmɑːnd ɪnˈtelɪdʒəns]',ko:'수요 인텔리전스; 고객이 왜 연락하는지의 근본 원인을 AI로 분석하여 연락 수요 자체를 제거하는 선제적 접근',nuance:'demand(수요, 고객의 연락 필요성) + intelligence(지능적 분석). 기존 접근: 어떤 문의를 자동화할 수 있는가? → demand intelligence 접근: 왜 고객이 연락하는가? → 연락 필요성 자체를 제거. McKinsey 사례: 글로벌 핀테크가 AI로 상담 녹취 분석 → 전체 콜의 50%가 단 하나의 근본 원인(미인가 거래 분쟁 신청)에서 발생 → 디지털 여정을 고쳐 콜 발생 자체를 사전 차단. reactive(문의에 대응) vs demand intelligence(문의 발생 자체를 예방). 이미지: 🔍 고객이 전화를 들기 전에 "왜 전화할까?"를 예측하는 분석 대시보드.',diff:2,ex:'Instead of asking what can be automated, winning banks apply <b>demand intelligence</b>—using AI to understand why customers are calling and fixing the upstream digital journeys that generate contact.',},
+  {id:'co6',type:'COLLOC',word:'speech analytics',pron:'[spiːtʃ əˈnælɪtɪks]',ko:'스피치 애널리틱스; AI가 통화 녹취를 자동 분석하여 주제·감정·패턴·준수 위반을 실시간 또는 사후 추출하는 기술',nuance:'speech(음성·발화) + analytics(분석). QA(품질보증)의 근본 변화: 기존에는 상담원 업무의 일부 샘플만 인간이 청취·검토 → speech analytics로 100% 녹취 자동 모니터링. 활용: 근본 원인 분류(why customers call), 실시간 컴플라이언스 플래깅, 코칭 인사이트 도출, 감정 분석(sentiment analysis). McKinsey 도구: "proprietary gen AI voice analytics"로 6주 진단 완료. call monitoring(인간이 샘플링 청취) vs speech analytics(AI가 100% 자동 분석). 이미지: 🎙️📊 수천 건의 통화가 파형으로 시각화되고 AI가 자동으로 태깅하는 분석 화면.',diff:2,ex:'A six-week diagnostic using McKinsey\'s proprietary gen AI <b>speech analytics</b> uncovered that 75 percent of the credit union\'s common reasons for calling lacked any self-service functionality.',},
+  {id:'co7',type:'COLLOC',word:'fair lending',pron:'[feər ˈlendɪŋ]',ko:'공정 대출; 인종·성별·국적 등 보호 특성에 기반한 대출 차별을 금지하는 미국 연방 규제 원칙. AI 모델이 의도치 않게 차별적 결과를 낼 수 있어 은행 AI의 핵심 규제 제약',nuance:'fair(공정한) + lending(대출). 미국 주요 법률: Equal Credit Opportunity Act(ECOA, 1974), Fair Housing Act(FHA, 1968). 은행 AI의 핵심 위험: 학습 데이터에 내재된 역사적 편향이 AI 모델을 통해 증폭 → 특정 집단에 대한 대출 거절·고금리 부과. Explainability(설명 가능성)이 fair lending 준수의 전제조건—왜 이 결정을 내렸는지 설명 불가능한 블랙박스 AI는 규제 위험. disparate impact(의도 없이 결과적으로 특정 집단에 불이익) vs disparate treatment(의도적 차별). 이미지: ⚖️ 대출 신청서 위의 천칭—AI가 색깔이 아닌 신용도로만 판단해야 한다.',diff:3,ex:'Banking AI operates under unique risk constraints including <b>fair lending</b>, explainability, and data residency, making risk-and-compliance integration a design requirement, not a final gate.',},
+
+  /* ── VOCAB ── */
+  {id:'vo1',type:'VOCAB',word:'chargeback',pron:'[ˈtʃɑːrdʒbæk]',ko:'차지백; 소비자가 카드사에 거래 취소·환불을 요청하는 절차. 미인가 거래·서비스 불이행 등 분쟁의 공식 처리 메커니즘',nuance:'charge(청구) + back(돌려주다). 1970년대 미국 Fair Credit Billing Act에서 소비자 보호 장치로 도입. 프로세스: 소비자 분쟁 → 카드사가 거래 취소 → 가맹점 계좌에서 차감 → 가맹점이 이의 제기 가능. 은행 콜센터에서 chargeback은 가장 복잡한 상담 유형 중 하나: 증거 수집·기간 확인·규정 준수 등 다단계 프로세스. AI가 chargeback을 처리하려면 chargeback life cycle(단계별 절차)·ACH return codes(전자이체 반환 코드)를 정밀하게 학습해야. refund(자발적 환불) vs chargeback(카드사를 통한 강제 취소). 이미지: 💳↩️ 카드 명세서에서 역방향으로 돈이 흘러나오는 화살표—소비자 권리의 최후 보루.',diff:2,ex:'Generic AI models fail in banking because they don\'t understand the nuances of <b>chargeback</b> life cycles—each stage has different evidence requirements and regulatory deadlines.',},
+  {id:'vo2',type:'VOCAB',word:'explainability',pron:'[ɪkˌspleɪnəˈbɪlɪti]',ko:'설명 가능성(XAI); AI 모델이 특정 결정·예측에 도달한 이유를 인간이 이해할 수 있게 설명하는 능력. 은행 규제의 핵심 요건',nuance:'explain(설명하다) + -ability(능력). 학술 분야: Explainable AI(XAI). EU AI Act, 미국 fair lending 규제에서 고위험 AI 결정(대출·보험)에 설명 가능성 요구. 은행에서의 구체적 의미: "왜 이 대출 신청을 거절했는가?"를 명확하고 감사 가능하게 제시할 수 있어야 함. 딜레마: 복잡한 딥러닝 모델일수록 성능↑ but 설명 가능성↓ (블랙박스). 해결책: SHAP·LIME 등 post-hoc 설명 기법, 또는 처음부터 설명 가능한 모델 선택. accuracy(정확도) vs explainability(설명 가능성)—보통 트레이드오프 관계. 이미지: 🔍 블랙박스 AI 내부를 투명하게 들여다볼 수 있는 유리 창문.',diff:3,ex:'In banking, <b>explainability</b> is not optional—regulators require that automated decisions on credit, disputes, and compliance can be audited and understood, making black-box AI a regulatory liability.',},
+  {id:'vo3',type:'VOCAB',word:'taxonomy',pron:'[tækˈsɒnəmi]',ko:'분류 체계, 택소노미; 상담 주제·고객 인텐트·문서 유형 등을 계층적으로 분류한 구조화된 체계. AI 모델 학습의 핵심 기반',nuance:'Greek taxis(정렬) + nomos(법칙). 원래 생물 분류학(린네의 동식물 분류)에서 유래. 은행 AI에서: 모든 고객 상담 인텐트를 계층적으로 분류하는 구조—"결제 문의 > 자동이체 > 신규 설정 > 표준화 가능". 잘못된 taxonomy는 AI가 "auto loan payment"를 단일 카테고리로 처리해 root-cause complexity를 놓치는 주원인. Fine-tuning 시 은행의 자체 taxonomy·policy 기반으로 훈련해야 정확도 보장. classification(분류, 더 일반적) vs taxonomy(계층적 분류 체계, 더 정교하고 구조적). 이미지: 🌳 뿌리부터 가지·잎사귀까지 계층화된 나무—각 인텐트가 적확한 위치에 배치된 분류 나무.',diff:2,ex:'High-performing AI models in banking are fine-tuned on the bank\'s own transcripts, <b>taxonomies</b>, and policies—without this, accuracy will be low and agent trust will evaporate.',},
+  {id:'vo4',type:'VOCAB',word:'cognitive load',pron:'[ˈkɒɡnɪtɪv ləʊd]',ko:'인지 부하; 특정 작업을 수행하기 위해 정신적으로 처리해야 하는 정보의 양. 과도한 인지 부하는 오류·번아웃·응대 품질 저하를 야기',nuance:'cognitive(인지적) + load(부하). 심리학자 John Sweller가 1988년 학습 이론에서 체계화. 작업 기억(working memory)의 용량은 한정적—한 번에 7±2개 항목만 처리 가능. 은행 콜센터에서 상담원이 10개 레거시 시스템을 오가며 정보를 수동 취합할 때 인지 부하가 폭증 → 오류 증가, 응대 시간 연장, 번아웃. AI "unified agent workspace"의 핵심 가치: 컨텍스트를 자동 취합해 인지 부하를 대폭 감소. mental fatigue(정신적 피로, 결과) vs cognitive load(정보 처리 부하, 원인). 이미지: 🧠💥 너무 많은 정보가 동시에 들어와 과부하 걸린 뇌—오류의 근원.',diff:2,ex:'The orchestrated AI model reduces <b>cognitive load</b> by pushing relevant data directly into a single agent view, eliminating the need to toggle between eight to twelve legacy systems during a live call.',},
+  {id:'vo5',type:'VOCAB',word:'workforce management',pron:'[ˈwɜːrkfɔːrs ˈmænɪdʒmənt]',ko:'인력 관리(WFM); 적정 수의 상담원을 적시에 적소에 배치하기 위한 스케줄링·수요 예측·실시간 조정 시스템',nuance:'workforce(인력) + management(관리). 콜센터 운영의 핵심 과학: 콜 볼륨 예측 → 스케줄 수립 → 실시간 조정. AI 이전: 히스토리컬 데이터로 주간 스케줄 수립. AI 이후: intraday 실시간 staffing gap 식별 → 자동 스케줄 조정 → 용량 5~10% 확보, 비용 10~15% 절감. 핵심 지표: occupancy rate(상담원 통화 중 비율), shrinkage(교육·휴식 등으로 이탈하는 비율), average speed of answer(평균 응답 속도). HR management(인사 관리, 더 광의) vs workforce management(콜센터 운영에서의 스케줄링·배치 최적화). 이미지: 📅 실시간으로 업데이트되는 상담원 배치 현황판—AI가 트래픽 급증을 예측하고 자동으로 조정한다.',diff:2,ex:'A financial services organization with 20,000 agents used an AI engine to optimize <b>workforce management</b>, identifying intraday staffing gaps and freeing up 5 to 10 percent of capacity.',},
+  {id:'vo6',type:'VOCAB',word:'intraday',pron:'[ˌɪntrəˈdeɪ]',ko:'일중, 당일; 하루 영업 시간 내에서 실시간으로 발생하는 변화나 조정. 콜센터에서 당일 콜 볼륨 급등·급락에 대한 실시간 대응',nuance:'Latin intra(안에, 내부) + day(하루). 금융 시장: intraday trading(당일 매매, 당일 내 포지션 청산). 콜센터: intraday management—당일 예측과 실제 콜 볼륨의 차이를 실시간 관리. 예: 갑작스러운 시스템 장애로 오후 2시에 콜 급증 → 점심 휴식 중인 상담원 즉시 복귀 요청, 아웃소싱 풀에서 긴급 투입. AI가 없으면 관리자가 수동으로 1~2시간 지연 대응. intraday staffing gap: 시간대별 상담원 수와 실제 필요 인원의 차이. daily(일일, 사후 분석) vs intraday(당일 실시간 조정). 이미지: ⏱️ 하루의 콜 볼륨 그래프가 실시간으로 움직이고 AI가 자동으로 스케줄을 재조정하는 대시보드.',diff:2,ex:'By identifying <b>intraday</b> staffing gaps and automating schedule adjustments in real time, the AI engine freed up 5 to 10 percent of capacity without adding headcount.',},
+  {id:'vo7',type:'VOCAB',word:'transcript',pron:'[ˈtrænskrɪpt]',ko:'녹취록, 트랜스크립트; 통화 또는 대화의 내용을 텍스트로 변환한 기록. 은행 콜센터 AI의 핵심 학습 데이터이자 QA 자산',nuance:'Latin trans(넘어서) + scribere(쓰다). 원래 강의·재판 속기록. 콜센터에서: 통화 음성 → STT(Speech-to-Text) → 텍스트 transcript. 왜 은행 contact center가 AI의 첫 번째 적용 도메인인가: "few other areas offer the same volume of recorded transcripts, structured contact logs, and real-time customer feedback." 활용: 모델 학습(domain adaptation), 품질보증(QA), 코칭, 컴플라이언스 감사. 100% transcript monitoring = 전수 품질 감사—인간 샘플링 QA의 20~30% 비용 절감. call recording(음성 파일) vs transcript(텍스트 변환본, AI가 직접 처리 가능). 이미지: 📄 통화 내용이 실시간으로 텍스트로 변환되며 화면에 흘러내리는 장면.',diff:1,ex:'Banking contact centers generate millions of <b>transcripts</b>, structured contact logs, and real-time feedback—making them the richest data environment for AI training in any consumer-facing industry.',},
+  {id:'vo8',type:'VOCAB',word:'regulatory exposure',pron:'[ˌreɡjuˈleɪtəri ɪkˈspəʊʒər]',ko:'규제 노출, 규제 리스크; AI 모델이 규정을 위반하거나 감독 당국의 제재를 받을 가능성. 은행 AI 거버넌스의 핵심 설계 제약',nuance:'regulatory(규제의) + exposure(노출). 금융에서 exposure는 "손실 가능성에 노출된 금액 또는 상황". regulatory exposure = 규제 기관의 제재·과징금·영업정지에 노출될 위험. 은행 AI의 특수성: fair lending 위반, 설명 불가능한 거절 결정, 데이터 거주지 위반 등이 규제 노출의 주요 원인. McKinsey 핵심 메시지: AI가 리스크·법무팀에 확장 시점에만 제시될 때 규제 노출이 "permanent pilot"의 주원인. risk(일반적 위험) vs regulatory exposure(규제 감독 기관에 의한 구체적 처벌 위험). 이미지: ⚠️ 규제 감독관의 돋보기 아래 놓인 AI 모델—어떤 결정이 규정을 위반하는가?',diff:3,ex:'Concerns around hallucination and <b>regulatory exposure</b> stall deployment when AI is presented to risk teams only at the point of scaling, turning breakthroughs into permanent pilots.',},
+  {id:'vo9',type:'VOCAB',word:'copilot',pron:'[ˈkoʊpaɪlət]',ko:'코파일럿; 인간 작업자를 대체하지 않고 보조하는 AI 시스템. 실시간 정보 제공·초안 작성·경고 발송으로 인간의 역량을 증강',nuance:'항공의 copilot(부조종사)에서 직접 차용. 기장(captain = 인간 상담원)이 결정권을 가지되, 부조종사(copilot = AI)가 항법·점검·경보를 처리. Microsoft가 2023년 Copilot 브랜드로 대중화하면서 업계 표준 용어로 자리잡음. 인간-AI 협업 스펙트럼: automation(AI가 독자 실행) vs copilot(AI가 인간을 실시간 보조) vs consultant(AI가 사후 분석). 은행 context: 상담원 copilot은 통화 중 자동으로 관련 정책 표시, 사기 신호 알림, 규정 공시 초안을 제공—상담원은 최종 판단과 공감만 담당. 이미지: 🛩️ 조종석의 두 좌석—왼쪽(기장 = 인간)이 결정하고 오른쪽(부조종사 = AI)이 보조한다.',diff:1,ex:'When the <b>copilot</b> is integrated into a redesigned workflow rather than bolted onto broken processes, it eliminates handle-time drag and lets agents focus on judgment and empathy.',},
+
+  /* ── BIZ ── */
+  {id:'bz1',type:'BIZ',word:'CSAT',pron:'[siː sæt]',ko:'Customer Satisfaction Score; 고객 만족도 점수. 특정 상호작용(통화·챗 등) 직후 수집하는 단기 만족도 지표. 통상 1~5점 또는 1~10점 척도',nuance:'Customer(고객) + Satisfaction(만족) + Score(점수). 특정 거래·상호작용 직후 측정—"오늘 통화는 얼마나 만족스러우셨나요?" 시점: 통화 종료 직후 자동 SMS/IVR 설문. 한계: 개별 상호작용 품질 반영, 장기 관계나 브랜드 충성도는 미반영. 비교: NPS(장기 추천 의향, 이미 목록에 있음) vs CSAT(단기 상호작용 만족) vs CES(노력 점수, 얼마나 쉬웠는가). McKinsey: AI rewiring으로 CSAT 10~15포인트 향상 가능. 이미지: ⭐⭐⭐⭐ 통화 직후 울리는 자동 설문 문자—"오늘 서비스는 어떠셨나요?"',diff:1,ex:'Properly rewired AI implementations have delivered 10 to 15 point increases in <b>CSAT</b> by removing friction from the most common customer journeys across channels.',},
+  {id:'bz2',type:'BIZ',word:'FCR',pron:'[ef siː ɑːr]',ko:'First-Call Resolution; 첫 번째 통화(또는 상담)에서 고객 문제가 완전히 해결되어 재문의가 불필요한 비율. 콜센터 품질의 핵심 지표',nuance:'First(첫 번째) + Call(통화) + Resolution(해결). 고객 경험과 비용 효율의 교차점: FCR↑ → 재전화↓ → 비용↓ + 만족도↑. 계산법: (재문의 없이 해결된 건 수 / 총 상담 건 수) × 100. McKinsey: AI rewiring으로 FCR 15~25% 향상. 왜 중요한가: containment rate(기술적으로 이관 안 함)와 다름—FCR은 실제로 문제가 해결됐는지를 측정. 30% containment + 100% FCR vs 90% containment + 30% FCR: 전자가 훨씬 나은 성과. 이미지: 🎯 한 번의 통화 화살표로 정중앙 과녁 적중—재전화 없이 완전 해결.',diff:1,ex:'<b>FCR</b> improved by 15 to 25 percent when AI provided real-time agent support and live compliance flagging, eliminating the need for customers to call back about the same unresolved issue.',},
+  {id:'bz3',type:'BIZ',word:'AHT',pron:'[eɪ eɪtʃ tiː]',ko:'Average Handling Time; 평균 처리 시간. 통화 시간(talk time) + 보류 시간(hold time) + 사후 처리 시간(after-call work)의 합산 평균',nuance:'Average(평균) + Handling(처리) + Time(시간). 콜센터 비용의 핵심 드라이버: 상담원 수 × AHT × 단가 = 총 비용. "handle-time drag"(처리 시간 늘리는 요소): 레거시 시스템 전환, 수동 정보 검색, CRM에 요약 재입력. McKinsey: AI 통합 후 AHT 10~20% 감소. 역설: AHT만 줄이면 FCR↓ (너무 빨리 통화 종료) → 재전화↑ → 실제 비용↑. 균형: AHT 감소 + FCR 유지가 목표. talk time vs AHT(더 포괄적, 보류+사후 처리 포함). 이미지: ⏱️ 통화-보류-메모 세 구간의 타임라인—AHT는 이 모든 구간의 합산 평균.',diff:1,ex:'AI implementations that remove system-toggling and manual information retrieval have achieved a 10 to 20 percent reduction in <b>AHT</b> without sacrificing first-call resolution rates.',},
+  {id:'bz4',type:'BIZ',word:'ACH',pron:'[eɪ siː eɪtʃ]',ko:'Automated Clearing House; 미국 전자 자금 이체 네트워크. 직접 입금(급여)·청구서 자동이체·B2B 결제를 처리하는 배치 기반 결제 인프라',nuance:'Automated(자동화된) + Clearing(정산) + House(기관). 1970년대 NACHA(National Automated Clearing House Association)가 수표 처리를 전자화하기 위해 설립. 미국 연간 처리량: $80조 이상. 특징: 배치(batch) 처리—실시간이 아닌 1일 1~3회 배치 정산(T+1). ACH return codes: 은행 계좌 없음(R03), 잔액 부족(R09), 거래 중지(R07) 등 80여 개 반환 코드. 은행 AI가 ACH return codes를 학습하지 않으면 결제 문의 응대 불가. wire transfer(실시간, 고비용) vs ACH(배치, 저비용) vs RTP(실시간 결제, 신형). 이미지: 🏦🔄 수백만 건의 결제가 하루 세 번 배치로 일괄 정산되는 전자 고속도로.',diff:2,ex:'Banking-specific AI must master nuances such as <b>ACH</b> return codes, chargeback life cycles, and regulatory disclosure requirements—generic models fail precisely because they lack this domain knowledge.',},
+  {id:'bz5',type:'BIZ',word:'IVR',pron:'[aɪ viː ɑːr]',ko:'Interactive Voice Response; 대화형 음성 응답. 고객이 전화했을 때 인간 상담원 연결 전 자동으로 안내하고 메뉴를 선택하게 하는 전화 자동화 시스템',nuance:'Interactive(상호작용) + Voice(음성) + Response(응답). "1번 잔액 조회, 2번 분쟁 신청, 3번 상담원 연결"의 그 시스템. 1970년대 DTMF(터치톤) 기반으로 시작. 진화: DTMF IVR(버튼 누르기) → Speech IVR(음성 인식) → Conversational IVR/Voice Bot(LLM 기반 대화). 한계: 메뉴 트리(menu tree)가 복잡하면 고객이 "0번 상담원"만 누르게 됨. 은행에서 IVR deflection rate(IVR에서 해결되어 상담원 연결 안 된 비율)가 핵심 자동화 지표. IVR vs Voice Bot: IVR은 선형 메뉴, Voice Bot은 비선형 대화. 이미지: 📞🎚️ 전화 연결 후 들리는 자동 안내 음성—"원하시는 서비스를 말씀해 주세요."',diff:1,ex:'Replacing outdated <b>IVR</b> trees with conversational AI can dramatically improve self-service completion, but only if the underlying digital journeys are fixed so customers don\'t need to call in the first place.',},
+  {id:'bz6',type:'BIZ',word:'QA',pron:'[kjuː eɪ]',ko:'Quality Assurance; 품질 보증. 콜센터에서 상담원 응대 품질을 모니터링·평가·코칭하는 프로세스. AI 이전에는 전체의 2~5%만 인간이 샘플링 청취',nuance:'Quality(품질) + Assurance(보증). 콜센터 QA의 전통적 방법론: 품질 분석가(QA analyst)가 무작위 통화를 청취하고 평가표(scorecard)로 채점 → 상담원 코칭. 문제: 95% 이상의 통화는 검토되지 않음 → 시스템적 오류·컴플라이언스 위반 미탐지. AI speech analytics의 핵심 가치: 100% transcript 자동 모니터링 → QA 비용 20~30% 절감 + 완전한 컴플라이언스 커버리지. QC(Quality Control, 제품 결함 탐지) vs QA(전체 프로세스의 품질 시스템 구축, 더 광의). 이미지: 🎧📋 품질 분석가가 무작위로 고른 통화 5%를 청취하는 헤드폰—AI는 100%를 동시에 모니터링한다.',diff:1,ex:'AI-enabled 100 percent transcript monitoring has reduced <b>QA</b> costs by 20 to 30 percent while providing complete compliance coverage—replacing the inherent blind spots of manual sampling.',},
+  {id:'bz7',type:'BIZ',word:'MFA',pron:'[em ef eɪ]',ko:'Multi-Factor Authentication; 다단계 인증. 계정 로그인 시 비밀번호 외 추가 인증 수단(OTP·생체인식·보안 질문)을 요구하는 보안 방식',nuance:'Multi(다수) + Factor(요소) + Authentication(인증). 세 가지 인증 요소 유형: something you know(비밀번호), something you have(OTP 기기·SMS), something you are(지문·얼굴인식). 은행 콜센터와의 관계: MFA 실패(SMS OTP 미수신·앱 잠김)가 디지털 지원 구하는 상담 중 상당 비율을 차지. McKinsey 사례: 미국 신용협동조합에서 MFA 실패가 많은 콜을 유발 → demand intelligence로 이 근본 원인 식별 → 디지털 개선 → 콜 자체 제거. 2FA(Two-Factor Authentication, 두 가지 요소) vs MFA(두 가지 이상, 더 강력). 이미지: 🔐 비밀번호 입력 후 나타나는 "추가 인증이 필요합니다" 팝업—보안의 두 번째 자물쇠.',diff:2,ex:'A credit union discovered that <b>MFA</b> failures during login were driving a significant portion of calls—by fixing the authentication experience upstream, it eliminated demand before it reached the contact center.',},
+];
+
+let currentFilter='ALL';
+
+function renderCards(){
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  const visible=cards.filter(c=>currentFilter==='ALL'||c.type===currentFilter);
+  document.getElementById('visCount').textContent=visible.length;
+  visible.forEach(c=>{
+    const isLearned=learned.has(c.id);
+    const dots=[1,2,3].map(i=>`<div class="dot ${i<=c.diff?'on':'off'}"></div>`).join('');
+    const wrap=document.createElement('div');
+    wrap.className='card-wrap'+(isLearned?' learned':'');
+    wrap.dataset.id=c.id;
+    wrap.innerHTML=`
+      <div class="card-inner">
+        <div class="front">
+          <span class="tag tag-${c.type}">${c.type}</span>
+          <div class="word">${c.word}</div>
+          <div class="pron">${c.pron}</div>
+          <div class="ko">${c.ko}</div>
+          <div class="diff-row">${dots}<span class="flip-hint">탭하여 뒤집기 →</span></div>
+        </div>
+        <div class="back">
+          <div class="nuance">${c.nuance}</div>
+          <div class="ex-label">EXAMPLE</div>
+          <div class="ex">${c.ex}</div>
+          <button class="learned-btn ${isLearned?'done':'undone'}" data-id="${c.id}">
+            ${isLearned?'✓ 학습 완료':'학습 완료로 표시'}
+          </button>
+        </div>
+      </div>`;
+    wrap.addEventListener('click',e=>{
+      if(e.target.classList.contains('learned-btn'))return;
+      wrap.classList.toggle('flipped');
+    });
+    wrap.querySelector('.learned-btn').addEventListener('click',e=>{
+      e.stopPropagation();
+      const id=e.target.dataset.id;
+      if(learned.has(id)){learned.delete(id);}else{learned.add(id);}
+      localStorage.setItem(STORE,JSON.stringify([...learned]));
+      renderCards();
+      updateProgress();
+    });
+    grid.appendChild(wrap);
+  });
+  updateProgress();
+}
+
+function updateProgress(){
+  const total=cards.length;
+  const done=learned.size;
+  const pct=Math.round(done/total*100);
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progText').textContent=`${done} / ${total} 학습`;
+}
+
+document.querySelectorAll('.fbtn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter=btn.dataset.f;
+    renderCards();
+  });
+});
+
+renderCards();
+</script>
+</body>
+</html>
